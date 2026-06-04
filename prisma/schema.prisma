@@ -1,0 +1,510 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Sangham — Prisma Schema
+// Version: 0.1.0  |  DB: PostgreSQL 15
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  GUEST
+  PRACTITIONER
+  TRUSTED
+  BHIKKHU
+  BHIKKHUNI
+  SCHOLAR
+  ASSOCIATION_ADMIN
+  MODERATOR
+  SUPER_ADMIN
+}
+
+enum Tradition {
+  THERAVADA
+  MAHAYANA
+  VAJRAYANA
+  NAVAYANA
+  OTHER
+  MULTIPLE
+}
+
+enum PostType {
+  TEXT
+  IMAGE
+  AUDIO
+  LINK
+  QUOTE
+}
+
+enum SessionType {
+  DHARMA_TALK
+  GUIDED_MEDITATION
+  SUTTA_STUDY
+  QA
+  CEREMONY
+  TELECAST
+}
+
+enum SessionStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  CANCELLED
+}
+
+enum EventType {
+  RETREAT
+  CEREMONY
+  TALK
+  SEMINAR
+  PROTEST_MARCH
+  COMMUNITY_GATHERING
+  DHAMMA_DIKSHA
+  CONVERSION_CEREMONY
+  AMBEDKAR_JAYANTI
+}
+
+enum RsvpStatus {
+  GOING
+  MAYBE
+  NOT_GOING
+}
+
+enum AssociationCategory {
+  TEMPLE
+  NGO
+  STUDY_GROUP
+  AMBEDKARITE_SANGHA
+  UNIVERSITY_CLUB
+  NATIONAL_FEDERATION
+  INTERNATIONAL_BODY
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ContentLicence {
+  CC0
+  CC_BY
+  CC_BY_SA
+  CC_BY_NC
+  CC_BY_NC_ND
+  PUBLIC_DOMAIN
+  MIXED
+}
+
+// ── User ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id                String     @id @default(uuid())
+  email             String?    @unique
+  phone             String?    @unique
+  firebaseUid       String?    @unique @map("firebase_uid")
+  displayName       String     @map("display_name")
+  bio               String?    @db.VarChar(500)
+  profilePhoto      String?    @map("profile_photo")
+  coverImage        String?    @map("cover_image")
+  country           String?    // ISO 3166-1 alpha-2
+  city              String?
+  traditions        Tradition[]
+  role              UserRole   @default(PRACTITIONER)
+  isVerifiedClergy  Boolean    @default(false) @map("is_verified_clergy")
+  languages         String[]   // ISO 639-1 codes
+  templeAffiliation String?    @map("temple_affiliation")
+  isActive          Boolean    @default(true) @map("is_active")
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @updatedAt @map("updated_at")
+  lastActiveAt      DateTime?  @map("last_active_at")
+
+  // Relations
+  posts             Post[]
+  sessions          LiveSession[]   @relation("SessionHost")
+  sessionRsvps      SessionAttendee[]
+  events            Event[]         @relation("EventOrganiser")
+  eventRsvps        EventRsvp[]
+  associations      AssociationMember[]
+  sentMessages      Message[]       @relation("MessageSender")
+  receivedMessages  Message[]       @relation("MessageReceiver")
+  bookmarks         Bookmark[]
+  annotations       Annotation[]
+  followers         Follow[]        @relation("Followed")
+  following         Follow[]        @relation("Follower")
+  clergyApplication ClergyApplication?
+  moderationActions ModerationAction[]
+
+  @@map("users")
+}
+
+// ── Follow ───────────────────────────────────────────────────────────────────
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String   @map("follower_id")
+  followedId  String   @map("followed_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  follower    User     @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followed    User     @relation("Followed", fields: [followedId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followedId])
+  @@map("follows")
+}
+
+// ── Clergy Verification ───────────────────────────────────────────────────────
+
+model ClergyApplication {
+  id                 String             @id @default(uuid())
+  userId             String             @unique @map("user_id")
+  ordinationDoc      String?            @map("ordination_doc") // S3 URL
+  abbotLetter        String?            @map("abbot_letter")   // S3 URL
+  templeAffiliation  String             @map("temple_affiliation")
+  vinayaTradition    String             @map("vinaya_tradition")
+  notes              String?
+  status             VerificationStatus @default(PENDING)
+  reviewedBy         String?            @map("reviewed_by")
+  reviewedAt         DateTime?          @map("reviewed_at")
+  rejectionReason    String?            @map("rejection_reason")
+  createdAt          DateTime           @default(now()) @map("created_at")
+
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("clergy_applications")
+}
+
+// ── Posts & Feed ─────────────────────────────────────────────────────────────
+
+model Post {
+  id             String    @id @default(uuid())
+  authorId       String    @map("author_id")
+  content        String?   @db.VarChar(1000)
+  postType       PostType  @default(TEXT) @map("post_type")
+  mediaUrls      String[]  @map("media_urls")
+  linkUrl        String?   @map("link_url")
+  linkPreview    Json?     @map("link_preview") // title, description, image
+  traditionTags  Tradition[] @map("tradition_tags")
+  libraryRefId   String?   @map("library_ref_id") // FK to LibrarySegment
+  isBhikkhuPost  Boolean   @default(false) @map("is_bhikkhu_post")
+  isDeleted      Boolean   @default(false) @map("is_deleted")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  author         User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments       Comment[]
+  likes          Like[]
+  reports        ContentReport[]
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String   @map("post_id")
+  authorId  String   @map("author_id")
+  content   String   @db.VarChar(500)
+  parentId  String?  @map("parent_id") // for threading
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  postId    String   @map("post_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@map("likes")
+}
+
+// ── Knowledge Library ─────────────────────────────────────────────────────────
+
+model LibraryCollection {
+  id          String         @id @default(uuid())
+  name        String         // e.g., "Tipitaka", "BAWS", "Dhammapada"
+  tradition   Tradition
+  description String?        @db.Text
+  sourceUrl   String?        @map("source_url")
+  licence     ContentLicence
+  isActive    Boolean        @default(true) @map("is_active")
+
+  texts       LibraryText[]
+
+  @@map("library_collections")
+}
+
+model LibraryText {
+  id           String             @id @default(uuid())
+  collectionId String             @map("collection_id")
+  externalId   String?            @map("external_id") // e.g., "mn1" from SuttaCentral
+  title        String
+  author       String?
+  translator   String?
+  language     String             // ISO 639-1
+  licence      ContentLicence
+  sourceUrl    String             @map("source_url")
+  attribution  String             // Full attribution string to display
+  isSearchable Boolean            @default(true) @map("is_searchable")
+  createdAt    DateTime           @default(now()) @map("created_at")
+
+  collection   LibraryCollection  @relation(fields: [collectionId], references: [id])
+  segments     LibrarySegment[]
+  bookmarks    Bookmark[]
+
+  @@index([collectionId])
+  @@index([language])
+  @@map("library_texts")
+}
+
+model LibrarySegment {
+  id          String   @id @default(uuid())
+  textId      String   @map("text_id")
+  segmentKey  String   @map("segment_key") // e.g., "mn1:1.1"
+  content     String   @db.Text
+  verseNumber Int?     @map("verse_number")
+  chapterRef  String?  @map("chapter_ref")
+  sequence    Int      // ordering within text
+
+  text        LibraryText   @relation(fields: [textId], references: [id], onDelete: Cascade)
+  annotations Annotation[]
+
+  @@unique([textId, segmentKey])
+  @@index([textId])
+  @@map("library_segments")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  textId    String   @map("text_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      LibraryText @relation(fields: [textId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, textId])
+  @@map("bookmarks")
+}
+
+model Annotation {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  segmentId   String   @map("segment_id")
+  content     String   @db.VarChar(1000)
+  isPublic    Boolean  @default(false) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  segment     LibrarySegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@map("annotations")
+}
+
+// ── Live Sessions ─────────────────────────────────────────────────────────────
+
+model LiveSession {
+  id             String        @id @default(uuid())
+  hostId         String        @map("host_id")
+  title          String
+  description    String?       @db.Text
+  sessionType    SessionType   @map("session_type")
+  traditionTag   Tradition?    @map("tradition_tag")
+  language       String        @default("en")
+  scheduledAt    DateTime      @map("scheduled_at")
+  startedAt      DateTime?     @map("started_at")
+  endedAt        DateTime?     @map("ended_at")
+  agoraChannel   String        @unique @map("agora_channel")
+  recordingUrl   String?       @map("recording_url")
+  maxViewers     Int           @default(0) @map("max_viewers") // 0 = unlimited
+  rsvpRequired   Boolean       @default(false) @map("rsvp_required")
+  status         SessionStatus @default(SCHEDULED)
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  host           User          @relation("SessionHost", fields: [hostId], references: [id])
+  attendees      SessionAttendee[]
+
+  @@index([scheduledAt])
+  @@index([status])
+  @@map("live_sessions")
+}
+
+model SessionAttendee {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  userId    String   @map("user_id")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  leftAt    DateTime? @map("left_at")
+
+  session   LiveSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@map("session_attendees")
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+
+model Event {
+  id              String    @id @default(uuid())
+  organiserId     String    @map("organiser_id")
+  associationId   String?   @map("association_id")
+  title           String
+  description     String?   @db.Text
+  eventType       EventType @map("event_type")
+  traditionTag    Tradition? @map("tradition_tag")
+  startsAt        DateTime  @map("starts_at")
+  endsAt          DateTime? @map("ends_at")
+  timezone        String    // IANA timezone
+  locationName    String?   @map("location_name")
+  lat             Decimal?  @db.Decimal(10, 7)
+  lng             Decimal?  @db.Decimal(10, 7)
+  onlineUrl       String?   @map("online_url")
+  capacity        Int       @default(0) // 0 = unlimited
+  isRecurring     Boolean   @default(false) @map("is_recurring")
+  recurrenceRule  String?   @map("recurrence_rule") // RRULE format
+  isPublished     Boolean   @default(true) @map("is_published")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  organiser       User      @relation("EventOrganiser", fields: [organiserId], references: [id])
+  association     Association? @relation(fields: [associationId], references: [id])
+  rsvps           EventRsvp[]
+
+  @@index([startsAt])
+  @@index([lat, lng])
+  @@map("events")
+}
+
+model EventRsvp {
+  id        String     @id @default(uuid())
+  eventId   String     @map("event_id")
+  userId    String     @map("user_id")
+  status    RsvpStatus
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  event     Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@map("event_rsvps")
+}
+
+// ── Associations ──────────────────────────────────────────────────────────────
+
+model Association {
+  id               String              @id @default(uuid())
+  name             String
+  country          String
+  city             String?
+  tradition        Tradition
+  category         AssociationCategory
+  parentId         String?             @map("parent_id")
+  legalRegNumber   String?             @map("legal_reg_number")
+  description      String?             @db.Text
+  website          String?
+  isVerified       Boolean             @default(false) @map("is_verified")
+  verifiedAt       DateTime?           @map("verified_at")
+  createdAt        DateTime            @default(now()) @map("created_at")
+
+  parent           Association?        @relation("FederationHierarchy", fields: [parentId], references: [id])
+  children         Association[]       @relation("FederationHierarchy")
+  members          AssociationMember[]
+  events           Event[]
+
+  @@map("associations")
+}
+
+model AssociationMember {
+  id              String   @id @default(uuid())
+  associationId   String   @map("association_id")
+  userId          String   @map("user_id")
+  memberRole      String   @default("MEMBER") @map("member_role") // PRESIDENT, SECRETARY, TREASURER, CORE, MEMBER
+  joinedAt        DateTime @default(now()) @map("joined_at")
+  isActive        Boolean  @default(true) @map("is_active")
+
+  association     Association @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([associationId, userId])
+  @@map("association_members")
+}
+
+// ── Messages (DMs) ────────────────────────────────────────────────────────────
+
+model Message {
+  id           String   @id @default(uuid())
+  senderId     String   @map("sender_id")
+  recipientId  String   @map("recipient_id")
+  ciphertext   String   @db.Text // E2E encrypted — server stores ciphertext only
+  isRead       Boolean  @default(false) @map("is_read")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  sender       User     @relation("MessageSender", fields: [senderId], references: [id])
+  recipient    User     @relation("MessageReceiver", fields: [recipientId], references: [id])
+
+  @@index([senderId, recipientId])
+  @@index([createdAt])
+  @@map("messages")
+}
+
+// ── Moderation ────────────────────────────────────────────────────────────────
+
+model ContentReport {
+  id          String   @id @default(uuid())
+  reporterId  String   @map("reporter_id")
+  postId      String?  @map("post_id")
+  reason      String
+  details     String?  @db.VarChar(500)
+  isResolved  Boolean  @default(false) @map("is_resolved")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  post        Post?    @relation(fields: [postId], references: [id])
+
+  @@map("content_reports")
+}
+
+model ModerationAction {
+  id          String   @id @default(uuid())
+  moderatorId String   @map("moderator_id")
+  targetId    String   @map("target_id")
+  targetType  String   @map("target_type") // user, post, comment
+  action      String   // warn, remove, ban
+  reason      String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  moderator   User     @relation(fields: [moderatorId], references: [id])
+
+  @@map("moderation_actions")
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  type      String   // follow, like, comment, session_reminder, event_reminder
+  title     String
+  body      String
+  data      Json?    // Extra context (postId, sessionId etc.)
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
