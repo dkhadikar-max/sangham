@@ -141,6 +141,14 @@ model User {
   following         Follow[]        @relation("Follower")
   clergyApplication ClergyApplication?
   moderationActions ModerationAction[]
+  location          UserLocation?
+  tags              UserTag[]
+  intents           Intent[]
+  intentResponses   IntentResponse[]
+  privacySettings   PrivacySettings?
+  contributionScore ContributionScore?
+  teacherVerification TeacherVerification?
+  isVerifiedTeacher Boolean   @default(false) @map("is_verified_teacher")
 
   @@map("users")
 }
@@ -507,4 +515,228 @@ model Notification {
 
   @@index([userId, isRead])
   @@map("notifications")
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// EXTENSION — 8 Strategic Priorities (v2)
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── Priority 1 + 6: People Discovery + Hyperlocal ─────────────────────
+
+enum ApproximateDistance {
+  WITHIN_2KM
+  WITHIN_5KM
+  WITHIN_10KM
+  SAME_CITY
+  SAME_STATE
+  SAME_COUNTRY
+}
+
+enum LocationVisibility {
+  HIDDEN
+  APPROXIMATE   // shows "Within 5km", never exact coords
+  CITY_ONLY
+  STATE_ONLY
+  COUNTRY_ONLY
+}
+
+// Fuzzy location — NEVER store exact lat/lng for privacy
+// Snap to city/area grid only
+model UserLocation {
+  id                 String             @id @default(uuid())
+  userId             String             @unique @map("user_id")
+  country            String?            // ISO 3166-1 alpha-2
+  state              String?            // e.g. "Maharashtra"
+  city               String?            // e.g. "Mumbai"
+  area               String?            // e.g. "Dadar" — optional hyperlocal
+  // Snapped grid cell (1km precision, NOT exact)
+  gridLat            Decimal?           @db.Decimal(4,1) @map("grid_lat")
+  gridLng            Decimal?           @db.Decimal(4,1) @map("grid_lng")
+  visibility         LocationVisibility @default(CITY_ONLY)
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_locations")
+}
+
+// ── Priority 5 + 6: Professional & Interest Tags ──────────────────────
+
+enum ProfessionalTag {
+  ENTREPRENEUR
+  FOUNDER
+  STUDENT
+  DEVELOPER
+  RESEARCHER
+  TRANSLATOR
+  VOLUNTEER
+  TEACHER
+  ARTIST
+  WRITER
+  CIVIL_SERVANT
+  PROFESSIONAL
+  ACTIVIST
+  MEDITATOR
+  CAREGIVER
+  RETIRED
+}
+
+model UserTag {
+  id      String          @id @default(uuid())
+  userId  String          @map("user_id")
+  tag     ProfessionalTag
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tag])
+  @@map("user_tags")
+}
+
+// ── Priority 2: Intent-Based Networking ───────────────────────────────
+
+enum IntentCategory {
+  MEDITATION_PARTNER
+  STUDY_GROUP
+  LOCAL_SANGHA
+  SEEKING_VOLUNTEERS
+  SEEKING_TRANSLATORS
+  BUDDHIST_FOUNDERS
+  BHIKKHU_GUIDANCE
+  EVENT_COLLABORATORS
+  DHARMA_DISCUSSION
+  LANGUAGE_EXCHANGE
+  MENTORSHIP
+  SKILL_SHARE
+}
+
+enum IntentStatus {
+  OPEN
+  CLOSED
+  FULFILLED
+}
+
+enum IntentScope {
+  NEARBY         // uses hyperlocal
+  CITY
+  STATE
+  COUNTRY
+  GLOBAL
+}
+
+model Intent {
+  id           String         @id @default(uuid())
+  userId       String         @map("user_id")
+  title        String         @db.VarChar(120)
+  category     IntentCategory
+  description  String?        @db.VarChar(500)
+  scope        IntentScope    @default(CITY)
+  visibility   VisibilityLevel @default(COMMUNITY)
+  status       IntentStatus   @default(OPEN)
+  expiresAt    DateTime?      @map("expires_at")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses    IntentResponse[]
+
+  @@index([category, status])
+  @@index([userId])
+  @@map("intents")
+}
+
+model IntentResponse {
+  id        String   @id @default(uuid())
+  intentId  String   @map("intent_id")
+  userId    String   @map("user_id")
+  message   String?  @db.VarChar(300)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  intent    Intent   @relation(fields: [intentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([intentId, userId])
+  @@map("intent_responses")
+}
+
+// ── Priority 3: Privacy-First Networking ──────────────────────────────
+
+enum VisibilityLevel {
+  PUBLIC
+  COMMUNITY     // logged-in users
+  CONNECTIONS   // mutual follows only
+  ANONYMOUS     // browse without revealing identity
+}
+
+enum MessagingPermission {
+  EVERYONE
+  CONNECTIONS_ONLY
+  NOBODY
+}
+
+model PrivacySettings {
+  id                    String              @id @default(uuid())
+  userId                String              @unique @map("user_id")
+  profileVisibility     VisibilityLevel     @default(COMMUNITY) @map("profile_visibility")
+  messagingPermission   MessagingPermission @default(CONNECTIONS_ONLY) @map("messaging_permission")
+  locationVisibility    LocationVisibility  @default(CITY_ONLY) @map("location_visibility")
+  activityVisibility    VisibilityLevel     @default(COMMUNITY) @map("activity_visibility")
+  showInDiscovery       Boolean             @default(true) @map("show_in_discovery")
+  anonymousBrowsing     Boolean             @default(false) @map("anonymous_browsing")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("privacy_settings")
+}
+
+// ── Priority 4: Contribution-Based Reputation ─────────────────────────
+
+model ContributionScore {
+  id                      String   @id @default(uuid())
+  userId                  String   @unique @map("user_id")
+  // Event contributions
+  eventsHosted            Int      @default(0) @map("events_hosted")
+  // Volunteer
+  volunteerContributions  Int      @default(0) @map("volunteer_contributions")
+  // Community
+  communitiesCreated      Int      @default(0) @map("communities_created")
+  // Knowledge
+  helpfulAnswers          Int      @default(0) @map("helpful_answers")
+  translationContributions Int     @default(0) @map("translation_contributions")
+  libraryAnnotations      Int      @default(0) @map("library_annotations")
+  // Sessions
+  sessionsHosted          Int      @default(0) @map("sessions_hosted")
+  // Total (computed column — updated by job)
+  totalScore              Int      @default(0) @map("total_score")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("contribution_scores")
+}
+
+// ── Priority 7: Host vs Teacher distinction ───────────────────────────
+
+enum TeacherVerificationStatus {
+  NOT_APPLIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model TeacherVerification {
+  id               String                    @id @default(uuid())
+  userId           String                    @unique @map("user_id")
+  credentials      String                    @db.Text  // description of qualifications
+  supportingDocUrl String?                   @map("supporting_doc_url")
+  lineage          String?
+  status           TeacherVerificationStatus @default(NOT_APPLIED)
+  reviewedBy       String?                   @map("reviewed_by")
+  reviewedAt       DateTime?                 @map("reviewed_at")
+  rejectionReason  String?                   @map("rejection_reason")
+  createdAt        DateTime                  @default(now()) @map("created_at")
+
+  user             User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("teacher_verifications")
 }
