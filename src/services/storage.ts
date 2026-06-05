@@ -111,6 +111,8 @@ export async function uploadToS3(
     throw new Error('uploadToS3 called in local mode');
   }
   // Lazy import — keeps AWS SDK out of the local dev bundle entirely
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore -- @aws-sdk/client-s3 is an optional prod dependency; only reachable when STORAGE_MODE=s3
   const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
   const client = new S3Client({
     region: env.AWS_REGION,
@@ -139,6 +141,8 @@ export async function deleteFile(urlOrPath: string): Promise<void> {
     return;
   }
   // S3 delete — lazy import
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore -- optional prod dependency
   const { S3Client, DeleteObjectCommand } = await import('@aws-sdk/client-s3');
   const client = new S3Client({ region: env.AWS_REGION });
   const key = new URL(urlOrPath).pathname.slice(1);

@@ -29,10 +29,10 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
   const [texts, total] = await Promise.all([
     prisma.libraryText.findMany({
       where, take: limit, skip,
-      include: { collection: { select: { name: true, tradition: true } } },
       select: {
         id: true, title: true, author: true, translator: true, language: true,
-        licence: true, attribution: true, collection: true, externalId: true,
+        licence: true, attribution: true, externalId: true,
+        collection: { select: { name: true, tradition: true } },
       },
     }),
     prisma.libraryText.count({ where }),

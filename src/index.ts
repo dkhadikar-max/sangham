@@ -32,6 +32,14 @@ import privacyRoutes      from './routes/privacy';
 import contributionRoutes from './routes/contributions';
 import teacherRoutes      from './routes/teachers';
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4000',
+  'https://sangham.online',
+  'https://www.sangham.online',
+  ...(process.env.CLIENT_ORIGIN ? [process.env.CLIENT_ORIGIN] : []),
+];
+
 const app = express();
 const httpServer = createServer(app);
 
@@ -46,14 +54,6 @@ io.on('connection', (socket) => {
     socket.to(data.roomId).emit('chat_message', data);
   });
 });
-
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:4000',
-  'https://sangham.online',
-  'https://www.sangham.online',
-  ...(process.env.CLIENT_ORIGIN ? [process.env.CLIENT_ORIGIN] : []),
-];
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({
