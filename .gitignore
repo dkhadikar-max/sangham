@@ -33,3 +33,12 @@ coverage/
 
 # Temp
 /tmp/bilara-data
+
+# Local file uploads (dev only — never commit user files)
+uploads/
+
+# AWS infra temp files
+infra/cf-config.json
+
+# Keep public/ tracked (frontend)
+!public/
