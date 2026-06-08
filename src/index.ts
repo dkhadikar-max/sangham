@@ -55,6 +55,10 @@ io.on('connection', (socket) => {
   });
 });
 
+// Railway (and most cloud platforms) front requests with a proxy.
+// Without this, express-rate-limit sees every user as the same IP.
+app.set('trust proxy', 1);
+
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({
   origin: (origin, cb) => {
