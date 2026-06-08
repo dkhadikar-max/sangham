@@ -1612,10 +1612,20 @@
       <div class="ob-dot" id="ob-dot-3"></div>
     </div>
 
-    <!-- Step 1: Tradition + Identity -->
+    <!-- Step 1: Language + Tradition + Identity -->
     <div id="ob-step-1" class="ob-step active">
       <h2 class="ob-title">Your Practice</h2>
       <p class="ob-subtitle">Tell us about yourself so we can connect you with the right people.</p>
+      <div class="ob-section-label">Platform Language</div>
+      <div class="ob-chips" id="ob-languages">
+        <div class="ob-chip active" data-val="English"  onclick="obChipToggle(this,true)">English</div>
+        <div class="ob-chip"        data-val="Hindi"    onclick="obChipToggle(this,true)">हिन्दी</div>
+        <div class="ob-chip"        data-val="Marathi"  onclick="obChipToggle(this,true)">मराठी</div>
+        <div class="ob-chip"        data-val="Nepali"   onclick="obChipToggle(this,true)">नेपाली</div>
+        <div class="ob-chip"        data-val="Sinhala"  onclick="obChipToggle(this,true)">සිංහල</div>
+        <div class="ob-chip"        data-val="Thai"     onclick="obChipToggle(this,true)">ภาษาไทย</div>
+      </div>
+      <p style="font-size:0.7rem;color:var(--stone-light);margin:-0.1rem 0 0.9rem 0.1rem;">Hindi, Marathi and more coming soon · Platform currently in English</p>
       <div class="ob-section-label">Tradition (choose all that apply)</div>
       <div class="ob-chips" id="ob-traditions">
         <div class="ob-chip" data-val="THERAVADA" onclick="obChipToggle(this,false)">Theravāda</div>
@@ -2259,6 +2269,17 @@
                 <option value="AU">Australia</option><option value="DE">Germany</option>
                 <option value="SG">Singapore</option><option value="MY">Malaysia</option>
               </select>
+            </div>
+          </div>
+          <div class="input-group" style="margin-bottom:0.4rem;">
+            <label>Platform Language</label>
+            <div class="edit-chips" id="edit-languages">
+              <div class="edit-chip active" data-val="English" onclick="editChipToggle(this,true)">English</div>
+              <div class="edit-chip"        data-val="Hindi"   onclick="editChipToggle(this,true)">हिन्दी</div>
+              <div class="edit-chip"        data-val="Marathi" onclick="editChipToggle(this,true)">मराठी</div>
+              <div class="edit-chip"        data-val="Nepali"  onclick="editChipToggle(this,true)">नेपाली</div>
+              <div class="edit-chip"        data-val="Sinhala" onclick="editChipToggle(this,true)">සිංහල</div>
+              <div class="edit-chip"        data-val="Thai"    onclick="editChipToggle(this,true)">ภาษาไทย</div>
             </div>
           </div>
           <div class="input-group" style="margin-bottom:0.4rem;">
@@ -4227,6 +4248,12 @@ function openEditSheet(user) {
   document.getElementById('edit-photo-status').textContent = '';
   document.getElementById('edit-photo-input').value = '';
 
+  // Pre-select language chip (single-select — first match wins, fallback English)
+  const savedLang = localStorage.getItem('sangham_lang') || (user.languages || [])[0] || 'English';
+  document.querySelectorAll('#edit-languages .edit-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.val === savedLang);
+  });
+
   // Pre-select tradition chips
   const tradSet = new Set(user.traditions || []);
   document.querySelectorAll('#edit-traditions .edit-chip').forEach(c => {
@@ -4306,12 +4333,17 @@ async function saveProfile() {
   btnText.innerHTML = '<span class="spinner-sm"></span>';
 
   try {
+    const langChip = document.querySelector('#edit-languages .edit-chip.active');
+    const selectedLang = langChip ? langChip.dataset.val : 'English';
+    if (selectedLang) localStorage.setItem('sangham_lang', selectedLang);
+
     const profileData = {
       displayName: document.getElementById('edit-displayName').value.trim(),
       bio:         document.getElementById('edit-bio').value.trim(),
       city:        document.getElementById('edit-city').value.trim(),
       country:     document.getElementById('edit-country').value,
       traditions: [...document.querySelectorAll('#edit-traditions .edit-chip.active')].map(c => c.dataset.val),
+      languages:  selectedLang ? [selectedLang] : [],
     };
     // Remove empty strings
     if (!profileData.bio)     delete profileData.bio;
@@ -4323,12 +4355,10 @@ async function saveProfile() {
     await api('PUT', '/users/me', profileData);
     await api('PUT', '/users/me/tags', { tags });
 
-    // Update cached displayName
-    if (profileData.displayName) {
-      state.user.displayName = profileData.displayName;
-      saveSession();
-      updateHeaderAvatar();
-    }
+    // Update cached user fields
+    if (profileData.displayName)  { state.user.displayName = profileData.displayName; updateHeaderAvatar(); }
+    if (profileData.languages)    { state.user.languages   = profileData.languages; }
+    saveSession();
 
     showToast('Profile saved', 'success');
     closeEditSheet();
@@ -4345,7 +4375,7 @@ async function saveProfile() {
 // ============================================================
 //  ONBOARDING
 // ============================================================
-const obState = { step: 1, traditions: [], role: 'PRACTITIONER', city: '', country: '', tags: [] };
+const obState = { step: 1, language: 'English', traditions: [], role: 'PRACTITIONER', city: '', country: '', tags: [] };
 
 function obGoToStep(step) {
   obState.step = step;
@@ -4377,6 +4407,8 @@ function obChipToggle(chip, singleSelect) {
 
 function obContinue() {
   if (obState.step === 1) {
+    const l = document.querySelector('#ob-languages .ob-chip.active');
+    obState.language   = l ? l.dataset.val : 'English';
     obState.traditions = [...document.querySelectorAll('#ob-traditions .ob-chip.active')].map(c => c.dataset.val);
     const r = document.querySelector('#ob-roles .ob-chip.active');
     obState.role = r ? r.dataset.val : 'PRACTITIONER';
@@ -4397,15 +4429,19 @@ async function submitOnboarding() {
   btn.disabled = true;
   txt.innerHTML = '<span class="spinner-sm"></span>';
   try {
+    // Persist UI language preference locally
+    localStorage.setItem('sangham_lang', obState.language);
     const profile = {};
     if (obState.traditions.length) profile.traditions = obState.traditions;
-    if (obState.role)    profile.role    = obState.role;
-    if (obState.city)    profile.city    = obState.city;
-    if (obState.country) profile.country = obState.country;
+    if (obState.language)  profile.languages = [obState.language];
+    if (obState.role)      profile.role      = obState.role;
+    if (obState.city)      profile.city      = obState.city;
+    if (obState.country)   profile.country   = obState.country;
     if (Object.keys(profile).length) await api('PUT', '/users/me', profile);
     if (obState.tags.length) await api('PUT', '/users/me/tags', { tags: obState.tags });
     // Update cached user
-    if (obState.role) { state.user.role = obState.role; saveSession(); }
+    if (obState.role)     { state.user.role      = obState.role;     saveSession(); }
+    if (obState.language) { state.user.languages = [obState.language]; saveSession(); }
   } catch(e) { /* non-blocking */ }
   localStorage.setItem('sangham_onboarded', '1');
   btn.disabled = false;
