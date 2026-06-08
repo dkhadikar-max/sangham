@@ -59,7 +59,24 @@ io.on('connection', (socket) => {
 // Without this, express-rate-limit sees every user as the same IP.
 app.set('trust proxy', 1);
 
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:    ["'self'"],
+      // Inline script block + onclick handlers + Socket.IO CDN
+      scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io'],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      // Inline <style> blocks + Google Fonts CSS
+      styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc:       ["'self'", 'https://fonts.gstatic.com'],
+      // Same-origin fetches + WebSocket (Socket.IO)
+      connectSrc:    ["'self'", 'wss:', 'ws:'],
+      imgSrc:        ["'self'", 'data:', 'blob:'],
+      mediaSrc:      ["'self'", 'blob:'],
+    },
+  },
+}));
 app.use(cors({
   origin: (origin, cb) => {
     // allow no-origin (mobile apps, curl, same-origin requests)
