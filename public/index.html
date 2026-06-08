@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sangham — The Community of Practice</title>
+  <title>Digital Sangha — People First</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
@@ -1060,6 +1060,109 @@
     .reader-annotate-actions {
       display: flex; gap: 0.6rem; margin-top: 0.6rem; justify-content: flex-end;
     }
+
+    /* =========================================
+       15. FAB SPEED DIAL
+       ========================================= */
+    .fab-wrap {
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+      z-index: 30; display: flex; flex-direction: column; align-items: center;
+    }
+    /* Override original .fab absolute positioning — fab-wrap owns it now */
+    .fab { position: static; bottom: auto; left: auto; transform: none; z-index: auto; }
+    .fab:hover { background: var(--saffron-dark); transform: scale(1.05); }
+    .fab.open { background: var(--charcoal); }
+    .fab svg { transition: transform 0.2s; }
+    .fab.open svg { transform: rotate(45deg); }
+    .fab-dial {
+      list-style: none; margin: 0 0 0.65rem; padding: 0;
+      display: flex; flex-direction: column; gap: 0.55rem; align-items: flex-end;
+      opacity: 0; pointer-events: none; max-height: 0; overflow: hidden;
+      transition: opacity 0.2s, max-height 0.25s;
+    }
+    .fab-wrap.open .fab-dial { opacity: 1; pointer-events: all; max-height: 320px; }
+    .fab-dial-item { display: flex; align-items: center; gap: 0.5rem; }
+    .fab-dial-btn {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--surface);
+      border: 1.5px solid var(--border-solid); color: var(--charcoal); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+      cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: background 0.15s;
+    }
+    .fab-dial-btn:hover { background: var(--saffron); border-color: var(--saffron); }
+    .fab-dial-label {
+      font-size: 0.78rem; font-weight: 600; background: rgba(28,25,23,0.82);
+      color: white; padding: 0.25rem 0.65rem; border-radius: 6px; white-space: nowrap;
+    }
+
+    /* =========================================
+       16. PROFILE TAB
+       ========================================= */
+    .profile-tab-card {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1.4rem 1rem 1.1rem; display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+    }
+    .profile-tab-avatar {
+      width: 68px; height: 68px; border-radius: 50%; background: var(--saffron);
+      color: white; display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600;
+      margin-bottom: 0.6rem; overflow: hidden; flex-shrink: 0;
+    }
+    .profile-tab-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-tab-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600;
+      color: var(--charcoal); margin-bottom: 0.2rem;
+    }
+    .profile-tab-bio {
+      font-size: 0.82rem; color: var(--stone); margin-bottom: 0.8rem;
+      max-width: 280px; line-height: 1.4;
+    }
+    .profile-tab-stats { display: flex; gap: 1.8rem; margin-bottom: 0.9rem; }
+    .profile-tab-stat { display: flex; flex-direction: column; align-items: center; }
+    .profile-tab-stat-n {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600;
+      color: var(--charcoal); line-height: 1;
+    }
+    .profile-tab-stat-l {
+      font-size: 0.67rem; color: var(--stone); text-transform: uppercase;
+      letter-spacing: 0.04em; margin-top: 0.15rem;
+    }
+    .profile-tab-actions { display: flex; gap: 0.5rem; }
+
+    /* =========================================
+       17. HOME SECTION ROWS
+       ========================================= */
+    .section-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1rem 0.5rem;
+    }
+    .section-header-row .section-title { margin: 0; padding: 0; }
+    .section-more {
+      font-size: 0.78rem; color: var(--saffron-dark); font-weight: 600;
+      cursor: pointer; text-decoration: none; flex-shrink: 0;
+    }
+    .home-people-scroll {
+      display: flex; gap: 0.7rem; overflow-x: auto; padding: 0 1rem 0.75rem;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .home-people-scroll::-webkit-scrollbar { display: none; }
+    .home-people-card {
+      flex: 0 0 118px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 0.85rem 0.6rem 0.7rem;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 0.3rem;
+    }
+    .home-people-card .hp-avatar {
+      width: 44px; height: 44px; border-radius: 50%; background: var(--saffron);
+      color: white; display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+      overflow: hidden; flex-shrink: 0; margin-bottom: 0.2rem;
+    }
+    .home-people-card .hp-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .hp-name { font-size: 0.78rem; font-weight: 600; color: var(--charcoal); line-height: 1.2; }
+    .hp-meta { font-size: 0.68rem; color: var(--stone); line-height: 1.2; }
+    .home-events-preview { padding: 0 1rem; }
+    .home-events-preview .event-card { margin-bottom: 0.65rem; }
   </style>
 </head>
 <body>
@@ -1074,7 +1177,7 @@
 ==================================================== -->
 <div id="view-landing" class="view active">
   <nav>
-    <div class="logo"><div class="logo-symbol"></div> Sangham</div>
+    <div class="logo"><div class="logo-symbol"></div> Digital Sangha</div>
     <div>
       <button class="btn-primary" onclick="showRegister()">Join Sangha</button>
     </div>
@@ -1093,10 +1196,10 @@
 <div id="view-auth" class="view">
   <div class="auth-container">
     <div class="logo" style="cursor:pointer;justify-content:center;" onclick="routeTo('view-landing')">
-      <div class="logo-symbol"></div> Sangham
+      <div class="logo-symbol"></div> Digital Sangha
     </div>
     <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:0.5rem;" id="authTitle">Welcome Back</h2>
-    <p style="font-size:0.9rem;color:var(--stone);margin-bottom:1.5rem;" id="authSubtitle">Enter your details to access your Sangha.</p>
+    <p style="font-size:0.9rem;color:var(--stone);margin-bottom:1.5rem;" id="authSubtitle">Enter your details to access Digital Sangha.</p>
     <div class="auth-error" id="authError"></div>
     <form id="authForm" onsubmit="handleAuth(event)">
       <div class="input-group" id="nameGroup" style="display:none;">
@@ -1116,7 +1219,7 @@
       </button>
     </form>
     <div class="auth-switch">
-      <span id="authSwitchText">New to Sangham?</span>
+      <span id="authSwitchText">New to Digital Sangha?</span>
       <a onclick="toggleAuthMode()" id="authSwitchLink">Create an account</a>
     </div>
   </div>
@@ -1128,7 +1231,7 @@
 <div id="view-onboarding" class="view">
   <div class="onboarding-container">
     <div class="onboarding-header">
-      <div class="logo"><div class="logo-symbol"></div> Sangham</div>
+      <div class="logo"><div class="logo-symbol"></div> Digital Sangha</div>
       <button class="onboarding-skip" onclick="skipOnboarding()">Skip</button>
     </div>
     <div class="onboarding-progress">
@@ -1234,7 +1337,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
         </svg>
-        Sangham
+        Digital Sangha
       </div>
       <div class="header-actions">
         <div class="header-icon" id="headerAvatar" title="Profile" onclick="openProfile(state.user?.id)" style="cursor:pointer;">
@@ -1259,7 +1362,17 @@
       <!-- HOME TAB -->
       <div id="tab-home" class="tab-panel active">
         <div id="home-daily-verse"></div>
-        <h2 class="section-title">Your Feed</h2>
+        <div class="section-header-row">
+          <h2 class="section-title" style="margin:0;padding:0;">Recommended People</h2>
+          <a class="section-more" onclick="switchTab('discover')">See all →</a>
+        </div>
+        <div class="home-people-scroll" id="home-recommended"></div>
+        <div class="section-header-row">
+          <h2 class="section-title" style="margin:0;padding:0;">Upcoming Events</h2>
+          <a class="section-more" onclick="switchTab('events')">See all →</a>
+        </div>
+        <div class="home-events-preview" id="home-events-preview"></div>
+        <h2 class="section-title">Community Updates</h2>
         <div id="home-feed"></div>
       </div>
 
@@ -1355,16 +1468,20 @@
         <div style="height:1rem;"></div>
       </div>
 
-      <!-- FOLLOW TAB -->
-      <div id="tab-follow" class="tab-panel">
-        <div class="section-title" style="padding-bottom:0;">Connections</div>
+      <!-- PROFILE TAB -->
+      <div id="tab-profile" class="tab-panel">
+        <div class="profile-tab-card" id="profileTabCard">
+          <div class="spinner" style="margin:2rem auto;"></div>
+        </div>
+
+        <div class="section-title" style="padding-bottom:0;padding-top:0.8rem;">Connections</div>
 
         <div class="follow-segment">
           <button class="follow-seg-btn active" id="seg-followers" onclick="switchFollowSeg('followers')">
-            Followers <span class="follow-count-badge" id="fc-followers">–</span>
+            Connected Members <span class="follow-count-badge" id="fc-followers">–</span>
           </button>
           <button class="follow-seg-btn" id="seg-following" onclick="switchFollowSeg('following')">
-            Following <span class="follow-count-badge" id="fc-following">–</span>
+            Connections <span class="follow-count-badge" id="fc-following">–</span>
           </button>
         </div>
 
@@ -1395,24 +1512,48 @@
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Discover
       </div>
-      <div class="nav-item" onclick="switchTab('follow')" id="nav-follow">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Follow
-      </div>
-      <div class="nav-item" onclick="switchTab('events')" id="nav-events">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Events
-      </div>
       <div class="nav-item" onclick="switchTab('communities')" id="nav-communities">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Communities
       </div>
+      <div class="nav-item" onclick="switchTab('learn')" id="nav-learn">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Learn
+      </div>
+      <div class="nav-item" onclick="switchTab('profile')" id="nav-profile">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </div>
     </nav>
 
-    <!-- FAB -->
-    <button class="fab" onclick="openCreatePost()" title="Create post">
-      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
+    <!-- FAB Speed Dial -->
+    <div class="fab-wrap" id="fabWrap">
+      <ul class="fab-dial" id="fabDial">
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">✍️</button>
+          <span class="fab-dial-label">Post</span>
+        </li>
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">📅</button>
+          <span class="fab-dial-label">Event</span>
+        </li>
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛️</button>
+          <span class="fab-dial-label">Community</span>
+        </li>
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">🎓</button>
+          <span class="fab-dial-label">Session</span>
+        </li>
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="showToast('Questions — coming soon');closeFab()" title="Question">❓</button>
+          <span class="fab-dial-label">Question</span>
+        </li>
+      </ul>
+      <button class="fab" id="fabBtn" onclick="toggleFab()" title="Create">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
 
     <!-- ── PANEL: CREATE POST ── -->
     <div id="panel-create" class="panel slide-up">
@@ -1945,11 +2086,11 @@ function toggleAuthMode() {
 
   if (isLoginMode) {
     title.innerText    = 'Welcome Back';
-    subtitle.innerText = 'Enter your details to access your Sangha.';
+    subtitle.innerText = 'Enter your details to access Digital Sangha.';
     nameGroup.style.display = 'none';
     nameInput.removeAttribute('required');
     btn.innerText      = 'Sign In';
-    switchText.innerText = 'New to Sangham?';
+    switchText.innerText = 'New to Digital Sangha?';
     switchLink.innerText = 'Create an account';
   } else {
     title.innerText    = 'Join the Sangha';
@@ -2042,11 +2183,17 @@ function initApp() {
   switchTab('home');
   initSocket();
   loadChatUnreadCount();
-  // Seed followedUsers set so Follow/Following buttons show the right state
+  // Seed followedUsers set so Connect/Connected buttons show the right state
   api('GET', '/users/me/following?limit=500').then(res => {
     const list = res.data || res || [];
     list.forEach(u => state.followedUsers.add(u.id));
   }).catch(() => {});
+
+  // Close FAB dial on outside tap
+  document.addEventListener('click', e => {
+    const wrap = document.getElementById('fabWrap');
+    if (wrap && wrap.classList.contains('open') && !wrap.contains(e.target)) closeFab();
+  });
 }
 
 function updateHeaderAvatar() {
@@ -2095,7 +2242,7 @@ function switchTab(tab) {
   if (tab === 'chat')        loadChatThreads();
   if (tab === 'events')      loadEvents();
   if (tab === 'communities') loadCommunities();
-  if (tab === 'follow')      loadFollow();
+  if (tab === 'profile')     loadProfileTab();
 }
 
 // ============================================================
@@ -2113,19 +2260,57 @@ function closePanel(id) {
 // ============================================================
 async function loadHome() {
   loadDailyVerse();
+  loadHomeRecommended();
+  loadHomeEvents();
   const container = document.getElementById('home-feed');
   container.innerHTML = '<div class="spinner"></div>';
   try {
     const data = await api('GET', '/users/me/feed?limit=20');
     const posts = data.data || data;
     if (!posts.length) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>Your feed is quiet.<br>Discover practitioners and follow them to see their posts here.</p></div>`;
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
       return;
     }
     container.innerHTML = posts.map(renderPostCard).join('');
   } catch (err) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}</p></div>`;
   }
+}
+
+async function loadHomeRecommended() {
+  const el = document.getElementById('home-recommended');
+  if (!el) return;
+  try {
+    const data = await api('GET', '/users?limit=10');
+    const people = (data.data || data).filter(p => p.id !== state.user?.id).slice(0, 8);
+    if (!people.length) { el.innerHTML = ''; return; }
+    el.innerHTML = people.map(p => {
+      const initials = (p.displayName || '?').charAt(0).toUpperCase();
+      const avatar = p.profilePhoto
+        ? `<img src="${p.profilePhoto}" alt="">`
+        : initials;
+      const loc = p.location?.city || p.location?.country || '';
+      const followed = state.followedUsers.has(p.id);
+      return `<div class="home-people-card">
+        <div class="hp-avatar" onclick="openProfile('${p.id}')" style="cursor:pointer;">${avatar}</div>
+        <div class="hp-name" onclick="openProfile('${p.id}')" style="cursor:pointer;">${escHtml(p.displayName||'')}</div>
+        ${loc ? `<div class="hp-meta">${escHtml(loc)}</div>` : ''}
+        <button class="btn-ghost ${followed?'followed':''}" style="font-size:0.68rem;padding:0.2rem 0.55rem;margin-top:0.1rem;"
+          onclick="toggleFollow('${p.id}',this)">${followed?'Connected':'Connect'}</button>
+      </div>`;
+    }).join('');
+  } catch(e) { if (el) el.innerHTML = ''; }
+}
+
+async function loadHomeEvents() {
+  const el = document.getElementById('home-events-preview');
+  if (!el) return;
+  try {
+    const data = await api('GET', '/events?limit=3');
+    const events = data.data || data;
+    if (!events.length) { el.innerHTML = ''; return; }
+    el.innerHTML = events.map(renderEventCard).join('');
+  } catch(e) { if (el) el.innerHTML = ''; }
 }
 
 async function loadDailyVerse() {
@@ -2140,6 +2325,63 @@ async function loadDailyVerse() {
         <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? '· '+verse.segmentKey : ''}</div>
       </div>`;
   } catch(e) { container.innerHTML = ''; }
+}
+
+// ============================================================
+//  PROFILE TAB
+// ============================================================
+async function loadProfileTab() {
+  loadFollow();
+  const el = document.getElementById('profileTabCard');
+  if (!el || !state.user) return;
+  try {
+    const user = await api('GET', `/users/${state.user.id}`);
+    const initials = (user.displayName || 'U').charAt(0).toUpperCase();
+    const avatar = user.profilePhoto
+      ? `<img src="${user.profilePhoto}" alt="">`
+      : initials;
+    const c = user._count || {};
+    el.innerHTML = `
+      <div class="profile-tab-avatar">${avatar}</div>
+      <div class="profile-tab-name">${escHtml(user.displayName||'')}</div>
+      ${user.bio ? `<div class="profile-tab-bio">${escHtml(user.bio)}</div>` : ''}
+      <div class="profile-tab-stats">
+        <div class="profile-tab-stat">
+          <div class="profile-tab-stat-n">${c.posts||0}</div>
+          <div class="profile-tab-stat-l">Posts</div>
+        </div>
+        <div class="profile-tab-stat">
+          <div class="profile-tab-stat-n">${c.followers||0}</div>
+          <div class="profile-tab-stat-l">Connected</div>
+        </div>
+        <div class="profile-tab-stat">
+          <div class="profile-tab-stat-n">${c.following||0}</div>
+          <div class="profile-tab-stat-l">Connections</div>
+        </div>
+      </div>
+      <div class="profile-tab-actions">
+        <button class="btn-primary" style="padding:0.45rem 1.1rem;font-size:0.82rem;"
+          onclick="openEditSheet(${JSON.stringify(user).replace(/"/g,'&quot;')})">Edit Profile</button>
+        <button class="btn-ghost" style="padding:0.45rem 1.1rem;font-size:0.82rem;"
+          onclick="openProfile('${user.id}')">View Profile</button>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--stone);font-size:0.85rem;">${escHtml(e.message)}</div>`;
+  }
+}
+
+// ============================================================
+//  FAB SPEED DIAL
+// ============================================================
+function toggleFab() {
+  const wrap = document.getElementById('fabWrap');
+  const btn  = document.getElementById('fabBtn');
+  wrap.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeFab() {
+  document.getElementById('fabWrap').classList.remove('open');
+  document.getElementById('fabBtn').classList.remove('open');
 }
 
 function renderPostCard(post, full) {
@@ -2432,7 +2674,7 @@ function renderPersonCard(p, distance) {
       ${!isMe ? `
         <div style="display:flex;flex-direction:column;gap:0.4rem;">
           <button class="btn-ghost ${followed?'followed':''}"
-            onclick="toggleFollow('${p.id}',this)">${followed?'Following':'Follow'}</button>
+            onclick="toggleFollow('${p.id}',this)">${followed?'Connected':'Connect'}</button>
           <button class="btn-ghost" style="font-size:0.72rem;"
             onclick="startDM('${p.id}','${escHtml(p.displayName||'')}')">Message</button>
         </div>` : ''}
@@ -2445,12 +2687,12 @@ async function toggleFollow(userId, btn) {
     if (isFollowed) {
       await api('DELETE', `/users/${userId}/follow`);
       state.followedUsers.delete(userId);
-      btn.textContent = 'Follow';
+      btn.textContent = 'Connect';
       btn.classList.remove('followed');
     } else {
       await api('POST', `/users/${userId}/follow`);
       state.followedUsers.add(userId);
-      btn.textContent = 'Following';
+      btn.textContent = 'Connected';
       btn.classList.add('followed');
     }
   } catch(err) { showToast(err.message, 'error'); }
@@ -3003,8 +3245,8 @@ async function openProfile(userId) {
     const c = user._count || {};
     document.getElementById('profile-stats').innerHTML = `
       <div class="profile-stat"><div class="profile-stat-n">${c.posts||0}</div><div class="profile-stat-l">Posts</div></div>
-      <div class="profile-stat"><div class="profile-stat-n">${c.followers||0}</div><div class="profile-stat-l">Followers</div></div>
-      <div class="profile-stat"><div class="profile-stat-n">${c.following||0}</div><div class="profile-stat-l">Following</div></div>`;
+      <div class="profile-stat"><div class="profile-stat-n">${c.followers||0}</div><div class="profile-stat-l">Connected Members</div></div>
+      <div class="profile-stat"><div class="profile-stat-n">${c.following||0}</div><div class="profile-stat-l">Connections</div></div>`;
 
     // Traditions
     if (user.traditions?.length) {
@@ -3039,7 +3281,7 @@ async function openProfile(userId) {
       const followed = state.followedUsers.has(userId);
       actEl.innerHTML = `
         <button class="btn-ghost ${followed?'followed':''}" id="profile-follow-btn"
-          onclick="profileToggleFollow('${userId}',this)">${followed?'Following':'Follow'}</button>
+          onclick="profileToggleFollow('${userId}',this)">${followed?'Connected':'Connect'}</button>
         <button class="btn-ghost" onclick="startDM('${userId}','${escHtml(user.displayName||'')}');closePanel('panel-profile')">Message</button>`;
     }
 
@@ -3064,12 +3306,12 @@ async function profileToggleFollow(userId, btn) {
     if (followed) {
       await api('DELETE', `/users/${userId}/follow`);
       state.followedUsers.delete(userId);
-      btn.textContent = 'Follow';
+      btn.textContent = 'Connect';
       btn.classList.remove('followed');
     } else {
       await api('POST', `/users/${userId}/follow`);
       state.followedUsers.add(userId);
-      btn.textContent = 'Following';
+      btn.textContent = 'Connected';
       btn.classList.add('followed');
     }
   } catch(err) { showToast(err.message, 'error'); }
@@ -3820,8 +4062,8 @@ function renderFollowList() {
   if (!list.length) {
     const msg = q ? `No results for "${escHtml(q)}"`
       : followState.sort === 'mutual' ? 'No mutual connections yet.'
-      : followState.segment === 'followers' ? 'No followers yet. Share your profile to grow your network.'
-      : 'Not following anyone yet. Visit Discover to find practitioners.';
+      : followState.segment === 'followers' ? 'No connected members yet. Share your profile to grow your network.'
+      : 'No connections yet. Visit Discover to find practitioners.';
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>${msg}</p></div>`;
     return;
   }
@@ -3840,17 +4082,17 @@ function renderFollowCard(u) {
     : '';
   const loc  = [u.city, u.country].filter(Boolean).join(', ');
   const role = u.role ? u.role.charAt(0) + u.role.slice(1).toLowerCase().replace(/_/g,' ') : '';
-  const meta = [role, loc].filter(Boolean).join(' · ') || (u.bio ? u.bio.slice(0, 55) : 'Sangham member');
+  const meta = [role, loc].filter(Boolean).join(' · ') || (u.bio ? u.bio.slice(0, 55) : 'Digital Sangha member');
 
   let actionBtn;
   if (followState.segment === 'followers') {
     if (u.isFollowingBack) {
-      actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">Following</button>`;
+      actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">Connected</button>`;
     } else {
-      actionBtn = `<button class="follow-card-action follow-back" onclick="followCardAction('${u.id}','follow',this)">Follow Back</button>`;
+      actionBtn = `<button class="follow-card-action follow-back" onclick="followCardAction('${u.id}','follow',this)">Connect Back</button>`;
     }
   } else {
-    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual ✓' : 'Following'}</button>`;
+    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual ✓' : 'Connected'}</button>`;
   }
 
   return `<div class="follow-card">
@@ -3872,7 +4114,7 @@ async function followCardAction(userId, action, btn) {
       const u = followState.followers.find(x => x.id === userId);
       if (u) u.isFollowingBack = true;
       btn.className = 'follow-card-action following-btn';
-      btn.textContent = 'Following';
+      btn.textContent = 'Connected';
       btn.onclick = () => followCardAction(userId, 'unfollow', btn);
     } else {
       await api('DELETE', '/users/' + userId + '/follow');
@@ -3886,7 +4128,7 @@ async function followCardAction(userId, action, btn) {
         const u = followState.followers.find(x => x.id === userId);
         if (u) u.isFollowingBack = false;
         btn.className = 'follow-card-action follow-back';
-        btn.textContent = 'Follow Back';
+        btn.textContent = 'Connect Back';
         btn.onclick = () => followCardAction(userId, 'follow', btn);
       }
     }
