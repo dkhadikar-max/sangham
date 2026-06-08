@@ -1,8 +1,9 @@
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 WORKDIR /app
 COPY package*.json ./
 
 FROM base AS deps
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 RUN npm ci
 
 FROM base AS builder
@@ -13,6 +14,7 @@ RUN npm run build
 
 FROM base AS runner
 ENV NODE_ENV=production
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
