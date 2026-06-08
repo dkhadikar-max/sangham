@@ -286,6 +286,174 @@
       font-size: 0.72rem; opacity: 0.75; margin-top: 0.6rem;
     }
 
+    /* =========================================
+       5b. HOME REDESIGN
+       ========================================= */
+    /* Hero welcome card */
+    .home-hero {
+      margin: 1rem 1rem 0;
+      background: linear-gradient(135deg, var(--charcoal) 0%, #2D2218 100%);
+      border-radius: 16px; padding: 1.4rem 1.2rem;
+      color: white; position: relative; overflow: hidden;
+    }
+    .home-hero::after {
+      content: ''; position: absolute; right: -24px; top: -24px;
+      width: 100px; height: 100px;
+      border: 2px solid rgba(212,168,67,0.18); border-radius: 50%;
+      pointer-events: none;
+    }
+    .home-hero-greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem; font-weight: 600; margin-bottom: 0.2rem;
+    }
+    .home-hero-tagline {
+      font-size: 0.68rem; color: rgba(255,255,255,0.55);
+      letter-spacing: 0.1em; margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .home-hero-stats {
+      display: flex; gap: 1rem; margin-bottom: 1.1rem; flex-wrap: wrap;
+    }
+    .home-hero-stat {
+      font-size: 0.72rem; color: rgba(255,255,255,0.7);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .home-hero-stat-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--saffron); flex-shrink: 0;
+    }
+    .home-hero-actions { display: flex; gap: 0.6rem; }
+    .home-hero-btn {
+      flex: 1; padding: 0.6rem 0.5rem;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; border-radius: 8px; font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; text-align: center; font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+    .home-hero-btn:hover { background: rgba(212,168,67,0.25); }
+    .home-hero-btn.primary {
+      background: var(--saffron); border-color: var(--saffron); color: var(--charcoal);
+    }
+    .home-hero-btn.primary:hover { background: var(--saffron-dark); }
+
+    /* Section wrapper */
+    .home-section { padding: 1rem 0 0.4rem; }
+    .home-section + .home-section { border-top: 1px solid var(--border-solid); }
+    .home-section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 1.2rem 0.7rem;
+    }
+    .home-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600; color: var(--charcoal);
+    }
+    .home-section-more {
+      font-size: 0.75rem; color: var(--saffron-dark); font-weight: 600; cursor: pointer;
+    }
+
+    /* People list — full-width stacked cards */
+    .home-people-list { padding: 0 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .home-people-list-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.85rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hpc-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--saffron); color: white; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600;
+      overflow: hidden; cursor: pointer;
+    }
+    .hpc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .hpc-info { flex: 1; min-width: 0; }
+    .hpc-name {
+      font-size: 0.88rem; font-weight: 600; color: var(--charcoal);
+      display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;
+    }
+    .hpc-badge { font-size: 0.63rem; color: var(--success); font-weight: 600; white-space: nowrap; }
+    .hpc-intent { font-size: 0.72rem; color: var(--stone); margin-top: 0.2rem; line-height: 1.3; }
+    .hpc-meta {
+      font-size: 0.67rem; color: var(--stone-light);
+      margin-top: 0.2rem; display: flex; gap: 0.4rem; flex-wrap: wrap;
+    }
+
+    /* Community cards */
+    .home-comm-list { padding: 0 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .home-comm-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.85rem;
+      display: flex; align-items: center; gap: 0.8rem; cursor: pointer;
+    }
+    .hcc-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--saffron-dark) 100%);
+      color: white; display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600;
+    }
+    .hcc-info { flex: 1; min-width: 0; }
+    .hcc-name {
+      font-size: 0.88rem; font-weight: 600; color: var(--charcoal);
+      display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;
+    }
+    .hcc-meta { font-size: 0.72rem; color: var(--stone); margin-top: 0.2rem; }
+
+    /* Discussion list */
+    .home-disc-list { padding: 0 1.2rem; }
+    .home-disc-item {
+      padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.6rem; cursor: pointer; min-height: 44px;
+    }
+    .home-disc-item:last-child { border-bottom: none; }
+    .home-disc-text {
+      flex: 1; font-size: 0.84rem; color: var(--charcoal); line-height: 1.4; min-width: 0;
+    }
+    .home-disc-count { flex-shrink: 0; font-size: 0.7rem; color: var(--stone-light); white-space: nowrap; }
+
+    /* Continue learning */
+    .home-learning-verse {
+      margin: 0 1rem;
+      background: linear-gradient(135deg, var(--saffron-dark) 0%, var(--saffron) 100%);
+      border-radius: 12px; padding: 1.1rem; color: white;
+    }
+    .home-learning-label {
+      font-size: 0.62rem; text-transform: uppercase;
+      letter-spacing: 0.1em; opacity: 0.75; margin-bottom: 0.45rem;
+    }
+    .home-learning-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 0.97rem;
+      line-height: 1.6; font-style: italic;
+    }
+    .home-learning-attr { font-size: 0.68rem; opacity: 0.7; margin-top: 0.45rem; }
+    .home-learning-cta {
+      display: block; text-align: right; margin: 0.55rem 1rem 0;
+      font-size: 0.75rem; color: var(--saffron-dark); font-weight: 600; cursor: pointer;
+    }
+
+    /* Dhamma Daan impact card */
+    .home-daan-impact {
+      margin: 0 1rem 0.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.9rem 1rem;
+    }
+    .hdi-title {
+      font-size: 0.67rem; text-transform: uppercase;
+      letter-spacing: 0.09em; color: var(--stone); font-weight: 600; margin-bottom: 0.65rem;
+    }
+    .hdi-stats { display: flex; }
+    .hdi-stat { flex: 1; text-align: center; padding: 0 0.5rem; }
+    .hdi-stat + .hdi-stat { border-left: 1px solid var(--border-solid); }
+    .hdi-stat-n {
+      font-size: 1.05rem; font-weight: 600; color: var(--charcoal);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .hdi-stat-l { font-size: 0.62rem; color: var(--stone-light); margin-top: 0.12rem; line-height: 1.3; }
+    .hdi-link {
+      display: block; text-align: right; margin-top: 0.65rem;
+      font-size: 0.74rem; color: var(--saffron-dark); font-weight: 600; cursor: pointer;
+    }
+
     /* Post Card */
     .post-card {
       background: var(--surface); border: 1px solid var(--border);
@@ -1574,19 +1742,73 @@
 
       <!-- HOME TAB -->
       <div id="tab-home" class="tab-panel active">
-        <div id="home-daily-verse"></div>
-        <div class="section-header-row">
-          <h2 class="section-title" style="margin:0;padding:0;">Recommended People</h2>
-          <a class="section-more" onclick="switchTab('discover')">See all →</a>
+
+        <!-- P3: Hero / Welcome Card -->
+        <div class="home-hero">
+          <div class="home-hero-greeting" id="home-greeting">Good Evening</div>
+          <div class="home-hero-tagline">Learn &nbsp;·&nbsp; Connect &nbsp;·&nbsp; Contribute</div>
+          <div class="home-hero-stats" id="home-hero-stats">
+            <div class="home-hero-stat"><div class="home-hero-stat-dot"></div>Digital Sangha</div>
+          </div>
+          <div class="home-hero-actions">
+            <button class="home-hero-btn primary" onclick="switchTab('discover')">Discover People</button>
+            <button class="home-hero-btn" onclick="switchTab('communities')">Explore Communities</button>
+          </div>
         </div>
-        <div class="home-people-scroll" id="home-recommended"></div>
-        <div class="section-header-row">
-          <h2 class="section-title" style="margin:0;padding:0;">Upcoming Events</h2>
-          <a class="section-more" onclick="switchTab('events')">See all →</a>
+
+        <!-- P4: People You May Connect With -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">People You May Connect With</span>
+            <span class="home-section-more" onclick="switchTab('discover')">See all →</span>
+          </div>
+          <div id="home-recommended" class="home-people-list"></div>
         </div>
-        <div class="home-events-preview" id="home-events-preview"></div>
-        <h2 class="section-title">Community Updates</h2>
-        <div id="home-feed"></div>
+
+        <!-- P5: Communities Near You -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">Communities Near You</span>
+            <span class="home-section-more" onclick="switchTab('communities')">See all →</span>
+          </div>
+          <div id="home-communities" class="home-comm-list"></div>
+        </div>
+
+        <!-- P6: Upcoming Events -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">Upcoming Events</span>
+            <span class="home-section-more" onclick="switchTab('events')">See all →</span>
+          </div>
+          <div id="home-events-preview" style="padding:0 1rem;"></div>
+        </div>
+
+        <!-- P7: Active Discussions -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">Active Discussions</span>
+          </div>
+          <div id="home-discussions" class="home-disc-list"></div>
+        </div>
+
+        <!-- P8: Continue Learning -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">Continue Learning</span>
+            <span class="home-section-more" onclick="switchTab('learn')">Explore →</span>
+          </div>
+          <div id="home-daily-verse"></div>
+          <span class="home-learning-cta" onclick="switchTab('learn')">Browse Library →</span>
+        </div>
+
+        <!-- P9: Dhamma Daan Impact -->
+        <div class="home-section" style="padding-bottom:0.8rem;">
+          <div class="home-section-header">
+            <span class="home-section-title">Dhamma Daan Impact</span>
+          </div>
+          <div id="home-daan-impact"></div>
+        </div>
+
       </div>
 
       <!-- DISCOVER TAB -->
@@ -1800,24 +2022,20 @@
     <div class="fab-wrap" id="fabWrap">
       <ul class="fab-dial" id="fabDial">
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">✍️</button>
-          <span class="fab-dial-label">Post</span>
+          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Discussion">💬</button>
+          <span class="fab-dial-label">Discussion</span>
         </li>
         <li class="fab-dial-item">
           <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">📅</button>
-          <span class="fab-dial-label">Event</span>
+          <span class="fab-dial-label">Create Event</span>
         </li>
         <li class="fab-dial-item">
           <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛️</button>
-          <span class="fab-dial-label">Community</span>
+          <span class="fab-dial-label">Create Community</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">🎓</button>
-          <span class="fab-dial-label">Session</span>
-        </li>
-        <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Questions — coming soon');closeFab()" title="Question">❓</button>
-          <span class="fab-dial-label">Question</span>
+          <button class="fab-dial-btn" onclick="showToast('Share Resource — coming soon');closeFab()" title="Resource">📚</button>
+          <span class="fab-dial-label">Share Resource</span>
         </li>
       </ul>
       <button class="fab" id="fabBtn" onclick="toggleFab()" title="Create">
@@ -2660,48 +2878,116 @@ function closePanel(id) {
 // ============================================================
 //  HOME TAB
 // ============================================================
-async function loadHome() {
-  loadDailyVerse();
+function loadHome() {
+  loadHomeHero();
   loadHomeRecommended();
+  loadHomeCommunities();
   loadHomeEvents();
-  const container = document.getElementById('home-feed');
-  container.innerHTML = '<div class="spinner"></div>';
-  try {
-    const data = await api('GET', '/users/me/feed?limit=20');
-    const posts = data.data || data;
-    if (!posts.length) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
-      return;
-    }
-    container.innerHTML = posts.map(renderPostCard).join('');
-  } catch (err) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}</p></div>`;
-  }
+  loadHomeDiscussions();
+  loadHomeLearning();
+  loadHomeDaanImpact();
+}
+
+function loadHomeHero() {
+  const hr = new Date().getHours();
+  const timeOfDay = hr < 12 ? 'Morning' : hr < 17 ? 'Afternoon' : 'Evening';
+  const firstName = (state.user?.displayName || '').split(' ')[0];
+  const el = document.getElementById('home-greeting');
+  if (el) el.textContent = 'Good ' + timeOfDay + (firstName ? ', ' + firstName : '');
 }
 
 async function loadHomeRecommended() {
   const el = document.getElementById('home-recommended');
   if (!el) return;
+  el.innerHTML = '<div class="spinner" style="margin:1rem auto;display:block;"></div>';
   try {
-    const data = await api('GET', '/users?limit=10');
-    const people = (data.data || data).filter(p => p.id !== state.user?.id).slice(0, 8);
-    if (!people.length) { el.innerHTML = ''; return; }
-    el.innerHTML = people.map(p => {
-      const initials = (p.displayName || '?').charAt(0).toUpperCase();
-      const avatar = p.profilePhoto
-        ? `<img src="${p.profilePhoto}" alt="">`
-        : initials;
-      const loc = p.location?.city || p.location?.country || '';
-      const followed = state.followedUsers.has(p.id);
-      return `<div class="home-people-card">
-        <div class="hp-avatar" onclick="openProfile('${p.id}')" style="cursor:pointer;">${avatar}</div>
-        <div class="hp-name" onclick="openProfile('${p.id}')" style="cursor:pointer;">${escHtml(p.displayName||'')}</div>
-        ${loc ? `<div class="hp-meta">${escHtml(loc)}</div>` : ''}
-        <button class="btn-ghost ${followed?'followed':''}" style="font-size:0.68rem;padding:0.2rem 0.55rem;margin-top:0.1rem;"
-          onclick="toggleFollow('${p.id}',this)">${followed?'Connected':'Connect'}</button>
-      </div>`;
+    let people = [];
+    try {
+      const data = await api('GET', '/discover/recommended');
+      people = (data.data || data).filter(p => p.id !== state.user?.id).slice(0, 4);
+    } catch {
+      const data = await api('GET', '/users?limit=10');
+      people = (data.data || data).filter(p => p.id !== state.user?.id).slice(0, 4);
+    }
+    if (!people.length) {
+      el.innerHTML = `<div style="padding:0.5rem 1rem 0.25rem;font-size:0.83rem;color:var(--stone-light);">No recommendations yet. <span style="color:var(--saffron-dark);cursor:pointer;" onclick="switchTab('discover')">Explore practitioners →</span></div>`;
+      return;
+    }
+    el.innerHTML = people.map(p => renderHomePeopleCard(p)).join('');
+  } catch(e) { el.innerHTML = ''; }
+}
+
+function renderHomePeopleCard(p) {
+  const initials = (p.displayName || '?').charAt(0).toUpperCase();
+  const avatar = p.profilePhoto ? `<img src="${p.profilePhoto}" alt="">` : initials;
+  const followed = state.followedUsers.has(p.id);
+
+  let badge = '✓ Verified';
+  if (p.isVerifiedClergy)   badge = '✓ Bhikkhu Verified';
+  else if (p.isVerifiedTeacher) badge = '✓ Teacher Verified';
+  else if (p.isContributor) badge = '✓ Contributor';
+
+  const tagIntents = {
+    STUDENT:'Looking for: Study Partner', VOLUNTEER:'Looking for: Volunteer Group',
+    MEDITATOR:'Looking for: Meditation Partner', TRANSLATOR:'Open to: Translation',
+    FOUNDER:'Open to: Community Building', RESEARCHER:'Open to: Research',
+    TEACHER:'Open to: Teaching',
+  };
+  const firstTag = (p.tags || [])[0]?.tag;
+  const intent = firstTag ? (tagIntents[firstTag] || '') : '';
+  const langs = (p.languages || []).slice(0, 3).join(' · ');
+  const loc = p.location?.city || p.city || p.location?.country || p.country || '';
+
+  return `
+    <div class="home-people-list-card">
+      <div class="hpc-avatar" onclick="openProfile('${p.id}')">${avatar}</div>
+      <div class="hpc-info">
+        <div class="hpc-name">${escHtml(p.displayName || '')} <span class="hpc-badge">${badge}</span></div>
+        ${intent ? `<div class="hpc-intent">${escHtml(intent)}</div>` : ''}
+        <div class="hpc-meta">
+          ${langs ? `<span>${escHtml(langs)}</span>` : ''}
+          ${loc   ? `<span>${escHtml(loc)}</span>`   : ''}
+        </div>
+      </div>
+      <button class="btn-ghost ${followed?'followed':''}" style="font-size:0.72rem;padding:0.35rem 0.75rem;flex-shrink:0;"
+        onclick="toggleFollow('${p.id}',this)">${followed ? 'Connected' : 'Connect'}</button>
+    </div>`;
+}
+
+async function loadHomeCommunities() {
+  const el = document.getElementById('home-communities');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner" style="margin:1rem auto;display:block;"></div>';
+  try {
+    const data = await api('GET', '/associations?limit=5');
+    const comms = (Array.isArray(data) ? data : (data.data || [])).slice(0, 4);
+    if (!comms.length) {
+      el.innerHTML = `<div style="padding:0.5rem 1rem 0.25rem;font-size:0.83rem;color:var(--stone-light);">No communities yet. <span style="color:var(--saffron-dark);cursor:pointer;" onclick="openCreateComm()">Start one →</span></div>`;
+      return;
+    }
+    el.innerHTML = comms.map(c => {
+      const icon = (c.name || '?').charAt(0).toUpperCase();
+      const memberCount = c._count?.members || 0;
+      const verBadge = c.isVerified ? ' <span class="hpc-badge">✓ Verified</span>' : '';
+      const catLabel = {
+        TEMPLE:'Temple', NGO:'NGO', STUDY_GROUP:'Study Group',
+        AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'University Club',
+        NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International',
+      }[c.category] || c.category || '';
+      const loc = [c.city, c.country].filter(Boolean).join(', ');
+      const meta = [memberCount + ' Member' + (memberCount !== 1 ? 's' : ''), catLabel, loc].filter(Boolean).join(' · ');
+      return `
+        <div class="home-comm-card" onclick="openCommDetail('${c.id}')">
+          <div class="hcc-icon">${escHtml(icon)}</div>
+          <div class="hcc-info">
+            <div class="hcc-name">${escHtml(c.name || '')}${verBadge}</div>
+            <div class="hcc-meta">${escHtml(meta)}</div>
+          </div>
+          <button class="btn-ghost" style="font-size:0.72rem;padding:0.35rem 0.75rem;flex-shrink:0;"
+            onclick="event.stopPropagation();openCommDetail('${c.id}')">View</button>
+        </div>`;
     }).join('');
-  } catch(e) { if (el) el.innerHTML = ''; }
+  } catch(e) { el.innerHTML = ''; }
 }
 
 async function loadHomeEvents() {
@@ -2709,24 +2995,74 @@ async function loadHomeEvents() {
   if (!el) return;
   try {
     const data = await api('GET', '/events?limit=3');
-    const events = data.data || data;
-    if (!events.length) { el.innerHTML = ''; return; }
+    const events = data.data || (Array.isArray(data) ? data : []);
+    if (!events.length) {
+      el.innerHTML = `<div style="padding:0.5rem 0 0.25rem;font-size:0.83rem;color:var(--stone-light);">No upcoming events. <span style="color:var(--saffron-dark);cursor:pointer;" onclick="switchTab('events')">Browse events →</span></div>`;
+      return;
+    }
     el.innerHTML = events.map(renderEventCard).join('');
-  } catch(e) { if (el) el.innerHTML = ''; }
+  } catch(e) { el.innerHTML = ''; }
 }
 
-async function loadDailyVerse() {
+async function loadHomeDiscussions() {
+  const el = document.getElementById('home-discussions');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner" style="margin:1rem auto;display:block;"></div>';
+  try {
+    const data = await api('GET', '/users/me/feed?limit=6');
+    const posts = data.data || (Array.isArray(data) ? data : []);
+    if (!posts.length) {
+      el.innerHTML = `<div style="padding:0.5rem 0;font-size:0.83rem;color:var(--stone-light);">Connect with practitioners to see active discussions.</div>`;
+      return;
+    }
+    el.innerHTML = posts.slice(0, 5).map(p => {
+      const raw = (p.content || '').replace(/\s+/g, ' ').trim();
+      const title = raw.length > 88 ? raw.slice(0, 88) + '…' : raw;
+      const replies = p._count?.comments || 0;
+      return `<div class="home-disc-item" onclick="openPostDetail('${p.id}')">
+        <div class="home-disc-text">${escHtml(title)}</div>
+        <div class="home-disc-count">${replies} ${replies === 1 ? 'reply' : 'replies'}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML = ''; }
+}
+
+async function loadHomeLearning() {
   const container = document.getElementById('home-daily-verse');
+  if (!container) return;
   try {
     const verse = await api('GET', '/library/daily-verse');
-    if (!verse || !verse.content) return;
+    if (!verse || !verse.content) { container.innerHTML = ''; return; }
     container.innerHTML = `
-      <div class="daily-verse">
-        <div class="daily-verse-label">✦ Daily Verse</div>
-        <div class="daily-verse-text">"${verse.content}"</div>
-        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? '· '+verse.segmentKey : ''}</div>
+      <div class="home-learning-verse">
+        <div class="home-learning-label">✦ Daily Reflection</div>
+        <div class="home-learning-text">"${escHtml(verse.content)}"</div>
+        <div class="home-learning-attr">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + verse.segmentKey : ''}</div>
       </div>`;
   } catch(e) { container.innerHTML = ''; }
+}
+
+async function loadHomeDaanImpact() {
+  const el = document.getElementById('home-daan-impact');
+  if (!el) return;
+  const renderCard = (contributors, projects, deployed) => `
+    <div class="home-daan-impact">
+      <div class="hdi-title">Dhamma Daan · This Month</div>
+      <div class="hdi-stats">
+        <div class="hdi-stat"><div class="hdi-stat-n">${contributors}</div><div class="hdi-stat-l">Contributors</div></div>
+        <div class="hdi-stat"><div class="hdi-stat-n">${projects}</div><div class="hdi-stat-l">Projects Supported</div></div>
+        <div class="hdi-stat"><div class="hdi-stat-n">${deployed}</div><div class="hdi-stat-l">Fund Deployed</div></div>
+      </div>
+      <a class="hdi-link" onclick="openDhammaDaan()">View Transparency Report →</a>
+    </div>`;
+  try {
+    const d = await api('GET', '/dhamma-daan/dashboard');
+    const fmt = p => '₹' + Math.floor(p / 100).toLocaleString('en-IN');
+    el.innerHTML = renderCard(d.contributorCount, d.recentAllocations?.length || 0, fmt(d.totalFundPaise));
+  } catch(e) {
+    el.innerHTML = renderCard('—', '—', '—');
+    el.querySelector('.hdi-link').textContent = 'Support Dhamma →';
+  }
 }
 
 // ============================================================
@@ -4099,8 +4435,8 @@ let eventsFilter = null;
 
 function renderEventCard(ev) {
   const d = new Date(ev.startsAt);
-  const dateStr = d.toLocaleDateString('en-IN', { weekday:'short', month:'short', day:'numeric' });
-  const timeStr = d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  const dateStr = d.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+  const timeStr = d.toLocaleTimeString('en-IN', { hour:'numeric', minute:'2-digit', hour12:true }).toUpperCase();
   const organiser   = ev.organiser?.displayName || '';
   const rsvpCount   = ev._count?.rsvps || 0;
   const loc         = ev.locationName || (ev.onlineUrl ? 'Online' : '');
@@ -4118,7 +4454,7 @@ function renderEventCard(ev) {
 
   return `
     <div class="event-card" onclick="toggleEventCard(this)" style="cursor:pointer;">
-      <div class="event-date-bar">${dateStr} · ${timeStr}</div>
+      <div class="event-date-bar">${dateStr} • ${timeStr}</div>
       <div class="event-body">
         ${tradition}
         <div class="event-title">${escHtml(ev.title)}</div>
