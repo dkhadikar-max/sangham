@@ -720,14 +720,14 @@
   <nav>
     <div class="logo"><div class="logo-symbol"></div> Sangham</div>
     <div>
-      <button class="btn-primary" onclick="routeTo('view-auth')">Join Sangha</button>
+      <button class="btn-primary" onclick="showRegister()">Join Sangha</button>
     </div>
   </nav>
   <div class="hero">
     <span style="font-family:'Noto Serif Devanagari',serif;color:var(--saffron);margin-bottom:1rem;letter-spacing:0.1em;display:block;">सङ्घम् शरणम् गच्छामि</span>
     <h1>Where Stillness<br><em style="color:var(--saffron);">Meets Connection</em></h1>
     <p>A digital sanctuary rooted in Buddhist wisdom. Join a mindful community dedicated to the path of awakening, compassion, and inner peace.</p>
-    <button class="btn-primary" onclick="routeTo('view-auth')" style="padding:1rem 3rem;font-size:1.1rem;">Enter the Sangha</button>
+    <button class="btn-primary" onclick="showRegister()" style="padding:1rem 3rem;font-size:1.1rem;">Enter the Sangha</button>
   </div>
 </div>
 
@@ -1067,6 +1067,16 @@ function routeTo(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(viewId).classList.add('active');
   window.scrollTo(0, 0);
+}
+
+function showRegister() {
+  if (isLoginMode) toggleAuthMode();
+  routeTo('view-auth');
+}
+
+function showLogin() {
+  if (!isLoginMode) toggleAuthMode();
+  routeTo('view-auth');
 }
 
 // ============================================================
