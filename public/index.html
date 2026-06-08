@@ -58,7 +58,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* â”€â”€ Shared Components â”€â”€ */
+    /* ── Shared Components ── */
     .btn-primary {
       background: var(--saffron); color: #FAF6F0; border: none;
       padding: 0.8rem 2rem; font-family: 'Inter', sans-serif;
@@ -109,7 +109,7 @@
     .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
     .empty-state p { font-size: 0.9rem; line-height: 1.6; }
 
-    /* â”€â”€ Toast â”€â”€ */
+    /* ── Toast ── */
     #toast {
       position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: var(--charcoal); color: white; padding: 0.7rem 1.4rem;
@@ -459,7 +459,7 @@
       font-weight: 600; color: var(--charcoal); flex: 1;
     }
 
-    /* â”€â”€ Thread conversation panel â”€â”€ */
+    /* ── Thread conversation panel ── */
     #panel-thread .messages-area {
       flex: 1; overflow-y: auto; padding: 1rem 1.2rem;
       display: flex; flex-direction: column; gap: 0.5rem;
@@ -502,7 +502,7 @@
     .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .chat-send-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
 
-    /* â”€â”€ Create Post Panel â”€â”€ */
+    /* ── Create Post Panel ── */
     #panel-create.slide-up {
       top: auto; height: 85%; border-radius: 20px 20px 0 0; overflow: hidden;
     }
@@ -523,7 +523,7 @@
     }
     .post-type-chip.active { background: var(--saffron); border-color: var(--saffron); color: white; }
 
-    /* â”€â”€ Post Detail Panel â”€â”€ */
+    /* ── Post Detail Panel ── */
     #panel-post .post-comments { padding: 1rem 1.2rem; }
     .comment-item {
       display: flex; gap: 0.6rem; margin-bottom: 0.8rem;
@@ -545,7 +545,7 @@
     }
     .comment-input-bar input:focus { border-color: var(--saffron); }
 
-    /* â”€â”€ Discover People Modal â”€â”€ */
+    /* ── Discover People Modal ── */
     #panel-discover-people .panel-content {
       flex: 1; overflow-y: auto; padding-bottom: 1rem;
     }
@@ -1070,7 +1070,7 @@
       position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
       z-index: 30; display: flex; flex-direction: column; align-items: center;
     }
-    /* Override original .fab absolute positioning â€” fab-wrap owns it now */
+    /* Override original .fab absolute positioning — fab-wrap owns it now */
     .fab { position: static; bottom: auto; left: auto; transform: none; z-index: auto; }
     .fab:hover { background: var(--saffron-dark); transform: scale(1.05); }
     .fab.open { background: var(--charcoal); }
@@ -1333,7 +1333,7 @@
       </div>
       <div class="input-group">
         <label>Password</label>
-        <input type="password" id="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+        <input type="password" id="password" placeholder="••••••••" required>
       </div>
       <button type="submit" class="btn-primary" style="width:100%;margin-top:0.5rem;" id="authBtn">
         <span id="authBtnText">Sign In</span>
@@ -1374,7 +1374,7 @@
         <div class="ob-chip" data-val="MULTIPLE"  onclick="obChipToggle(this,false)">Multiple</div>
         <div class="ob-chip" data-val="OTHER"     onclick="obChipToggle(this,false)">Other / Exploring</div>
       </div>
-      <div class="ob-section-label">I am aâ€¦</div>
+      <div class="ob-section-label">I am a…</div>
       <div class="ob-chips" id="ob-roles">
         <div class="ob-chip active" data-val="PRACTITIONER" onclick="obChipToggle(this,true)">Practitioner</div>
         <div class="ob-chip" data-val="BHIKKHU"      onclick="obChipToggle(this,true)">Bhikkhu</div>
@@ -1386,7 +1386,7 @@
     <!-- Step 2: Location -->
     <div id="ob-step-2" class="ob-step">
       <h2 class="ob-title">Where Are You?</h2>
-      <p class="ob-subtitle">Only your city is ever shown â€” never your exact address. This helps you find practitioners near you.</p>
+      <p class="ob-subtitle">Only your city is ever shown — never your exact address. This helps you find practitioners near you.</p>
       <div class="input-group" style="margin-top:1.2rem;">
         <label>City</label>
         <input type="text" id="ob-city" placeholder="e.g. Mumbai, Colombo, Bangkok">
@@ -1394,7 +1394,7 @@
       <div class="input-group">
         <label>Country</label>
         <select id="ob-country">
-          <option value="">â€” Select country â€”</option>
+          <option value="">— Select country —</option>
           <option value="IN">India</option>
           <option value="LK">Sri Lanka</option>
           <option value="TH">Thailand</option>
@@ -1583,7 +1583,7 @@
         </div>
         <div class="search-bar" style="margin: 0 1rem 0.5rem;">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groupsâ€¦" oninput="debounceComm()">
+          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groups…" oninput="debounceComm()">
         </div>
         <div class="category-scroll" id="commFilters">
           <span class="category-chip active" id="comm-all" onclick="filterComm(null,this)">All</span>
@@ -1608,21 +1608,21 @@
 
         <div class="follow-segment">
           <button class="follow-seg-btn active" id="seg-followers" onclick="switchFollowSeg('followers')">
-            Connected Members <span class="follow-count-badge" id="fc-followers">â€“</span>
+            Connected Members <span class="follow-count-badge" id="fc-followers">–</span>
           </button>
           <button class="follow-seg-btn" id="seg-following" onclick="switchFollowSeg('following')">
-            Connections <span class="follow-count-badge" id="fc-following">â€“</span>
+            Connections <span class="follow-count-badge" id="fc-following">–</span>
           </button>
         </div>
 
         <div class="follow-search">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="search" id="followSearchInput" placeholder="Search by name, locationâ€¦" oninput="renderFollowList()">
+          <input type="search" id="followSearchInput" placeholder="Search by name, location…" oninput="renderFollowList()">
         </div>
 
         <div class="follow-sort">
           <div class="follow-sort-chip active" id="fsort-recent" onclick="setFollowSort('recent',this)">Recent</div>
-          <div class="follow-sort-chip" id="fsort-az" onclick="setFollowSort('az',this)">A â€“ Z</div>
+          <div class="follow-sort-chip" id="fsort-az" onclick="setFollowSort('az',this)">A – Z</div>
           <div class="follow-sort-chip" id="fsort-mutual" onclick="setFollowSort('mutual',this)">Mutual</div>
         </div>
 
@@ -1672,11 +1672,11 @@
           <span class="fab-dial-label">Community</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Sessions â€” coming soon');closeFab()" title="Session">ðŸŽ“</button>
+          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">ðŸŽ“</button>
           <span class="fab-dial-label">Session</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Questions â€” coming soon');closeFab()" title="Question">â“</button>
+          <button class="fab-dial-btn" onclick="showToast('Questions — coming soon');closeFab()" title="Question">â“</button>
           <span class="fab-dial-label">Question</span>
         </li>
       </ul>
@@ -1685,7 +1685,7 @@
       </button>
     </div>
 
-    <!-- â”€â”€ PANEL: CREATE POST â”€â”€ -->
+    <!-- ── PANEL: CREATE POST ── -->
     <div id="panel-create" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create')">
@@ -1706,7 +1706,7 @@
         <div class="input-group" style="margin-top:1rem;">
           <label>Tradition Tag (optional)</label>
           <select id="postTradition">
-            <option value="">â€” none â€”</option>
+            <option value="">— none —</option>
             <option value="THERAVADA">Theravada</option>
             <option value="MAHAYANA">Mahayana</option>
             <option value="VAJRAYANA">Vajrayana</option>
@@ -1718,7 +1718,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: POST DETAIL â”€â”€ -->
+    <!-- ── PANEL: POST DETAIL ── -->
     <div id="panel-post" class="panel">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-post')">
@@ -1739,7 +1739,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: THREAD (Chat Conversation) â”€â”€ -->
+    <!-- ── PANEL: THREAD (Chat Conversation) ── -->
     <div id="panel-thread" class="panel">
       <div class="panel-header">
         <div class="panel-back" onclick="closeThread()">
@@ -1763,7 +1763,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: TEXT READER â”€â”€ -->
+    <!-- ── PANEL: TEXT READER ── -->
     <div id="panel-reader" class="panel reader-theme-sepia reader-size-md">
       <div class="reader-progress-bar"><div class="reader-progress-fill" id="reader-progress"></div></div>
       <header class="reader-header" id="reader-header">
@@ -1801,7 +1801,7 @@
       <!-- Annotation sheet -->
       <div class="reader-annotate-sheet" id="reader-annotate-sheet">
         <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--reader-text);margin-bottom:0.6rem;opacity:0.7;">Personal note</div>
-        <textarea id="reader-annotate-input" placeholder="Write a reflection on this passageâ€¦" rows="3"></textarea>
+        <textarea id="reader-annotate-input" placeholder="Write a reflection on this passage…" rows="3"></textarea>
         <div class="reader-annotate-actions">
           <button class="btn-ghost" style="font-size:0.8rem;padding:0.4rem 0.8rem;" onclick="closeAnnotateSheet()">Cancel</button>
           <button class="btn-primary" style="font-size:0.8rem;padding:0.4rem 0.9rem;" onclick="submitAnnotation()">Save</button>
@@ -1809,7 +1809,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: USER PROFILE â”€â”€ -->
+    <!-- ── PANEL: USER PROFILE ── -->
     <div id="panel-profile" class="panel">
       <!-- Hero / cover -->
       <div class="profile-hero">
@@ -1890,7 +1890,7 @@
             <div class="input-group">
               <label>Country</label>
               <select id="edit-country">
-                <option value="">â€”</option>
+                <option value="">—</option>
                 <option value="IN">India</option><option value="LK">Sri Lanka</option>
                 <option value="TH">Thailand</option><option value="MM">Myanmar</option>
                 <option value="NP">Nepal</option><option value="JP">Japan</option>
@@ -1937,7 +1937,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: CREATE EVENT â”€â”€ -->
+    <!-- ── PANEL: CREATE EVENT ── -->
     <div id="panel-create-event" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create-event')">
@@ -1990,15 +1990,15 @@
             <label for="ce-online-toggle">Online event</label>
           </div>
           <div id="ce-location-fields">
-            <input type="text" id="ce-location" placeholder="Location name (temple, hall, cityâ€¦)" maxlength="200">
+            <input type="text" id="ce-location" placeholder="Location name (temple, hall, city…)" maxlength="200">
           </div>
           <div id="ce-online-fields" style="display:none; margin-top:0.5rem;">
-            <input type="url" id="ce-url" placeholder="https://zoom.us/j/â€¦">
+            <input type="url" id="ce-url" placeholder="https://zoom.us/j/…">
           </div>
         </div>
         <div class="input-group">
           <label>Description</label>
-          <textarea id="ce-desc" placeholder="Tell people what to expectâ€¦" rows="3" maxlength="3000"></textarea>
+          <textarea id="ce-desc" placeholder="Tell people what to expect…" rows="3" maxlength="3000"></textarea>
         </div>
         <div class="input-group">
           <label>Capacity <span style="font-weight:400;opacity:0.6;">(0 = unlimited)</span></label>
@@ -2011,7 +2011,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: CREATE GROUP â”€â”€ -->
+    <!-- ── PANEL: CREATE GROUP ── -->
     <div id="panel-create-comm" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create-comm')">
@@ -2052,7 +2052,7 @@
           <div>
             <label>Country *</label>
             <select id="cg-country">
-              <option value="">Selectâ€¦</option>
+              <option value="">Select…</option>
               <option value="IN">India</option><option value="LK">Sri Lanka</option>
               <option value="TH">Thailand</option><option value="MM">Myanmar</option>
               <option value="KH">Cambodia</option><option value="VN">Vietnam</option>
@@ -2076,7 +2076,7 @@
         </div>
         <div class="input-group">
           <label>Website</label>
-          <input type="url" id="cg-website" placeholder="https://â€¦">
+          <input type="url" id="cg-website" placeholder="https://…">
         </div>
         <button class="btn-primary" style="width:100%;margin-top:0.5rem;" id="cg-submit-btn" onclick="submitCreateComm()">
           <span id="cg-submit-text">Create Group</span>
@@ -2085,14 +2085,14 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: COMMUNITY DETAIL â”€â”€ -->
+    <!-- ── PANEL: COMMUNITY DETAIL ── -->
     <div id="panel-comm-detail" class="panel">
       <div class="comm-detail-header">
         <div class="panel-back" onclick="closePanel('panel-comm-detail')" style="position:absolute;top:1rem;left:1rem;">
           <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2;"><polyline points="15 18 9 12 15 6"/></svg>
         </div>
         <div class="comm-detail-icon" id="cd-icon">S</div>
-        <div class="comm-detail-name" id="cd-name">Loadingâ€¦</div>
+        <div class="comm-detail-name" id="cd-name">Loading…</div>
         <div class="comm-detail-meta" id="cd-meta"></div>
       </div>
       <div class="comm-detail-body">
@@ -2112,7 +2112,7 @@
       </div>
     </div>
 
-    <!-- â”€â”€ PANEL: DHAMMA DAAN â”€â”€ -->
+    <!-- ── PANEL: DHAMMA DAAN ── -->
     <div id="panel-dhamma-daan" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-dhamma-daan')">
@@ -2167,7 +2167,7 @@
             <div class="daan-split-half">
               <div class="daan-split-pct">50%</div>
               <div class="daan-split-label">Platform Fund</div>
-              <div class="daan-split-desc">Servers, security, development â€” keeps Sangham free</div>
+              <div class="daan-split-desc">Servers, security, development — keeps Sangham free</div>
             </div>
             <div class="daan-split-divider"></div>
             <div class="daan-split-half">
@@ -2176,13 +2176,13 @@
               <div class="daan-split-desc">Translation, education, student support, community service</div>
             </div>
           </div>
-          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable â€” enforced at the transaction level.</p>
+          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable — enforced at the transaction level.</p>
         </div>
 
         <!-- CTA -->
         <button class="daan-cta" id="daanCtaBtn" onclick="initiateDaanPayment()">
           <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span id="daanCtaText">Offer Daan â€” â‚¹108</span>
+          <span id="daanCtaText">Offer Daan — â‚¹108</span>
         </button>
 
         <!-- Contributor Benefits -->
@@ -2225,10 +2225,10 @@
         <div class="daan-section">
           <div class="daan-section-title">Dhamma Daan Dashboard</div>
           <div class="daan-stat-grid" id="daanStatGrid">
-            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Total Collected</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Dhamma Fund</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Fund Deployed</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Contributors</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Total Collected</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Dhamma Fund</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Fund Deployed</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Contributors</div></div>
           </div>
         </div>
 
@@ -2692,7 +2692,7 @@ function onDaanCustomInput(input) {
 function updateDaanCta() {
   const rupees = Math.round(daanState.selectedPaise / 100);
   const text = document.getElementById('daanCtaText');
-  if (text) text.textContent = `Offer Daan â€” â‚¹${rupees.toLocaleString('en-IN')}`;
+  if (text) text.textContent = `Offer Daan — â‚¹${rupees.toLocaleString('en-IN')}`;
 }
 
 async function initiateDaanPayment() {
@@ -2733,7 +2733,7 @@ async function initiateDaanPayment() {
               saveSession();
             }
             document.getElementById('daan-contributor-banner').style.display = 'block';
-            showToast('Dhamma Daan received â€” thank you!', 'success');
+            showToast('Dhamma Daan received — thank you!', 'success');
             loadDaanDashboard();
             // Refresh profile tab if open
             if (document.getElementById('tab-profile').classList.contains('active')) loadProfileTab();
@@ -2781,7 +2781,7 @@ async function loadDaanDashboard() {
         <div class="daan-alloc-meta">â‚¹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' Â· ' + escHtml(a.beneficiary) : ''}</div>
         ${a.impactReport ? `<div style="font-size:0.78rem;color:var(--stone);margin-top:0.35rem;line-height:1.4;">${escHtml(a.impactReport)}</div>` : ''}
       </div>`).join('');
-  } catch(e) { /* silent â€” dashboard is informational */ }
+  } catch(e) { /* silent — dashboard is informational */ }
 }
 
 function renderPostCard(post, full) {
@@ -3318,7 +3318,7 @@ async function submitAnnotation() {
 }
 
 // ============================================================
-//  CHAT TAB â€” THREAD LIST
+//  CHAT TAB — THREAD LIST
 // ============================================================
 async function loadChatThreads() {
   const el = document.getElementById('chatThreads');
@@ -3376,7 +3376,7 @@ async function loadChatUnreadCount() {
 }
 
 // ============================================================
-//  CHAT â€” THREAD DETAIL
+//  CHAT — THREAD DETAIL
 // ============================================================
 async function openThread(partnerId, partnerName) {
   state.currentPartnerId   = partnerId;
@@ -3755,7 +3755,7 @@ async function handleAvatarUpload(input) {
   if (!file) return;
   const status = document.getElementById('edit-photo-status');
   const preview = document.getElementById('edit-avatar-preview');
-  status.textContent = 'Uploadingâ€¦';
+  status.textContent = 'Uploading…';
   try {
     const form = new FormData();
     form.append('file', file);
@@ -4073,11 +4073,11 @@ function renderCommCard(c) {
 }
 
 function openCommDetail(id) {
-  showToast('Full community page â€” coming soon');
+  showToast('Full community page — coming soon');
 }
 
 // ============================================================
-//  EVENTS â€” GPS + TRADITION FILTER
+//  EVENTS — GPS + TRADITION FILTER
 // ============================================================
 let eventsNearMe = false;
 let eventsNearMeCoords = null;
@@ -4216,7 +4216,7 @@ async function submitCreateEvent() {
 
   const btn = document.getElementById('ce-submit-btn');
   const txt = document.getElementById('ce-submit-text');
-  btn.disabled = true; txt.textContent = 'Publishingâ€¦';
+  btn.disabled = true; txt.textContent = 'Publishing…';
   try {
     await api('POST', '/events', body);
     showToast('Event published!', 'success');
@@ -4234,7 +4234,7 @@ async function submitCreateEvent() {
 }
 
 // ============================================================
-//  COMMUNITIES â€” COUNTRY FILTER
+//  COMMUNITIES — COUNTRY FILTER
 // ============================================================
 let commCountryFilter = null;
 
@@ -4326,7 +4326,7 @@ async function submitCreateComm() {
 
   const btn = document.getElementById('cg-submit-btn');
   const txt = document.getElementById('cg-submit-text');
-  btn.disabled = true; txt.textContent = 'Creatingâ€¦';
+  btn.disabled = true; txt.textContent = 'Creating…';
   try {
     const result = await api('POST', '/associations', body);
     showToast('Group created! You are now the president.', 'success');
@@ -4347,9 +4347,9 @@ let commDetailState = { id: null, isMember: false };
 
 async function openCommDetail(id) {
   commDetailState.id = id;
-  document.getElementById('cd-name').textContent = 'Loadingâ€¦';
+  document.getElementById('cd-name').textContent = 'Loading…';
   document.getElementById('cd-meta').textContent = '';
-  document.getElementById('cd-icon').textContent = 'â€¦';
+  document.getElementById('cd-icon').textContent = '…';
   document.getElementById('cd-members').innerHTML = '';
   document.getElementById('cd-events').innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:0.5rem auto;"></div>';
   openPanel('panel-comm-detail');
