@@ -27,8 +27,9 @@ export async function syncSuttaCentral(): Promise<void> {
 
   // Ensure the Tipitaka collection exists
   const collection = await prisma.libraryCollection.upsert({
-    where: { id: 'suttacentral-tipitaka' } as any,
+    where: { slug: 'suttacentral-tipitaka' },
     create: {
+      slug: 'suttacentral-tipitaka',
       name: 'Tipitaka (Pali Canon)',
       tradition: 'THERAVADA',
       description: 'Early Buddhist texts — Dīgha, Majjhima, Saṁyutta, Aṅguttara Nikāyas and Vinaya.',
@@ -57,7 +58,7 @@ export async function syncSuttaCentral(): Promise<void> {
       const externalId = file.name.replace('.json', '').split('_')[0];
 
       const text = await prisma.libraryText.upsert({
-        where: { id: `sc-${externalId}-en` } as any,
+        where: { externalId },
         create: {
           collectionId: collection.id,
           externalId,

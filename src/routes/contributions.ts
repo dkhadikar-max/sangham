@@ -9,25 +9,6 @@ import { AppError } from '../middleware/errorHandler';
 
 const router = Router();
 
-// GET /contributions/:userId — view contribution score
-router.get('/:userId', async (req: AuthRequest, res: Response): Promise<void> => {
-  const score = await prisma.contributionScore.findUnique({
-    where: { userId: req.params.userId },
-    select: {
-      eventsHosted: true,
-      volunteerContributions: true,
-      communitiesCreated: true,
-      helpfulAnswers: true,
-      translationContributions: true,
-      libraryAnnotations: true,
-      sessionsHosted: true,
-      totalScore: true,
-    },
-  });
-  if (!score) { res.json({ totalScore: 0, message: 'No contributions yet' }); return; }
-  res.json(score);
-});
-
 // GET /contributions/leaderboard — top contributors
 router.get('/leaderboard', async (_req: AuthRequest, res: Response): Promise<void> => {
   const leaders = await prisma.contributionScore.findMany({
@@ -55,6 +36,25 @@ router.post('/mark-helpful/:postId', authenticate, async (req: AuthRequest, res:
     update: { helpfulAnswers: { increment: 1 }, totalScore: { increment: 1 } },
   });
   res.json({ message: 'Marked as helpful' });
+});
+
+// GET /contributions/:userId — view contribution score
+router.get('/:userId', async (req: AuthRequest, res: Response): Promise<void> => {
+  const score = await prisma.contributionScore.findUnique({
+    where: { userId: req.params.userId },
+    select: {
+      eventsHosted: true,
+      volunteerContributions: true,
+      communitiesCreated: true,
+      helpfulAnswers: true,
+      translationContributions: true,
+      libraryAnnotations: true,
+      sessionsHosted: true,
+      totalScore: true,
+    },
+  });
+  if (!score) { res.json({ totalScore: 0, message: 'No contributions yet' }); return; }
+  res.json(score);
 });
 
 export default router;

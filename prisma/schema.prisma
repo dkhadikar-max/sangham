@@ -122,6 +122,7 @@ model User {
   isVerifiedClergy  Boolean    @default(false) @map("is_verified_clergy")
   languages         String[]   // ISO 639-1 codes
   templeAffiliation String?    @map("temple_affiliation")
+  passwordHash      String?    @map("password_hash")
   isActive          Boolean    @default(true) @map("is_active")
   createdAt         DateTime   @default(now()) @map("created_at")
   updatedAt         DateTime   @updatedAt @map("updated_at")
@@ -247,6 +248,7 @@ model Like {
 
 model LibraryCollection {
   id          String         @id @default(uuid())
+  slug        String         @unique // stable external key, e.g. "suttacentral-tipitaka"
   name        String         // e.g., "Tipitaka", "BAWS", "Dhammapada"
   tradition   Tradition
   description String?        @db.Text
@@ -262,7 +264,7 @@ model LibraryCollection {
 model LibraryText {
   id           String             @id @default(uuid())
   collectionId String             @map("collection_id")
-  externalId   String?            @map("external_id") // e.g., "mn1" from SuttaCentral
+  externalId   String?            @unique @map("external_id") // e.g., "mn1" from SuttaCentral
   title        String
   author       String?
   translator   String?
