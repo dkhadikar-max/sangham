@@ -1057,6 +1057,27 @@
       display: flex; align-items: center; gap: 0.3rem;
     }
     .comm-meta { font-size: 0.73rem; color: var(--stone); line-height: 1.5; }
+    /* Communities rebuild */
+    .comm-header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.2rem 0.2rem; }
+    .comm-header-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:700; color:var(--charcoal); }
+    .comm-header-tagline { font-size:0.76rem; color:var(--stone); padding:0 1.2rem 0.75rem; line-height:1.5; }
+    .comm-stats-row { display:flex; border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin:0 0 0.7rem; }
+    .comm-stat { flex:1; text-align:center; padding:0.55rem 0.4rem; border-right:1px solid var(--border); }
+    .comm-stat:last-child { border-right:none; }
+    .comm-stat-n { display:block; font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:700; color:var(--charcoal); line-height:1.2; }
+    .comm-stat-l { display:block; font-size:0.6rem; color:var(--stone-light); margin-top:1px; line-height:1.3; }
+    .comm-featured-label { font-size:0.68rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--stone-light); padding:0.5rem 1.2rem 0.35rem; }
+    .comm-card-top { display:flex; align-items:flex-start; gap:0.85rem; }
+    .comm-card-join { flex-shrink:0; padding:0.28rem 0.8rem; font-size:0.73rem; font-weight:600; background:var(--saffron); color:white; border:none; border-radius:20px; cursor:pointer; font-family:inherit; }
+    .comm-card-join.leave { background:transparent; color:var(--stone); border:1.5px solid var(--border-solid); }
+    .comm-card-signals { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.55rem; padding-left:calc(44px + 0.85rem); }
+    .comm-signal { font-size:0.65rem; padding:0.16rem 0.5rem; border-radius:20px; background:var(--rice-paper); color:var(--stone); border:1px solid var(--border); }
+    .comm-signal.active-signal { background:rgba(34,197,94,0.08); color:#16a34a; border-color:rgba(34,197,94,0.3); }
+    .comm-signal.event-signal { background:rgba(212,168,67,0.1); color:var(--saffron-dark); border-color:rgba(212,168,67,0.3); }
+    .comm-trust-badge { font-size:0.62rem; color:var(--saffron-dark); font-weight:600; display:inline-block; margin-top:2px; }
+    .comm-empty-cta { text-align:center; padding:1.5rem 1.2rem; }
+    .comm-empty-cta p { font-size:0.85rem; color:var(--stone); margin:0 0 1rem; line-height:1.6; }
+    .comm-empty-cta button { background:var(--saffron); color:white; border:none; border-radius:22px; padding:0.55rem 1.4rem; font-size:0.85rem; font-weight:600; cursor:pointer; font-family:inherit; }
 
     /* =========================================
        13. FOLLOW TAB
@@ -1946,25 +1967,35 @@
 
       <!-- COMMUNITIES TAB -->
       <div id="tab-communities" class="tab-panel">
-        <div class="tab-header-row">
-          <div class="section-title">Communities</div>
+        <div class="comm-header">
+          <div class="comm-header-title">Explore Communities</div>
           <button class="btn-create" onclick="openCreateComm()">
             <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Create
           </button>
         </div>
+        <div class="comm-header-tagline">Learn together. Build together. Contribute together.</div>
+        <div class="comm-stats-row">
+          <div class="comm-stat"><span class="comm-stat-n" id="cstat-nearby">–</span><span class="comm-stat-l">In Your Country</span></div>
+          <div class="comm-stat"><span class="comm-stat-n" id="cstat-active">–</span><span class="comm-stat-l">Active This Week</span></div>
+          <div class="comm-stat"><span class="comm-stat-n" id="cstat-total">–</span><span class="comm-stat-l">Total Communities</span></div>
+        </div>
         <div class="search-bar" style="margin: 0 1rem 0.5rem;">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groups…" oninput="debounceComm()">
+          <input type="text" id="commSearch" placeholder="Find communities, study circles, organizations, and local groups" oninput="debounceComm()">
         </div>
         <div class="category-scroll" id="commFilters">
-          <span class="category-chip active" id="comm-all" onclick="filterComm(null,this)">All</span>
-          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">📍 My Country</span>
-          <span class="category-chip" onclick="filterComm('TEMPLE',this)">Temples</span>
-          <span class="category-chip" onclick="filterComm('NGO',this)">NGOs</span>
-          <span class="category-chip" onclick="filterComm('STUDY_GROUP',this)">Study Groups</span>
-          <span class="category-chip" onclick="filterComm('AMBEDKARITE_SANGHA',this)">Ambedkarite</span>
-          <span class="category-chip" onclick="filterComm('UNIVERSITY_CLUB',this)">University</span>
+          <span class="category-chip active" id="comm-all" onclick="filterComm('all',this)">All</span>
+          <span class="category-chip" onclick="filterComm('local',this)">📍 Local</span>
+          <span class="category-chip" onclick="filterComm('learning',this)">📖 Learning</span>
+          <span class="category-chip" onclick="filterComm('service',this)">🤝 Service</span>
+          <span class="category-chip" onclick="filterComm('students',this)">🎓 Students</span>
+          <span class="category-chip" onclick="filterComm('professionals',this)">💼 Professionals</span>
+          <span class="category-chip" onclick="filterComm('organizations',this)">🏛️ Organizations</span>
+        </div>
+        <div id="comm-featured">
+          <div class="comm-featured-label">Featured Communities</div>
+          <div id="comm-featured-list"></div>
         </div>
         <div id="commList"></div>
         <div style="height:1rem;"></div>
@@ -2390,30 +2421,30 @@
       </div>
     </div>
 
-    <!-- ── PANEL: CREATE GROUP ── -->
+    <!-- ── PANEL: CREATE COMMUNITY ── -->
     <div id="panel-create-comm" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create-comm')">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </div>
-        <div class="panel-title">Create Group</div>
+        <div class="panel-title">Create Community</div>
         <div style="width:32px;"></div>
       </div>
       <div class="create-form">
         <div class="input-group">
-          <label>Group Name *</label>
+          <label>Community Name *</label>
           <input type="text" id="cg-name" placeholder="e.g. Mumbai Vipassana Sangha" maxlength="200">
         </div>
         <div class="input-group">
           <label>Category *</label>
           <div class="create-chips" id="cg-cat-chips">
-            <div class="create-chip active" data-val="STUDY_GROUP" onclick="ceChip(this,'cat',true)">Study Group</div>
-            <div class="create-chip" data-val="TEMPLE" onclick="ceChip(this,'cat',true)">Temple / Vihara</div>
-            <div class="create-chip" data-val="NGO" onclick="ceChip(this,'cat',true)">NGO</div>
+            <div class="create-chip active" data-val="STUDY_GROUP" onclick="ceChip(this,'cat',true)">Learning Circle</div>
+            <div class="create-chip" data-val="NGO" onclick="ceChip(this,'cat',true)">Service / NGO</div>
+            <div class="create-chip" data-val="UNIVERSITY_CLUB" onclick="ceChip(this,'cat',true)">Student Group</div>
             <div class="create-chip" data-val="AMBEDKARITE_SANGHA" onclick="ceChip(this,'cat',true)">Ambedkarite Sangha</div>
-            <div class="create-chip" data-val="UNIVERSITY_CLUB" onclick="ceChip(this,'cat',true)">University Club</div>
+            <div class="create-chip" data-val="TEMPLE" onclick="ceChip(this,'cat',true)">Vihara / Temple</div>
             <div class="create-chip" data-val="NATIONAL_FEDERATION" onclick="ceChip(this,'cat',true)">Federation</div>
-            <div class="create-chip" data-val="INTERNATIONAL_BODY" onclick="ceChip(this,'cat',true)">International</div>
+            <div class="create-chip" data-val="INTERNATIONAL_BODY" onclick="ceChip(this,'cat',true)">International Body</div>
           </div>
         </div>
         <div class="input-group">
@@ -2425,6 +2456,14 @@
             <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'gtrad',true)">Navayāna</div>
             <div class="create-chip" data-val="MULTIPLE" onclick="ceChip(this,'gtrad',true)">Multiple</div>
             <div class="create-chip" data-val="OTHER" onclick="ceChip(this,'gtrad',true)">Other</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Visibility</label>
+          <div class="create-chips" id="cg-vis-chips">
+            <div class="create-chip active" data-val="PUBLIC" onclick="ceChip(this,'vis',true)">Public</div>
+            <div class="create-chip" data-val="PRIVATE" onclick="ceChip(this,'vis',true)">Private</div>
+            <div class="create-chip" data-val="INVITE_ONLY" onclick="ceChip(this,'vis',true)">Invite Only</div>
           </div>
         </div>
         <div class="date-row input-group">
@@ -2450,15 +2489,19 @@
           </div>
         </div>
         <div class="input-group">
+          <label>Purpose *</label>
+          <input type="text" id="cg-purpose" placeholder="One line: what does this community do?" maxlength="200">
+        </div>
+        <div class="input-group">
           <label>Description</label>
-          <textarea id="cg-desc" placeholder="What is this group about?" rows="3" maxlength="3000"></textarea>
+          <textarea id="cg-desc" placeholder="More details about this community…" rows="3" maxlength="3000"></textarea>
         </div>
         <div class="input-group">
           <label>Website</label>
           <input type="url" id="cg-website" placeholder="https://…">
         </div>
         <button class="btn-primary" style="width:100%;margin-top:0.5rem;" id="cg-submit-btn" onclick="submitCreateComm()">
-          <span id="cg-submit-text">Create Group</span>
+          <span id="cg-submit-text">Create Community</span>
         </button>
         <div style="height:1.5rem;"></div>
       </div>
@@ -2475,7 +2518,8 @@
         <div class="comm-detail-meta" id="cd-meta"></div>
       </div>
       <div class="comm-detail-body">
-        <button class="comm-join-btn join" id="cd-join-btn" onclick="toggleCommMembership()">Join Group</button>
+        <button class="comm-join-btn join" id="cd-join-btn" onclick="toggleCommMembership()">Join Community</button>
+        <div id="cd-trust-badges" style="display:none;margin:0 0 1rem;display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
         <div class="comm-detail-section" id="cd-desc-section" style="display:none;">
           <div class="comm-detail-section-title">About</div>
           <p id="cd-desc" style="font-size:0.88rem;color:var(--charcoal);line-height:1.6;margin:0;"></p>
@@ -2882,7 +2926,7 @@ function switchTab(tab) {
   if (tab === 'learn')       loadLearn();
   if (tab === 'chat')        loadChatThreads();
   if (tab === 'events')      loadEvents();
-  if (tab === 'communities') loadCommunities();
+  if (tab === 'communities') { loadCommStats(); loadCommFeatured(); loadCommunities(); }
   if (tab === 'profile')     loadProfileTab();
 }
 
@@ -4526,7 +4570,7 @@ function toggleEventCard(card) {
 // ============================================================
 //  COMMUNITIES TAB
 // ============================================================
-let commFilter = null;
+let commFilter = 'all';
 let commTimer  = null;
 
 function debounceComm() {
@@ -4534,27 +4578,164 @@ function debounceComm() {
   commTimer = setTimeout(loadCommunities, 400);
 }
 
-function renderCommCard(c) {
-  const catLabel = {
-    TEMPLE:'Temple', NGO:'NGO', STUDY_GROUP:'Study Group',
-    AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'University Club',
-    NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International',
-  }[c.category] || c.category;
-  const trad = c.tradition
-    ? c.tradition.charAt(0) + c.tradition.slice(1).toLowerCase() : '';
+const COMM_CAT_LABEL = {
+  TEMPLE:'Vihara / Temple', NGO:'Service / NGO', STUDY_GROUP:'Learning Circle',
+  AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'Student Group',
+  NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International Body',
+};
+
+function renderCommCard(c, featured) {
+  const catLabel = COMM_CAT_LABEL[c.category] || c.category;
+  const trad = c.tradition ? c.tradition.charAt(0) + c.tradition.slice(1).toLowerCase() : '';
   const memberCount = c._count?.members || 0;
-  const verified = c.isVerified
-    ? '<span class="clergy-badge" title="Verified" style="width:13px;height:13px;flex-shrink:0;"></span>' : '';
   const loc = [c.city, c.country].filter(Boolean).join(', ');
+  const verified = c.isVerified ? '<span class="comm-trust-badge">✓ Verified</span>' : '';
+
+  // Activity signals
+  const signals = [];
+  if (memberCount >= 10) signals.push(`<span class="comm-signal active-signal">Active</span>`);
+  signals.push(`<span class="comm-signal">${memberCount} member${memberCount !== 1 ? 's' : ''}</span>`);
+  const nextEvent = c.events && c.events[0];
+  if (nextEvent) {
+    const d = new Date(nextEvent.startsAt);
+    const ds = d.toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+    signals.push(`<span class="comm-signal event-signal">📅 ${ds}</span>`);
+  }
+
   return `
-    <div class="comm-card" onclick="openCommDetail('${c.id}')">
-      <div class="comm-icon">${escHtml((c.name||'?').charAt(0))}</div>
-      <div class="comm-info">
-        <div class="comm-name">${verified}${escHtml(c.name)}</div>
-        <div class="comm-meta">${catLabel}${trad ? ' · ' + trad : ''}${loc ? ' · ' + loc : ''}</div>
-        <div class="comm-meta">${memberCount} member${memberCount !== 1 ? 's' : ''}</div>
+    <div class="comm-card${featured ? ' comm-card-featured' : ''}" onclick="openCommDetail('${c.id}')">
+      <div class="comm-card-top">
+        <div class="comm-icon">${escHtml((c.name||'?').charAt(0))}</div>
+        <div class="comm-info" style="flex:1;min-width:0;">
+          <div class="comm-name">${escHtml(c.name)}</div>
+          <div class="comm-meta">${catLabel}${trad ? ' · ' + trad : ''}${loc ? ' · ' + loc : ''}</div>
+          ${verified}
+        </div>
+        <button class="comm-card-join" onclick="event.stopPropagation();quickJoinComm('${c.id}',this)">Join</button>
       </div>
+      <div class="comm-card-signals">${signals.join('')}</div>
     </div>`;
+}
+
+async function loadCommStats() {
+  try {
+    const [all, country] = await Promise.all([
+      api('GET', '/associations?limit=200'),
+      state.user?.country ? api('GET', '/associations?country=' + state.user.country) : Promise.resolve([]),
+    ]);
+    const allComms = Array.isArray(all) ? all : (all.data || []);
+    const countryComms = Array.isArray(country) ? country : (country.data || []);
+    const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+    el('cstat-nearby', countryComms.length || '–');
+    el('cstat-active', allComms.filter(c => (c._count?.members || 0) >= 5).length || '–');
+    el('cstat-total', allComms.length || '–');
+  } catch(_) {}
+}
+
+async function loadCommFeatured() {
+  const el = document.getElementById('comm-featured-list');
+  if (!el) return;
+  try {
+    const data = await api('GET', '/associations?limit=50');
+    const comms = (Array.isArray(data) ? data : (data.data || []))
+      .sort((a, b) => (b._count?.members || 0) - (a._count?.members || 0))
+      .slice(0, 4);
+    if (!comms.length) { document.getElementById('comm-featured').style.display = 'none'; return; }
+    document.getElementById('comm-featured').style.display = '';
+    el.innerHTML = comms.map(c => renderCommCard(c, true)).join('');
+  } catch(_) { document.getElementById('comm-featured').style.display = 'none'; }
+}
+
+async function fetchCommsByCategories(categories) {
+  const results = await Promise.all(
+    categories.map(cat => api('GET', '/associations?category=' + cat).catch(() => []))
+  );
+  const seen = new Set();
+  const merged = [];
+  for (const batch of results) {
+    const items = Array.isArray(batch) ? batch : (batch.data || []);
+    for (const item of items) {
+      if (!seen.has(item.id)) { seen.add(item.id); merged.push(item); }
+    }
+  }
+  return merged;
+}
+
+async function loadCommunities() {
+  const el = document.getElementById('commList');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    let comms = [];
+
+    if (commFilter === 'all' || !commFilter) {
+      const data = await api('GET', '/associations?limit=50');
+      comms = Array.isArray(data) ? data : (data.data || []);
+    } else if (commFilter === 'local') {
+      const country = state.user?.country;
+      if (!country) { showToast('Add your country in profile settings to see local communities', 'error'); el.innerHTML = ''; return; }
+      const data = await api('GET', '/associations?country=' + country);
+      comms = Array.isArray(data) ? data : (data.data || []);
+    } else if (commFilter === 'learning') {
+      comms = await fetchCommsByCategories(['STUDY_GROUP', 'UNIVERSITY_CLUB']);
+    } else if (commFilter === 'service') {
+      comms = await fetchCommsByCategories(['NGO', 'AMBEDKARITE_SANGHA']);
+    } else if (commFilter === 'students') {
+      const data = await api('GET', '/associations?category=UNIVERSITY_CLUB');
+      comms = Array.isArray(data) ? data : (data.data || []);
+    } else if (commFilter === 'professionals') {
+      const data = await api('GET', '/associations?limit=50');
+      comms = Array.isArray(data) ? data : (data.data || []);
+    } else if (commFilter === 'organizations') {
+      comms = await fetchCommsByCategories(['NATIONAL_FEDERATION', 'INTERNATIONAL_BODY', 'NGO']);
+    }
+
+    const q = document.getElementById('commSearch').value.trim().toLowerCase();
+    if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
+
+    if (!comms.length) {
+      el.innerHTML = `
+        <div class="comm-empty-cta">
+          <div style="font-size:2rem;margin-bottom:0.75rem;">🪷</div>
+          <p>No communities found here yet.<br>Be the first to build one for your Sangha.</p>
+          <button onclick="openCreateComm()">Create a Community</button>
+          <div style="margin-top:1rem;font-size:0.78rem;color:var(--stone-light);">
+            Or <a href="#" style="color:var(--saffron-dark);" onclick="filterComm('all',document.getElementById('comm-all'));return false;">browse all communities</a>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // Hide featured section when a filter is active or search is running
+    const featuredEl = document.getElementById('comm-featured');
+    if (featuredEl) featuredEl.style.display = (commFilter === 'all' && !q) ? '' : 'none';
+
+    el.innerHTML = comms.map(c => renderCommCard(c, false)).join('');
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
+  }
+}
+
+function filterComm(mode, chip) {
+  document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  commFilter = mode;
+  // Show/hide featured section
+  const featuredEl = document.getElementById('comm-featured');
+  if (featuredEl) featuredEl.style.display = (mode === 'all') ? '' : 'none';
+  loadCommunities();
+}
+
+async function quickJoinComm(id, btn) {
+  btn.disabled = true;
+  try {
+    await api('POST', `/associations/${id}/join`);
+    btn.textContent = 'Joined';
+    btn.className = 'comm-card-join leave';
+    showToast('Joined community!', 'success');
+  } catch(err) {
+    showToast(err.message, 'error');
+    btn.disabled = false;
+  }
 }
 
 // ============================================================
@@ -4664,7 +4845,7 @@ function toggleOnlineFields() {
 }
 
 function ceChip(chip, group, single) {
-  const groupMap = { type: 'ce-type-chips', trad: 'ce-trad-chips', cat: 'cg-cat-chips', gtrad: 'cg-trad-chips' };
+  const groupMap = { type: 'ce-type-chips', trad: 'ce-trad-chips', cat: 'cg-cat-chips', gtrad: 'cg-trad-chips', vis: 'cg-vis-chips' };
   if (single) document.querySelectorAll(`#${groupMap[group]} .create-chip`).forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
 }
@@ -4713,83 +4894,34 @@ async function submitCreateEvent() {
 }
 
 // ============================================================
-//  COMMUNITIES — COUNTRY FILTER
-// ============================================================
-let commCountryFilter = null;
-
-function filterCommNearMe(chip) {
-  if (commCountryFilter) {
-    // Toggle off
-    commCountryFilter = null;
-    chip.classList.remove('active');
-    document.getElementById('comm-all').classList.add('active');
-    loadCommunities();
-  } else {
-    // Use user's profile country
-    const country = state.user?.country;
-    if (!country) { showToast('Add your country in profile settings first', 'error'); return; }
-    commCountryFilter = country;
-    document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    commFilter = null; // reset category when using country filter
-    loadCommunities();
-  }
-}
-
-async function loadCommunities() {
-  const el = document.getElementById('commList');
-  el.innerHTML = '<div class="spinner"></div>';
-  try {
-    let qs = '';
-    const params = [];
-    if (commFilter)        params.push('category=' + commFilter);
-    if (commCountryFilter) params.push('country=' + commCountryFilter);
-    if (params.length) qs = '?' + params.join('&');
-    const data = await api('GET', '/associations' + qs);
-    let comms = Array.isArray(data) ? data : (data.data || []);
-    const q = document.getElementById('commSearch').value.trim().toLowerCase();
-    if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
-    if (!comms.length) {
-      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛️</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
-      return;
-    }
-    el.innerHTML = comms.map(renderCommCard).join('');
-  } catch(err) {
-    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
-  }
-}
-
-function filterComm(category, chip) {
-  document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
-  chip.classList.add('active');
-  commFilter = category;
-  commCountryFilter = null;
-  loadCommunities();
-}
-
-// ============================================================
-//  CREATE GROUP
+//  CREATE COMMUNITY
 // ============================================================
 function openCreateComm() {
   document.getElementById('cg-name').value = '';
+  document.getElementById('cg-purpose').value = '';
   document.getElementById('cg-desc').value = '';
   document.getElementById('cg-website').value = '';
   document.getElementById('cg-city').value = '';
   document.getElementById('cg-country').value = state.user?.country || '';
   document.querySelectorAll('#cg-cat-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
   document.querySelectorAll('#cg-trad-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
+  document.querySelectorAll('#cg-vis-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
   openPanel('panel-create-comm');
 }
 
 async function submitCreateComm() {
   const name = document.getElementById('cg-name').value.trim();
-  if (!name) { showToast('Please enter a group name', 'error'); return; }
+  if (!name) { showToast('Please enter a community name', 'error'); return; }
   const country = document.getElementById('cg-country').value;
   if (!country) { showToast('Please select a country', 'error'); return; }
+  const purpose = document.getElementById('cg-purpose').value.trim();
+  if (!purpose) { showToast('Please describe the community\'s purpose', 'error'); return; }
 
   const catChip  = document.querySelector('#cg-cat-chips .create-chip.active');
   const tradChip = document.querySelector('#cg-trad-chips .create-chip.active');
   const website  = document.getElementById('cg-website').value.trim();
+  const extraDesc = document.getElementById('cg-desc').value.trim();
+  const description = [purpose, extraDesc].filter(Boolean).join('\n\n') || undefined;
 
   const body = {
     name,
@@ -4797,7 +4929,7 @@ async function submitCreateComm() {
     city: document.getElementById('cg-city').value.trim() || undefined,
     category: catChip?.dataset.val || 'STUDY_GROUP',
     tradition: tradChip?.dataset.val || 'THERAVADA',
-    description: document.getElementById('cg-desc').value.trim() || undefined,
+    description,
     website: website || undefined,
   };
 
@@ -4806,14 +4938,14 @@ async function submitCreateComm() {
   btn.disabled = true; txt.textContent = 'Creating…';
   try {
     const result = await api('POST', '/associations', body);
-    showToast('Group created! You are now the president.', 'success');
+    showToast('Community created! You are now the organiser.', 'success');
     closePanel('panel-create-comm');
     loadCommunities();
     setTimeout(() => openCommDetail(result.id), 400);
   } catch(err) {
     showToast(err.message, 'error');
   } finally {
-    btn.disabled = false; txt.textContent = 'Create Group';
+    btn.disabled = false; txt.textContent = 'Create Community';
   }
 }
 
@@ -4829,6 +4961,8 @@ async function openCommDetail(id) {
   document.getElementById('cd-icon').textContent = '…';
   document.getElementById('cd-members').innerHTML = '';
   document.getElementById('cd-events').innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:0.5rem auto;"></div>';
+  const trustEl = document.getElementById('cd-trust-badges');
+  if (trustEl) { trustEl.innerHTML = ''; trustEl.style.display = 'none'; }
   openPanel('panel-comm-detail');
 
   try {
@@ -4842,14 +4976,20 @@ async function openCommDetail(id) {
     document.getElementById('cd-icon').textContent = (assoc.name || '?').charAt(0).toUpperCase();
     document.getElementById('cd-name').textContent = assoc.name;
 
-    const catLabel = {
-      TEMPLE:'Temple', NGO:'NGO', STUDY_GROUP:'Study Group',
-      AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'University Club',
-      NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International Body',
-    }[assoc.category] || assoc.category;
+    const catLabel = COMM_CAT_LABEL[assoc.category] || assoc.category;
     const trad = assoc.tradition ? assoc.tradition.charAt(0) + assoc.tradition.slice(1).toLowerCase() : '';
     const loc = [assoc.city, assoc.country].filter(Boolean).join(', ');
     document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' · ');
+
+    // Trust indicators
+    if (trustEl) {
+      const badges = [];
+      if (assoc.isVerified) badges.push('✓ Verified Organization');
+      if (badges.length) {
+        trustEl.innerHTML = badges.map(b => `<span class="comm-trust-badge">${b}</span>`).join('');
+        trustEl.style.display = 'flex';
+      }
+    }
 
     if (assoc.description) {
       document.getElementById('cd-desc').textContent = assoc.description;
@@ -4859,7 +4999,6 @@ async function openCommDetail(id) {
     const memberCount = assoc._count?.members || 0;
     document.getElementById('cd-member-count').textContent = `(${memberCount})`;
 
-    // Render member avatars
     const membersEl = document.getElementById('cd-members');
     const shown = (assoc.members || []).slice(0, 12);
     membersEl.innerHTML = shown.map(m => {
@@ -4867,11 +5006,10 @@ async function openCommDetail(id) {
       return `<div class="comm-member-avatar" title="${escHtml(m.user?.displayName || '')}" onclick="openProfile('${m.user?.id}')">${init}</div>`;
     }).join('') + (memberCount > 12 ? `<div class="comm-member-avatar" style="background:var(--stone-light);">+${memberCount - 12}</div>` : '');
 
-    // Render upcoming events
     const eventsEl = document.getElementById('cd-events');
     const upcoming = assoc.events || [];
     if (!upcoming.length) {
-      eventsEl.innerHTML = '<p style="font-size:0.82rem;color:var(--stone-light);margin:0;">No upcoming events.</p>';
+      eventsEl.innerHTML = '<p style="font-size:0.82rem;color:var(--stone-light);margin:0;">No upcoming events yet.</p>';
     } else {
       eventsEl.innerHTML = upcoming.map(ev => {
         const d = new Date(ev.startsAt);
@@ -4883,7 +5021,6 @@ async function openCommDetail(id) {
       }).join('');
     }
 
-    // Join/Leave button
     updateCommJoinBtn();
   } catch(err) {
     showToast('Could not load community', 'error');
@@ -4893,10 +5030,10 @@ async function openCommDetail(id) {
 function updateCommJoinBtn() {
   const btn = document.getElementById('cd-join-btn');
   if (commDetailState.isMember) {
-    btn.textContent = 'Leave Group';
+    btn.textContent = 'Leave Community';
     btn.className = 'comm-join-btn leave';
   } else {
-    btn.textContent = 'Join Group';
+    btn.textContent = 'Join Community';
     btn.className = 'comm-join-btn join';
   }
 }
@@ -4908,11 +5045,11 @@ async function toggleCommMembership() {
     if (commDetailState.isMember) {
       await api('DELETE', `/associations/${commDetailState.id}/leave`);
       commDetailState.isMember = false;
-      showToast('You have left the group');
+      showToast('You have left the community');
     } else {
       await api('POST', `/associations/${commDetailState.id}/join`);
       commDetailState.isMember = true;
-      showToast('You joined the group!', 'success');
+      showToast('You joined the community!', 'success');
     }
     updateCommJoinBtn();
   } catch(err) {
