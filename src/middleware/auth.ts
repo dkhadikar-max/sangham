@@ -5,7 +5,7 @@ import { env } from '../config/env';
 import { UserRole } from '@prisma/client';
 
 export interface AuthRequest extends Request {
-  user?: { id: string; role: UserRole; isVerifiedClergy: boolean };
+  user?: { id: string; role: UserRole; isVerifiedClergy: boolean; isContributor: boolean; contributorSince: Date | null };
 }
 
 export const authenticate = async (
@@ -18,7 +18,7 @@ export const authenticate = async (
     const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      select: { id: true, role: true, isVerifiedClergy: true, isActive: true },
+      select: { id: true, role: true, isVerifiedClergy: true, isActive: true, isContributor: true, contributorSince: true },
     });
     if (!user || !user.isActive) { res.status(401).json({ error: 'User not found or inactive' }); return; }
     req.user = user;

@@ -38,6 +38,10 @@ export const env = {
   AWS_S3_BUCKET: process.env.AWS_S3_BUCKET || '',
   AWS_CLOUDFRONT_DOMAIN: process.env.AWS_CLOUDFRONT_DOMAIN || '',
 
+  // Razorpay (Dhamma Daan payments)
+  RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
+  RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || '',
+
   AGORA_APP_ID: process.env.AGORA_APP_ID || '',
   AGORA_APP_CERTIFICATE: process.env.AGORA_APP_CERTIFICATE || '',
 

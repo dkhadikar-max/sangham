@@ -24,6 +24,7 @@ const safeUserSelect = {
   role: true,
   isVerifiedClergy: true,
   isVerifiedTeacher: true,
+  isContributor: true,
   languages: true,
   tags: { select: { tag: true } },
   contributionScore: { select: { totalScore: true, eventsHosted: true, sessionsHosted: true } },

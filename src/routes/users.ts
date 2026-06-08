@@ -99,7 +99,7 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
     select: {
       id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
       country: true, city: true, traditions: true, role: true,
-      isVerifiedClergy: true, isVerifiedTeacher: true,
+      isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
       languages: true, templeAffiliation: true, createdAt: true,
       tags: { select: { tag: true } },
       _count: { select: { followers: true, following: true, posts: true } },

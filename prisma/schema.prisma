@@ -152,6 +152,10 @@ model User {
   contributionScore ContributionScore?
   teacherVerification TeacherVerification?
   isVerifiedTeacher Boolean   @default(false) @map("is_verified_teacher")
+  isContributor     Boolean   @default(false) @map("is_contributor")
+  contributorSince  DateTime? @map("contributor_since")
+
+  daanContributions DhammaDaanContribution[]
 
   @@map("users")
 }
@@ -726,6 +730,61 @@ enum TeacherVerificationStatus {
   PENDING
   VERIFIED
   REJECTED
+}
+
+// ── Dhamma Daan (P5) ─────────────────────────────────────────────────────────
+
+enum ContributionStatus {
+  PENDING
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum AllocationCategory {
+  TRANSLATION
+  EDUCATION
+  STUDENT_SUPPORT
+  COMMUNITY_DEV
+  LITERATURE
+  DIGITAL_INFRA
+  RESEARCH
+  SOCIAL_SERVICE
+  EVENTS
+}
+
+model DhammaDaanContribution {
+  id                  String             @id @default(uuid())
+  userId              String             @map("user_id")
+  amountPaise         Int                @map("amount_paise")          // in paise (₹ × 100)
+  currency            String             @default("INR")
+  razorpayOrderId     String             @unique @map("razorpay_order_id")
+  razorpayPaymentId   String?            @map("razorpay_payment_id")
+  razorpaySignature   String?            @map("razorpay_signature")
+  status              ContributionStatus @default(PENDING)
+  splitPlatformPaise  Int                @map("split_platform_paise")  // 50% — immutable
+  splitFundPaise      Int                @map("split_fund_paise")       // 50% — immutable
+  createdAt           DateTime           @default(now()) @map("created_at")
+  capturedAt          DateTime?          @map("captured_at")
+
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dhamma_daan_contributions")
+}
+
+model DhammaDaanAllocation {
+  id            String             @id @default(uuid())
+  title         String
+  description   String             @db.Text
+  category      AllocationCategory
+  amountPaise   Int                @map("amount_paise")
+  currency      String             @default("INR")
+  beneficiary   String?
+  impactReport  String?            @map("impact_report") @db.Text
+  allocatedAt   DateTime           @default(now()) @map("allocated_at")
+  createdBy     String             @map("created_by")
+
+  @@map("dhamma_daan_allocations")
 }
 
 model TeacherVerification {

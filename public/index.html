@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     /* =========================================
        1. CORE DESIGN SYSTEM & VARIABLES
@@ -1163,6 +1164,125 @@
     .hp-meta { font-size: 0.68rem; color: var(--stone); line-height: 1.2; }
     .home-events-preview { padding: 0 1rem; }
     .home-events-preview .event-card { margin-bottom: 0.65rem; }
+
+    /* =========================================
+       18. DHAMMA DAAN PANEL
+       ========================================= */
+    .daan-hero {
+      background: linear-gradient(135deg, #1C1917 0%, #3B2F1E 100%);
+      padding: 2rem 1.2rem 1.5rem; text-align: center; color: white;
+    }
+    .daan-hero-symbol {
+      font-family: 'Noto Serif Devanagari', serif;
+      font-size: 2rem; color: var(--saffron); display: block; margin-bottom: 0.35rem;
+    }
+    .daan-hero-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .daan-hero-sub {
+      font-size: 0.82rem; opacity: 0.72; line-height: 1.5; max-width: 300px; margin: 0 auto;
+    }
+    .daan-body { padding: 1.2rem; overflow-y: auto; }
+    .daan-section { margin-bottom: 1.6rem; }
+    .daan-section-title {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--stone); margin-bottom: 0.75rem;
+    }
+    /* Amount selector */
+    .daan-amounts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .daan-amount-btn {
+      flex: 1 1 calc(33% - 0.5rem); min-width: 80px;
+      padding: 0.65rem 0.5rem; border-radius: 10px;
+      border: 1.5px solid var(--border-solid); background: var(--surface);
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--charcoal); cursor: pointer; text-align: center;
+      transition: all 0.15s;
+    }
+    .daan-amount-btn.active {
+      border-color: var(--saffron); background: rgba(212,168,67,0.08); color: var(--saffron-dark);
+    }
+    .daan-amount-btn .daan-sub { font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--stone); display: block; margin-top: 1px; }
+    .daan-custom-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+    .daan-custom-row input {
+      flex: 1; border: 1.5px solid var(--border-solid); border-radius: 10px;
+      padding: 0.6rem 0.9rem; font-size: 0.95rem; font-family: inherit;
+      color: var(--charcoal); background: var(--surface); outline: none;
+    }
+    .daan-custom-row input:focus { border-color: var(--saffron); }
+    /* Split bar */
+    .daan-split {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+    }
+    .daan-split-half { text-align: center; }
+    .daan-split-pct {
+      font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700;
+      color: var(--saffron); line-height: 1;
+    }
+    .daan-split-label { font-size: 0.75rem; font-weight: 600; color: var(--charcoal); margin-top: 0.2rem; }
+    .daan-split-desc { font-size: 0.68rem; color: var(--stone); margin-top: 0.15rem; line-height: 1.3; }
+    .daan-split-divider { width: 1px; background: var(--border); }
+    /* CTA button */
+    .daan-cta {
+      width: 100%; padding: 0.9rem; background: var(--saffron); color: white;
+      border: none; border-radius: 14px; font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .daan-cta:hover { background: var(--saffron-dark); }
+    .daan-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+    /* Benefits list */
+    .daan-benefit {
+      display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .daan-benefit:last-child { border-bottom: none; }
+    .daan-benefit-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .daan-benefit-text { font-size: 0.85rem; color: var(--charcoal); line-height: 1.4; }
+    .daan-benefit-note { font-size: 0.72rem; color: var(--stone); display: block; }
+    /* Contributor badge on cards */
+    .contributor-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--saffron), #B88E35);
+      margin-left: 4px; flex-shrink: 0; vertical-align: middle;
+    }
+    .contributor-badge::after { content: '◆'; font-size: 7px; color: white; }
+    /* Dashboard stats */
+    .daan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .daan-stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.9rem 0.75rem; text-align: center;
+    }
+    .daan-stat-n {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700;
+      color: var(--saffron); line-height: 1;
+    }
+    .daan-stat-l { font-size: 0.68rem; color: var(--stone); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.2rem; }
+    /* Allocation cards */
+    .daan-alloc-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.85rem; margin-bottom: 0.6rem;
+    }
+    .daan-alloc-cat {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--saffron-dark); margin-bottom: 0.25rem;
+    }
+    .daan-alloc-title { font-size: 0.88rem; font-weight: 600; color: var(--charcoal); margin-bottom: 0.15rem; }
+    .daan-alloc-meta { font-size: 0.75rem; color: var(--stone); }
+    .daan-alloc-amount { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--charcoal); }
+    /* "Already contributor" banner */
+    .daan-contributor-banner {
+      background: linear-gradient(135deg, rgba(212,168,67,0.12), rgba(212,168,67,0.05));
+      border: 1.5px solid rgba(212,168,67,0.35); border-radius: 12px;
+      padding: 0.9rem 1rem; text-align: center; margin-bottom: 1rem;
+    }
+    .daan-contributor-banner .daan-banner-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+      color: var(--saffron-dark); margin-bottom: 0.2rem;
+    }
+    .daan-contributor-banner .daan-banner-sub { font-size: 0.78rem; color: var(--stone); }
   </style>
 </head>
 <body>
@@ -1982,6 +2102,136 @@
       </div>
     </div>
 
+    <!-- ── PANEL: DHAMMA DAAN ── -->
+    <div id="panel-dhamma-daan" class="panel slide-up">
+      <div class="panel-header">
+        <div class="panel-back" onclick="closePanel('panel-dhamma-daan')">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+      </div>
+
+      <div class="daan-hero">
+        <span class="daan-hero-symbol">धम्म</span>
+        <div class="daan-hero-title">Dhamma Daan</div>
+        <div class="daan-hero-sub">Support the global Buddhist digital commons. Every rupee keeps this platform free for all.</div>
+      </div>
+
+      <div class="daan-body">
+
+        <!-- Contributor status banner (shown when already contributor) -->
+        <div id="daan-contributor-banner" style="display:none;" class="daan-contributor-banner">
+          <div class="daan-banner-title">◆ Contributor</div>
+          <div class="daan-banner-sub">Thank you for supporting Digital Sangha.</div>
+        </div>
+
+        <!-- Amount selector -->
+        <div class="daan-section">
+          <div class="daan-section-title">Choose Amount</div>
+          <div class="daan-amounts">
+            <button class="daan-amount-btn" data-paise="4900" onclick="selectDaanAmount(4900,this)">
+              ₹49<span class="daan-sub">Starter</span>
+            </button>
+            <button class="daan-amount-btn active" data-paise="10800" onclick="selectDaanAmount(10800,this)">
+              ₹108<span class="daan-sub">Auspicious</span>
+            </button>
+            <button class="daan-amount-btn" data-paise="50100" onclick="selectDaanAmount(50100,this)">
+              ₹501<span class="daan-sub">Generous</span>
+            </button>
+            <button class="daan-amount-btn" data-paise="500000" onclick="selectDaanAmount(500000,this)">
+              ₹5,000<span class="daan-sub">Patron</span>
+            </button>
+            <button class="daan-amount-btn" data-paise="5000000" onclick="selectDaanAmount(5000000,this)">
+              ₹50,000<span class="daan-sub">Maha Daan</span>
+            </button>
+          </div>
+          <div class="daan-custom-row">
+            <span style="font-size:0.9rem;color:var(--stone);">₹</span>
+            <input type="number" id="daanCustomInput" placeholder="Custom amount" min="49" oninput="onDaanCustomInput(this)">
+          </div>
+        </div>
+
+        <!-- 50/50 split visualization -->
+        <div class="daan-section">
+          <div class="daan-section-title">How Your Daan Is Used</div>
+          <div class="daan-split">
+            <div class="daan-split-half">
+              <div class="daan-split-pct">50%</div>
+              <div class="daan-split-label">Platform Fund</div>
+              <div class="daan-split-desc">Servers, security, development — keeps Digital Sangha free</div>
+            </div>
+            <div class="daan-split-divider"></div>
+            <div class="daan-split-half">
+              <div class="daan-split-pct">50%</div>
+              <div class="daan-split-label">Dhamma Fund</div>
+              <div class="daan-split-desc">Translation, education, student support, community service</div>
+            </div>
+          </div>
+          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable — enforced at the transaction level.</p>
+        </div>
+
+        <!-- CTA -->
+        <button class="daan-cta" id="daanCtaBtn" onclick="initiateDaanPayment()">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span id="daanCtaText">Offer Daan — ₹108</span>
+        </button>
+
+        <!-- Contributor Benefits -->
+        <div class="daan-section" style="margin-top:1.5rem;">
+          <div class="daan-section-title">Contributor Benefits</div>
+          <div class="daan-benefit">
+            <span class="daan-benefit-icon">🔍</span>
+            <div class="daan-benefit-text">Advanced discovery filters
+              <span class="daan-benefit-note">Filter by language, location radius, specific practices</span>
+            </div>
+          </div>
+          <div class="daan-benefit">
+            <span class="daan-benefit-icon">🔒</span>
+            <div class="daan-benefit-text">Advanced privacy controls
+              <span class="daan-benefit-note">Granular visibility settings per field</span>
+            </div>
+          </div>
+          <div class="daan-benefit">
+            <span class="daan-benefit-icon">🔔</span>
+            <div class="daan-benefit-text">Event & session reminders
+              <span class="daan-benefit-note">Push notifications before events you RSVP'd</span>
+            </div>
+          </div>
+          <div class="daan-benefit">
+            <span class="daan-benefit-icon">📚</span>
+            <div class="daan-benefit-text">Offline reading & bookmarks
+              <span class="daan-benefit-note">Save texts to read without network</span>
+            </div>
+          </div>
+          <div class="daan-benefit">
+            <span class="daan-benefit-icon">📊</span>
+            <div class="daan-benefit-text">Contributor dashboard & impact reports
+              <span class="daan-benefit-note">See exactly how your Daan is allocated</span>
+            </div>
+          </div>
+          <p style="font-size:0.72rem;color:var(--stone);margin-top:0.6rem;line-height:1.5;">Amount never affects discovery ranking, visibility, or verification status. All contributors receive identical benefits.</p>
+        </div>
+
+        <!-- Public Transparency Dashboard -->
+        <div class="daan-section">
+          <div class="daan-section-title">Dhamma Daan Dashboard</div>
+          <div class="daan-stat-grid" id="daanStatGrid">
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Total Collected</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Dhamma Fund</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Fund Deployed</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Contributors</div></div>
+          </div>
+        </div>
+
+        <!-- Allocations -->
+        <div class="daan-section">
+          <div class="daan-section-title">Fund Allocations</div>
+          <div id="daanAllocations"><div class="spinner"></div></div>
+        </div>
+
+        <div style="height:2rem;"></div>
+      </div>
+    </div>
+
   </div><!-- /app-shell -->
 </div><!-- /view-app -->
 
@@ -2375,7 +2625,10 @@ async function loadProfileTab() {
           onclick="openEditSheet(${JSON.stringify(user).replace(/"/g,'&quot;')})">Edit Profile</button>
         <button class="btn-ghost" style="padding:0.45rem 1.1rem;font-size:0.82rem;"
           onclick="openProfile('${user.id}')">View Profile</button>
-      </div>`;
+      </div>
+      <button onclick="openDhammaDaan()" style="margin-top:0.7rem;background:linear-gradient(135deg,#D4A843,#B88E35);color:white;border:none;border-radius:20px;padding:0.45rem 1.2rem;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;">
+        ${user.isContributor ? '◆ Contributor' : '◇ Offer Dhamma Daan'}
+      </button>`;
   } catch(e) {
     el.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--stone);font-size:0.85rem;">${escHtml(e.message)}</div>`;
   }
@@ -2393,6 +2646,132 @@ function toggleFab() {
 function closeFab() {
   document.getElementById('fabWrap').classList.remove('open');
   document.getElementById('fabBtn').classList.remove('open');
+}
+
+// ============================================================
+//  DHAMMA DAAN
+// ============================================================
+let daanState = { selectedPaise: 10800 };  // default ₹108
+
+function openDhammaDaan() {
+  openPanel('panel-dhamma-daan');
+  loadDaanDashboard();
+  // Show contributor banner if already a contributor
+  if (state.user?.isContributor) {
+    document.getElementById('daan-contributor-banner').style.display = 'block';
+  }
+}
+
+function selectDaanAmount(paise, btn) {
+  daanState.selectedPaise = paise;
+  document.querySelectorAll('.daan-amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('daanCustomInput').value = '';
+  updateDaanCta();
+}
+
+function onDaanCustomInput(input) {
+  const val = parseInt(input.value, 10);
+  if (!isNaN(val) && val >= 49) {
+    daanState.selectedPaise = val * 100;
+    document.querySelectorAll('.daan-amount-btn').forEach(b => b.classList.remove('active'));
+    updateDaanCta();
+  }
+}
+
+function updateDaanCta() {
+  const rupees = Math.round(daanState.selectedPaise / 100);
+  const text = document.getElementById('daanCtaText');
+  if (text) text.textContent = `Offer Daan — ₹${rupees.toLocaleString('en-IN')}`;
+}
+
+async function initiateDaanPayment() {
+  const btn = document.getElementById('daanCtaBtn');
+  btn.disabled = true;
+  try {
+    if (daanState.selectedPaise < 4900) {
+      showToast('Minimum contribution is ₹49'); btn.disabled = false; return;
+    }
+    // 1. Create Razorpay order on backend
+    const order = await api('POST', '/dhamma-daan/orders', { amountPaise: daanState.selectedPaise });
+
+    // 2. Open Razorpay checkout
+    const options = {
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Digital Sangha',
+      description: 'Dhamma Daan',
+      order_id: order.orderId,
+      prefill: {
+        name:  state.user?.displayName || '',
+        email: state.user?.email || '',
+      },
+      theme: { color: '#D4A843' },
+      handler: async function(response) {
+        // 3. Verify on backend
+        try {
+          const result = await api('POST', '/dhamma-daan/verify', {
+            razorpay_order_id:   response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature:  response.razorpay_signature,
+          });
+          if (result.captured || result.alreadyCaptured) {
+            // Grant contributor status in UI
+            if (state.user) {
+              state.user.isContributor = true;
+              saveSession();
+            }
+            document.getElementById('daan-contributor-banner').style.display = 'block';
+            showToast('Dhamma Daan received — thank you!', 'success');
+            loadDaanDashboard();
+            // Refresh profile tab if open
+            if (document.getElementById('tab-profile').classList.contains('active')) loadProfileTab();
+          }
+        } catch(e) {
+          showToast('Payment captured but verification failed. Contact support.', 'error');
+        }
+        btn.disabled = false;
+      },
+      modal: { ondismiss: () => { btn.disabled = false; } },
+    };
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', () => { showToast('Payment failed. Please try again.', 'error'); btn.disabled = false; });
+    rzp.open();
+  } catch(e) {
+    showToast(e.message || 'Could not initiate payment', 'error');
+    btn.disabled = false;
+  }
+}
+
+async function loadDaanDashboard() {
+  try {
+    const d = await api('GET', '/dhamma-daan/dashboard');
+    const fmt = p => '₹' + Math.floor(p / 100).toLocaleString('en-IN');
+    document.getElementById('daanStatGrid').innerHTML = `
+      <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalCollectedPaise)}</div><div class="daan-stat-l">Total Collected</div></div>
+      <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalFundPaise)}</div><div class="daan-stat-l">Dhamma Fund</div></div>
+      <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalAllocatedPaise)}</div><div class="daan-stat-l">Fund Deployed</div></div>
+      <div class="daan-stat-card"><div class="daan-stat-n">${d.contributorCount}</div><div class="daan-stat-l">Contributors</div></div>`;
+
+    const catLabel = {
+      TRANSLATION:'Translation', EDUCATION:'Education', STUDENT_SUPPORT:'Student Support',
+      COMMUNITY_DEV:'Community Dev', LITERATURE:'Literature', DIGITAL_INFRA:'Digital Infra',
+      RESEARCH:'Research', SOCIAL_SERVICE:'Social Service', EVENTS:'Events',
+    };
+    const el = document.getElementById('daanAllocations');
+    if (!d.recentAllocations?.length) {
+      el.innerHTML = `<div class="empty-state" style="padding:1rem 0;"><p style="font-size:0.85rem;">No allocations recorded yet.</p></div>`;
+      return;
+    }
+    el.innerHTML = d.recentAllocations.map(a => `
+      <div class="daan-alloc-card">
+        <div class="daan-alloc-cat">${catLabel[a.category] || a.category}</div>
+        <div class="daan-alloc-title">${escHtml(a.title)}</div>
+        <div class="daan-alloc-meta">₹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' · ' + escHtml(a.beneficiary) : ''}</div>
+        ${a.impactReport ? `<div style="font-size:0.78rem;color:var(--stone);margin-top:0.35rem;line-height:1.4;">${escHtml(a.impactReport)}</div>` : ''}
+      </div>`).join('');
+  } catch(e) { /* silent — dashboard is informational */ }
 }
 
 function renderPostCard(post, full) {
@@ -2674,6 +3053,7 @@ function renderPersonCard(p, distance) {
         <div class="person-name" style="cursor:pointer;" onclick="openProfile('${p.id}')">
           ${escHtml(p.displayName||'')}
           ${p.isVerifiedClergy || p.isVerifiedTeacher ? '<span class="clergy-badge" title="Verified"></span>' : ''}
+          ${p.isContributor ? '<span class="contributor-badge" title="Contributor"></span>' : ''}
         </div>
         <div class="person-meta">
           ${traditions ? '<span class="tradition-dot"></span>' + traditions : ''}
