@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Digital Sangha — People First</title>
+  <title>Sangham — Community of Practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500&display=swap" rel="stylesheet">
@@ -58,7 +58,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ── Shared Components ── */
+    /* â”€â”€ Shared Components â”€â”€ */
     .btn-primary {
       background: var(--saffron); color: #FAF6F0; border: none;
       padding: 0.8rem 2rem; font-family: 'Inter', sans-serif;
@@ -81,15 +81,16 @@
     }
 
     .logo {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;
-      font-weight: 500; color: var(--charcoal); text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.65rem;
+      font-weight: 600; color: var(--charcoal); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      letter-spacing: 0.01em;
     }
     .logo-symbol {
-      width: 30px; height: 30px; border: 2px solid var(--saffron);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'%3E%3Ccircle cx='16' cy='16' r='13.5' stroke='%23D4A843' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='3.2' fill='%23D4A843'/%3E%3Cline x1='16' y1='12.8' x2='16' y2='3' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='16' y1='19.2' x2='16' y2='29' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='3' y1='16' x2='12.8' y2='16' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='19.2' y1='16' x2='29' y2='16' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='19.06' y1='12.94' x2='25.56' y2='6.44' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='12.94' y1='19.06' x2='6.44' y2='25.56' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='12.94' y1='12.94' x2='6.44' y2='6.44' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3Cline x1='19.06' y1='19.06' x2='25.56' y2='25.56' stroke='%23D4A843' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain;
     }
-    .logo-symbol::after { content: ''; width: 6px; height: 6px; background: var(--saffron); border-radius: 50%; }
+    .logo-symbol::after { display: none; }
 
     .spinner {
       width: 28px; height: 28px; border: 3px solid var(--border-solid);
@@ -108,7 +109,7 @@
     .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
     .empty-state p { font-size: 0.9rem; line-height: 1.6; }
 
-    /* ── Toast ── */
+    /* â”€â”€ Toast â”€â”€ */
     #toast {
       position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
       background: var(--charcoal); color: white; padding: 0.7rem 1.4rem;
@@ -312,7 +313,7 @@
       border-radius: 50%; display: inline-flex; align-items: center;
       justify-content: center; flex-shrink: 0;
     }
-    .clergy-badge::after { content: '✓'; font-size: 8px; color: white; }
+    .clergy-badge::after { content: 'âœ“'; font-size: 8px; color: white; }
     .post-meta { font-size: 0.72rem; color: var(--stone); margin-top: 0.1rem; }
     .post-content { padding: 0.3rem 1rem 0.7rem; font-size: 0.9rem; line-height: 1.6; }
     .post-tradition-tag {
@@ -458,7 +459,7 @@
       font-weight: 600; color: var(--charcoal); flex: 1;
     }
 
-    /* ── Thread conversation panel ── */
+    /* â”€â”€ Thread conversation panel â”€â”€ */
     #panel-thread .messages-area {
       flex: 1; overflow-y: auto; padding: 1rem 1.2rem;
       display: flex; flex-direction: column; gap: 0.5rem;
@@ -501,7 +502,7 @@
     .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .chat-send-btn svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
 
-    /* ── Create Post Panel ── */
+    /* â”€â”€ Create Post Panel â”€â”€ */
     #panel-create.slide-up {
       top: auto; height: 85%; border-radius: 20px 20px 0 0; overflow: hidden;
     }
@@ -522,7 +523,7 @@
     }
     .post-type-chip.active { background: var(--saffron); border-color: var(--saffron); color: white; }
 
-    /* ── Post Detail Panel ── */
+    /* â”€â”€ Post Detail Panel â”€â”€ */
     #panel-post .post-comments { padding: 1rem 1.2rem; }
     .comment-item {
       display: flex; gap: 0.6rem; margin-bottom: 0.8rem;
@@ -544,7 +545,7 @@
     }
     .comment-input-bar input:focus { border-color: var(--saffron); }
 
-    /* ── Discover People Modal ── */
+    /* â”€â”€ Discover People Modal â”€â”€ */
     #panel-discover-people .panel-content {
       flex: 1; overflow-y: auto; padding-bottom: 1rem;
     }
@@ -1069,7 +1070,7 @@
       position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
       z-index: 30; display: flex; flex-direction: column; align-items: center;
     }
-    /* Override original .fab absolute positioning — fab-wrap owns it now */
+    /* Override original .fab absolute positioning â€” fab-wrap owns it now */
     .fab { position: static; bottom: auto; left: auto; transform: none; z-index: auto; }
     .fab:hover { background: var(--saffron-dark); transform: scale(1.05); }
     .fab.open { background: var(--charcoal); }
@@ -1248,7 +1249,7 @@
       background: linear-gradient(135deg, var(--saffron), #B88E35);
       margin-left: 4px; flex-shrink: 0; vertical-align: middle;
     }
-    .contributor-badge::after { content: '◆'; font-size: 7px; color: white; }
+    .contributor-badge::after { content: 'â—†'; font-size: 7px; color: white; }
     /* Dashboard stats */
     .daan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .daan-stat-card {
@@ -1297,7 +1298,7 @@
 ==================================================== -->
 <div id="view-landing" class="view active">
   <nav>
-    <div class="logo"><div class="logo-symbol"></div> Digital Sangha</div>
+    <div class="logo"><div class="logo-symbol"></div> Sangham</div>
     <div>
       <button class="btn-primary" onclick="showRegister()">Join Sangha</button>
     </div>
@@ -1316,10 +1317,10 @@
 <div id="view-auth" class="view">
   <div class="auth-container">
     <div class="logo" style="cursor:pointer;justify-content:center;" onclick="routeTo('view-landing')">
-      <div class="logo-symbol"></div> Digital Sangha
+      <div class="logo-symbol"></div> Sangham
     </div>
     <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:0.5rem;" id="authTitle">Welcome Back</h2>
-    <p style="font-size:0.9rem;color:var(--stone);margin-bottom:1.5rem;" id="authSubtitle">Enter your details to access Digital Sangha.</p>
+    <p style="font-size:0.9rem;color:var(--stone);margin-bottom:1.5rem;" id="authSubtitle">Enter your details to access Sangham.</p>
     <div class="auth-error" id="authError"></div>
     <form id="authForm" onsubmit="handleAuth(event)">
       <div class="input-group" id="nameGroup" style="display:none;">
@@ -1332,14 +1333,14 @@
       </div>
       <div class="input-group">
         <label>Password</label>
-        <input type="password" id="password" placeholder="••••••••" required>
+        <input type="password" id="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
       </div>
       <button type="submit" class="btn-primary" style="width:100%;margin-top:0.5rem;" id="authBtn">
         <span id="authBtnText">Sign In</span>
       </button>
     </form>
     <div class="auth-switch">
-      <span id="authSwitchText">New to Digital Sangha?</span>
+      <span id="authSwitchText">New to Sangham?</span>
       <a onclick="toggleAuthMode()" id="authSwitchLink">Create an account</a>
     </div>
   </div>
@@ -1351,7 +1352,7 @@
 <div id="view-onboarding" class="view">
   <div class="onboarding-container">
     <div class="onboarding-header">
-      <div class="logo"><div class="logo-symbol"></div> Digital Sangha</div>
+      <div class="logo"><div class="logo-symbol"></div> Sangham</div>
       <button class="onboarding-skip" onclick="skipOnboarding()">Skip</button>
     </div>
     <div class="onboarding-progress">
@@ -1366,14 +1367,14 @@
       <p class="ob-subtitle">Tell us about yourself so we can connect you with the right people.</p>
       <div class="ob-section-label">Tradition (choose all that apply)</div>
       <div class="ob-chips" id="ob-traditions">
-        <div class="ob-chip" data-val="THERAVADA" onclick="obChipToggle(this,false)">Theravāda</div>
-        <div class="ob-chip" data-val="MAHAYANA"  onclick="obChipToggle(this,false)">Mahāyāna</div>
-        <div class="ob-chip" data-val="VAJRAYANA" onclick="obChipToggle(this,false)">Vajrayāna</div>
-        <div class="ob-chip" data-val="NAVAYANA"  onclick="obChipToggle(this,false)">Navayāna</div>
+        <div class="ob-chip" data-val="THERAVADA" onclick="obChipToggle(this,false)">TheravÄda</div>
+        <div class="ob-chip" data-val="MAHAYANA"  onclick="obChipToggle(this,false)">MahÄyÄna</div>
+        <div class="ob-chip" data-val="VAJRAYANA" onclick="obChipToggle(this,false)">VajrayÄna</div>
+        <div class="ob-chip" data-val="NAVAYANA"  onclick="obChipToggle(this,false)">NavayÄna</div>
         <div class="ob-chip" data-val="MULTIPLE"  onclick="obChipToggle(this,false)">Multiple</div>
         <div class="ob-chip" data-val="OTHER"     onclick="obChipToggle(this,false)">Other / Exploring</div>
       </div>
-      <div class="ob-section-label">I am a…</div>
+      <div class="ob-section-label">I am aâ€¦</div>
       <div class="ob-chips" id="ob-roles">
         <div class="ob-chip active" data-val="PRACTITIONER" onclick="obChipToggle(this,true)">Practitioner</div>
         <div class="ob-chip" data-val="BHIKKHU"      onclick="obChipToggle(this,true)">Bhikkhu</div>
@@ -1385,7 +1386,7 @@
     <!-- Step 2: Location -->
     <div id="ob-step-2" class="ob-step">
       <h2 class="ob-title">Where Are You?</h2>
-      <p class="ob-subtitle">Only your city is ever shown — never your exact address. This helps you find practitioners near you.</p>
+      <p class="ob-subtitle">Only your city is ever shown â€” never your exact address. This helps you find practitioners near you.</p>
       <div class="input-group" style="margin-top:1.2rem;">
         <label>City</label>
         <input type="text" id="ob-city" placeholder="e.g. Mumbai, Colombo, Bangkok">
@@ -1393,7 +1394,7 @@
       <div class="input-group">
         <label>Country</label>
         <select id="ob-country">
-          <option value="">— Select country —</option>
+          <option value="">â€” Select country â€”</option>
           <option value="IN">India</option>
           <option value="LK">Sri Lanka</option>
           <option value="TH">Thailand</option>
@@ -1439,7 +1440,7 @@
 
     <div class="onboarding-footer">
       <button class="btn-primary" style="width:100%;padding:0.9rem;" id="ob-continue-btn" onclick="obContinue()">
-        <span id="ob-continue-text">Continue →</span>
+        <span id="ob-continue-text">Continue â†’</span>
       </button>
     </div>
   </div>
@@ -1454,10 +1455,19 @@
     <!-- App Header -->
     <header class="app-header">
       <div class="app-header-brand">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="13.5" stroke="#D4A843" stroke-width="1.6"/>
+          <circle cx="16" cy="16" r="3.2" fill="#D4A843"/>
+          <line x1="16" y1="12.8" x2="16" y2="3"    stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="16" y1="19.2" x2="16" y2="29"   stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="3"  y1="16"   x2="12.8" y2="16" stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="19.2" y1="16" x2="29"   y2="16" stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="19.06" y1="12.94" x2="25.56" y2="6.44"  stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="12.94" y1="19.06" x2="6.44"  y2="25.56" stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="12.94" y1="12.94" x2="6.44"  y2="6.44"  stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
+          <line x1="19.06" y1="19.06" x2="25.56" y2="25.56" stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/>
         </svg>
-        Digital Sangha
+        Sangham
       </div>
       <div class="header-actions">
         <div class="header-icon" id="headerAvatar" title="Profile" onclick="openProfile(state.user?.id)" style="cursor:pointer;">
@@ -1484,12 +1494,12 @@
         <div id="home-daily-verse"></div>
         <div class="section-header-row">
           <h2 class="section-title" style="margin:0;padding:0;">Recommended People</h2>
-          <a class="section-more" onclick="switchTab('discover')">See all →</a>
+          <a class="section-more" onclick="switchTab('discover')">See all â†’</a>
         </div>
         <div class="home-people-scroll" id="home-recommended"></div>
         <div class="section-header-row">
           <h2 class="section-title" style="margin:0;padding:0;">Upcoming Events</h2>
-          <a class="section-more" onclick="switchTab('events')">See all →</a>
+          <a class="section-more" onclick="switchTab('events')">See all â†’</a>
         </div>
         <div class="home-events-preview" id="home-events-preview"></div>
         <h2 class="section-title">Community Updates</h2>
@@ -1543,20 +1553,20 @@
         </div>
         <div class="category-scroll" id="eventFilters">
           <span class="category-chip active" id="evf-all" onclick="filterEvents(null,this)">All</span>
-          <span class="category-chip" id="evf-nearby" onclick="filterEventsNearMe(this)">📍 Near Me</span>
+          <span class="category-chip" id="evf-nearby" onclick="filterEventsNearMe(this)">ðŸ“ Near Me</span>
           <span class="category-chip" onclick="filterEvents('RETREAT',this)">Retreats</span>
           <span class="category-chip" onclick="filterEvents('TALK',this)">Dhamma Talks</span>
           <span class="category-chip" onclick="filterEvents('CEREMONY',this)">Ceremonies</span>
-          <span class="category-chip" onclick="filterEvents('DHAMMA_DIKSHA',this)">Dīkṣā</span>
+          <span class="category-chip" onclick="filterEvents('DHAMMA_DIKSHA',this)">DÄ«ká¹£Ä</span>
           <span class="category-chip" onclick="filterEvents('COMMUNITY_GATHERING',this)">Gatherings</span>
           <span class="category-chip" onclick="filterEvents('AMBEDKAR_JAYANTI',this)">Ambedkar Jayanti</span>
         </div>
         <div class="category-scroll" id="eventTradFilters" style="padding-top:0;">
           <span class="category-chip active" id="evtrad-all" onclick="filterEventsTrad(null,this)">All traditions</span>
-          <span class="category-chip" onclick="filterEventsTrad('THERAVADA',this)">Theravāda</span>
-          <span class="category-chip" onclick="filterEventsTrad('MAHAYANA',this)">Mahāyāna</span>
-          <span class="category-chip" onclick="filterEventsTrad('VAJRAYANA',this)">Vajrayāna</span>
-          <span class="category-chip" onclick="filterEventsTrad('NAVAYANA',this)">Navayāna</span>
+          <span class="category-chip" onclick="filterEventsTrad('THERAVADA',this)">TheravÄda</span>
+          <span class="category-chip" onclick="filterEventsTrad('MAHAYANA',this)">MahÄyÄna</span>
+          <span class="category-chip" onclick="filterEventsTrad('VAJRAYANA',this)">VajrayÄna</span>
+          <span class="category-chip" onclick="filterEventsTrad('NAVAYANA',this)">NavayÄna</span>
         </div>
         <div id="eventsList"></div>
         <div style="height:1rem;"></div>
@@ -1573,11 +1583,11 @@
         </div>
         <div class="search-bar" style="margin: 0 1rem 0.5rem;">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groups…" oninput="debounceComm()">
+          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groupsâ€¦" oninput="debounceComm()">
         </div>
         <div class="category-scroll" id="commFilters">
           <span class="category-chip active" id="comm-all" onclick="filterComm(null,this)">All</span>
-          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">📍 My Country</span>
+          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">ðŸ“ My Country</span>
           <span class="category-chip" onclick="filterComm('TEMPLE',this)">Temples</span>
           <span class="category-chip" onclick="filterComm('NGO',this)">NGOs</span>
           <span class="category-chip" onclick="filterComm('STUDY_GROUP',this)">Study Groups</span>
@@ -1598,21 +1608,21 @@
 
         <div class="follow-segment">
           <button class="follow-seg-btn active" id="seg-followers" onclick="switchFollowSeg('followers')">
-            Connected Members <span class="follow-count-badge" id="fc-followers">–</span>
+            Connected Members <span class="follow-count-badge" id="fc-followers">â€“</span>
           </button>
           <button class="follow-seg-btn" id="seg-following" onclick="switchFollowSeg('following')">
-            Connections <span class="follow-count-badge" id="fc-following">–</span>
+            Connections <span class="follow-count-badge" id="fc-following">â€“</span>
           </button>
         </div>
 
         <div class="follow-search">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="search" id="followSearchInput" placeholder="Search by name, location…" oninput="renderFollowList()">
+          <input type="search" id="followSearchInput" placeholder="Search by name, locationâ€¦" oninput="renderFollowList()">
         </div>
 
         <div class="follow-sort">
           <div class="follow-sort-chip active" id="fsort-recent" onclick="setFollowSort('recent',this)">Recent</div>
-          <div class="follow-sort-chip" id="fsort-az" onclick="setFollowSort('az',this)">A – Z</div>
+          <div class="follow-sort-chip" id="fsort-az" onclick="setFollowSort('az',this)">A â€“ Z</div>
           <div class="follow-sort-chip" id="fsort-mutual" onclick="setFollowSort('mutual',this)">Mutual</div>
         </div>
 
@@ -1650,23 +1660,23 @@
     <div class="fab-wrap" id="fabWrap">
       <ul class="fab-dial" id="fabDial">
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">✍️</button>
+          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">âœï¸</button>
           <span class="fab-dial-label">Post</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">📅</button>
+          <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">ðŸ“…</button>
           <span class="fab-dial-label">Event</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛️</button>
+          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">ðŸ›ï¸</button>
           <span class="fab-dial-label">Community</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">🎓</button>
+          <button class="fab-dial-btn" onclick="showToast('Sessions â€” coming soon');closeFab()" title="Session">ðŸŽ“</button>
           <span class="fab-dial-label">Session</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Questions — coming soon');closeFab()" title="Question">❓</button>
+          <button class="fab-dial-btn" onclick="showToast('Questions â€” coming soon');closeFab()" title="Question">â“</button>
           <span class="fab-dial-label">Question</span>
         </li>
       </ul>
@@ -1675,7 +1685,7 @@
       </button>
     </div>
 
-    <!-- ── PANEL: CREATE POST ── -->
+    <!-- â”€â”€ PANEL: CREATE POST â”€â”€ -->
     <div id="panel-create" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create')">
@@ -1696,7 +1706,7 @@
         <div class="input-group" style="margin-top:1rem;">
           <label>Tradition Tag (optional)</label>
           <select id="postTradition">
-            <option value="">— none —</option>
+            <option value="">â€” none â€”</option>
             <option value="THERAVADA">Theravada</option>
             <option value="MAHAYANA">Mahayana</option>
             <option value="VAJRAYANA">Vajrayana</option>
@@ -1708,7 +1718,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: POST DETAIL ── -->
+    <!-- â”€â”€ PANEL: POST DETAIL â”€â”€ -->
     <div id="panel-post" class="panel">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-post')">
@@ -1729,7 +1739,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: THREAD (Chat Conversation) ── -->
+    <!-- â”€â”€ PANEL: THREAD (Chat Conversation) â”€â”€ -->
     <div id="panel-thread" class="panel">
       <div class="panel-header">
         <div class="panel-back" onclick="closeThread()">
@@ -1753,7 +1763,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: TEXT READER ── -->
+    <!-- â”€â”€ PANEL: TEXT READER â”€â”€ -->
     <div id="panel-reader" class="panel reader-theme-sepia reader-size-md">
       <div class="reader-progress-bar"><div class="reader-progress-fill" id="reader-progress"></div></div>
       <header class="reader-header" id="reader-header">
@@ -1791,7 +1801,7 @@
       <!-- Annotation sheet -->
       <div class="reader-annotate-sheet" id="reader-annotate-sheet">
         <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--reader-text);margin-bottom:0.6rem;opacity:0.7;">Personal note</div>
-        <textarea id="reader-annotate-input" placeholder="Write a reflection on this passage…" rows="3"></textarea>
+        <textarea id="reader-annotate-input" placeholder="Write a reflection on this passageâ€¦" rows="3"></textarea>
         <div class="reader-annotate-actions">
           <button class="btn-ghost" style="font-size:0.8rem;padding:0.4rem 0.8rem;" onclick="closeAnnotateSheet()">Cancel</button>
           <button class="btn-primary" style="font-size:0.8rem;padding:0.4rem 0.9rem;" onclick="submitAnnotation()">Save</button>
@@ -1799,7 +1809,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: USER PROFILE ── -->
+    <!-- â”€â”€ PANEL: USER PROFILE â”€â”€ -->
     <div id="panel-profile" class="panel">
       <!-- Hero / cover -->
       <div class="profile-hero">
@@ -1880,7 +1890,7 @@
             <div class="input-group">
               <label>Country</label>
               <select id="edit-country">
-                <option value="">—</option>
+                <option value="">â€”</option>
                 <option value="IN">India</option><option value="LK">Sri Lanka</option>
                 <option value="TH">Thailand</option><option value="MM">Myanmar</option>
                 <option value="NP">Nepal</option><option value="JP">Japan</option>
@@ -1896,10 +1906,10 @@
           <div class="input-group" style="margin-bottom:0.4rem;">
             <label>Tradition</label>
             <div class="edit-chips" id="edit-traditions">
-              <div class="edit-chip" data-val="THERAVADA" onclick="editChipToggle(this,false)">Theravāda</div>
-              <div class="edit-chip" data-val="MAHAYANA"  onclick="editChipToggle(this,false)">Mahāyāna</div>
-              <div class="edit-chip" data-val="VAJRAYANA" onclick="editChipToggle(this,false)">Vajrayāna</div>
-              <div class="edit-chip" data-val="NAVAYANA"  onclick="editChipToggle(this,false)">Navayāna</div>
+              <div class="edit-chip" data-val="THERAVADA" onclick="editChipToggle(this,false)">TheravÄda</div>
+              <div class="edit-chip" data-val="MAHAYANA"  onclick="editChipToggle(this,false)">MahÄyÄna</div>
+              <div class="edit-chip" data-val="VAJRAYANA" onclick="editChipToggle(this,false)">VajrayÄna</div>
+              <div class="edit-chip" data-val="NAVAYANA"  onclick="editChipToggle(this,false)">NavayÄna</div>
               <div class="edit-chip" data-val="MULTIPLE"  onclick="editChipToggle(this,false)">Multiple</div>
               <div class="edit-chip" data-val="OTHER"     onclick="editChipToggle(this,false)">Other</div>
             </div>
@@ -1927,7 +1937,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: CREATE EVENT ── -->
+    <!-- â”€â”€ PANEL: CREATE EVENT â”€â”€ -->
     <div id="panel-create-event" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create-event')">
@@ -1948,7 +1958,7 @@
             <div class="create-chip" data-val="TALK" onclick="ceChip(this,'type',true)">Dhamma Talk</div>
             <div class="create-chip" data-val="CEREMONY" onclick="ceChip(this,'type',true)">Ceremony</div>
             <div class="create-chip" data-val="COMMUNITY_GATHERING" onclick="ceChip(this,'type',true)">Gathering</div>
-            <div class="create-chip" data-val="DHAMMA_DIKSHA" onclick="ceChip(this,'type',true)">Dīkṣā</div>
+            <div class="create-chip" data-val="DHAMMA_DIKSHA" onclick="ceChip(this,'type',true)">DÄ«ká¹£Ä</div>
             <div class="create-chip" data-val="SEMINAR" onclick="ceChip(this,'type',true)">Seminar</div>
             <div class="create-chip" data-val="PROTEST_MARCH" onclick="ceChip(this,'type',true)">March</div>
             <div class="create-chip" data-val="AMBEDKAR_JAYANTI" onclick="ceChip(this,'type',true)">Ambedkar Jayanti</div>
@@ -1958,10 +1968,10 @@
           <label>Tradition</label>
           <div class="create-chips" id="ce-trad-chips">
             <div class="create-chip active" data-val="" onclick="ceChip(this,'trad',true)">Any</div>
-            <div class="create-chip" data-val="THERAVADA" onclick="ceChip(this,'trad',true)">Theravāda</div>
-            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'trad',true)">Mahāyāna</div>
-            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'trad',true)">Vajrayāna</div>
-            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'trad',true)">Navayāna</div>
+            <div class="create-chip" data-val="THERAVADA" onclick="ceChip(this,'trad',true)">TheravÄda</div>
+            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'trad',true)">MahÄyÄna</div>
+            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'trad',true)">VajrayÄna</div>
+            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'trad',true)">NavayÄna</div>
           </div>
         </div>
         <div class="date-row input-group">
@@ -1980,15 +1990,15 @@
             <label for="ce-online-toggle">Online event</label>
           </div>
           <div id="ce-location-fields">
-            <input type="text" id="ce-location" placeholder="Location name (temple, hall, city…)" maxlength="200">
+            <input type="text" id="ce-location" placeholder="Location name (temple, hall, cityâ€¦)" maxlength="200">
           </div>
           <div id="ce-online-fields" style="display:none; margin-top:0.5rem;">
-            <input type="url" id="ce-url" placeholder="https://zoom.us/j/…">
+            <input type="url" id="ce-url" placeholder="https://zoom.us/j/â€¦">
           </div>
         </div>
         <div class="input-group">
           <label>Description</label>
-          <textarea id="ce-desc" placeholder="Tell people what to expect…" rows="3" maxlength="3000"></textarea>
+          <textarea id="ce-desc" placeholder="Tell people what to expectâ€¦" rows="3" maxlength="3000"></textarea>
         </div>
         <div class="input-group">
           <label>Capacity <span style="font-weight:400;opacity:0.6;">(0 = unlimited)</span></label>
@@ -2001,7 +2011,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: CREATE GROUP ── -->
+    <!-- â”€â”€ PANEL: CREATE GROUP â”€â”€ -->
     <div id="panel-create-comm" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-create-comm')">
@@ -2030,10 +2040,10 @@
         <div class="input-group">
           <label>Tradition *</label>
           <div class="create-chips" id="cg-trad-chips">
-            <div class="create-chip active" data-val="THERAVADA" onclick="ceChip(this,'gtrad',true)">Theravāda</div>
-            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'gtrad',true)">Mahāyāna</div>
-            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'gtrad',true)">Vajrayāna</div>
-            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'gtrad',true)">Navayāna</div>
+            <div class="create-chip active" data-val="THERAVADA" onclick="ceChip(this,'gtrad',true)">TheravÄda</div>
+            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'gtrad',true)">MahÄyÄna</div>
+            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'gtrad',true)">VajrayÄna</div>
+            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'gtrad',true)">NavayÄna</div>
             <div class="create-chip" data-val="MULTIPLE" onclick="ceChip(this,'gtrad',true)">Multiple</div>
             <div class="create-chip" data-val="OTHER" onclick="ceChip(this,'gtrad',true)">Other</div>
           </div>
@@ -2042,7 +2052,7 @@
           <div>
             <label>Country *</label>
             <select id="cg-country">
-              <option value="">Select…</option>
+              <option value="">Selectâ€¦</option>
               <option value="IN">India</option><option value="LK">Sri Lanka</option>
               <option value="TH">Thailand</option><option value="MM">Myanmar</option>
               <option value="KH">Cambodia</option><option value="VN">Vietnam</option>
@@ -2066,7 +2076,7 @@
         </div>
         <div class="input-group">
           <label>Website</label>
-          <input type="url" id="cg-website" placeholder="https://…">
+          <input type="url" id="cg-website" placeholder="https://â€¦">
         </div>
         <button class="btn-primary" style="width:100%;margin-top:0.5rem;" id="cg-submit-btn" onclick="submitCreateComm()">
           <span id="cg-submit-text">Create Group</span>
@@ -2075,14 +2085,14 @@
       </div>
     </div>
 
-    <!-- ── PANEL: COMMUNITY DETAIL ── -->
+    <!-- â”€â”€ PANEL: COMMUNITY DETAIL â”€â”€ -->
     <div id="panel-comm-detail" class="panel">
       <div class="comm-detail-header">
         <div class="panel-back" onclick="closePanel('panel-comm-detail')" style="position:absolute;top:1rem;left:1rem;">
           <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2;"><polyline points="15 18 9 12 15 6"/></svg>
         </div>
         <div class="comm-detail-icon" id="cd-icon">S</div>
-        <div class="comm-detail-name" id="cd-name">Loading…</div>
+        <div class="comm-detail-name" id="cd-name">Loadingâ€¦</div>
         <div class="comm-detail-meta" id="cd-meta"></div>
       </div>
       <div class="comm-detail-body">
@@ -2102,7 +2112,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL: DHAMMA DAAN ── -->
+    <!-- â”€â”€ PANEL: DHAMMA DAAN â”€â”€ -->
     <div id="panel-dhamma-daan" class="panel slide-up">
       <div class="panel-header">
         <div class="panel-back" onclick="closePanel('panel-dhamma-daan')">
@@ -2120,8 +2130,8 @@
 
         <!-- Contributor status banner (shown when already contributor) -->
         <div id="daan-contributor-banner" style="display:none;" class="daan-contributor-banner">
-          <div class="daan-banner-title">◆ Contributor</div>
-          <div class="daan-banner-sub">Thank you for supporting Digital Sangha.</div>
+          <div class="daan-banner-title">â—† Contributor</div>
+          <div class="daan-banner-sub">Thank you for supporting Sangham.</div>
         </div>
 
         <!-- Amount selector -->
@@ -2129,23 +2139,23 @@
           <div class="daan-section-title">Choose Amount</div>
           <div class="daan-amounts">
             <button class="daan-amount-btn" data-paise="4900" onclick="selectDaanAmount(4900,this)">
-              ₹49<span class="daan-sub">Starter</span>
+              â‚¹49<span class="daan-sub">Starter</span>
             </button>
             <button class="daan-amount-btn active" data-paise="10800" onclick="selectDaanAmount(10800,this)">
-              ₹108<span class="daan-sub">Auspicious</span>
+              â‚¹108<span class="daan-sub">Auspicious</span>
             </button>
             <button class="daan-amount-btn" data-paise="50100" onclick="selectDaanAmount(50100,this)">
-              ₹501<span class="daan-sub">Generous</span>
+              â‚¹501<span class="daan-sub">Generous</span>
             </button>
             <button class="daan-amount-btn" data-paise="500000" onclick="selectDaanAmount(500000,this)">
-              ₹5,000<span class="daan-sub">Patron</span>
+              â‚¹5,000<span class="daan-sub">Patron</span>
             </button>
             <button class="daan-amount-btn" data-paise="5000000" onclick="selectDaanAmount(5000000,this)">
-              ₹50,000<span class="daan-sub">Maha Daan</span>
+              â‚¹50,000<span class="daan-sub">Maha Daan</span>
             </button>
           </div>
           <div class="daan-custom-row">
-            <span style="font-size:0.9rem;color:var(--stone);">₹</span>
+            <span style="font-size:0.9rem;color:var(--stone);">â‚¹</span>
             <input type="number" id="daanCustomInput" placeholder="Custom amount" min="49" oninput="onDaanCustomInput(this)">
           </div>
         </div>
@@ -2157,7 +2167,7 @@
             <div class="daan-split-half">
               <div class="daan-split-pct">50%</div>
               <div class="daan-split-label">Platform Fund</div>
-              <div class="daan-split-desc">Servers, security, development — keeps Digital Sangha free</div>
+              <div class="daan-split-desc">Servers, security, development â€” keeps Sangham free</div>
             </div>
             <div class="daan-split-divider"></div>
             <div class="daan-split-half">
@@ -2166,44 +2176,44 @@
               <div class="daan-split-desc">Translation, education, student support, community service</div>
             </div>
           </div>
-          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable — enforced at the transaction level.</p>
+          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable â€” enforced at the transaction level.</p>
         </div>
 
         <!-- CTA -->
         <button class="daan-cta" id="daanCtaBtn" onclick="initiateDaanPayment()">
           <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span id="daanCtaText">Offer Daan — ₹108</span>
+          <span id="daanCtaText">Offer Daan â€” â‚¹108</span>
         </button>
 
         <!-- Contributor Benefits -->
         <div class="daan-section" style="margin-top:1.5rem;">
           <div class="daan-section-title">Contributor Benefits</div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">🔍</span>
+            <span class="daan-benefit-icon">ðŸ”</span>
             <div class="daan-benefit-text">Advanced discovery filters
               <span class="daan-benefit-note">Filter by language, location radius, specific practices</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">🔒</span>
+            <span class="daan-benefit-icon">ðŸ”’</span>
             <div class="daan-benefit-text">Advanced privacy controls
               <span class="daan-benefit-note">Granular visibility settings per field</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">🔔</span>
+            <span class="daan-benefit-icon">ðŸ””</span>
             <div class="daan-benefit-text">Event & session reminders
               <span class="daan-benefit-note">Push notifications before events you RSVP'd</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">📚</span>
+            <span class="daan-benefit-icon">ðŸ“š</span>
             <div class="daan-benefit-text">Offline reading & bookmarks
               <span class="daan-benefit-note">Save texts to read without network</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">📊</span>
+            <span class="daan-benefit-icon">ðŸ“Š</span>
             <div class="daan-benefit-text">Contributor dashboard & impact reports
               <span class="daan-benefit-note">See exactly how your Daan is allocated</span>
             </div>
@@ -2215,10 +2225,10 @@
         <div class="daan-section">
           <div class="daan-section-title">Dhamma Daan Dashboard</div>
           <div class="daan-stat-grid" id="daanStatGrid">
-            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Total Collected</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Dhamma Fund</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Fund Deployed</div></div>
-            <div class="daan-stat-card"><div class="daan-stat-n">—</div><div class="daan-stat-l">Contributors</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Total Collected</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Dhamma Fund</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Fund Deployed</div></div>
+            <div class="daan-stat-card"><div class="daan-stat-n">â€”</div><div class="daan-stat-l">Contributors</div></div>
           </div>
         </div>
 
@@ -2347,11 +2357,11 @@ function toggleAuthMode() {
 
   if (isLoginMode) {
     title.innerText    = 'Welcome Back';
-    subtitle.innerText = 'Enter your details to access Digital Sangha.';
+    subtitle.innerText = 'Enter your details to access Sangham.';
     nameGroup.style.display = 'none';
     nameInput.removeAttribute('required');
     btn.innerText      = 'Sign In';
-    switchText.innerText = 'New to Digital Sangha?';
+    switchText.innerText = 'New to Sangham?';
     switchLink.innerText = 'Create an account';
   } else {
     title.innerText    = 'Join the Sangha';
@@ -2529,12 +2539,12 @@ async function loadHome() {
     const data = await api('GET', '/users/me/feed?limit=20');
     const posts = data.data || data;
     if (!posts.length) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸª·</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
       return;
     }
     container.innerHTML = posts.map(renderPostCard).join('');
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">âš ï¸</div><p>${err.message}</p></div>`;
   }
 }
 
@@ -2581,9 +2591,9 @@ async function loadDailyVerse() {
     if (!verse || !verse.content) return;
     container.innerHTML = `
       <div class="daily-verse">
-        <div class="daily-verse-label">✦ Daily Verse</div>
+        <div class="daily-verse-label">âœ¦ Daily Verse</div>
         <div class="daily-verse-text">"${verse.content}"</div>
-        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? '· '+verse.segmentKey : ''}</div>
+        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? 'Â· '+verse.segmentKey : ''}</div>
       </div>`;
   } catch(e) { container.innerHTML = ''; }
 }
@@ -2627,7 +2637,7 @@ async function loadProfileTab() {
           onclick="openProfile('${user.id}')">View Profile</button>
       </div>
       <button onclick="openDhammaDaan()" style="margin-top:0.7rem;background:linear-gradient(135deg,#D4A843,#B88E35);color:white;border:none;border-radius:20px;padding:0.45rem 1.2rem;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;">
-        ${user.isContributor ? '◆ Contributor' : '◇ Offer Dhamma Daan'}
+        ${user.isContributor ? 'â—† Contributor' : 'â—‡ Offer Dhamma Daan'}
       </button>`;
   } catch(e) {
     el.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--stone);font-size:0.85rem;">${escHtml(e.message)}</div>`;
@@ -2651,7 +2661,7 @@ function closeFab() {
 // ============================================================
 //  DHAMMA DAAN
 // ============================================================
-let daanState = { selectedPaise: 10800 };  // default ₹108
+let daanState = { selectedPaise: 10800 };  // default â‚¹108
 
 function openDhammaDaan() {
   openPanel('panel-dhamma-daan');
@@ -2682,7 +2692,7 @@ function onDaanCustomInput(input) {
 function updateDaanCta() {
   const rupees = Math.round(daanState.selectedPaise / 100);
   const text = document.getElementById('daanCtaText');
-  if (text) text.textContent = `Offer Daan — ₹${rupees.toLocaleString('en-IN')}`;
+  if (text) text.textContent = `Offer Daan â€” â‚¹${rupees.toLocaleString('en-IN')}`;
 }
 
 async function initiateDaanPayment() {
@@ -2690,7 +2700,7 @@ async function initiateDaanPayment() {
   btn.disabled = true;
   try {
     if (daanState.selectedPaise < 4900) {
-      showToast('Minimum contribution is ₹49'); btn.disabled = false; return;
+      showToast('Minimum contribution is â‚¹49'); btn.disabled = false; return;
     }
     // 1. Create Razorpay order on backend
     const order = await api('POST', '/dhamma-daan/orders', { amountPaise: daanState.selectedPaise });
@@ -2700,7 +2710,7 @@ async function initiateDaanPayment() {
       key: order.keyId,
       amount: order.amount,
       currency: order.currency,
-      name: 'Digital Sangha',
+      name: 'Sangham',
       description: 'Dhamma Daan',
       order_id: order.orderId,
       prefill: {
@@ -2723,7 +2733,7 @@ async function initiateDaanPayment() {
               saveSession();
             }
             document.getElementById('daan-contributor-banner').style.display = 'block';
-            showToast('Dhamma Daan received — thank you!', 'success');
+            showToast('Dhamma Daan received â€” thank you!', 'success');
             loadDaanDashboard();
             // Refresh profile tab if open
             if (document.getElementById('tab-profile').classList.contains('active')) loadProfileTab();
@@ -2747,7 +2757,7 @@ async function initiateDaanPayment() {
 async function loadDaanDashboard() {
   try {
     const d = await api('GET', '/dhamma-daan/dashboard');
-    const fmt = p => '₹' + Math.floor(p / 100).toLocaleString('en-IN');
+    const fmt = p => 'â‚¹' + Math.floor(p / 100).toLocaleString('en-IN');
     document.getElementById('daanStatGrid').innerHTML = `
       <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalCollectedPaise)}</div><div class="daan-stat-l">Total Collected</div></div>
       <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalFundPaise)}</div><div class="daan-stat-l">Dhamma Fund</div></div>
@@ -2768,10 +2778,10 @@ async function loadDaanDashboard() {
       <div class="daan-alloc-card">
         <div class="daan-alloc-cat">${catLabel[a.category] || a.category}</div>
         <div class="daan-alloc-title">${escHtml(a.title)}</div>
-        <div class="daan-alloc-meta">₹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' · ' + escHtml(a.beneficiary) : ''}</div>
+        <div class="daan-alloc-meta">â‚¹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' Â· ' + escHtml(a.beneficiary) : ''}</div>
         ${a.impactReport ? `<div style="font-size:0.78rem;color:var(--stone);margin-top:0.35rem;line-height:1.4;">${escHtml(a.impactReport)}</div>` : ''}
       </div>`).join('');
-  } catch(e) { /* silent — dashboard is informational */ }
+  } catch(e) { /* silent â€” dashboard is informational */ }
 }
 
 function renderPostCard(post, full) {
@@ -2811,7 +2821,7 @@ function renderPostCard(post, full) {
         <div class="avatar">${avatar}</div>
         <div style="flex:1;">
           <div class="post-author-name">${author.displayName||'Unknown'} ${clergyBadge}</div>
-          <div class="post-meta">${ago}${author.role && author.role!=='PRACTITIONER' ? ' · '+fmtRole(author.role) : ''}</div>
+          <div class="post-meta">${ago}${author.role && author.role!=='PRACTITIONER' ? ' Â· '+fmtRole(author.role) : ''}</div>
         </div>
       </div>
       <div class="post-content">
@@ -2978,7 +2988,7 @@ async function fetchDiscoverPeople(params) {
     const data = await api('GET', `/discover/people?${qs}`);
     const people = data.data || data;
     if (!people.length) {
-      ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><p>No practitioners found with these filters.</p></div>';
+      ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ”</div><p>No practitioners found with these filters.</p></div>';
       return;
     }
     ppl.innerHTML = people.map(p => renderPersonCard(p)).join('');
@@ -3015,7 +3025,7 @@ async function loadNearbyPeople() {
       const data = await api('GET', `/discover/nearby?gridLat=${gridLat}&gridLng=${gridLng}`);
       const people = data.data || [];
       if (!people.length) {
-        ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">📍</div><p>No practitioners found nearby. Try expanding your search.</p></div>';
+        ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ“</div><p>No practitioners found nearby. Try expanding your search.</p></div>';
         return;
       }
       ppl.innerHTML = people.map(p => renderPersonCard(p, p.approximateDistance)).join('');
@@ -3041,7 +3051,7 @@ function renderPersonCard(p, distance) {
     ? `<img src="${p.profilePhoto}" alt="">`
     : initials;
   const traditions = (p.traditions || []).join(', ');
-  const tags       = (p.tags || []).map(t => t.tag || t).join(' · ');
+  const tags       = (p.tags || []).map(t => t.tag || t).join(' Â· ');
   const followed   = state.followedUsers.has(p.id);
   const isMe       = p.id === state.user?.id;
   const loc = p.location?.city ? `${p.location.city}${p.location.country?', '+p.location.country:''}` : '';
@@ -3057,8 +3067,8 @@ function renderPersonCard(p, distance) {
         </div>
         <div class="person-meta">
           ${traditions ? '<span class="tradition-dot"></span>' + traditions : ''}
-          ${loc ? ' · ' + loc : ''}
-          ${distance ? ' · ' + distance : ''}
+          ${loc ? ' Â· ' + loc : ''}
+          ${distance ? ' Â· ' + distance : ''}
         </div>
         ${tags ? `<div class="person-meta" style="margin-top:0.15rem;">${tags}</div>` : ''}
       </div>
@@ -3102,7 +3112,7 @@ async function loadLearn() {
     collectionsEl.innerHTML = cols.map(c => `
       <div class="collection-card" onclick="searchLibrary('',null,'${c.id}')">
         <div class="collection-name">${escHtml(c.name)}</div>
-        <div class="collection-meta">${c.tradition} · ${c._count?.texts||0} texts · ${c.licence}</div>
+        <div class="collection-meta">${c.tradition} Â· ${c._count?.texts||0} texts Â· ${c.licence}</div>
       </div>`).join('');
   } catch(err) {
     collectionsEl.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
@@ -3132,17 +3142,17 @@ async function searchLibrary(q, tradition, collection) {
     const data = await api('GET', `/library/search?${qs}`);
     const texts = data.data || data;
     if (!texts.length) {
-      resultsEl.innerHTML = '<div class="empty-state"><div class="empty-icon">📖</div><p>No texts found. Try a different search.</p></div>';
+      resultsEl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ“–</div><p>No texts found. Try a different search.</p></div>';
       return;
     }
     resultsEl.innerHTML = `
       <div style="padding:0.5rem 1.2rem;">
-        <span style="font-size:0.78rem;color:var(--stone);cursor:pointer;" onclick="clearLearnSearch()">← All Collections</span>
+        <span style="font-size:0.78rem;color:var(--stone);cursor:pointer;" onclick="clearLearnSearch()">â† All Collections</span>
       </div>
       ${texts.map(t => `
         <div class="text-result" onclick="openTextDetail('${t.id}')">
           <div class="text-result-title">${escHtml(t.title)}</div>
-          <div class="text-result-meta">${t.author||''}${t.translator?' · Trans: '+t.translator:''} · ${t.language} · ${t.collection?.name||''}</div>
+          <div class="text-result-meta">${t.author||''}${t.translator?' Â· Trans: '+t.translator:''} Â· ${t.language} Â· ${t.collection?.name||''}</div>
         </div>`).join('')}`;
   } catch(err) {
     resultsEl.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
@@ -3199,7 +3209,7 @@ async function openTextDetail(textId) {
       ${text.attribution ? `<div class="reader-text-attr">${escHtml(text.attribution)}</div>` : ''}
       <div class="reader-rule"></div>
       ${segments.length === 0
-        ? '<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">☸</div><p>No passages available for this text yet.</p></div>'
+        ? '<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">â˜¸</div><p>No passages available for this text yet.</p></div>'
         : segments.map(s => `
           <div class="reader-segment">
             ${s.segmentKey ? `<span class="reader-segment-key">${escHtml(s.segmentKey)}</span>` : ''}
@@ -3308,7 +3318,7 @@ async function submitAnnotation() {
 }
 
 // ============================================================
-//  CHAT TAB — THREAD LIST
+//  CHAT TAB â€” THREAD LIST
 // ============================================================
 async function loadChatThreads() {
   const el = document.getElementById('chatThreads');
@@ -3320,7 +3330,7 @@ async function loadChatThreads() {
   try {
     const threads = await api('GET', '/messages/threads');
     if (!threads.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div>
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸ’¬</div>
         <p>No messages yet.<br>Discover a practitioner and send them a message.</p></div>`;
       return;
     }
@@ -3366,7 +3376,7 @@ async function loadChatUnreadCount() {
 }
 
 // ============================================================
-//  CHAT — THREAD DETAIL
+//  CHAT â€” THREAD DETAIL
 // ============================================================
 async function openThread(partnerId, partnerName) {
   state.currentPartnerId   = partnerId;
@@ -3400,7 +3410,7 @@ function renderMessages(messages) {
   const area = document.getElementById('messages-area');
   if (!messages.length) {
     area.innerHTML = `<div class="empty-state" style="margin-top:2rem;">
-      <div class="empty-icon">🙏</div>
+      <div class="empty-icon">ðŸ™</div>
       <p>Start the conversation with a kind message.</p></div>`;
     return;
   }
@@ -3625,7 +3635,7 @@ async function openProfile(userId) {
     const roleStr = fmtRole(user.role);
     const loc = [user.city, user.country].filter(Boolean).join(', ');
     document.getElementById('profile-role-loc').textContent =
-      [roleStr !== 'Practitioner' ? roleStr : '', loc].filter(Boolean).join(' · ') || '';
+      [roleStr !== 'Practitioner' ? roleStr : '', loc].filter(Boolean).join(' Â· ') || '';
 
     // Bio
     const bioEl = document.getElementById('profile-bio');
@@ -3641,8 +3651,8 @@ async function openProfile(userId) {
 
     // Traditions
     if (user.traditions?.length) {
-      const tradLabel = { THERAVADA:'Theravāda', MAHAYANA:'Mahāyāna', VAJRAYANA:'Vajrayāna',
-        NAVAYANA:'Navayāna', MULTIPLE:'Multiple', OTHER:'Other' };
+      const tradLabel = { THERAVADA:'TheravÄda', MAHAYANA:'MahÄyÄna', VAJRAYANA:'VajrayÄna',
+        NAVAYANA:'NavayÄna', MULTIPLE:'Multiple', OTHER:'Other' };
       document.getElementById('profile-traditions').innerHTML =
         user.traditions.map(t =>
           `<span class="profile-chip profile-chip-tradition">${tradLabel[t]||t}</span>`
@@ -3745,7 +3755,7 @@ async function handleAvatarUpload(input) {
   if (!file) return;
   const status = document.getElementById('edit-photo-status');
   const preview = document.getElementById('edit-avatar-preview');
-  status.textContent = 'Uploading…';
+  status.textContent = 'Uploadingâ€¦';
   try {
     const form = new FormData();
     form.append('file', file);
@@ -3761,7 +3771,7 @@ async function handleAvatarUpload(input) {
     const { url } = await resp.json();
     // Show preview immediately
     preview.innerHTML = `<img src="${escHtml(url)}" style="width:100%;height:100%;object-fit:cover;" alt="">`;
-    status.textContent = '✓ Photo updated';
+    status.textContent = 'âœ“ Photo updated';
     // Update cached user photo
     if (state.user) {
       state.user.profilePhoto = url;
@@ -3854,7 +3864,7 @@ function obGoToStep(step) {
     d.classList.toggle('done',   i < step - 1);
   });
   const txt = document.getElementById('ob-continue-text');
-  if (txt) txt.textContent = step === 3 ? 'Enter the Sangha →' : 'Continue →';
+  if (txt) txt.textContent = step === 3 ? 'Enter the Sangha â†’' : 'Continue â†’';
 }
 
 function obChipToggle(chip, singleSelect) {
@@ -3906,7 +3916,7 @@ async function submitOnboarding() {
   } catch(e) { /* non-blocking */ }
   localStorage.setItem('sangham_onboarded', '1');
   btn.disabled = false;
-  txt.textContent = 'Continue →';
+  txt.textContent = 'Continue â†’';
   routeTo('view-app');
   updateHeaderAvatar();
   populateCreatePostUI();
@@ -3939,7 +3949,7 @@ async function loadEvents() {
     const events = data.data || (Array.isArray(data) ? data : []);
     if (!events.length) {
       el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
-        <div class="empty-icon">🪷</div>
+        <div class="empty-icon">ðŸª·</div>
         <p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p>
       </div>`;
       return;
@@ -3968,22 +3978,22 @@ function renderEventCard(ev) {
     ? `<span class="post-tradition-tag" style="margin-bottom:0.4rem;">${ev.traditionTag}</span>` : '';
   const typeLabel = {
     RETREAT:'Retreat', CEREMONY:'Ceremony', TALK:'Dhamma Talk', SEMINAR:'Seminar',
-    PROTEST_MARCH:'March', COMMUNITY_GATHERING:'Gathering', DHAMMA_DIKSHA:'Dīkṣā',
+    PROTEST_MARCH:'March', COMMUNITY_GATHERING:'Gathering', DHAMMA_DIKSHA:'DÄ«ká¹£Ä',
     CONVERSION_CEREMONY:'Conversion Ceremony', AMBEDKAR_JAYANTI:'Ambedkar Jayanti',
   }[ev.eventType] || ev.eventType;
 
   return `
     <div class="event-card">
-      <div class="event-date-bar">${dateStr} · ${timeStr}</div>
+      <div class="event-date-bar">${dateStr} Â· ${timeStr}</div>
       <div class="event-body">
         ${tradition}
         <div class="event-title">${escHtml(ev.title)}</div>
-        <div class="event-meta">${typeLabel}${loc ? ' · ' + escHtml(loc) : ''}${organiser ? ' · ' + escHtml(organiser) : ''}</div>
+        <div class="event-meta">${typeLabel}${loc ? ' Â· ' + escHtml(loc) : ''}${organiser ? ' Â· ' + escHtml(organiser) : ''}</div>
       </div>
       <div class="event-footer">
         <span class="event-rsvp-count">${rsvpCount > 0 ? rsvpCount + ' going' : 'Be first to RSVP'}</span>
         <div style="display:flex;gap:0.5rem;align-items:center;">
-          ${ev.onlineUrl ? `<a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:0.73rem;color:var(--saffron-dark);text-decoration:none;">Join Online ↗</a>` : ''}
+          ${ev.onlineUrl ? `<a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:0.73rem;color:var(--saffron-dark);text-decoration:none;">Join Online â†—</a>` : ''}
           <button class="btn-ghost" style="font-size:0.73rem;padding:0.3rem 0.7rem;" onclick="rsvpEvent('${ev.id}',this)">RSVP</button>
         </div>
       </div>
@@ -3993,7 +4003,7 @@ function renderEventCard(ev) {
 async function rsvpEvent(eventId, btn) {
   try {
     await api('POST', `/events/${eventId}/rsvp`, { status: 'GOING' });
-    btn.textContent = 'Going ✓';
+    btn.textContent = 'Going âœ“';
     btn.classList.add('followed');
     showToast('RSVP confirmed', 'success');
   } catch(err) { showToast(err.message, 'error'); }
@@ -4016,7 +4026,7 @@ async function loadCommunities() {
     if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
     if (!comms.length) {
       el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
-        <div class="empty-icon">🏛️</div>
+        <div class="empty-icon">ðŸ›ï¸</div>
         <p>No communities found.<br>Create one for your local Sangha.</p>
       </div>`;
       return;
@@ -4056,18 +4066,18 @@ function renderCommCard(c) {
       <div class="comm-icon">${escHtml((c.name||'?').charAt(0))}</div>
       <div class="comm-info">
         <div class="comm-name">${verified}${escHtml(c.name)}</div>
-        <div class="comm-meta">${catLabel}${trad ? ' · ' + trad : ''}${loc ? ' · ' + loc : ''}</div>
+        <div class="comm-meta">${catLabel}${trad ? ' Â· ' + trad : ''}${loc ? ' Â· ' + loc : ''}</div>
         <div class="comm-meta">${memberCount} member${memberCount !== 1 ? 's' : ''}</div>
       </div>
     </div>`;
 }
 
 function openCommDetail(id) {
-  showToast('Full community page — coming soon');
+  showToast('Full community page â€” coming soon');
 }
 
 // ============================================================
-//  EVENTS — GPS + TRADITION FILTER
+//  EVENTS â€” GPS + TRADITION FILTER
 // ============================================================
 let eventsNearMe = false;
 let eventsNearMeCoords = null;
@@ -4115,7 +4125,7 @@ async function loadEvents() {
       if (eventsTradFilter) qs += `&tradition=${eventsTradFilter}`;
       const events = await api('GET', qs);
       if (!events.length) {
-        el.innerHTML = `<div class="empty-state"><div class="empty-icon">📍</div><p>No events within 100 km.<br>Try expanding your search.</p></div>`;
+        el.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸ“</div><p>No events within 100 km.<br>Try expanding your search.</p></div>`;
         return;
       }
       el.innerHTML = events.map(renderEventCard).join('');
@@ -4126,7 +4136,7 @@ async function loadEvents() {
       const data = await api('GET', qs);
       const events = data.data || (Array.isArray(data) ? data : []);
       if (!events.length) {
-        el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🪷</div><p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p></div>`;
+        el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">ðŸª·</div><p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p></div>`;
         return;
       }
       el.innerHTML = events.map(renderEventCard).join('');
@@ -4206,7 +4216,7 @@ async function submitCreateEvent() {
 
   const btn = document.getElementById('ce-submit-btn');
   const txt = document.getElementById('ce-submit-text');
-  btn.disabled = true; txt.textContent = 'Publishing…';
+  btn.disabled = true; txt.textContent = 'Publishingâ€¦';
   try {
     await api('POST', '/events', body);
     showToast('Event published!', 'success');
@@ -4224,7 +4234,7 @@ async function submitCreateEvent() {
 }
 
 // ============================================================
-//  COMMUNITIES — COUNTRY FILTER
+//  COMMUNITIES â€” COUNTRY FILTER
 // ============================================================
 let commCountryFilter = null;
 
@@ -4262,7 +4272,7 @@ async function loadCommunities() {
     const q = document.getElementById('commSearch').value.trim().toLowerCase();
     if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
     if (!comms.length) {
-      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛️</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">ðŸ›ï¸</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
       return;
     }
     el.innerHTML = comms.map(renderCommCard).join('');
@@ -4316,7 +4326,7 @@ async function submitCreateComm() {
 
   const btn = document.getElementById('cg-submit-btn');
   const txt = document.getElementById('cg-submit-text');
-  btn.disabled = true; txt.textContent = 'Creating…';
+  btn.disabled = true; txt.textContent = 'Creatingâ€¦';
   try {
     const result = await api('POST', '/associations', body);
     showToast('Group created! You are now the president.', 'success');
@@ -4337,9 +4347,9 @@ let commDetailState = { id: null, isMember: false };
 
 async function openCommDetail(id) {
   commDetailState.id = id;
-  document.getElementById('cd-name').textContent = 'Loading…';
+  document.getElementById('cd-name').textContent = 'Loadingâ€¦';
   document.getElementById('cd-meta').textContent = '';
-  document.getElementById('cd-icon').textContent = '…';
+  document.getElementById('cd-icon').textContent = 'â€¦';
   document.getElementById('cd-members').innerHTML = '';
   document.getElementById('cd-events').innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:0.5rem auto;"></div>';
   openPanel('panel-comm-detail');
@@ -4362,7 +4372,7 @@ async function openCommDetail(id) {
     }[assoc.category] || assoc.category;
     const trad = assoc.tradition ? assoc.tradition.charAt(0) + assoc.tradition.slice(1).toLowerCase() : '';
     const loc = [assoc.city, assoc.country].filter(Boolean).join(', ');
-    document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' · ');
+    document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' Â· ');
 
     if (assoc.description) {
       document.getElementById('cd-desc').textContent = assoc.description;
@@ -4503,7 +4513,7 @@ function renderFollowList() {
       : followState.sort === 'mutual' ? 'No mutual connections yet.'
       : followState.segment === 'followers' ? 'No connected members yet. Share your profile to grow your network.'
       : 'No connections yet. Visit Discover to find practitioners.';
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>${msg}</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸª·</div><p>${msg}</p></div>`;
     return;
   }
   container.innerHTML = list.map(renderFollowCard).join('');
@@ -4521,7 +4531,7 @@ function renderFollowCard(u) {
     : '';
   const loc  = [u.city, u.country].filter(Boolean).join(', ');
   const role = u.role ? u.role.charAt(0) + u.role.slice(1).toLowerCase().replace(/_/g,' ') : '';
-  const meta = [role, loc].filter(Boolean).join(' · ') || (u.bio ? u.bio.slice(0, 55) : 'Digital Sangha member');
+  const meta = [role, loc].filter(Boolean).join(' Â· ') || (u.bio ? u.bio.slice(0, 55) : 'Sangham member');
 
   let actionBtn;
   if (followState.segment === 'followers') {
@@ -4531,7 +4541,7 @@ function renderFollowCard(u) {
       actionBtn = `<button class="follow-card-action follow-back" onclick="followCardAction('${u.id}','follow',this)">Connect Back</button>`;
     }
   } else {
-    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual ✓' : 'Connected'}</button>`;
+    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual âœ“' : 'Connected'}</button>`;
   }
 
   return `<div class="follow-card">
@@ -4591,3 +4601,4 @@ async function followCardAction(userId, action, btn) {
 </script>
 </body>
 </html>
+
