@@ -1800,7 +1800,7 @@
     <div class="fab-wrap" id="fabWrap">
       <ul class="fab-dial" id="fabDial">
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">âœï¸</button>
+          <button class="fab-dial-btn" onclick="openCreatePost();closeFab()" title="Post">âœ️</button>
           <span class="fab-dial-label">Post</span>
         </li>
         <li class="fab-dial-item">
@@ -1808,7 +1808,7 @@
           <span class="fab-dial-label">Event</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛ï¸</button>
+          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛️</button>
           <span class="fab-dial-label">Community</span>
         </li>
         <li class="fab-dial-item">
@@ -2675,7 +2675,7 @@ async function loadHome() {
     }
     container.innerHTML = posts.map(renderPostCard).join('');
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠ï¸</div><p>${err.message}</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}</p></div>`;
   }
 }
 
@@ -2724,7 +2724,7 @@ async function loadDailyVerse() {
       <div class="daily-verse">
         <div class="daily-verse-label">✦ Daily Verse</div>
         <div class="daily-verse-text">"${verse.content}"</div>
-        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? 'Â· '+verse.segmentKey : ''}</div>
+        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? '· '+verse.segmentKey : ''}</div>
       </div>`;
   } catch(e) { container.innerHTML = ''; }
 }
@@ -2935,7 +2935,7 @@ async function loadDaanDashboard() {
       <div class="daan-alloc-card">
         <div class="daan-alloc-cat">${catLabel[a.category] || a.category}</div>
         <div class="daan-alloc-title">${escHtml(a.title)}</div>
-        <div class="daan-alloc-meta">₹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' Â· ' + escHtml(a.beneficiary) : ''}</div>
+        <div class="daan-alloc-meta">₹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' · ' + escHtml(a.beneficiary) : ''}</div>
         ${a.impactReport ? `<div style="font-size:0.78rem;color:var(--stone);margin-top:0.35rem;line-height:1.4;">${escHtml(a.impactReport)}</div>` : ''}
       </div>`).join('');
   } catch(e) { /* silent — dashboard is informational */ }
@@ -2978,7 +2978,7 @@ function renderPostCard(post, full) {
         <div class="avatar">${avatar}</div>
         <div style="flex:1;">
           <div class="post-author-name">${author.displayName||'Unknown'} ${clergyBadge}</div>
-          <div class="post-meta">${ago}${author.role && author.role!=='PRACTITIONER' ? ' Â· '+fmtRole(author.role) : ''}</div>
+          <div class="post-meta">${ago}${author.role && author.role!=='PRACTITIONER' ? ' · '+fmtRole(author.role) : ''}</div>
         </div>
       </div>
       <div class="post-content">
@@ -3208,7 +3208,7 @@ function renderPersonCard(p, distance) {
     ? `<img src="${p.profilePhoto}" alt="">`
     : initials;
   const traditions = (p.traditions || []).join(', ');
-  const tags       = (p.tags || []).map(t => t.tag || t).join(' Â· ');
+  const tags       = (p.tags || []).map(t => t.tag || t).join(' · ');
   const followed   = state.followedUsers.has(p.id);
   const isMe       = p.id === state.user?.id;
   const loc = p.location?.city ? `${p.location.city}${p.location.country?', '+p.location.country:''}` : '';
@@ -3224,8 +3224,8 @@ function renderPersonCard(p, distance) {
         </div>
         <div class="person-meta">
           ${traditions ? '<span class="tradition-dot"></span>' + traditions : ''}
-          ${loc ? ' Â· ' + loc : ''}
-          ${distance ? ' Â· ' + distance : ''}
+          ${loc ? ' · ' + loc : ''}
+          ${distance ? ' · ' + distance : ''}
         </div>
         ${tags ? `<div class="person-meta" style="margin-top:0.15rem;">${tags}</div>` : ''}
       </div>
@@ -3269,7 +3269,7 @@ async function loadLearn() {
     collectionsEl.innerHTML = cols.map(c => `
       <div class="collection-card" onclick="searchLibrary('',null,'${c.id}')">
         <div class="collection-name">${escHtml(c.name)}</div>
-        <div class="collection-meta">${c.tradition} Â· ${c._count?.texts||0} texts Â· ${c.licence}</div>
+        <div class="collection-meta">${c.tradition} · ${c._count?.texts||0} texts · ${c.licence}</div>
       </div>`).join('');
   } catch(err) {
     collectionsEl.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
@@ -3309,7 +3309,7 @@ async function searchLibrary(q, tradition, collection) {
       ${texts.map(t => `
         <div class="text-result" onclick="openTextDetail('${t.id}')">
           <div class="text-result-title">${escHtml(t.title)}</div>
-          <div class="text-result-meta">${t.author||''}${t.translator?' Â· Trans: '+t.translator:''} Â· ${t.language} Â· ${t.collection?.name||''}</div>
+          <div class="text-result-meta">${t.author||''}${t.translator?' · Trans: '+t.translator:''} · ${t.language} · ${t.collection?.name||''}</div>
         </div>`).join('')}`;
   } catch(err) {
     resultsEl.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
@@ -3792,7 +3792,7 @@ async function openProfile(userId) {
     const roleStr = fmtRole(user.role);
     const loc = [user.city, user.country].filter(Boolean).join(', ');
     document.getElementById('profile-role-loc').textContent =
-      [roleStr !== 'Practitioner' ? roleStr : '', loc].filter(Boolean).join(' Â· ') || '';
+      [roleStr !== 'Practitioner' ? roleStr : '', loc].filter(Boolean).join(' · ') || '';
 
     // Bio
     const bioEl = document.getElementById('profile-bio');
@@ -4141,11 +4141,11 @@ function renderEventCard(ev) {
 
   return `
     <div class="event-card">
-      <div class="event-date-bar">${dateStr} Â· ${timeStr}</div>
+      <div class="event-date-bar">${dateStr} · ${timeStr}</div>
       <div class="event-body">
         ${tradition}
         <div class="event-title">${escHtml(ev.title)}</div>
-        <div class="event-meta">${typeLabel}${loc ? ' Â· ' + escHtml(loc) : ''}${organiser ? ' Â· ' + escHtml(organiser) : ''}</div>
+        <div class="event-meta">${typeLabel}${loc ? ' · ' + escHtml(loc) : ''}${organiser ? ' · ' + escHtml(organiser) : ''}</div>
       </div>
       <div class="event-footer">
         <span class="event-rsvp-count">${rsvpCount > 0 ? rsvpCount + ' going' : 'Be first to RSVP'}</span>
@@ -4172,35 +4172,6 @@ async function rsvpEvent(eventId, btn) {
 let commFilter = null;
 let commTimer  = null;
 
-async function loadCommunities() {
-  const el = document.getElementById('commList');
-  el.innerHTML = '<div class="spinner"></div>';
-  try {
-    const qs = commFilter ? '?category=' + commFilter : '';
-    const data = await api('GET', '/associations' + qs);
-    let comms = Array.isArray(data) ? data : (data.data || []);
-    const q = document.getElementById('commSearch').value.trim().toLowerCase();
-    if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
-    if (!comms.length) {
-      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
-        <div class="empty-icon">🏛ï¸</div>
-        <p>No communities found.<br>Create one for your local Sangha.</p>
-      </div>`;
-      return;
-    }
-    el.innerHTML = comms.map(renderCommCard).join('');
-  } catch(err) {
-    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
-  }
-}
-
-function filterComm(category, chip) {
-  document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
-  chip.classList.add('active');
-  commFilter = category;
-  loadCommunities();
-}
-
 function debounceComm() {
   clearTimeout(commTimer);
   commTimer = setTimeout(loadCommunities, 400);
@@ -4223,14 +4194,10 @@ function renderCommCard(c) {
       <div class="comm-icon">${escHtml((c.name||'?').charAt(0))}</div>
       <div class="comm-info">
         <div class="comm-name">${verified}${escHtml(c.name)}</div>
-        <div class="comm-meta">${catLabel}${trad ? ' Â· ' + trad : ''}${loc ? ' Â· ' + loc : ''}</div>
+        <div class="comm-meta">${catLabel}${trad ? ' · ' + trad : ''}${loc ? ' · ' + loc : ''}</div>
         <div class="comm-meta">${memberCount} member${memberCount !== 1 ? 's' : ''}</div>
       </div>
     </div>`;
-}
-
-function openCommDetail(id) {
-  showToast('Full community page — coming soon');
 }
 
 // ============================================================
@@ -4414,7 +4381,6 @@ function filterCommNearMe(chip) {
   }
 }
 
-// Override loadCommunities to support country filter
 async function loadCommunities() {
   const el = document.getElementById('commList');
   el.innerHTML = '<div class="spinner"></div>';
@@ -4429,7 +4395,7 @@ async function loadCommunities() {
     const q = document.getElementById('commSearch').value.trim().toLowerCase();
     if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
     if (!comms.length) {
-      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛ï¸</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛️</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
       return;
     }
     el.innerHTML = comms.map(renderCommCard).join('');
@@ -4438,7 +4404,6 @@ async function loadCommunities() {
   }
 }
 
-// Override filterComm to clear country filter
 function filterComm(category, chip) {
   document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
@@ -4529,7 +4494,7 @@ async function openCommDetail(id) {
     }[assoc.category] || assoc.category;
     const trad = assoc.tradition ? assoc.tradition.charAt(0) + assoc.tradition.slice(1).toLowerCase() : '';
     const loc = [assoc.city, assoc.country].filter(Boolean).join(', ');
-    document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' Â· ');
+    document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' · ');
 
     if (assoc.description) {
       document.getElementById('cd-desc').textContent = assoc.description;
@@ -4556,7 +4521,7 @@ async function openCommDetail(id) {
       eventsEl.innerHTML = upcoming.map(ev => {
         const d = new Date(ev.startsAt);
         const ds = d.toLocaleDateString('en-IN', { weekday:'short', month:'short', day:'numeric' });
-        return `<div style="padding:0.6rem 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="">
+        return `<div style="padding:0.6rem 0;border-bottom:1px solid var(--border);" onclick="switchTab('events')">
           <div style="font-size:0.82rem;font-weight:600;color:var(--charcoal);">${escHtml(ev.title)}</div>
           <div style="font-size:0.72rem;color:var(--stone-light);margin-top:2px;">${ds}</div>
         </div>`;
@@ -4688,7 +4653,7 @@ function renderFollowCard(u) {
     : '';
   const loc  = [u.city, u.country].filter(Boolean).join(', ');
   const role = u.role ? u.role.charAt(0) + u.role.slice(1).toLowerCase().replace(/_/g,' ') : '';
-  const meta = [role, loc].filter(Boolean).join(' Â· ') || (u.bio ? u.bio.slice(0, 55) : 'Sangham member');
+  const meta = [role, loc].filter(Boolean).join(' · ') || (u.bio ? u.bio.slice(0, 55) : 'Sangham member');
 
   let actionBtn;
   if (followState.segment === 'followers') {
