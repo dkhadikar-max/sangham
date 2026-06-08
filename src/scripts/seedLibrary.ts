@@ -1,0 +1,111 @@
+import { prisma } from '../config/database';
+
+const BILARA_BASE = 'https://raw.githubusercontent.com/suttacentral/bilara-data/published';
+
+interface SuttaSpec {
+  id: string;
+  title: string;
+  path: string;
+}
+
+// Curated selection — Bhikkhu Sujato translations, CC0
+const SUTTAS: SuttaSpec[] = [
+  // Dīgha Nikāya (Long Discourses)
+  { id: 'dn2',   title: 'Sāmaññaphala Sutta — The Fruits of the Contemplative Life', path: 'translation/en/sujato/dn/dn2/dn2_translation-en-sujato.json' },
+  { id: 'dn16',  title: 'Mahāparinibbāna Sutta — The Great Passing',                 path: 'translation/en/sujato/dn/dn16/dn16_translation-en-sujato.json' },
+  { id: 'dn22',  title: 'Mahāsatipaṭṭhāna Sutta — The Great Discourse on Mindfulness', path: 'translation/en/sujato/dn/dn22/dn22_translation-en-sujato.json' },
+
+  // Majjhima Nikāya (Middle Length Discourses)
+  { id: 'mn10',  title: 'Satipaṭṭhāna Sutta — Mindfulness Meditation',             path: 'translation/en/sujato/mn/mn10/mn10_translation-en-sujato.json' },
+  { id: 'mn26',  title: 'Ariyapariyesanā Sutta — The Noble Search',                path: 'translation/en/sujato/mn/mn26/mn26_translation-en-sujato.json' },
+  { id: 'mn36',  title: 'Mahāsaccaka Sutta — The Longer Discourse to Saccaka',     path: 'translation/en/sujato/mn/mn36/mn36_translation-en-sujato.json' },
+  { id: 'mn118', title: 'Ānāpānasati Sutta — Mindfulness of Breathing',            path: 'translation/en/sujato/mn/mn118/mn118_translation-en-sujato.json' },
+  { id: 'mn140', title: 'Dhātuvibhaṅga Sutta — The Analysis of the Properties',   path: 'translation/en/sujato/mn/mn140/mn140_translation-en-sujato.json' },
+
+  // Saṁyutta Nikāya (Connected Discourses)
+  { id: 'sn12.1',  title: 'Paṭiccasamuppāda Sutta — Dependent Origination',             path: 'translation/en/sujato/sn/sn12/sn12.1/sn12.1_translation-en-sujato.json' },
+  { id: 'sn22.59', title: 'Anattalakkhaṇa Sutta — The Characteristic of Non-Self',      path: 'translation/en/sujato/sn/sn22/sn22.59/sn22.59_translation-en-sujato.json' },
+  { id: 'sn35.28', title: 'Āditta Sutta — The Fire Sermon',                              path: 'translation/en/sujato/sn/sn35/sn35.28/sn35.28_translation-en-sujato.json' },
+  { id: 'sn56.11', title: 'Dhammacakkappavattana Sutta — Setting the Wheel of Dhamma in Motion', path: 'translation/en/sujato/sn/sn56/sn56.11/sn56.11_translation-en-sujato.json' },
+
+  // Aṅguttara Nikāya (Numerical Discourses)
+  { id: 'an3.65',  title: 'Kālāma Sutta — The Charter of Free Inquiry',      path: 'translation/en/sujato/an/an3/an3.61-70/an3.65_translation-en-sujato.json' },
+  { id: 'an4.41',  title: 'Samādhi Sutta — Concentration',                   path: 'translation/en/sujato/an/an4/an4.41-50/an4.41_translation-en-sujato.json' },
+  { id: 'an8.54',  title: 'Mettā Sutta — Goodwill (AN)',                     path: 'translation/en/sujato/an/an8/an8.54/an8.54_translation-en-sujato.json' },
+
+  // Khuddaka Nikāya (Minor Collection)
+  { id: 'snp1.8',  title: 'Karaṇīya Metta Sutta — The Discourse on Goodwill', path: 'translation/en/sujato/kn/snp/snp1.8_translation-en-sujato.json' },
+  { id: 'snp2.1',  title: 'Ratana Sutta — The Jewel Discourse',               path: 'translation/en/sujato/kn/snp/snp2.1_translation-en-sujato.json' },
+  { id: 'snp2.4',  title: 'Maṅgala Sutta — The Highest Blessings',            path: 'translation/en/sujato/kn/snp/snp2.4_translation-en-sujato.json' },
+  { id: 'snp4.15', title: 'Attadaṇḍa Sutta — Taking Up Arms',                path: 'translation/en/sujato/kn/snp/snp4.15_translation-en-sujato.json' },
+  { id: 'thag1.1', title: 'Theragāthā — Verses of the Elder Monks (excerpt)', path: 'translation/en/sujato/kn/thag/thag1.1_translation-en-sujato.json' },
+];
+
+export async function seedBuddhistTexts(): Promise<{ seeded: string[]; failed: string[]; total: number }> {
+  const seeded: string[] = [];
+  const failed: string[] = [];
+
+  const collection = await prisma.libraryCollection.upsert({
+    where:  { slug: 'suttacentral-tipitaka' },
+    create: {
+      slug:        'suttacentral-tipitaka',
+      name:        'Tipitaka (Pali Canon)',
+      tradition:   'THERAVADA',
+      description: 'Early Buddhist texts — Dīgha, Majjhima, Saṁyutta, Aṅguttara, and Khuddaka Nikāyas. Translations by Bhikkhu Sujato (CC0).',
+      sourceUrl:   'https://suttacentral.net',
+      licence:     'CC0',
+    },
+    update: {},
+  });
+
+  for (const sutta of SUTTAS) {
+    try {
+      const res = await fetch(`${BILARA_BASE}/${sutta.path}`);
+      if (!res.ok) {
+        failed.push(`${sutta.id}: HTTP ${res.status}`);
+        continue;
+      }
+
+      const raw = await res.json() as Record<string, string>;
+
+      const text = await prisma.libraryText.upsert({
+        where:  { externalId: sutta.id },
+        create: {
+          collectionId: collection.id,
+          externalId:   sutta.id,
+          title:        sutta.title,
+          translator:   'Bhikkhu Sujato',
+          language:     'en',
+          licence:      'CC0',
+          sourceUrl:    `https://suttacentral.net/${sutta.id}`,
+          attribution:  `SuttaCentral.net · Bhikkhu Sujato · CC0`,
+        },
+        update: { title: sutta.title },
+      });
+
+      const segments = Object.entries(raw)
+        .filter(([, content]) => typeof content === 'string' && content.trim().length > 0)
+        .map(([key, content], i) => ({
+          textId:     text.id,
+          segmentKey: key,
+          content:    content.trim(),
+          sequence:   i,
+        }));
+
+      for (let i = 0; i < segments.length; i += 200) {
+        await prisma.librarySegment.createMany({
+          data: segments.slice(i, i + 200),
+          skipDuplicates: true,
+        });
+      }
+
+      seeded.push(sutta.id);
+      console.log(`[Seed] ✓ ${sutta.id} — ${segments.length} segments`);
+    } catch (err: any) {
+      failed.push(`${sutta.id}: ${err.message}`);
+      console.warn(`[Seed] ✗ ${sutta.id}: ${err.message}`);
+    }
+  }
+
+  return { seeded, failed, total: seeded.length };
+}

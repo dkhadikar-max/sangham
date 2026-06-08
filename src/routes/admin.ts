@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { UserRole } from '@prisma/client';
+import { seedBuddhistTexts } from '../scripts/seedLibrary';
 
 const router = Router();
 const adminRoles = [UserRole.MODERATOR, UserRole.SUPER_ADMIN];
@@ -47,6 +48,16 @@ router.get('/stats', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_re
     prisma.contentReport.count({ where: { isResolved: false } }),
   ]);
   res.json({ users, posts, sessions, events, associations: assocs, openReports: reports });
+});
+
+// POST /admin/seed-library  — one-shot Buddhist text seeder
+router.post('/seed-library', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const result = await seedBuddhistTexts();
+    res.json({ message: `Seeded ${result.total} texts`, ...result });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 export default router;
