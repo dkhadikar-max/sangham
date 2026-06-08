@@ -49,7 +49,7 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
         take: 50,
       },
       events: { where: { isPublished: true, startsAt: { gte: new Date() } }, take: 10, orderBy: { startsAt: 'asc' } },
-      _count: { select: { members: true } },
+      _count: { select: { members: { where: { isActive: true } } } },
     },
   });
   if (!assoc) throw new AppError('Association not found', 404);
@@ -65,7 +65,7 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
   if (category) where.category = category;
   const assocs = await prisma.association.findMany({
     where, take: 50, orderBy: { name: 'asc' },
-    select: { id: true, name: true, country: true, city: true, tradition: true, category: true, isVerified: true, _count: { select: { members: true } } },
+    select: { id: true, name: true, country: true, city: true, tradition: true, category: true, isVerified: true, _count: { select: { members: { where: { isActive: true } } } } },
   });
   res.json(assocs);
 });
