@@ -953,6 +953,94 @@
     .follow-card-action.following-btn { background: transparent; color: var(--stone-light); border-color: var(--border); }
     .follow-card-action:disabled { opacity: 0.6; cursor: not-allowed; }
 
+    /* =========================================
+       14. CREATE FORMS & COMMUNITY DETAIL
+       ========================================= */
+    .tab-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1rem 0.4rem;
+    }
+    .tab-header-row .section-title { margin: 0; padding: 0; }
+    .btn-create {
+      display: flex; align-items: center; gap: 0.35rem;
+      background: var(--saffron); color: white; border: none;
+      border-radius: 20px; padding: 0.4rem 0.85rem;
+      font-size: 0.78rem; font-weight: 600; cursor: pointer;
+      font-family: inherit; transition: background 0.2s;
+    }
+    .btn-create:hover { background: var(--saffron-dark); }
+    .btn-create svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+    /* Create form sheet */
+    .create-form { padding: 0 1.2rem 1.5rem; overflow-y: auto; }
+    .create-form .input-group { margin-bottom: 1rem; }
+    .create-form .input-group label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--stone); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .create-form input, .create-form textarea, .create-form select {
+      width: 100%; border: 1px solid var(--border-solid); border-radius: 8px;
+      padding: 0.65rem 0.85rem; font-size: 0.9rem; font-family: inherit;
+      color: var(--charcoal); background: var(--surface); box-sizing: border-box;
+      outline: none; transition: border-color 0.2s;
+    }
+    .create-form input:focus, .create-form textarea:focus, .create-form select:focus { border-color: var(--saffron); }
+    .create-form textarea { resize: none; min-height: 80px; line-height: 1.5; }
+    .create-form .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .create-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .create-chip {
+      padding: 0.35rem 0.75rem; border-radius: 20px; border: 1.5px solid var(--border-solid);
+      font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+      background: var(--surface); color: var(--stone); user-select: none;
+    }
+    .create-chip.active {
+      background: var(--saffron); color: white; border-color: var(--saffron);
+    }
+    .online-toggle {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .online-toggle input[type=checkbox] { width: auto; accent-color: var(--saffron); }
+    .online-toggle label { font-size: 0.85rem; color: var(--charcoal); font-weight: 500; margin: 0; text-transform: none; letter-spacing: 0; }
+
+    /* Community detail panel */
+    #panel-comm-detail .comm-detail-header {
+      background: linear-gradient(135deg, var(--saffron-dark), var(--saffron));
+      padding: 3.5rem 1.2rem 1.5rem; color: white; position: relative;
+    }
+    #panel-comm-detail .comm-detail-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content:center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700;
+      color: white; margin-bottom: 0.75rem;
+    }
+    #panel-comm-detail .comm-detail-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    #panel-comm-detail .comm-detail-meta { font-size: 0.8rem; opacity: 0.85; }
+    .comm-detail-body { padding: 1rem 1.2rem; overflow-y: auto; }
+    .comm-detail-section { margin-bottom: 1.4rem; }
+    .comm-detail-section-title {
+      font-size: 0.72rem; font-weight: 700; color: var(--stone); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 0.6rem;
+    }
+    .comm-member-row { display: flex; gap: -8px; }
+    .comm-member-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--saffron); border: 2px solid var(--surface);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: white;
+      margin-right: -8px; cursor: pointer;
+    }
+    .comm-join-btn {
+      width: 100%; padding: 0.75rem; border-radius: 12px; border: none;
+      font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.2s; margin-bottom: 1rem;
+    }
+    .comm-join-btn.join { background: var(--saffron); color: white; }
+    .comm-join-btn.leave { background: transparent; color: var(--stone); border: 1.5px solid var(--border-solid); }
+
     /* Annotation prompt sheet */
     .reader-annotate-sheet {
       position: absolute; bottom: 0; left: 0; right: 0;
@@ -1207,9 +1295,16 @@
 
       <!-- EVENTS TAB -->
       <div id="tab-events" class="tab-panel">
-        <div class="section-title" style="padding-bottom:0.2rem;">Upcoming Events</div>
+        <div class="tab-header-row">
+          <div class="section-title">Upcoming Events</div>
+          <button class="btn-create" onclick="openCreateEvent()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create
+          </button>
+        </div>
         <div class="category-scroll" id="eventFilters">
-          <span class="category-chip active" onclick="filterEvents(null,this)">All</span>
+          <span class="category-chip active" id="evf-all" onclick="filterEvents(null,this)">All</span>
+          <span class="category-chip" id="evf-nearby" onclick="filterEventsNearMe(this)">📍 Near Me</span>
           <span class="category-chip" onclick="filterEvents('RETREAT',this)">Retreats</span>
           <span class="category-chip" onclick="filterEvents('TALK',this)">Dhamma Talks</span>
           <span class="category-chip" onclick="filterEvents('CEREMONY',this)">Ceremonies</span>
@@ -1217,17 +1312,33 @@
           <span class="category-chip" onclick="filterEvents('COMMUNITY_GATHERING',this)">Gatherings</span>
           <span class="category-chip" onclick="filterEvents('AMBEDKAR_JAYANTI',this)">Ambedkar Jayanti</span>
         </div>
+        <div class="category-scroll" id="eventTradFilters" style="padding-top:0;">
+          <span class="category-chip active" id="evtrad-all" onclick="filterEventsTrad(null,this)">All traditions</span>
+          <span class="category-chip" onclick="filterEventsTrad('THERAVADA',this)">Theravāda</span>
+          <span class="category-chip" onclick="filterEventsTrad('MAHAYANA',this)">Mahāyāna</span>
+          <span class="category-chip" onclick="filterEventsTrad('VAJRAYANA',this)">Vajrayāna</span>
+          <span class="category-chip" onclick="filterEventsTrad('NAVAYANA',this)">Navayāna</span>
+        </div>
         <div id="eventsList"></div>
+        <div style="height:1rem;"></div>
       </div>
 
       <!-- COMMUNITIES TAB -->
       <div id="tab-communities" class="tab-panel">
-        <div class="search-bar" style="margin-top:1rem;">
+        <div class="tab-header-row">
+          <div class="section-title">Communities</div>
+          <button class="btn-create" onclick="openCreateComm()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create
+          </button>
+        </div>
+        <div class="search-bar" style="margin: 0 1rem 0.5rem;">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groups…" oninput="debounceComm()">
         </div>
         <div class="category-scroll" id="commFilters">
-          <span class="category-chip active" onclick="filterComm(null,this)">All</span>
+          <span class="category-chip active" id="comm-all" onclick="filterComm(null,this)">All</span>
+          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">📍 My Country</span>
           <span class="category-chip" onclick="filterComm('TEMPLE',this)">Temples</span>
           <span class="category-chip" onclick="filterComm('NGO',this)">NGOs</span>
           <span class="category-chip" onclick="filterComm('STUDY_GROUP',this)">Study Groups</span>
@@ -1235,6 +1346,7 @@
           <span class="category-chip" onclick="filterComm('UNIVERSITY_CLUB',this)">University</span>
         </div>
         <div id="commList"></div>
+        <div style="height:1rem;"></div>
       </div>
 
       <!-- FOLLOW TAB -->
@@ -1533,6 +1645,181 @@
           <button class="btn-primary" style="width:100%;" id="save-profile-btn" onclick="saveProfile()">
             <span id="save-profile-btn-text">Save Changes</span>
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: CREATE EVENT ── -->
+    <div id="panel-create-event" class="panel slide-up">
+      <div class="panel-header">
+        <div class="panel-back" onclick="closePanel('panel-create-event')">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="panel-title">Create Event</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="create-form">
+        <div class="input-group">
+          <label>Title *</label>
+          <input type="text" id="ce-title" placeholder="Event name" maxlength="200">
+        </div>
+        <div class="input-group">
+          <label>Type *</label>
+          <div class="create-chips" id="ce-type-chips">
+            <div class="create-chip active" data-val="RETREAT" onclick="ceChip(this,'type',true)">Retreat</div>
+            <div class="create-chip" data-val="TALK" onclick="ceChip(this,'type',true)">Dhamma Talk</div>
+            <div class="create-chip" data-val="CEREMONY" onclick="ceChip(this,'type',true)">Ceremony</div>
+            <div class="create-chip" data-val="COMMUNITY_GATHERING" onclick="ceChip(this,'type',true)">Gathering</div>
+            <div class="create-chip" data-val="DHAMMA_DIKSHA" onclick="ceChip(this,'type',true)">Dīkṣā</div>
+            <div class="create-chip" data-val="SEMINAR" onclick="ceChip(this,'type',true)">Seminar</div>
+            <div class="create-chip" data-val="PROTEST_MARCH" onclick="ceChip(this,'type',true)">March</div>
+            <div class="create-chip" data-val="AMBEDKAR_JAYANTI" onclick="ceChip(this,'type',true)">Ambedkar Jayanti</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Tradition</label>
+          <div class="create-chips" id="ce-trad-chips">
+            <div class="create-chip active" data-val="" onclick="ceChip(this,'trad',true)">Any</div>
+            <div class="create-chip" data-val="THERAVADA" onclick="ceChip(this,'trad',true)">Theravāda</div>
+            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'trad',true)">Mahāyāna</div>
+            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'trad',true)">Vajrayāna</div>
+            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'trad',true)">Navayāna</div>
+          </div>
+        </div>
+        <div class="date-row input-group">
+          <div>
+            <label>Date *</label>
+            <input type="date" id="ce-date">
+          </div>
+          <div>
+            <label>Time *</label>
+            <input type="time" id="ce-time">
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="online-toggle">
+            <input type="checkbox" id="ce-online-toggle" onchange="toggleOnlineFields()">
+            <label for="ce-online-toggle">Online event</label>
+          </div>
+          <div id="ce-location-fields">
+            <input type="text" id="ce-location" placeholder="Location name (temple, hall, city…)" maxlength="200">
+          </div>
+          <div id="ce-online-fields" style="display:none; margin-top:0.5rem;">
+            <input type="url" id="ce-url" placeholder="https://zoom.us/j/…">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="ce-desc" placeholder="Tell people what to expect…" rows="3" maxlength="3000"></textarea>
+        </div>
+        <div class="input-group">
+          <label>Capacity <span style="font-weight:400;opacity:0.6;">(0 = unlimited)</span></label>
+          <input type="number" id="ce-capacity" value="0" min="0" max="100000">
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:0.5rem;" id="ce-submit-btn" onclick="submitCreateEvent()">
+          <span id="ce-submit-text">Publish Event</span>
+        </button>
+        <div style="height:1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: CREATE GROUP ── -->
+    <div id="panel-create-comm" class="panel slide-up">
+      <div class="panel-header">
+        <div class="panel-back" onclick="closePanel('panel-create-comm')">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="panel-title">Create Group</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="create-form">
+        <div class="input-group">
+          <label>Group Name *</label>
+          <input type="text" id="cg-name" placeholder="e.g. Mumbai Vipassana Sangha" maxlength="200">
+        </div>
+        <div class="input-group">
+          <label>Category *</label>
+          <div class="create-chips" id="cg-cat-chips">
+            <div class="create-chip active" data-val="STUDY_GROUP" onclick="ceChip(this,'cat',true)">Study Group</div>
+            <div class="create-chip" data-val="TEMPLE" onclick="ceChip(this,'cat',true)">Temple / Vihara</div>
+            <div class="create-chip" data-val="NGO" onclick="ceChip(this,'cat',true)">NGO</div>
+            <div class="create-chip" data-val="AMBEDKARITE_SANGHA" onclick="ceChip(this,'cat',true)">Ambedkarite Sangha</div>
+            <div class="create-chip" data-val="UNIVERSITY_CLUB" onclick="ceChip(this,'cat',true)">University Club</div>
+            <div class="create-chip" data-val="NATIONAL_FEDERATION" onclick="ceChip(this,'cat',true)">Federation</div>
+            <div class="create-chip" data-val="INTERNATIONAL_BODY" onclick="ceChip(this,'cat',true)">International</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Tradition *</label>
+          <div class="create-chips" id="cg-trad-chips">
+            <div class="create-chip active" data-val="THERAVADA" onclick="ceChip(this,'gtrad',true)">Theravāda</div>
+            <div class="create-chip" data-val="MAHAYANA" onclick="ceChip(this,'gtrad',true)">Mahāyāna</div>
+            <div class="create-chip" data-val="VAJRAYANA" onclick="ceChip(this,'gtrad',true)">Vajrayāna</div>
+            <div class="create-chip" data-val="NAVAYANA" onclick="ceChip(this,'gtrad',true)">Navayāna</div>
+            <div class="create-chip" data-val="MULTIPLE" onclick="ceChip(this,'gtrad',true)">Multiple</div>
+            <div class="create-chip" data-val="OTHER" onclick="ceChip(this,'gtrad',true)">Other</div>
+          </div>
+        </div>
+        <div class="date-row input-group">
+          <div>
+            <label>Country *</label>
+            <select id="cg-country">
+              <option value="">Select…</option>
+              <option value="IN">India</option><option value="LK">Sri Lanka</option>
+              <option value="TH">Thailand</option><option value="MM">Myanmar</option>
+              <option value="KH">Cambodia</option><option value="VN">Vietnam</option>
+              <option value="JP">Japan</option><option value="CN">China</option>
+              <option value="KR">South Korea</option><option value="TW">Taiwan</option>
+              <option value="NP">Nepal</option><option value="BT">Bhutan</option>
+              <option value="US">United States</option><option value="GB">United Kingdom</option>
+              <option value="DE">Germany</option><option value="FR">France</option>
+              <option value="AU">Australia</option><option value="CA">Canada</option>
+              <option value="NZ">New Zealand</option><option value="SG">Singapore</option>
+            </select>
+          </div>
+          <div>
+            <label>City</label>
+            <input type="text" id="cg-city" placeholder="Optional">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="cg-desc" placeholder="What is this group about?" rows="3" maxlength="3000"></textarea>
+        </div>
+        <div class="input-group">
+          <label>Website</label>
+          <input type="url" id="cg-website" placeholder="https://…">
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:0.5rem;" id="cg-submit-btn" onclick="submitCreateComm()">
+          <span id="cg-submit-text">Create Group</span>
+        </button>
+        <div style="height:1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: COMMUNITY DETAIL ── -->
+    <div id="panel-comm-detail" class="panel">
+      <div class="comm-detail-header">
+        <div class="panel-back" onclick="closePanel('panel-comm-detail')" style="position:absolute;top:1rem;left:1rem;">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2;"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div class="comm-detail-icon" id="cd-icon">S</div>
+        <div class="comm-detail-name" id="cd-name">Loading…</div>
+        <div class="comm-detail-meta" id="cd-meta"></div>
+      </div>
+      <div class="comm-detail-body">
+        <button class="comm-join-btn join" id="cd-join-btn" onclick="toggleCommMembership()">Join Group</button>
+        <div class="comm-detail-section" id="cd-desc-section" style="display:none;">
+          <div class="comm-detail-section-title">About</div>
+          <p id="cd-desc" style="font-size:0.88rem;color:var(--charcoal);line-height:1.6;margin:0;"></p>
+        </div>
+        <div class="comm-detail-section">
+          <div class="comm-detail-section-title">Members <span id="cd-member-count" style="font-weight:400;opacity:0.6;"></span></div>
+          <div class="comm-member-row" id="cd-members"></div>
+        </div>
+        <div class="comm-detail-section" id="cd-events-section">
+          <div class="comm-detail-section-title">Upcoming Events</div>
+          <div id="cd-events"></div>
         </div>
       </div>
     </div>
@@ -3075,6 +3362,375 @@ function renderCommCard(c) {
 
 function openCommDetail(id) {
   showToast('Full community page — coming soon');
+}
+
+// ============================================================
+//  EVENTS — GPS + TRADITION FILTER
+// ============================================================
+let eventsNearMe = false;
+let eventsNearMeCoords = null;
+let eventsTradFilter = null;
+
+function filterEventsNearMe(chip) {
+  eventsNearMe = !eventsNearMe;
+  chip.classList.toggle('active', eventsNearMe);
+  // deactivate type chips when near me is toggled
+  if (eventsNearMe) {
+    document.querySelectorAll('#eventFilters .category-chip').forEach(c => {
+      if (c !== chip) c.classList.remove('active');
+    });
+    eventsFilter = null;
+  }
+  loadEvents();
+}
+
+function filterEventsTrad(trad, chip) {
+  document.querySelectorAll('#eventTradFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  eventsTradFilter = trad;
+  loadEvents();
+}
+
+// Override loadEvents to support GPS + tradition filter
+async function loadEvents() {
+  const el = document.getElementById('eventsList');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    if (eventsNearMe) {
+      if (!navigator.geolocation) {
+        el.innerHTML = '<div class="empty-state"><p>Geolocation not supported on this device.</p></div>';
+        return;
+      }
+      const coords = await new Promise((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(p => resolve(p.coords), reject, { timeout: 8000 })
+      ).catch(() => null);
+      if (!coords) {
+        el.innerHTML = '<div class="empty-state"><p>Location permission denied. Showing all events instead.</p></div>';
+        return;
+      }
+      let qs = `/events/nearby?lat=${coords.latitude}&lng=${coords.longitude}&radius_km=100`;
+      if (eventsFilter)     qs += `&type=${eventsFilter}`;
+      if (eventsTradFilter) qs += `&tradition=${eventsTradFilter}`;
+      const events = await api('GET', qs);
+      if (!events.length) {
+        el.innerHTML = `<div class="empty-state"><div class="empty-icon">📍</div><p>No events within 100 km.<br>Try expanding your search.</p></div>`;
+        return;
+      }
+      el.innerHTML = events.map(renderEventCard).join('');
+    } else {
+      let qs = '/events?limit=50';
+      if (eventsFilter)     qs += `&type=${eventsFilter}`;
+      if (eventsTradFilter) qs += `&tradition=${eventsTradFilter}`;
+      const data = await api('GET', qs);
+      const events = data.data || (Array.isArray(data) ? data : []);
+      if (!events.length) {
+        el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🪷</div><p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p></div>`;
+        return;
+      }
+      el.innerHTML = events.map(renderEventCard).join('');
+    }
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
+  }
+}
+
+function filterEvents(type, chip) {
+  document.querySelectorAll('#eventFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  eventsFilter = type;
+  eventsNearMe = false;
+  document.getElementById('evf-nearby').classList.remove('active');
+  loadEvents();
+}
+
+// ============================================================
+//  CREATE EVENT
+// ============================================================
+function openCreateEvent() {
+  // Reset form
+  document.getElementById('ce-title').value = '';
+  document.getElementById('ce-desc').value = '';
+  document.getElementById('ce-location').value = '';
+  document.getElementById('ce-url').value = '';
+  document.getElementById('ce-capacity').value = '0';
+  document.getElementById('ce-online-toggle').checked = false;
+  document.getElementById('ce-location-fields').style.display = '';
+  document.getElementById('ce-online-fields').style.display = 'none';
+  // Set default date to tomorrow
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('ce-date').value = tomorrow.toISOString().split('T')[0];
+  document.getElementById('ce-time').value = '10:00';
+  // Reset chips
+  document.querySelectorAll('#ce-type-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
+  document.querySelectorAll('#ce-trad-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
+  openPanel('panel-create-event');
+}
+
+function toggleOnlineFields() {
+  const online = document.getElementById('ce-online-toggle').checked;
+  document.getElementById('ce-location-fields').style.display = online ? 'none' : '';
+  document.getElementById('ce-online-fields').style.display  = online ? '' : 'none';
+}
+
+function ceChip(chip, group, single) {
+  const groupMap = { type: 'ce-type-chips', trad: 'ce-trad-chips', cat: 'cg-cat-chips', gtrad: 'cg-trad-chips' };
+  if (single) document.querySelectorAll(`#${groupMap[group]} .create-chip`).forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+}
+
+async function submitCreateEvent() {
+  const title = document.getElementById('ce-title').value.trim();
+  if (!title) { showToast('Please enter an event title', 'error'); return; }
+  const dateVal = document.getElementById('ce-date').value;
+  const timeVal = document.getElementById('ce-time').value;
+  if (!dateVal || !timeVal) { showToast('Please set date and time', 'error'); return; }
+
+  const typeChip = document.querySelector('#ce-type-chips .create-chip.active');
+  const tradChip = document.querySelector('#ce-trad-chips .create-chip.active');
+  const online = document.getElementById('ce-online-toggle').checked;
+
+  const body = {
+    title,
+    eventType: typeChip?.dataset.val || 'COMMUNITY_GATHERING',
+    traditionTag: tradChip?.dataset.val || undefined,
+    startsAt: new Date(`${dateVal}T${timeVal}`).toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    locationName: online ? undefined : (document.getElementById('ce-location').value.trim() || undefined),
+    onlineUrl: online ? (document.getElementById('ce-url').value.trim() || undefined) : undefined,
+    description: document.getElementById('ce-desc').value.trim() || undefined,
+    capacity: parseInt(document.getElementById('ce-capacity').value) || 0,
+  };
+  if (!body.traditionTag) delete body.traditionTag;
+
+  const btn = document.getElementById('ce-submit-btn');
+  const txt = document.getElementById('ce-submit-text');
+  btn.disabled = true; txt.textContent = 'Publishing…';
+  try {
+    await api('POST', '/events', body);
+    showToast('Event published!', 'success');
+    closePanel('panel-create-event');
+    loadEvents();
+  } catch(err) {
+    if (err.message.toLowerCase().includes('trusted') || err.message.includes('403')) {
+      showToast('Trusted membership required to create events', 'error');
+    } else {
+      showToast(err.message, 'error');
+    }
+  } finally {
+    btn.disabled = false; txt.textContent = 'Publish Event';
+  }
+}
+
+// ============================================================
+//  COMMUNITIES — COUNTRY FILTER
+// ============================================================
+let commCountryFilter = null;
+
+function filterCommNearMe(chip) {
+  if (commCountryFilter) {
+    // Toggle off
+    commCountryFilter = null;
+    chip.classList.remove('active');
+    document.getElementById('comm-all').classList.add('active');
+    loadCommunities();
+  } else {
+    // Use user's profile country
+    const country = state.user?.country;
+    if (!country) { showToast('Add your country in profile settings first', 'error'); return; }
+    commCountryFilter = country;
+    document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    commFilter = null; // reset category when using country filter
+    loadCommunities();
+  }
+}
+
+// Override loadCommunities to support country filter
+async function loadCommunities() {
+  const el = document.getElementById('commList');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    let qs = '';
+    const params = [];
+    if (commFilter)        params.push('category=' + commFilter);
+    if (commCountryFilter) params.push('country=' + commCountryFilter);
+    if (params.length) qs = '?' + params.join('&');
+    const data = await api('GET', '/associations' + qs);
+    let comms = Array.isArray(data) ? data : (data.data || []);
+    const q = document.getElementById('commSearch').value.trim().toLowerCase();
+    if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
+    if (!comms.length) {
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛️</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
+      return;
+    }
+    el.innerHTML = comms.map(renderCommCard).join('');
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
+  }
+}
+
+// Override filterComm to clear country filter
+function filterComm(category, chip) {
+  document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  commFilter = category;
+  commCountryFilter = null;
+  loadCommunities();
+}
+
+// ============================================================
+//  CREATE GROUP
+// ============================================================
+function openCreateComm() {
+  document.getElementById('cg-name').value = '';
+  document.getElementById('cg-desc').value = '';
+  document.getElementById('cg-website').value = '';
+  document.getElementById('cg-city').value = '';
+  document.getElementById('cg-country').value = state.user?.country || '';
+  document.querySelectorAll('#cg-cat-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
+  document.querySelectorAll('#cg-trad-chips .create-chip').forEach((c,i) => c.classList.toggle('active', i === 0));
+  openPanel('panel-create-comm');
+}
+
+async function submitCreateComm() {
+  const name = document.getElementById('cg-name').value.trim();
+  if (!name) { showToast('Please enter a group name', 'error'); return; }
+  const country = document.getElementById('cg-country').value;
+  if (!country) { showToast('Please select a country', 'error'); return; }
+
+  const catChip  = document.querySelector('#cg-cat-chips .create-chip.active');
+  const tradChip = document.querySelector('#cg-trad-chips .create-chip.active');
+  const website  = document.getElementById('cg-website').value.trim();
+
+  const body = {
+    name,
+    country,
+    city: document.getElementById('cg-city').value.trim() || undefined,
+    category: catChip?.dataset.val || 'STUDY_GROUP',
+    tradition: tradChip?.dataset.val || 'THERAVADA',
+    description: document.getElementById('cg-desc').value.trim() || undefined,
+    website: website || undefined,
+  };
+
+  const btn = document.getElementById('cg-submit-btn');
+  const txt = document.getElementById('cg-submit-text');
+  btn.disabled = true; txt.textContent = 'Creating…';
+  try {
+    const result = await api('POST', '/associations', body);
+    showToast('Group created! You are now the president.', 'success');
+    closePanel('panel-create-comm');
+    loadCommunities();
+    setTimeout(() => openCommDetail(result.id), 400);
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; txt.textContent = 'Create Group';
+  }
+}
+
+// ============================================================
+//  COMMUNITY DETAIL
+// ============================================================
+let commDetailState = { id: null, isMember: false };
+
+async function openCommDetail(id) {
+  commDetailState.id = id;
+  document.getElementById('cd-name').textContent = 'Loading…';
+  document.getElementById('cd-meta').textContent = '';
+  document.getElementById('cd-icon').textContent = '…';
+  document.getElementById('cd-members').innerHTML = '';
+  document.getElementById('cd-events').innerHTML = '<div class="spinner" style="width:20px;height:20px;margin:0.5rem auto;"></div>';
+  openPanel('panel-comm-detail');
+
+  try {
+    const [assoc, membership] = await Promise.all([
+      api('GET', `/associations/${id}`),
+      state.token ? api('GET', `/associations/${id}/membership`) : Promise.resolve({ isMember: false }),
+    ]);
+
+    commDetailState.isMember = membership.isMember;
+
+    document.getElementById('cd-icon').textContent = (assoc.name || '?').charAt(0).toUpperCase();
+    document.getElementById('cd-name').textContent = assoc.name;
+
+    const catLabel = {
+      TEMPLE:'Temple', NGO:'NGO', STUDY_GROUP:'Study Group',
+      AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'University Club',
+      NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International Body',
+    }[assoc.category] || assoc.category;
+    const trad = assoc.tradition ? assoc.tradition.charAt(0) + assoc.tradition.slice(1).toLowerCase() : '';
+    const loc = [assoc.city, assoc.country].filter(Boolean).join(', ');
+    document.getElementById('cd-meta').textContent = [catLabel, trad, loc].filter(Boolean).join(' · ');
+
+    if (assoc.description) {
+      document.getElementById('cd-desc').textContent = assoc.description;
+      document.getElementById('cd-desc-section').style.display = '';
+    }
+
+    const memberCount = assoc._count?.members || 0;
+    document.getElementById('cd-member-count').textContent = `(${memberCount})`;
+
+    // Render member avatars
+    const membersEl = document.getElementById('cd-members');
+    const shown = (assoc.members || []).slice(0, 12);
+    membersEl.innerHTML = shown.map(m => {
+      const init = (m.user?.displayName || '?').charAt(0).toUpperCase();
+      return `<div class="comm-member-avatar" title="${escHtml(m.user?.displayName || '')}" onclick="openProfile('${m.user?.id}')">${init}</div>`;
+    }).join('') + (memberCount > 12 ? `<div class="comm-member-avatar" style="background:var(--stone-light);">+${memberCount - 12}</div>` : '');
+
+    // Render upcoming events
+    const eventsEl = document.getElementById('cd-events');
+    const upcoming = assoc.events || [];
+    if (!upcoming.length) {
+      eventsEl.innerHTML = '<p style="font-size:0.82rem;color:var(--stone-light);margin:0;">No upcoming events.</p>';
+    } else {
+      eventsEl.innerHTML = upcoming.map(ev => {
+        const d = new Date(ev.startsAt);
+        const ds = d.toLocaleDateString('en-IN', { weekday:'short', month:'short', day:'numeric' });
+        return `<div style="padding:0.6rem 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="">
+          <div style="font-size:0.82rem;font-weight:600;color:var(--charcoal);">${escHtml(ev.title)}</div>
+          <div style="font-size:0.72rem;color:var(--stone-light);margin-top:2px;">${ds}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // Join/Leave button
+    updateCommJoinBtn();
+  } catch(err) {
+    showToast('Could not load community', 'error');
+  }
+}
+
+function updateCommJoinBtn() {
+  const btn = document.getElementById('cd-join-btn');
+  if (commDetailState.isMember) {
+    btn.textContent = 'Leave Group';
+    btn.className = 'comm-join-btn leave';
+  } else {
+    btn.textContent = 'Join Group';
+    btn.className = 'comm-join-btn join';
+  }
+}
+
+async function toggleCommMembership() {
+  const btn = document.getElementById('cd-join-btn');
+  btn.disabled = true;
+  try {
+    if (commDetailState.isMember) {
+      await api('DELETE', `/associations/${commDetailState.id}/leave`);
+      commDetailState.isMember = false;
+      showToast('You have left the group');
+    } else {
+      await api('POST', `/associations/${commDetailState.id}/join`);
+      commDetailState.isMember = true;
+      showToast('You joined the group!', 'success');
+    }
+    updateCommJoinBtn();
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // ============================================================

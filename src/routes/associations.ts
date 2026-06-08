@@ -70,6 +70,36 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
   res.json(assocs);
 });
 
+// GET /associations/:id/membership — check own membership status
+router.get('/:id/membership', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const member = await prisma.associationMember.findFirst({
+    where: { associationId: req.params.id, userId: req.user!.id, isActive: true },
+    select: { memberRole: true },
+  });
+  res.json({ isMember: !!member, memberRole: member?.memberRole || null });
+});
+
+// POST /associations/:id/join — self-join as MEMBER
+router.post('/:id/join', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const assoc = await prisma.association.findUnique({ where: { id: req.params.id } });
+  if (!assoc) throw new AppError('Association not found', 404);
+  const member = await prisma.associationMember.upsert({
+    where: { associationId_userId: { associationId: req.params.id, userId: req.user!.id } },
+    create: { associationId: req.params.id, userId: req.user!.id, memberRole: 'MEMBER' },
+    update: { isActive: true },
+  });
+  res.json(member);
+});
+
+// DELETE /associations/:id/leave
+router.delete('/:id/leave', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  await prisma.associationMember.updateMany({
+    where: { associationId: req.params.id, userId: req.user!.id },
+    data: { isActive: false },
+  });
+  res.json({ message: 'Left association' });
+});
+
 // POST /associations/:id/members  (admin only)
 router.post('/:id/members', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const membership = await prisma.associationMember.findFirst({
