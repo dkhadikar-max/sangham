@@ -686,7 +686,115 @@
     }
 
     /* =========================================
-       11. ONBOARDING
+       11. PROFILE PANEL
+       ========================================= */
+    .profile-hero {
+      position: relative; height: 120px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--saffron-dark) 0%, var(--saffron) 100%);
+    }
+    .profile-hero-back {
+      position: absolute; top: 0.8rem; left: 0.8rem;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; backdrop-filter: blur(4px);
+    }
+    .profile-hero-back svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+    .profile-avatar-bump {
+      position: absolute; bottom: -40px; left: 1.2rem;
+    }
+    .avatar-xl {
+      width: 80px; height: 80px; font-size: 2rem; font-weight: 600;
+      border: 3px solid var(--surface); border-radius: 50%;
+      background: var(--bg-app); display: flex; align-items: center;
+      justify-content: center; font-family: 'Cormorant Garamond', serif;
+      color: var(--saffron-dark); overflow: hidden;
+    }
+    .avatar-xl img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-body {
+      flex: 1; overflow-y: auto; padding: 48px 1.2rem 2rem;
+    }
+    .profile-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
+      font-weight: 600; color: var(--charcoal); line-height: 1.15;
+      display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+    }
+    .profile-role-loc {
+      font-size: 0.8rem; color: var(--stone); margin-top: 0.25rem; margin-bottom: 0.6rem;
+    }
+    .profile-bio {
+      font-size: 0.9rem; color: var(--charcoal); line-height: 1.65;
+      margin-bottom: 0.8rem; white-space: pre-wrap;
+    }
+    .profile-stats {
+      display: flex; gap: 1.4rem; margin-bottom: 1rem;
+      padding: 0.7rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .profile-stat { text-align: center; }
+    .profile-stat-n {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 600; color: var(--charcoal); line-height: 1;
+    }
+    .profile-stat-l { font-size: 0.68rem; color: var(--stone); margin-top: 0.15rem; }
+    .profile-chips-row {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.7rem 0 0;
+    }
+    .profile-chip {
+      padding: 0.25rem 0.7rem; border-radius: 100px;
+      font-size: 0.72rem; font-family: 'Inter', sans-serif;
+    }
+    .profile-chip-tradition {
+      background: rgba(212,168,67,0.12); color: var(--saffron-dark);
+      border: 1px solid rgba(212,168,67,0.25);
+    }
+    .profile-chip-tag {
+      background: var(--bg-app); color: var(--stone);
+      border: 1px solid var(--border-solid);
+    }
+    .profile-actions-row {
+      display: flex; gap: 0.6rem; margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .profile-section-label {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone-light); margin: 1rem 0 0.4rem;
+    }
+
+    /* Edit profile sheet */
+    #edit-profile-sheet {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: var(--surface); border-radius: 20px 20px 0 0;
+      border-top: 1px solid var(--border); z-index: 50;
+      display: none; flex-direction: column;
+      max-height: 90%; animation: slideUp 0.28s ease;
+    }
+    #edit-profile-sheet.open { display: flex; }
+    .edit-sheet-handle {
+      width: 36px; height: 4px; background: var(--border-solid);
+      border-radius: 2px; margin: 0.8rem auto 0;
+    }
+    .edit-sheet-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 1.2rem 0.7rem; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .edit-sheet-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+    }
+    .edit-sheet-body {
+      flex: 1; overflow-y: auto; padding: 1rem 1.2rem 2rem;
+    }
+    .edit-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .edit-chip {
+      padding: 0.35rem 0.8rem; border: 1.5px solid var(--border-solid);
+      border-radius: 100px; font-size: 0.78rem; color: var(--stone);
+      cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif;
+      background: var(--surface);
+    }
+    .edit-chip:hover  { border-color: var(--saffron); color: var(--saffron-dark); }
+    .edit-chip.active { background: var(--saffron); border-color: var(--saffron); color: white; }
+
+    /* =========================================
+       12. ONBOARDING
        ========================================= */
     #view-onboarding { background-color: var(--rice-paper); }
     #view-onboarding.active {
@@ -976,7 +1084,7 @@
         Sangham
       </div>
       <div class="header-actions">
-        <div class="header-icon" id="headerAvatar" title="Profile">
+        <div class="header-icon" id="headerAvatar" title="Profile" onclick="openProfile(state.user?.id)" style="cursor:pointer;">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div class="header-icon" onclick="switchTab('chat')" title="Messages" style="position:relative;">
@@ -1212,6 +1320,123 @@
         <div class="reader-annotate-actions">
           <button class="btn-ghost" style="font-size:0.8rem;padding:0.4rem 0.8rem;" onclick="closeAnnotateSheet()">Cancel</button>
           <button class="btn-primary" style="font-size:0.8rem;padding:0.4rem 0.9rem;" onclick="submitAnnotation()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: USER PROFILE ── -->
+    <div id="panel-profile" class="panel">
+      <!-- Hero / cover -->
+      <div class="profile-hero">
+        <button class="profile-hero-back" onclick="closePanel('panel-profile')">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="profile-avatar-bump">
+          <div class="avatar-xl" id="profile-avatar-xl"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="profile-body" id="profile-body">
+        <!-- Name row + action buttons -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;flex-wrap:wrap;">
+          <div>
+            <div class="profile-name" id="profile-name"></div>
+            <div class="profile-role-loc" id="profile-role-loc"></div>
+          </div>
+          <div class="profile-actions-row" id="profile-actions"></div>
+        </div>
+
+        <!-- Bio -->
+        <div class="profile-bio" id="profile-bio"></div>
+
+        <!-- Stats -->
+        <div class="profile-stats" id="profile-stats"></div>
+
+        <!-- Traditions -->
+        <div id="profile-traditions-wrap" style="display:none;">
+          <div class="profile-section-label">Tradition</div>
+          <div class="profile-chips-row" id="profile-traditions"></div>
+        </div>
+
+        <!-- Tags -->
+        <div id="profile-tags-wrap" style="display:none;">
+          <div class="profile-section-label">Interests</div>
+          <div class="profile-chips-row" id="profile-tags"></div>
+        </div>
+
+        <!-- Posts -->
+        <div class="profile-section-label" style="margin-top:1.2rem;">Posts</div>
+        <div id="profile-posts"></div>
+      </div>
+
+      <!-- Edit profile sheet (own profile only) -->
+      <div id="edit-profile-sheet">
+        <div class="edit-sheet-handle"></div>
+        <div class="edit-sheet-header">
+          <span class="edit-sheet-title">Edit Profile</span>
+          <button class="btn-ghost" style="padding:0.3rem 0.7rem;" onclick="closeEditSheet()">Cancel</button>
+        </div>
+        <div class="edit-sheet-body">
+          <div class="input-group">
+            <label>Display Name</label>
+            <input type="text" id="edit-displayName" maxlength="80">
+          </div>
+          <div class="input-group">
+            <label>Bio</label>
+            <textarea id="edit-bio" rows="3" maxlength="500" style="resize:none;"></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+            <div class="input-group">
+              <label>City</label>
+              <input type="text" id="edit-city">
+            </div>
+            <div class="input-group">
+              <label>Country</label>
+              <select id="edit-country">
+                <option value="">—</option>
+                <option value="IN">India</option><option value="LK">Sri Lanka</option>
+                <option value="TH">Thailand</option><option value="MM">Myanmar</option>
+                <option value="NP">Nepal</option><option value="JP">Japan</option>
+                <option value="CN">China</option><option value="KR">South Korea</option>
+                <option value="TW">Taiwan</option><option value="VN">Vietnam</option>
+                <option value="KH">Cambodia</option><option value="US">United States</option>
+                <option value="GB">United Kingdom</option><option value="CA">Canada</option>
+                <option value="AU">Australia</option><option value="DE">Germany</option>
+                <option value="SG">Singapore</option><option value="MY">Malaysia</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-group" style="margin-bottom:0.4rem;">
+            <label>Tradition</label>
+            <div class="edit-chips" id="edit-traditions">
+              <div class="edit-chip" data-val="THERAVADA" onclick="editChipToggle(this,false)">Theravāda</div>
+              <div class="edit-chip" data-val="MAHAYANA"  onclick="editChipToggle(this,false)">Mahāyāna</div>
+              <div class="edit-chip" data-val="VAJRAYANA" onclick="editChipToggle(this,false)">Vajrayāna</div>
+              <div class="edit-chip" data-val="NAVAYANA"  onclick="editChipToggle(this,false)">Navayāna</div>
+              <div class="edit-chip" data-val="MULTIPLE"  onclick="editChipToggle(this,false)">Multiple</div>
+              <div class="edit-chip" data-val="OTHER"     onclick="editChipToggle(this,false)">Other</div>
+            </div>
+          </div>
+          <div class="input-group" style="margin-bottom:1.2rem;">
+            <label>Interests <span style="font-weight:400;opacity:0.6;">(up to 5)</span></label>
+            <div class="edit-chips" id="edit-tags">
+              <div class="edit-chip" data-val="MEDITATOR"  onclick="editChipToggle(this,false)">Meditator</div>
+              <div class="edit-chip" data-val="STUDENT"    onclick="editChipToggle(this,false)">Student</div>
+              <div class="edit-chip" data-val="TEACHER"    onclick="editChipToggle(this,false)">Teacher</div>
+              <div class="edit-chip" data-val="RESEARCHER" onclick="editChipToggle(this,false)">Researcher</div>
+              <div class="edit-chip" data-val="TRANSLATOR" onclick="editChipToggle(this,false)">Translator</div>
+              <div class="edit-chip" data-val="VOLUNTEER"  onclick="editChipToggle(this,false)">Volunteer</div>
+              <div class="edit-chip" data-val="ACTIVIST"   onclick="editChipToggle(this,false)">Activist</div>
+              <div class="edit-chip" data-val="WRITER"     onclick="editChipToggle(this,false)">Writer</div>
+              <div class="edit-chip" data-val="ARTIST"     onclick="editChipToggle(this,false)">Artist</div>
+              <div class="edit-chip" data-val="DEVELOPER"  onclick="editChipToggle(this,false)">Developer</div>
+              <div class="edit-chip" data-val="FOUNDER"    onclick="editChipToggle(this,false)">Founder</div>
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;" id="save-profile-btn" onclick="saveProfile()">
+            <span id="save-profile-btn-text">Save Changes</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1793,9 +2018,9 @@ function renderPersonCard(p, distance) {
 
   return `
     <div class="person-card">
-      <div class="avatar avatar-lg">${avatar}</div>
+      <div class="avatar avatar-lg" style="cursor:pointer;" onclick="openProfile('${p.id}')">${avatar}</div>
       <div class="person-info">
-        <div class="person-name">
+        <div class="person-name" style="cursor:pointer;" onclick="openProfile('${p.id}')">
           ${escHtml(p.displayName||'')}
           ${p.isVerifiedClergy || p.isVerifiedTeacher ? '<span class="clergy-badge" title="Verified"></span>' : ''}
         </div>
@@ -2224,7 +2449,7 @@ function startDMFromPost(authorId, authorName) {
 
 function openDiscoverProfile() {
   if (!state.currentPartnerId) return;
-  showToast('Opening profile…');
+  openProfile(state.currentPartnerId);
 }
 
 function dmRoomId(uid1, uid2) {
@@ -2312,6 +2537,220 @@ function fmtRole(role) {
     TRUSTED:'Trusted', SUPER_ADMIN:'Admin', GUEST:'Guest',
   };
   return m[role] || role;
+}
+
+// ============================================================
+//  PROFILE PANEL
+// ============================================================
+let profileUserId = null;
+
+async function openProfile(userId) {
+  if (!userId) return;
+  profileUserId = userId;
+  const isMe = userId === state.user?.id;
+
+  // Reset panel
+  document.getElementById('profile-avatar-xl').textContent = '';
+  document.getElementById('profile-name').textContent = '';
+  document.getElementById('profile-role-loc').textContent = '';
+  document.getElementById('profile-bio').textContent = '';
+  document.getElementById('profile-stats').innerHTML = '';
+  document.getElementById('profile-traditions').innerHTML = '';
+  document.getElementById('profile-tags').innerHTML = '';
+  document.getElementById('profile-actions').innerHTML = '';
+  document.getElementById('profile-posts').innerHTML = '<div class="spinner"></div>';
+  document.getElementById('profile-traditions-wrap').style.display = 'none';
+  document.getElementById('profile-tags-wrap').style.display = 'none';
+  document.getElementById('edit-profile-sheet').classList.remove('open');
+  openPanel('panel-profile');
+
+  try {
+    const [user, postsData] = await Promise.all([
+      api('GET', `/users/${userId}`),
+      api('GET', `/users/${userId}/posts?limit=10`),
+    ]);
+
+    // Avatar
+    const avatarEl = document.getElementById('profile-avatar-xl');
+    const initial = (user.displayName || '?').charAt(0).toUpperCase();
+    avatarEl.innerHTML = user.profilePhoto
+      ? `<img src="${escHtml(user.profilePhoto)}" alt="">`
+      : initial;
+
+    // Name + badges
+    const verifiedBadge = (user.isVerifiedClergy || user.isVerifiedTeacher)
+      ? '<span class="clergy-badge" title="Verified" style="width:16px;height:16px;"></span>' : '';
+    document.getElementById('profile-name').innerHTML =
+      `${escHtml(user.displayName || '')} ${verifiedBadge}`;
+
+    // Role + location
+    const roleStr = fmtRole(user.role);
+    const loc = [user.city, user.country].filter(Boolean).join(', ');
+    document.getElementById('profile-role-loc').textContent =
+      [roleStr !== 'Practitioner' ? roleStr : '', loc].filter(Boolean).join(' · ') || '';
+
+    // Bio
+    const bioEl = document.getElementById('profile-bio');
+    bioEl.textContent = user.bio || '';
+    bioEl.style.display = user.bio ? 'block' : 'none';
+
+    // Stats
+    const c = user._count || {};
+    document.getElementById('profile-stats').innerHTML = `
+      <div class="profile-stat"><div class="profile-stat-n">${c.posts||0}</div><div class="profile-stat-l">Posts</div></div>
+      <div class="profile-stat"><div class="profile-stat-n">${c.followers||0}</div><div class="profile-stat-l">Followers</div></div>
+      <div class="profile-stat"><div class="profile-stat-n">${c.following||0}</div><div class="profile-stat-l">Following</div></div>`;
+
+    // Traditions
+    if (user.traditions?.length) {
+      const tradLabel = { THERAVADA:'Theravāda', MAHAYANA:'Mahāyāna', VAJRAYANA:'Vajrayāna',
+        NAVAYANA:'Navayāna', MULTIPLE:'Multiple', OTHER:'Other' };
+      document.getElementById('profile-traditions').innerHTML =
+        user.traditions.map(t =>
+          `<span class="profile-chip profile-chip-tradition">${tradLabel[t]||t}</span>`
+        ).join('');
+      document.getElementById('profile-traditions-wrap').style.display = 'block';
+    }
+
+    // Tags
+    if (user.tags?.length) {
+      const tagLabel = { MEDITATOR:'Meditator', STUDENT:'Student', TEACHER:'Teacher',
+        RESEARCHER:'Researcher', TRANSLATOR:'Translator', VOLUNTEER:'Volunteer',
+        ACTIVIST:'Activist', WRITER:'Writer', ARTIST:'Artist', DEVELOPER:'Developer',
+        FOUNDER:'Founder', ENTREPRENEUR:'Entrepreneur', CAREGIVER:'Caregiver',
+        RETIRED:'Retired', CIVIL_SERVANT:'Civil Servant', PROFESSIONAL:'Professional' };
+      document.getElementById('profile-tags').innerHTML =
+        user.tags.map(t =>
+          `<span class="profile-chip profile-chip-tag">${tagLabel[t.tag]||t.tag}</span>`
+        ).join('');
+      document.getElementById('profile-tags-wrap').style.display = 'block';
+    }
+
+    // Action buttons
+    const actEl = document.getElementById('profile-actions');
+    if (isMe) {
+      actEl.innerHTML = `<button class="btn-primary" style="padding:0.5rem 1.1rem;font-size:0.82rem;" onclick="openEditSheet(${JSON.stringify(user)})">Edit Profile</button>`;
+    } else {
+      const followed = state.followedUsers.has(userId);
+      actEl.innerHTML = `
+        <button class="btn-ghost ${followed?'followed':''}" id="profile-follow-btn"
+          onclick="profileToggleFollow('${userId}',this)">${followed?'Following':'Follow'}</button>
+        <button class="btn-ghost" onclick="startDM('${userId}','${escHtml(user.displayName||'')}');closePanel('panel-profile')">Message</button>`;
+    }
+
+    // Posts
+    const posts = postsData.data || postsData;
+    const postsEl = document.getElementById('profile-posts');
+    if (!posts.length) {
+      postsEl.innerHTML = `<div class="empty-state" style="padding:1.5rem 0;">
+        <p style="font-size:0.85rem;">${isMe ? "You haven't posted yet." : "No posts yet."}</p></div>`;
+    } else {
+      postsEl.innerHTML = posts.map(p => renderPostCard(p)).join('');
+    }
+  } catch(err) {
+    document.getElementById('profile-posts').innerHTML =
+      `<div class="empty-state"><p>${escHtml(err.message)}</p></div>`;
+  }
+}
+
+async function profileToggleFollow(userId, btn) {
+  const followed = state.followedUsers.has(userId);
+  try {
+    if (followed) {
+      await api('DELETE', `/users/${userId}/follow`);
+      state.followedUsers.delete(userId);
+      btn.textContent = 'Follow';
+      btn.classList.remove('followed');
+    } else {
+      await api('POST', `/users/${userId}/follow`);
+      state.followedUsers.add(userId);
+      btn.textContent = 'Following';
+      btn.classList.add('followed');
+    }
+  } catch(err) { showToast(err.message, 'error'); }
+}
+
+function openEditSheet(user) {
+  document.getElementById('edit-displayName').value = user.displayName || '';
+  document.getElementById('edit-bio').value         = user.bio || '';
+  document.getElementById('edit-city').value        = user.city || '';
+  document.getElementById('edit-country').value     = user.country || '';
+
+  // Pre-select tradition chips
+  const tradSet = new Set(user.traditions || []);
+  document.querySelectorAll('#edit-traditions .edit-chip').forEach(c => {
+    c.classList.toggle('active', tradSet.has(c.dataset.val));
+  });
+
+  // Pre-select tag chips
+  const tagSet = new Set((user.tags || []).map(t => t.tag || t));
+  document.querySelectorAll('#edit-tags .edit-chip').forEach(c => {
+    c.classList.toggle('active', tagSet.has(c.dataset.val));
+  });
+
+  document.getElementById('edit-profile-sheet').classList.add('open');
+  // Scroll sheet into view
+  document.getElementById('profile-body').scrollTop = 0;
+}
+
+function closeEditSheet() {
+  document.getElementById('edit-profile-sheet').classList.remove('open');
+}
+
+function editChipToggle(chip, singleSelect) {
+  if (singleSelect) {
+    chip.closest('.edit-chips').querySelectorAll('.edit-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  } else {
+    if (!chip.classList.contains('active') && chip.closest('#edit-tags')) {
+      const count = chip.closest('.edit-chips').querySelectorAll('.edit-chip.active').length;
+      if (count >= 5) { showToast('Choose up to 5 interests'); return; }
+    }
+    chip.classList.toggle('active');
+  }
+}
+
+async function saveProfile() {
+  const btn     = document.getElementById('save-profile-btn');
+  const btnText = document.getElementById('save-profile-btn-text');
+  btn.disabled  = true;
+  btnText.innerHTML = '<span class="spinner-sm"></span>';
+
+  try {
+    const profileData = {
+      displayName: document.getElementById('edit-displayName').value.trim(),
+      bio:         document.getElementById('edit-bio').value.trim(),
+      city:        document.getElementById('edit-city').value.trim(),
+      country:     document.getElementById('edit-country').value,
+      traditions: [...document.querySelectorAll('#edit-traditions .edit-chip.active')].map(c => c.dataset.val),
+    };
+    // Remove empty strings
+    if (!profileData.bio)     delete profileData.bio;
+    if (!profileData.city)    delete profileData.city;
+    if (!profileData.country) delete profileData.country;
+
+    const tags = [...document.querySelectorAll('#edit-tags .edit-chip.active')].map(c => c.dataset.val);
+
+    await api('PUT', '/users/me', profileData);
+    await api('PUT', '/users/me/tags', { tags });
+
+    // Update cached displayName
+    if (profileData.displayName) {
+      state.user.displayName = profileData.displayName;
+      saveSession();
+      updateHeaderAvatar();
+    }
+
+    showToast('Profile saved', 'success');
+    closeEditSheet();
+    // Refresh the panel with new data
+    openProfile(state.user.id);
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Save Changes';
+  }
 }
 
 // ============================================================

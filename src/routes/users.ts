@@ -26,13 +26,33 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
     where: { id: req.params.id },
     select: {
       id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
-      country: true, city: true, traditions: true, role: true, isVerifiedClergy: true,
+      country: true, city: true, traditions: true, role: true,
+      isVerifiedClergy: true, isVerifiedTeacher: true,
       languages: true, templeAffiliation: true, createdAt: true,
+      tags: { select: { tag: true } },
       _count: { select: { followers: true, following: true, posts: true } },
     },
   });
   if (!user) throw new AppError('User not found', 404);
   res.json(user);
+});
+
+// GET /users/:id/posts
+router.get('/:id/posts', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where: { authorId: req.params.id, isDeleted: false },
+      orderBy: { createdAt: 'desc' },
+      take: limit, skip,
+      include: {
+        author: { select: { id: true, displayName: true, profilePhoto: true, role: true, isVerifiedClergy: true } },
+        _count: { select: { likes: true, comments: true } },
+      },
+    }),
+    prisma.post.count({ where: { authorId: req.params.id, isDeleted: false } }),
+  ]);
+  res.json(paginatedResponse(posts, total, parsePagination(req.query as Record<string, unknown>)));
 });
 
 // PUT /users/me
