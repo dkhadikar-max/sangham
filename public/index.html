@@ -685,6 +685,101 @@
       background: var(--saffron); border-color: var(--saffron); color: #FAF6F0;
     }
 
+    /* =========================================
+       11. ONBOARDING
+       ========================================= */
+    #view-onboarding { background-color: var(--rice-paper); }
+    #view-onboarding.active {
+      display: flex; align-items: flex-start; justify-content: center;
+    }
+    .onboarding-container {
+      width: 100%; max-width: 440px; padding: 2rem 1.5rem 2rem;
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+    .onboarding-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem;
+    }
+    .onboarding-skip {
+      background: none; border: none; color: var(--stone-light);
+      font-family: 'Inter', sans-serif; font-size: 0.85rem;
+      cursor: pointer; padding: 0.3rem 0;
+    }
+    .onboarding-progress { display: flex; gap: 0.5rem; margin-bottom: 2.2rem; }
+    .ob-dot {
+      height: 3px; flex: 1; border-radius: 2px;
+      background: var(--border-solid); transition: background 0.3s;
+    }
+    .ob-dot.active { background: var(--saffron); }
+    .ob-dot.done   { background: var(--saffron-dark); }
+    .ob-step { display: none; flex: 1; }
+    .ob-step.active { display: block; }
+    .ob-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.1rem;
+      font-weight: 500; color: var(--charcoal); line-height: 1.15; margin-bottom: 0.5rem;
+    }
+    .ob-subtitle { font-size: 0.88rem; color: var(--stone); line-height: 1.55; margin-bottom: 1.2rem; }
+    .ob-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .ob-chip {
+      padding: 0.5rem 1rem; border: 1.5px solid var(--border-solid);
+      border-radius: 100px; font-size: 0.83rem; color: var(--stone);
+      cursor: pointer; transition: all 0.18s; user-select: none;
+      font-family: 'Inter', sans-serif; background: var(--surface);
+    }
+    .ob-chip:hover  { border-color: var(--saffron); color: var(--saffron-dark); }
+    .ob-chip.active { background: var(--saffron); border-color: var(--saffron); color: white; }
+    .ob-section-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--stone-light); margin: 1.4rem 0 0.6rem;
+    }
+    .onboarding-footer { padding-top: 2rem; margin-top: auto; }
+
+    /* =========================================
+       12. EVENTS & COMMUNITIES
+       ========================================= */
+    .event-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; margin: 0 1.2rem 0.8rem; overflow: hidden;
+    }
+    .event-date-bar {
+      background: linear-gradient(90deg, var(--saffron-dark), var(--saffron));
+      padding: 0.3rem 0.9rem; font-size: 0.7rem; font-weight: 600;
+      color: white; letter-spacing: 0.04em;
+    }
+    .event-body { padding: 0.75rem 1rem 0.6rem; }
+    .event-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      font-weight: 600; color: var(--charcoal); margin-bottom: 0.25rem; line-height: 1.3;
+    }
+    .event-meta { font-size: 0.74rem; color: var(--stone); line-height: 1.5; }
+    .event-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--border); padding: 0.55rem 1rem;
+    }
+    .event-rsvp-count { font-size: 0.73rem; color: var(--stone-light); }
+
+    .comm-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; margin: 0 1.2rem 0.8rem;
+      padding: 0.9rem 1rem; display: flex; align-items: flex-start; gap: 0.85rem;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .comm-card:hover { border-color: var(--saffron); }
+    .comm-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: rgba(212,168,67,0.08);
+      border: 1.5px solid var(--border-solid); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 600; color: var(--saffron-dark);
+    }
+    .comm-info { flex: 1; min-width: 0; }
+    .comm-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600;
+      color: var(--charcoal); margin-bottom: 0.18rem;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .comm-meta { font-size: 0.73rem; color: var(--stone); line-height: 1.5; }
+
     /* Annotation prompt sheet */
     .reader-annotate-sheet {
       position: absolute; bottom: 0; left: 0; right: 0;
@@ -767,6 +862,106 @@
 </div>
 
 <!-- ====================================================
+     VIEW: ONBOARDING
+==================================================== -->
+<div id="view-onboarding" class="view">
+  <div class="onboarding-container">
+    <div class="onboarding-header">
+      <div class="logo"><div class="logo-symbol"></div> Sangham</div>
+      <button class="onboarding-skip" onclick="skipOnboarding()">Skip</button>
+    </div>
+    <div class="onboarding-progress">
+      <div class="ob-dot active" id="ob-dot-1"></div>
+      <div class="ob-dot" id="ob-dot-2"></div>
+      <div class="ob-dot" id="ob-dot-3"></div>
+    </div>
+
+    <!-- Step 1: Tradition + Identity -->
+    <div id="ob-step-1" class="ob-step active">
+      <h2 class="ob-title">Your Practice</h2>
+      <p class="ob-subtitle">Tell us about yourself so we can connect you with the right people.</p>
+      <div class="ob-section-label">Tradition (choose all that apply)</div>
+      <div class="ob-chips" id="ob-traditions">
+        <div class="ob-chip" data-val="THERAVADA" onclick="obChipToggle(this,false)">Theravāda</div>
+        <div class="ob-chip" data-val="MAHAYANA"  onclick="obChipToggle(this,false)">Mahāyāna</div>
+        <div class="ob-chip" data-val="VAJRAYANA" onclick="obChipToggle(this,false)">Vajrayāna</div>
+        <div class="ob-chip" data-val="NAVAYANA"  onclick="obChipToggle(this,false)">Navayāna</div>
+        <div class="ob-chip" data-val="MULTIPLE"  onclick="obChipToggle(this,false)">Multiple</div>
+        <div class="ob-chip" data-val="OTHER"     onclick="obChipToggle(this,false)">Other / Exploring</div>
+      </div>
+      <div class="ob-section-label">I am a…</div>
+      <div class="ob-chips" id="ob-roles">
+        <div class="ob-chip active" data-val="PRACTITIONER" onclick="obChipToggle(this,true)">Practitioner</div>
+        <div class="ob-chip" data-val="BHIKKHU"      onclick="obChipToggle(this,true)">Bhikkhu</div>
+        <div class="ob-chip" data-val="BHIKKHUNI"    onclick="obChipToggle(this,true)">Bhikkhuni</div>
+        <div class="ob-chip" data-val="SCHOLAR"      onclick="obChipToggle(this,true)">Scholar</div>
+      </div>
+    </div>
+
+    <!-- Step 2: Location -->
+    <div id="ob-step-2" class="ob-step">
+      <h2 class="ob-title">Where Are You?</h2>
+      <p class="ob-subtitle">Only your city is ever shown — never your exact address. This helps you find practitioners near you.</p>
+      <div class="input-group" style="margin-top:1.2rem;">
+        <label>City</label>
+        <input type="text" id="ob-city" placeholder="e.g. Mumbai, Colombo, Bangkok">
+      </div>
+      <div class="input-group">
+        <label>Country</label>
+        <select id="ob-country">
+          <option value="">— Select country —</option>
+          <option value="IN">India</option>
+          <option value="LK">Sri Lanka</option>
+          <option value="TH">Thailand</option>
+          <option value="MM">Myanmar</option>
+          <option value="NP">Nepal</option>
+          <option value="JP">Japan</option>
+          <option value="CN">China</option>
+          <option value="KR">South Korea</option>
+          <option value="TW">Taiwan</option>
+          <option value="VN">Vietnam</option>
+          <option value="KH">Cambodia</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="CA">Canada</option>
+          <option value="AU">Australia</option>
+          <option value="DE">Germany</option>
+          <option value="FR">France</option>
+          <option value="SG">Singapore</option>
+          <option value="MY">Malaysia</option>
+          <option value="ID">Indonesia</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Step 3: Tags -->
+    <div id="ob-step-3" class="ob-step">
+      <h2 class="ob-title">What Describes You?</h2>
+      <p class="ob-subtitle">Choose up to 5. This helps others with shared interests find you.</p>
+      <div class="ob-chips" id="ob-tags">
+        <div class="ob-chip" data-val="MEDITATOR"  onclick="obChipToggle(this,false)">Meditator</div>
+        <div class="ob-chip" data-val="STUDENT"    onclick="obChipToggle(this,false)">Student</div>
+        <div class="ob-chip" data-val="TEACHER"    onclick="obChipToggle(this,false)">Teacher</div>
+        <div class="ob-chip" data-val="RESEARCHER" onclick="obChipToggle(this,false)">Researcher</div>
+        <div class="ob-chip" data-val="TRANSLATOR" onclick="obChipToggle(this,false)">Translator</div>
+        <div class="ob-chip" data-val="VOLUNTEER"  onclick="obChipToggle(this,false)">Volunteer</div>
+        <div class="ob-chip" data-val="ACTIVIST"   onclick="obChipToggle(this,false)">Activist</div>
+        <div class="ob-chip" data-val="WRITER"     onclick="obChipToggle(this,false)">Writer</div>
+        <div class="ob-chip" data-val="ARTIST"     onclick="obChipToggle(this,false)">Artist</div>
+        <div class="ob-chip" data-val="DEVELOPER"  onclick="obChipToggle(this,false)">Developer</div>
+        <div class="ob-chip" data-val="FOUNDER"    onclick="obChipToggle(this,false)">Founder</div>
+      </div>
+    </div>
+
+    <div class="onboarding-footer">
+      <button class="btn-primary" style="width:100%;padding:0.9rem;" id="ob-continue-btn" onclick="obContinue()">
+        <span id="ob-continue-text">Continue →</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================
      VIEW: APP
 ==================================================== -->
 <div id="view-app" class="view">
@@ -783,6 +978,13 @@
       <div class="header-actions">
         <div class="header-icon" id="headerAvatar" title="Profile">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="header-icon" onclick="switchTab('chat')" title="Messages" style="position:relative;">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span id="headerChatBadge" style="display:none;position:absolute;top:1px;right:1px;background:var(--danger);color:white;font-size:0.5rem;font-weight:700;min-width:13px;height:13px;border-radius:7px;align-items:center;justify-content:center;padding:0 2px;"></span>
+        </div>
+        <div class="header-icon" onclick="switchTab('learn')" title="Library">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
         <div class="header-icon" onclick="logout()" title="Sign out">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -830,6 +1032,38 @@
         <div id="chatThreads"></div>
       </div>
 
+      <!-- EVENTS TAB -->
+      <div id="tab-events" class="tab-panel">
+        <div class="section-title" style="padding-bottom:0.2rem;">Upcoming Events</div>
+        <div class="category-scroll" id="eventFilters">
+          <span class="category-chip active" onclick="filterEvents(null,this)">All</span>
+          <span class="category-chip" onclick="filterEvents('RETREAT',this)">Retreats</span>
+          <span class="category-chip" onclick="filterEvents('TALK',this)">Dhamma Talks</span>
+          <span class="category-chip" onclick="filterEvents('CEREMONY',this)">Ceremonies</span>
+          <span class="category-chip" onclick="filterEvents('DHAMMA_DIKSHA',this)">Dīkṣā</span>
+          <span class="category-chip" onclick="filterEvents('COMMUNITY_GATHERING',this)">Gatherings</span>
+          <span class="category-chip" onclick="filterEvents('AMBEDKAR_JAYANTI',this)">Ambedkar Jayanti</span>
+        </div>
+        <div id="eventsList"></div>
+      </div>
+
+      <!-- COMMUNITIES TAB -->
+      <div id="tab-communities" class="tab-panel">
+        <div class="search-bar" style="margin-top:1rem;">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="commSearch" placeholder="Search vihars, sanghas, groups…" oninput="debounceComm()">
+        </div>
+        <div class="category-scroll" id="commFilters">
+          <span class="category-chip active" onclick="filterComm(null,this)">All</span>
+          <span class="category-chip" onclick="filterComm('TEMPLE',this)">Temples</span>
+          <span class="category-chip" onclick="filterComm('NGO',this)">NGOs</span>
+          <span class="category-chip" onclick="filterComm('STUDY_GROUP',this)">Study Groups</span>
+          <span class="category-chip" onclick="filterComm('AMBEDKARITE_SANGHA',this)">Ambedkarite</span>
+          <span class="category-chip" onclick="filterComm('UNIVERSITY_CLUB',this)">University</span>
+        </div>
+        <div id="commList"></div>
+      </div>
+
     </main>
 
     <!-- Bottom Nav -->
@@ -843,14 +1077,13 @@
         Discover
       </div>
       <div class="nav-spacer"></div>
-      <div class="nav-item" onclick="switchTab('learn')" id="nav-learn">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        Learn
+      <div class="nav-item" onclick="switchTab('events')" id="nav-events">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Events
       </div>
-      <div class="nav-item" onclick="switchTab('chat')" id="nav-chat">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span id="chatTabLabel">Messages</span>
-        <span class="nav-badge" id="chatBadge" style="display:none"></span>
+      <div class="nav-item" onclick="switchTab('communities')" id="nav-communities">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Communities
       </div>
     </nav>
 
@@ -1146,6 +1379,7 @@ async function handleAuth(event) {
       const data = await api('POST', '/auth/login', body);
       state.token = data.token;
       state.user  = data.user;
+      localStorage.setItem('sangham_onboarded', '1'); // returning user, skip onboarding
     } else {
       const isEmail = identifier.includes('@');
       const body = {
@@ -1181,6 +1415,12 @@ function logout() {
 //  INIT APP (after login)
 // ============================================================
 function initApp() {
+  // Show onboarding only once per device (new registrations don't have this key yet)
+  if (!localStorage.getItem('sangham_onboarded')) {
+    obGoToStep(1);
+    routeTo('view-onboarding');
+    return;
+  }
   routeTo('view-app');
   updateHeaderAvatar();
   populateCreatePostUI();
@@ -1227,10 +1467,12 @@ function switchTab(tab) {
   document.getElementById('nav-' + tab).classList.add('active');
   state.currentTab = tab;
 
-  if (tab === 'home')     loadHome();
-  if (tab === 'discover') loadDiscover();
-  if (tab === 'learn')    loadLearn();
-  if (tab === 'chat')     loadChatThreads();
+  if (tab === 'home')        loadHome();
+  if (tab === 'discover')    loadDiscover();
+  if (tab === 'learn')       loadLearn();
+  if (tab === 'chat')        loadChatThreads();
+  if (tab === 'events')      loadEvents();
+  if (tab === 'communities') loadCommunities();
 }
 
 // ============================================================
@@ -1855,12 +2097,13 @@ async function loadChatUnreadCount() {
   try {
     const threads = await api('GET', '/messages/threads');
     const total   = threads.reduce((sum, t) => sum + (Number(t.unreadCount)||0), 0);
-    const badge   = document.getElementById('chatBadge');
+    // Header badge
+    const hBadge = document.getElementById('headerChatBadge');
     if (total > 0) {
-      badge.textContent = total > 99 ? '99+' : total;
-      badge.style.display = 'flex';
+      hBadge.textContent = total > 99 ? '99+' : total;
+      hBadge.style.display = 'flex';
     } else {
-      badge.style.display = 'none';
+      hBadge.style.display = 'none';
     }
   } catch(e) {}
 }
@@ -2072,11 +2315,239 @@ function fmtRole(role) {
 }
 
 // ============================================================
+//  ONBOARDING
+// ============================================================
+const obState = { step: 1, traditions: [], role: 'PRACTITIONER', city: '', country: '', tags: [] };
+
+function obGoToStep(step) {
+  obState.step = step;
+  document.querySelectorAll('.ob-step').forEach(s => s.classList.remove('active'));
+  const stepEl = document.getElementById('ob-step-' + step);
+  if (stepEl) stepEl.classList.add('active');
+  document.querySelectorAll('.ob-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === step - 1);
+    d.classList.toggle('done',   i < step - 1);
+  });
+  const txt = document.getElementById('ob-continue-text');
+  if (txt) txt.textContent = step === 3 ? 'Enter the Sangha →' : 'Continue →';
+}
+
+function obChipToggle(chip, singleSelect) {
+  if (singleSelect) {
+    chip.closest('.ob-chips').querySelectorAll('.ob-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  } else {
+    if (!chip.classList.contains('active')) {
+      if (chip.closest('#ob-tags')) {
+        const active = chip.closest('.ob-chips').querySelectorAll('.ob-chip.active').length;
+        if (active >= 5) { showToast('Choose up to 5 tags'); return; }
+      }
+    }
+    chip.classList.toggle('active');
+  }
+}
+
+function obContinue() {
+  if (obState.step === 1) {
+    obState.traditions = [...document.querySelectorAll('#ob-traditions .ob-chip.active')].map(c => c.dataset.val);
+    const r = document.querySelector('#ob-roles .ob-chip.active');
+    obState.role = r ? r.dataset.val : 'PRACTITIONER';
+    obGoToStep(2);
+  } else if (obState.step === 2) {
+    obState.city    = document.getElementById('ob-city').value.trim();
+    obState.country = document.getElementById('ob-country').value;
+    obGoToStep(3);
+  } else {
+    obState.tags = [...document.querySelectorAll('#ob-tags .ob-chip.active')].map(c => c.dataset.val);
+    submitOnboarding();
+  }
+}
+
+async function submitOnboarding() {
+  const btn = document.getElementById('ob-continue-btn');
+  const txt = document.getElementById('ob-continue-text');
+  btn.disabled = true;
+  txt.innerHTML = '<span class="spinner-sm"></span>';
+  try {
+    const profile = {};
+    if (obState.traditions.length) profile.traditions = obState.traditions;
+    if (obState.role)    profile.role    = obState.role;
+    if (obState.city)    profile.city    = obState.city;
+    if (obState.country) profile.country = obState.country;
+    if (Object.keys(profile).length) await api('PUT', '/users/me', profile);
+    if (obState.tags.length) await api('PUT', '/users/me/tags', { tags: obState.tags });
+    // Update cached user
+    if (obState.role) { state.user.role = obState.role; saveSession(); }
+  } catch(e) { /* non-blocking */ }
+  localStorage.setItem('sangham_onboarded', '1');
+  btn.disabled = false;
+  txt.textContent = 'Continue →';
+  routeTo('view-app');
+  updateHeaderAvatar();
+  populateCreatePostUI();
+  switchTab('home');
+  initSocket();
+  loadChatUnreadCount();
+}
+
+function skipOnboarding() {
+  localStorage.setItem('sangham_onboarded', '1');
+  routeTo('view-app');
+  updateHeaderAvatar();
+  populateCreatePostUI();
+  switchTab('home');
+  initSocket();
+  loadChatUnreadCount();
+}
+
+// ============================================================
+//  EVENTS TAB
+// ============================================================
+let eventsFilter = null;
+
+async function loadEvents() {
+  const el = document.getElementById('eventsList');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    const qs = eventsFilter ? '?type=' + eventsFilter : '';
+    const data = await api('GET', '/events' + qs);
+    const events = data.data || (Array.isArray(data) ? data : []);
+    if (!events.length) {
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
+        <div class="empty-icon">🪷</div>
+        <p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p>
+      </div>`;
+      return;
+    }
+    el.innerHTML = events.map(renderEventCard).join('');
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
+  }
+}
+
+function filterEvents(type, chip) {
+  document.querySelectorAll('#eventFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  eventsFilter = type;
+  loadEvents();
+}
+
+function renderEventCard(ev) {
+  const d = new Date(ev.startsAt);
+  const dateStr = d.toLocaleDateString('en-IN', { weekday:'short', month:'short', day:'numeric' });
+  const timeStr = d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  const organiser   = ev.organiser?.displayName || '';
+  const rsvpCount   = ev._count?.rsvps || 0;
+  const loc         = ev.locationName || (ev.onlineUrl ? 'Online' : '');
+  const tradition   = ev.traditionTag
+    ? `<span class="post-tradition-tag" style="margin-bottom:0.4rem;">${ev.traditionTag}</span>` : '';
+  const typeLabel = {
+    RETREAT:'Retreat', CEREMONY:'Ceremony', TALK:'Dhamma Talk', SEMINAR:'Seminar',
+    PROTEST_MARCH:'March', COMMUNITY_GATHERING:'Gathering', DHAMMA_DIKSHA:'Dīkṣā',
+    CONVERSION_CEREMONY:'Conversion Ceremony', AMBEDKAR_JAYANTI:'Ambedkar Jayanti',
+  }[ev.eventType] || ev.eventType;
+
+  return `
+    <div class="event-card">
+      <div class="event-date-bar">${dateStr} · ${timeStr}</div>
+      <div class="event-body">
+        ${tradition}
+        <div class="event-title">${escHtml(ev.title)}</div>
+        <div class="event-meta">${typeLabel}${loc ? ' · ' + escHtml(loc) : ''}${organiser ? ' · ' + escHtml(organiser) : ''}</div>
+      </div>
+      <div class="event-footer">
+        <span class="event-rsvp-count">${rsvpCount > 0 ? rsvpCount + ' going' : 'Be first to RSVP'}</span>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          ${ev.onlineUrl ? `<a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:0.73rem;color:var(--saffron-dark);text-decoration:none;">Join Online ↗</a>` : ''}
+          <button class="btn-ghost" style="font-size:0.73rem;padding:0.3rem 0.7rem;" onclick="rsvpEvent('${ev.id}',this)">RSVP</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function rsvpEvent(eventId, btn) {
+  try {
+    await api('POST', `/events/${eventId}/rsvp`, { status: 'GOING' });
+    btn.textContent = 'Going ✓';
+    btn.classList.add('followed');
+    showToast('RSVP confirmed', 'success');
+  } catch(err) { showToast(err.message, 'error'); }
+}
+
+// ============================================================
+//  COMMUNITIES TAB
+// ============================================================
+let commFilter = null;
+let commTimer  = null;
+
+async function loadCommunities() {
+  const el = document.getElementById('commList');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    const qs = commFilter ? '?category=' + commFilter : '';
+    const data = await api('GET', '/associations' + qs);
+    let comms = Array.isArray(data) ? data : (data.data || []);
+    const q = document.getElementById('commSearch').value.trim().toLowerCase();
+    if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
+    if (!comms.length) {
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
+        <div class="empty-icon">🏛️</div>
+        <p>No communities found.<br>Create one for your local Sangha.</p>
+      </div>`;
+      return;
+    }
+    el.innerHTML = comms.map(renderCommCard).join('');
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state"><p>${err.message}</p></div>`;
+  }
+}
+
+function filterComm(category, chip) {
+  document.querySelectorAll('#commFilters .category-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  commFilter = category;
+  loadCommunities();
+}
+
+function debounceComm() {
+  clearTimeout(commTimer);
+  commTimer = setTimeout(loadCommunities, 400);
+}
+
+function renderCommCard(c) {
+  const catLabel = {
+    TEMPLE:'Temple', NGO:'NGO', STUDY_GROUP:'Study Group',
+    AMBEDKARITE_SANGHA:'Ambedkarite Sangha', UNIVERSITY_CLUB:'University Club',
+    NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International',
+  }[c.category] || c.category;
+  const trad = c.tradition
+    ? c.tradition.charAt(0) + c.tradition.slice(1).toLowerCase() : '';
+  const memberCount = c._count?.members || 0;
+  const verified = c.isVerified
+    ? '<span class="clergy-badge" title="Verified" style="width:13px;height:13px;flex-shrink:0;"></span>' : '';
+  const loc = [c.city, c.country].filter(Boolean).join(', ');
+  return `
+    <div class="comm-card" onclick="openCommDetail('${c.id}')">
+      <div class="comm-icon">${escHtml((c.name||'?').charAt(0))}</div>
+      <div class="comm-info">
+        <div class="comm-name">${verified}${escHtml(c.name)}</div>
+        <div class="comm-meta">${catLabel}${trad ? ' · ' + trad : ''}${loc ? ' · ' + loc : ''}</div>
+        <div class="comm-meta">${memberCount} member${memberCount !== 1 ? 's' : ''}</div>
+      </div>
+    </div>`;
+}
+
+function openCommDetail(id) {
+  showToast('Full community page — coming soon');
+}
+
+// ============================================================
 //  BOOTSTRAP
 // ============================================================
 (function boot() {
   loadSession();
   if (state.token && state.user) {
+    localStorage.setItem('sangham_onboarded', '1'); // session restore = returning user
     initApp();
   }
 })();

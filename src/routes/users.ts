@@ -3,7 +3,7 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
-import { UserRole, Tradition } from '@prisma/client';
+import { UserRole, Tradition, ProfessionalTag } from '@prisma/client';
 import { z } from 'zod';
 
 const router = Router();
@@ -16,6 +16,8 @@ const updateProfileSchema = z.object({
   traditions: z.array(z.nativeEnum(Tradition)).optional(),
   languages: z.array(z.string()).optional(),
   templeAffiliation: z.string().optional(),
+  // Self-assignable roles only — MODERATOR/SUPER_ADMIN granted by admins
+  role: z.enum(['PRACTITIONER', 'BHIKKHU', 'BHIKKHUNI', 'SCHOLAR']).optional(),
 });
 
 // GET /users/:id
@@ -43,6 +45,21 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response): Promise
     select: { id: true, displayName: true, bio: true, country: true, traditions: true },
   });
   res.json(updated);
+});
+
+// PUT /users/me/tags
+router.put('/me/tags', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { tags } = req.body;
+  if (!Array.isArray(tags)) { res.status(400).json({ error: 'tags must be an array' }); return; }
+  const validTags = Object.values(ProfessionalTag);
+  const cleaned = (tags as string[]).filter((t): t is ProfessionalTag => validTags.includes(t as ProfessionalTag));
+  await prisma.userTag.deleteMany({ where: { userId: req.user!.id } });
+  if (cleaned.length > 0) {
+    await prisma.userTag.createMany({
+      data: cleaned.map(tag => ({ userId: req.user!.id, tag })),
+    });
+  }
+  res.json({ tags: cleaned });
 });
 
 // POST /users/:id/follow
