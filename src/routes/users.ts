@@ -16,6 +16,8 @@ const updateProfileSchema = z.object({
   traditions: z.array(z.nativeEnum(Tradition)).optional(),
   languages: z.array(z.string()).optional(),
   templeAffiliation: z.string().optional(),
+  profilePhoto: z.string().url().optional(),
+  coverImage: z.string().url().optional(),
   // Self-assignable roles only — MODERATOR/SUPER_ADMIN granted by admins
   role: z.enum(['PRACTITIONER', 'BHIKKHU', 'BHIKKHUNI', 'SCHOLAR']).optional(),
 });

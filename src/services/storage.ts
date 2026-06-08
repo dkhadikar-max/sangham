@@ -1,16 +1,17 @@
 /**
- * Storage Service — local dev vs S3 production
+ * Storage Service
  *
- * STORAGE_MODE=local  → saves files to /uploads on disk, served by Express
- * STORAGE_MODE=s3     → uploads to AWS S3, returns CloudFront URL
+ * STORAGE_MODE=local  → saves files to /uploads on disk (dev only)
+ * STORAGE_MODE=r2     → Cloudflare R2 (preferred for production)
+ * STORAGE_MODE=s3     → AWS S3 (legacy / alternative)
  *
- * Switching between modes requires only changing STORAGE_MODE in .env.
- * All routes call storage.upload() and storage.delete() — never touch multer directly.
+ * R2 is S3-compatible; both modes use @aws-sdk/client-s3 with different endpoints.
  */
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { Request } from 'express';
 import { env } from '../config/env';
 
@@ -41,10 +42,10 @@ export function ensureUploadDirs(): void {
 }
 
 function subDirForMime(mime: string): string {
-  if (ALLOWED_IMAGE.includes(mime))    return 'images';
-  if (ALLOWED_AUDIO.includes(mime))    return 'audio';
-  if (ALLOWED_VIDEO.includes(mime))    return 'video';
-  if (ALLOWED_DOC.includes(mime))      return 'documents';
+  if (ALLOWED_IMAGE.includes(mime)) return 'images';
+  if (ALLOWED_AUDIO.includes(mime)) return 'audio';
+  if (ALLOWED_VIDEO.includes(mime)) return 'video';
+  if (ALLOWED_DOC.includes(mime))   return 'documents';
   return 'images';
 }
 
@@ -58,6 +59,32 @@ function extForMime(mime: string): string {
   return map[mime] || '';
 }
 
+// ── S3 / R2 client factory ────────────────────────────────────────────────────
+function getCloudClient(): S3Client {
+  if (env.STORAGE_MODE === 'r2') {
+    return new S3Client({
+      region: 'auto',
+      endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+      credentials: {
+        accessKeyId: env.R2_ACCESS_KEY_ID,
+        secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+      },
+    });
+  }
+  // AWS S3
+  return new S3Client({
+    region: env.AWS_REGION,
+    credentials: {
+      accessKeyId: env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+    },
+  });
+}
+
+function cloudBucket(): string {
+  return env.STORAGE_MODE === 'r2' ? env.R2_BUCKET : env.AWS_S3_BUCKET;
+}
+
 // ── Multer: local disk storage ────────────────────────────────────────────────
 const localDiskStorage = multer.diskStorage({
   destination: (_req: Request, file, cb) => {
@@ -65,14 +92,13 @@ const localDiskStorage = multer.diskStorage({
     cb(null, path.join(UPLOADS_ROOT, subDirForMime(file.mimetype)));
   },
   filename: (_req: Request, file, cb) => {
-    const unique = uuidv4();
     const ext = extForMime(file.mimetype) || path.extname(file.originalname);
-    cb(null, `${unique}${ext}`);
+    cb(null, `${uuidv4()}${ext}`);
   },
 });
 
-// ── Multer: memory storage (for S3 passthrough) ───────────────────────────────
-const memoryStorage = multer.memoryStorage();
+// ── Multer: memory storage (for cloud upload passthrough) ─────────────────────
+const memStorage = multer.memoryStorage();
 
 const fileFilter = (allowedTypes: string[]) =>
   (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
@@ -80,8 +106,8 @@ const fileFilter = (allowedTypes: string[]) =>
     else cb(new Error(`File type ${file.mimetype} not allowed`));
   };
 
-// ── Multer middleware factories ───────────────────────────────────────────────
-const storage = env.STORAGE_MODE === 's3' ? memoryStorage : localDiskStorage;
+// ── Multer middleware ─────────────────────────────────────────────────────────
+const storage = env.STORAGE_MODE === 'local' ? localDiskStorage : memStorage;
 
 export const uploadImage    = multer({ storage, limits: { fileSize: LIMITS.image },    fileFilter: fileFilter(ALLOWED_IMAGE) });
 export const uploadAudio    = multer({ storage, limits: { fileSize: LIMITS.audio },    fileFilter: fileFilter(ALLOWED_AUDIO) });
@@ -89,62 +115,66 @@ export const uploadVideo    = multer({ storage, limits: { fileSize: LIMITS.video
 export const uploadDocument = multer({ storage, limits: { fileSize: LIMITS.document }, fileFilter: fileFilter(ALLOWED_DOC) });
 export const uploadAny      = multer({ storage, limits: { fileSize: LIMITS.video },    fileFilter: fileFilter(ALLOWED_ALL) });
 
-// ── URL builder ───────────────────────────────────────────────────────────────
+// ── URL builders ──────────────────────────────────────────────────────────────
 export function localFileUrl(req: Request, relativePath: string): string {
-  const host = `${req.protocol}://${req.get('host')}`;
-  return `${host}/uploads/${relativePath}`;
+  return `${req.protocol}://${req.get('host')}/uploads/${relativePath}`;
 }
 
+export function cloudFileUrl(key: string): string {
+  if (env.STORAGE_MODE === 'r2') {
+    return `${env.R2_PUBLIC_URL.replace(/\/$/, '')}/${key}`;
+  }
+  // AWS S3 / CloudFront
+  if (env.AWS_CLOUDFRONT_DOMAIN) {
+    return `https://${env.AWS_CLOUDFRONT_DOMAIN}/${key}`;
+  }
+  return `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${key}`;
+}
+
+/** Returns the public URL for a just-saved local file (subdir/filename form). */
 export function fileUrl(filename: string, subdir: string): string {
-  if (env.STORAGE_MODE === 's3' && env.AWS_CLOUDFRONT_DOMAIN) {
-    return `https://${env.AWS_CLOUDFRONT_DOMAIN}/${subdir}/${filename}`;
+  if (env.STORAGE_MODE !== 'local') {
+    return cloudFileUrl(`${subdir}/${filename}`);
   }
   return `/uploads/${subdir}/${filename}`;
 }
 
-// ── S3 upload (only used in production) ──────────────────────────────────────
-export async function uploadToS3(
+// ── Cloud upload ──────────────────────────────────────────────────────────────
+export async function uploadToCloud(
   file: Express.Multer.File,
   subdir: string
 ): Promise<string> {
-  if (env.STORAGE_MODE !== 's3') {
-    throw new Error('uploadToS3 called in local mode');
-  }
-  // Lazy import — keeps AWS SDK out of the local dev bundle entirely
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore -- @aws-sdk/client-s3 is an optional prod dependency; only reachable when STORAGE_MODE=s3
-  const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
-  const client = new S3Client({
-    region: env.AWS_REGION,
-    credentials: {
-      accessKeyId: env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
   const key = `${subdir}/${uuidv4()}${extForMime(file.mimetype)}`;
+  const client = getCloudClient();
   await client.send(new PutObjectCommand({
-    Bucket: env.AWS_S3_BUCKET,
+    Bucket: cloudBucket(),
     Key: key,
     Body: file.buffer,
     ContentType: file.mimetype,
+    // Public read via bucket policy / R2 custom domain — not ACL
   }));
-  return fileUrl(key.split('/')[1], subdir);
+  return cloudFileUrl(key);
 }
+
+/** @deprecated — kept for callers that haven't migrated yet */
+export const uploadToS3 = uploadToCloud;
 
 // ── Delete file ───────────────────────────────────────────────────────────────
 export async function deleteFile(urlOrPath: string): Promise<void> {
   if (env.STORAGE_MODE === 'local') {
-    // Extract relative path from URL like /uploads/images/uuid.jpg
     const rel = urlOrPath.replace(/^.*\/uploads\//, '');
     const abs = path.join(UPLOADS_ROOT, rel);
     if (fs.existsSync(abs)) fs.unlinkSync(abs);
     return;
   }
-  // S3 delete — lazy import
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore -- optional prod dependency
-  const { S3Client, DeleteObjectCommand } = await import('@aws-sdk/client-s3');
-  const client = new S3Client({ region: env.AWS_REGION });
-  const key = new URL(urlOrPath).pathname.slice(1);
-  await client.send(new DeleteObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key }));
+  // Extract object key from URL
+  const publicBase = env.STORAGE_MODE === 'r2'
+    ? env.R2_PUBLIC_URL.replace(/\/$/, '')
+    : (env.AWS_CLOUDFRONT_DOMAIN ? `https://${env.AWS_CLOUDFRONT_DOMAIN}` : '');
+  const key = publicBase
+    ? urlOrPath.replace(publicBase + '/', '')
+    : new URL(urlOrPath).pathname.slice(1);
+
+  const client = getCloudClient();
+  await client.send(new DeleteObjectCommand({ Bucket: cloudBucket(), Key: key }));
 }

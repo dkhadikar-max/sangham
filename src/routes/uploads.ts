@@ -1,67 +1,71 @@
 /**
- * Upload route — single endpoint for all file uploads
+ * Upload routes — single endpoint for all file uploads.
  * Local dev:  saves to /uploads/{subdir}/, returns relative URL
- * Production: proxies to S3, returns CloudFront URL
+ * R2 / S3:    streams to cloud storage, returns public URL
  */
 import { Router, Response } from 'express';
 import path from 'path';
 import { authenticate, AuthRequest } from '../middleware/auth';
-import { uploadImage, uploadAudio, uploadVideo, uploadAny, uploadToS3, fileUrl, ensureUploadDirs } from '../services/storage';
+import {
+  uploadImage, uploadAudio, uploadDocument,
+  uploadToCloud, fileUrl, ensureUploadDirs,
+} from '../services/storage';
 import { env } from '../config/env';
 import { AppError } from '../middleware/errorHandler';
+import { prisma } from '../config/database';
 
 const router = Router();
+
+function resolveUrl(req: AuthRequest, subdir: string): string {
+  if (env.STORAGE_MODE === 'local') {
+    ensureUploadDirs();
+    return fileUrl(path.basename(req.file!.path), subdir);
+  }
+  // cloud modes return URL after upload — handled in route body
+  return '';
+}
 
 // POST /uploads/image
 router.post('/image', authenticate, uploadImage.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.file) throw new AppError('No file provided', 400);
-  let url: string;
-  if (env.STORAGE_MODE === 's3') {
-    url = await uploadToS3(req.file, 'images');
-  } else {
-    url = fileUrl(path.basename(req.file.path), 'images');
-  }
-  res.json({ url, filename: path.basename(req.file.filename || req.file.originalname), size: req.file.size });
+  const url = env.STORAGE_MODE === 'local'
+    ? fileUrl(path.basename(req.file.path), 'images')
+    : await uploadToCloud(req.file, 'images');
+  res.json({ url, size: req.file.size });
 });
 
 // POST /uploads/audio
 router.post('/audio', authenticate, uploadAudio.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.file) throw new AppError('No file provided', 400);
-  let url: string;
-  if (env.STORAGE_MODE === 's3') {
-    url = await uploadToS3(req.file, 'audio');
-  } else {
-    url = fileUrl(path.basename(req.file.path), 'audio');
-  }
-  res.json({ url, filename: path.basename(req.file.filename || req.file.originalname), size: req.file.size });
+  const url = env.STORAGE_MODE === 'local'
+    ? fileUrl(path.basename(req.file.path), 'audio')
+    : await uploadToCloud(req.file, 'audio');
+  res.json({ url, size: req.file.size });
 });
 
-// POST /uploads/avatar  (profile photo)
+// POST /uploads/avatar — uploads photo and updates the user's profilePhoto
 router.post('/avatar', authenticate, uploadImage.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.file) throw new AppError('No file provided', 400);
-  let url: string;
-  if (env.STORAGE_MODE === 's3') {
-    url = await uploadToS3(req.file, 'avatars');
-  } else {
-    url = fileUrl(path.basename(req.file.path), 'avatars');
-  }
+  const url = env.STORAGE_MODE === 'local'
+    ? fileUrl(path.basename(req.file.path), 'avatars')
+    : await uploadToCloud(req.file, 'avatars');
+
+  // Persist immediately so the next profile fetch returns the new photo
+  await prisma.user.update({
+    where: { id: req.user!.id },
+    data: { profilePhoto: url },
+  });
+
   res.json({ url });
 });
 
-// POST /uploads/document  (clergy verification docs etc.)
-router.post('/document', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  const { default: uploadMiddleware } = await import('../services/storage').then(m => ({ default: m.uploadDocument }));
-  uploadMiddleware.single('file')(req as any, res as any, async (err) => {
-    if (err) { res.status(400).json({ error: err.message }); return; }
-    if (!req.file) { res.status(400).json({ error: 'No file provided' }); return; }
-    let url: string;
-    if (env.STORAGE_MODE === 's3') {
-      url = await uploadToS3(req.file, 'documents');
-    } else {
-      url = fileUrl(path.basename(req.file.path), 'documents');
-    }
-    res.json({ url });
-  });
+// POST /uploads/document
+router.post('/document', authenticate, uploadDocument.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!req.file) throw new AppError('No file provided', 400);
+  const url = env.STORAGE_MODE === 'local'
+    ? fileUrl(path.basename(req.file.path), 'documents')
+    : await uploadToCloud(req.file, 'documents');
+  res.json({ url, size: req.file.size });
 });
 
 export default router;

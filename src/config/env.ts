@@ -20,10 +20,18 @@ export const env = {
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
 
-  // Storage — local disk in dev, S3 in production
-  STORAGE_MODE: (process.env.STORAGE_MODE || 'local') as 'local' | 's3',
+  // Storage — local disk in dev, r2 (preferred) or s3 in production
+  STORAGE_MODE: (process.env.STORAGE_MODE || 'local') as 'local' | 'r2' | 's3',
   UPLOADS_DIR: process.env.UPLOADS_DIR || 'uploads',
-  // S3 (only used when STORAGE_MODE=s3)
+
+  // Cloudflare R2 (preferred — used when STORAGE_MODE=r2)
+  R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID || '',
+  R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID || '',
+  R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY || '',
+  R2_BUCKET: process.env.R2_BUCKET || '',
+  R2_PUBLIC_URL: process.env.R2_PUBLIC_URL || '',  // e.g. https://assets.sangham.online
+
+  // AWS S3 (legacy — used when STORAGE_MODE=s3)
   AWS_REGION: process.env.AWS_REGION || 'ap-south-1',
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
