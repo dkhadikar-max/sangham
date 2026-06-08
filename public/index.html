@@ -3096,8 +3096,8 @@ async function loadFollow() {
     ]);
     followState.followers = flrRes.data || flrRes || [];
     followState.following = flgRes.data || flgRes || [];
-    document.getElementById('fc-followers').textContent = flrRes.total ?? followState.followers.length;
-    document.getElementById('fc-following').textContent = flgRes.total ?? followState.following.length;
+    document.getElementById('fc-followers').textContent = flrRes.pagination?.total ?? followState.followers.length;
+    document.getElementById('fc-following').textContent = flgRes.pagination?.total ?? followState.following.length;
     renderFollowList();
   } catch(e) {
     document.getElementById('followList').innerHTML = '<div class="empty-state"><p>Could not load connections.</p></div>';
