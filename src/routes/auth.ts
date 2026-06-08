@@ -39,6 +39,19 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
     select: { id: true, displayName: true, role: true, createdAt: true },
   });
 
+  // Create default privacy settings so user appears in Discover immediately
+  await prisma.privacySettings.create({
+    data: {
+      userId:              user.id,
+      showInDiscovery:     true,
+      profileVisibility:   'PUBLIC',
+      messagingPermission: 'CONNECTIONS_ONLY',
+      locationVisibility:  'CITY_ONLY',
+      activityVisibility:  'PUBLIC',
+      anonymousBrowsing:   false,
+    },
+  });
+
   res.status(201).json({
     token: signToken(user.id),
     refreshToken: signRefreshToken(user.id),

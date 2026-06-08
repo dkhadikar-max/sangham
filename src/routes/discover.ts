@@ -54,16 +54,15 @@ router.get('/people', authenticate, async (req: AuthRequest, res: Response): Pro
   const { tradition, tag, language, role, city, state, country, q } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
 
-  // Only surface users who opted into discovery
+  // Only surface users who opted into discovery.
+  // Users with no privacySettings row (registered before the fix) default to discoverable.
   const where: Record<string, unknown> = {
     isActive: true,
     id: { not: req.user!.id },
-    privacySettings: {
-      is: {
-        showInDiscovery: true,
-        profileVisibility: { in: ['PUBLIC', 'COMMUNITY'] },
-      }
-    }
+    OR: [
+      { privacySettings: { is: null } },
+      { privacySettings: { is: { showInDiscovery: true, profileVisibility: { in: ['PUBLIC', 'COMMUNITY'] } } } },
+    ],
   };
 
   if (tradition)  where.traditions = { has: tradition as Tradition };
@@ -103,7 +102,10 @@ router.get('/nearby', authenticate, async (req: AuthRequest, res: Response): Pro
   const where: Record<string, unknown> = {
     isActive: true,
     id: { not: req.user!.id },
-    privacySettings: { is: { showInDiscovery: true } },
+    OR: [
+      { privacySettings: { is: null } },
+      { privacySettings: { is: { showInDiscovery: true } } },
+    ],
     location: {
       is: {
         visibility: { in: ['APPROXIMATE', 'CITY_ONLY'] },
@@ -161,12 +163,21 @@ router.get('/recommended', authenticate, async (req: AuthRequest, res: Response)
     where: {
       id: { notIn: excludeIds },
       isActive: true,
-      privacySettings: { is: { showInDiscovery: true } },
-      OR: [
-        { traditions: { hasSome: myTraditions } },
-        { tags: { some: { tag: { in: myTags } } } },
-        { location: { is: { city: me.location?.city || '' } } },
-        { languages: { hasSome: me.languages } },
+      AND: [
+        {
+          OR: [
+            { privacySettings: { is: null } },
+            { privacySettings: { is: { showInDiscovery: true } } },
+          ],
+        },
+        {
+          OR: [
+            { traditions: { hasSome: myTraditions } },
+            { tags: { some: { tag: { in: myTags } } } },
+            { location: { is: { city: me.location?.city || '' } } },
+            { languages: { hasSome: me.languages } },
+          ],
+        },
       ],
     },
     take: 20,
