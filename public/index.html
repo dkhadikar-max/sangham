@@ -313,7 +313,7 @@
       border-radius: 50%; display: inline-flex; align-items: center;
       justify-content: center; flex-shrink: 0;
     }
-    .clergy-badge::after { content: 'âœ“'; font-size: 8px; color: white; }
+    .clergy-badge::after { content: '✓'; font-size: 8px; color: white; }
     .post-meta { font-size: 0.72rem; color: var(--stone); margin-top: 0.1rem; }
     .post-content { padding: 0.3rem 1rem 0.7rem; font-size: 0.9rem; line-height: 1.6; }
     .post-tradition-tag {
@@ -1190,27 +1190,62 @@
       font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 0.06em; color: var(--stone); margin-bottom: 0.75rem;
     }
-    /* Amount selector */
-    .daan-amounts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .daan-amount-btn {
-      flex: 1 1 calc(33% - 0.5rem); min-width: 80px;
-      padding: 0.65rem 0.5rem; border-radius: 10px;
-      border: 1.5px solid var(--border-solid); background: var(--surface);
-      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600;
-      color: var(--charcoal); cursor: pointer; text-align: center;
-      transition: all 0.15s;
+    /* Amount selector — slider + manual input */
+    .daan-amount-display { text-align: center; margin-bottom: 0.5rem; }
+    .daan-amount-big {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 700;
+      color: var(--charcoal); line-height: 1;
     }
-    .daan-amount-btn.active {
-      border-color: var(--saffron); background: rgba(212,168,67,0.08); color: var(--saffron-dark);
+    .daan-slider-wrap { padding: 0.4rem 0 0.5rem; }
+    .daan-slider {
+      width: 100%; -webkit-appearance: none; appearance: none;
+      height: 5px; border-radius: 3px; outline: none; cursor: pointer;
+      background: linear-gradient(to right, var(--saffron) 0%, var(--saffron) var(--pct, 0%), var(--border-solid) var(--pct, 0%), var(--border-solid) 100%);
     }
-    .daan-amount-btn .daan-sub { font-family: 'Inter', sans-serif; font-size: 0.62rem; color: var(--stone); display: block; margin-top: 1px; }
-    .daan-custom-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
-    .daan-custom-row input {
+    .daan-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--saffron); border: 3px solid white;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.25); cursor: pointer;
+    }
+    .daan-slider::-moz-range-thumb {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--saffron); border: 3px solid white;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.25); cursor: pointer; border: none;
+    }
+    .daan-slider-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.65rem; color: var(--stone); margin-top: 0.2rem;
+    }
+    .daan-manual-row { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.6rem; }
+    .daan-rupee-sym { font-size: 1rem; color: var(--stone); font-weight: 500; flex-shrink: 0; }
+    .daan-manual-row input {
       flex: 1; border: 1.5px solid var(--border-solid); border-radius: 10px;
       padding: 0.6rem 0.9rem; font-size: 0.95rem; font-family: inherit;
       color: var(--charcoal); background: var(--surface); outline: none;
     }
-    .daan-custom-row input:focus { border-color: var(--saffron); }
+    .daan-manual-row input:focus { border-color: var(--saffron); }
+    /* Real-time allocation */
+    .daan-alloc-live {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.85rem 1rem; margin-top: 0.75rem;
+    }
+    .daan-alloc-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.84rem;
+    }
+    .daan-alloc-row:last-child { border-bottom: none; }
+    .daan-alloc-row.total-row { font-weight: 600; }
+    .daan-alloc-label { color: var(--stone); }
+    .daan-alloc-label strong { color: var(--charcoal); }
+    .daan-alloc-amt {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      font-weight: 700; color: var(--saffron-dark);
+    }
+    .daan-alloc-row.total-row .daan-alloc-amt { color: var(--charcoal); }
+    .daan-equality-note {
+      font-size: 0.7rem; color: var(--stone); text-align: center;
+      margin-top: 0.55rem; line-height: 1.45;
+    }
     /* Split bar */
     .daan-split {
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
@@ -1249,7 +1284,7 @@
       background: linear-gradient(135deg, var(--saffron), #B88E35);
       margin-left: 4px; flex-shrink: 0; vertical-align: middle;
     }
-    .contributor-badge::after { content: 'â—†'; font-size: 7px; color: white; }
+    .contributor-badge::after { content: '◆'; font-size: 7px; color: white; }
     /* Dashboard stats */
     .daan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .daan-stat-card {
@@ -1284,6 +1319,54 @@
       color: var(--saffron-dark); margin-bottom: 0.2rem;
     }
     .daan-contributor-banner .daan-banner-sub { font-size: 0.78rem; color: var(--stone); }
+    /* ── Section 19: Discover v2 ────────────────────────────── */
+    .disc-header { padding: 1.4rem 1rem 0.8rem; background: var(--rice-paper); border-bottom: 1px solid var(--border); }
+    .disc-welcome { font-family: 'Cormorant Garamond', serif; font-size: 1.45rem; font-weight: 500; color: var(--charcoal); margin-bottom: 0.15rem; }
+    .disc-question { font-size: 0.8rem; color: var(--stone); margin-bottom: 0.8rem; }
+    .disc-role-chips { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .disc-role-chip {
+      padding: 0.3rem 0.85rem; border-radius: 2rem; border: 1.5px solid var(--border);
+      font-size: 0.78rem; cursor: pointer; background: var(--surface); color: var(--charcoal);
+      transition: all 0.15s; font-weight: 500; white-space: nowrap;
+    }
+    .disc-role-chip.active { background: var(--saffron); border-color: var(--saffron); color: white; }
+    .disc-search-bar {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); background: var(--rice-paper);
+    }
+    .disc-search-bar svg { width: 15px; height: 15px; stroke: var(--stone); stroke-width: 2; fill: none; flex-shrink: 0; }
+    .disc-search-bar input { flex: 1; border: none; background: transparent; outline: none; font-size: 0.85rem; color: var(--charcoal); }
+    .disc-section { border-bottom: 1px solid var(--border); }
+    .disc-section-hd { display: flex; justify-content: space-between; align-items: baseline; padding: 0.9rem 1rem 0.4rem; }
+    .disc-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--charcoal); }
+    .disc-section-more { font-size: 0.75rem; color: var(--saffron); cursor: pointer; font-weight: 500; }
+    .disc-section-body { padding: 0 0 0.5rem; }
+    .disc-count-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; cursor: pointer; }
+    .disc-count-row:active { background: rgba(0,0,0,0.03); }
+    .disc-count-n { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 700; color: var(--saffron); min-width: 2.5rem; line-height: 1; }
+    .disc-count-l { flex: 1; font-size: 0.88rem; color: var(--charcoal); }
+    .disc-chevron { width: 16px; height: 16px; stroke: var(--stone); stroke-width: 2; fill: none; }
+    .disc-intention-row {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem;
+      border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer;
+    }
+    .disc-intention-row:last-child { border-bottom: none; }
+    .disc-intention-n { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--saffron); min-width: 2.2rem; line-height: 1; }
+    .disc-intention-l { font-size: 0.85rem; color: var(--charcoal); font-weight: 500; }
+    .disc-intention-sub { font-size: 0.7rem; color: var(--stone); margin-top: 0.1rem; }
+    .disc-community-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+    .disc-community-row:last-child { border-bottom: none; }
+    .disc-community-icon { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; background: rgba(212,168,67,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .disc-community-name { font-size: 0.88rem; font-weight: 600; color: var(--charcoal); }
+    .disc-community-meta { font-size: 0.73rem; color: var(--stone); margin-top: 0.1rem; }
+    .disc-event-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.6rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+    .disc-event-row:last-child { border-bottom: none; }
+    .disc-event-date { min-width: 34px; text-align: center; flex-shrink: 0; }
+    .disc-event-day { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--saffron); line-height: 1; }
+    .disc-event-mon { font-size: 0.62rem; text-transform: uppercase; color: var(--stone); letter-spacing: 0.05em; }
+    .disc-event-info { flex: 1; }
+    .disc-event-title { font-size: 0.88rem; font-weight: 600; color: var(--charcoal); }
+    .disc-event-meta { font-size: 0.73rem; color: var(--stone); margin-top: 0.1rem; }
   </style>
 </head>
 <body>
@@ -1440,7 +1523,7 @@
 
     <div class="onboarding-footer">
       <button class="btn-primary" style="width:100%;padding:0.9rem;" id="ob-continue-btn" onclick="obContinue()">
-        <span id="ob-continue-text">Continue â†’</span>
+        <span id="ob-continue-text">Continue →</span>
       </button>
     </div>
   </div>
@@ -1494,12 +1577,12 @@
         <div id="home-daily-verse"></div>
         <div class="section-header-row">
           <h2 class="section-title" style="margin:0;padding:0;">Recommended People</h2>
-          <a class="section-more" onclick="switchTab('discover')">See all â†’</a>
+          <a class="section-more" onclick="switchTab('discover')">See all →</a>
         </div>
         <div class="home-people-scroll" id="home-recommended"></div>
         <div class="section-header-row">
           <h2 class="section-title" style="margin:0;padding:0;">Upcoming Events</h2>
-          <a class="section-more" onclick="switchTab('events')">See all â†’</a>
+          <a class="section-more" onclick="switchTab('events')">See all →</a>
         </div>
         <div class="home-events-preview" id="home-events-preview"></div>
         <h2 class="section-title">Community Updates</h2>
@@ -1508,12 +1591,69 @@
 
       <!-- DISCOVER TAB -->
       <div id="tab-discover" class="tab-panel">
-        <div class="search-bar">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="discoverSearch" placeholder="Search practitioners..." oninput="debounceDiscover()">
+        <!-- Greeting + role filter -->
+        <div class="disc-header">
+          <div class="disc-welcome" id="discWelcome">Welcome</div>
+          <div class="disc-question">Who are you looking for?</div>
+          <div class="disc-role-chips">
+            <button class="disc-role-chip active" onclick="discSetRole(this,'all')">All</button>
+            <button class="disc-role-chip" onclick="discSetRole(this,'role:PRACTITIONER')">Practitioner</button>
+            <button class="disc-role-chip" onclick="discSetRole(this,'role:BHIKKHU')">Bhikkhu</button>
+            <button class="disc-role-chip" onclick="discSetRole(this,'tag:STUDENT')">Student</button>
+            <button class="disc-role-chip" onclick="discSetRole(this,'tag:VOLUNTEER')">Volunteer</button>
+            <button class="disc-role-chip" onclick="discSetRole(this,'tag:TRANSLATOR')">Translator</button>
+          </div>
         </div>
-        <div class="category-scroll" id="discoverCategories"></div>
-        <div id="discoverPeople"></div>
+        <!-- Search -->
+        <div class="disc-search-bar">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="discoverSearch" placeholder="Search by name, tradition…" oninput="debounceDiscover()">
+        </div>
+        <!-- People (First) -->
+        <div class="disc-section">
+          <div class="disc-section-hd">
+            <span class="disc-section-title" id="discPeopleTitle">Recommended People</span>
+            <a class="disc-section-more" onclick="discShowAllPeople()">See all →</a>
+          </div>
+          <div id="discoverPeople"></div>
+        </div>
+        <!-- People Near You -->
+        <div class="disc-section" id="discNearbySection">
+          <div class="disc-section-hd">
+            <span class="disc-section-title">People Near You</span>
+            <a class="disc-section-more" onclick="discLoadNearby()">View →</a>
+          </div>
+          <div class="disc-section-body">
+            <div class="disc-count-row" onclick="discLoadNearby()">
+              <span class="disc-count-n" id="discNearbyCount">…</span>
+              <span class="disc-count-l">Practitioners Nearby</span>
+              <svg class="disc-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Active Intentions -->
+        <div class="disc-section">
+          <div class="disc-section-hd">
+            <span class="disc-section-title">Active Intentions</span>
+          </div>
+          <div id="discIntentions" class="disc-section-body"></div>
+        </div>
+        <!-- Communities (Second) -->
+        <div class="disc-section">
+          <div class="disc-section-hd">
+            <span class="disc-section-title">Communities</span>
+            <a class="disc-section-more" onclick="switchTab('communities')">See all →</a>
+          </div>
+          <div id="discCommunities" class="disc-section-body"></div>
+        </div>
+        <!-- Upcoming Events (Third / Content) -->
+        <div class="disc-section" style="border-bottom:none;">
+          <div class="disc-section-hd">
+            <span class="disc-section-title">Upcoming Events</span>
+            <a class="disc-section-more" onclick="switchTab('events')">See all →</a>
+          </div>
+          <div id="discEvents" class="disc-section-body"></div>
+        </div>
       </div>
 
       <!-- LEARN TAB -->
@@ -1553,7 +1693,7 @@
         </div>
         <div class="category-scroll" id="eventFilters">
           <span class="category-chip active" id="evf-all" onclick="filterEvents(null,this)">All</span>
-          <span class="category-chip" id="evf-nearby" onclick="filterEventsNearMe(this)">ðŸ“ Near Me</span>
+          <span class="category-chip" id="evf-nearby" onclick="filterEventsNearMe(this)">📍 Near Me</span>
           <span class="category-chip" onclick="filterEvents('RETREAT',this)">Retreats</span>
           <span class="category-chip" onclick="filterEvents('TALK',this)">Dhamma Talks</span>
           <span class="category-chip" onclick="filterEvents('CEREMONY',this)">Ceremonies</span>
@@ -1587,7 +1727,7 @@
         </div>
         <div class="category-scroll" id="commFilters">
           <span class="category-chip active" id="comm-all" onclick="filterComm(null,this)">All</span>
-          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">ðŸ“ My Country</span>
+          <span class="category-chip" id="comm-nearby" onclick="filterCommNearMe(this)">📍 My Country</span>
           <span class="category-chip" onclick="filterComm('TEMPLE',this)">Temples</span>
           <span class="category-chip" onclick="filterComm('NGO',this)">NGOs</span>
           <span class="category-chip" onclick="filterComm('STUDY_GROUP',this)">Study Groups</span>
@@ -1664,15 +1804,15 @@
           <span class="fab-dial-label">Post</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">ðŸ“…</button>
+          <button class="fab-dial-btn" onclick="openCreateEvent();closeFab()" title="Event">📅</button>
           <span class="fab-dial-label">Event</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">ðŸ›ï¸</button>
+          <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛ï¸</button>
           <span class="fab-dial-label">Community</span>
         </li>
         <li class="fab-dial-item">
-          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">ðŸŽ“</button>
+          <button class="fab-dial-btn" onclick="showToast('Sessions — coming soon');closeFab()" title="Session">🎓</button>
           <span class="fab-dial-label">Session</span>
         </li>
         <li class="fab-dial-item">
@@ -2130,90 +2270,81 @@
 
         <!-- Contributor status banner (shown when already contributor) -->
         <div id="daan-contributor-banner" style="display:none;" class="daan-contributor-banner">
-          <div class="daan-banner-title">â—† Contributor</div>
+          <div class="daan-banner-title">◆ Contributor</div>
           <div class="daan-banner-sub">Thank you for supporting Sangham.</div>
         </div>
 
-        <!-- Amount selector -->
+        <!-- Amount selector — slider + manual input + real-time allocation -->
         <div class="daan-section">
-          <div class="daan-section-title">Choose Amount</div>
-          <div class="daan-amounts">
-            <button class="daan-amount-btn" data-paise="4900" onclick="selectDaanAmount(4900,this)">
-              â‚¹49<span class="daan-sub">Starter</span>
-            </button>
-            <button class="daan-amount-btn active" data-paise="10800" onclick="selectDaanAmount(10800,this)">
-              â‚¹108<span class="daan-sub">Auspicious</span>
-            </button>
-            <button class="daan-amount-btn" data-paise="50100" onclick="selectDaanAmount(50100,this)">
-              â‚¹501<span class="daan-sub">Generous</span>
-            </button>
-            <button class="daan-amount-btn" data-paise="500000" onclick="selectDaanAmount(500000,this)">
-              â‚¹5,000<span class="daan-sub">Patron</span>
-            </button>
-            <button class="daan-amount-btn" data-paise="5000000" onclick="selectDaanAmount(5000000,this)">
-              â‚¹50,000<span class="daan-sub">Maha Daan</span>
-            </button>
+          <div class="daan-section-title">Contribution Amount</div>
+          <div class="daan-amount-display">
+            <div class="daan-amount-big" id="daanAmountBig">₹49</div>
           </div>
-          <div class="daan-custom-row">
-            <span style="font-size:0.9rem;color:var(--stone);">â‚¹</span>
-            <input type="number" id="daanCustomInput" placeholder="Custom amount" min="49" oninput="onDaanCustomInput(this)">
-          </div>
-        </div>
-
-        <!-- 50/50 split visualization -->
-        <div class="daan-section">
-          <div class="daan-section-title">How Your Daan Is Used</div>
-          <div class="daan-split">
-            <div class="daan-split-half">
-              <div class="daan-split-pct">50%</div>
-              <div class="daan-split-label">Platform Fund</div>
-              <div class="daan-split-desc">Servers, security, development — keeps Sangham free</div>
-            </div>
-            <div class="daan-split-divider"></div>
-            <div class="daan-split-half">
-              <div class="daan-split-pct">50%</div>
-              <div class="daan-split-label">Dhamma Fund</div>
-              <div class="daan-split-desc">Translation, education, student support, community service</div>
+          <div class="daan-slider-wrap">
+            <input type="range" class="daan-slider" id="daanSlider"
+                   min="0" max="100" step="1" value="0"
+                   oninput="onDaanSlider(this)">
+            <div class="daan-slider-labels">
+              <span>₹49</span><span>₹10,00,000</span>
             </div>
           </div>
-          <p style="font-size:0.7rem;color:var(--stone);margin-top:0.5rem;text-align:center;">Split is immutable — enforced at the transaction level.</p>
+          <div class="daan-manual-row">
+            <span class="daan-rupee-sym">₹</span>
+            <input type="number" id="daanCustomInput" placeholder="Enter amount"
+                   min="49" max="1000000" value="49" oninput="onDaanManualInput(this)">
+          </div>
+          <div class="daan-alloc-live">
+            <div class="daan-alloc-row total-row">
+              <span class="daan-alloc-label"><strong>Your Contribution</strong></span>
+              <span class="daan-alloc-amt" id="daanAllocTotal">₹49</span>
+            </div>
+            <div class="daan-alloc-row">
+              <span class="daan-alloc-label">50% â†' Digital Sangha Operations</span>
+              <span class="daan-alloc-amt" id="daanAllocOps">₹24.50</span>
+            </div>
+            <div class="daan-alloc-row">
+              <span class="daan-alloc-label">50% â†' Dhamma Daan Fund</span>
+              <span class="daan-alloc-amt" id="daanAllocFund">₹24.50</span>
+            </div>
+          </div>
+          <p class="daan-equality-note">All contributors are equal regardless of amount.<br>Contribution never affects visibility, ranking, verification, or community standing.</p>
         </div>
 
         <!-- CTA -->
         <button class="daan-cta" id="daanCtaBtn" onclick="initiateDaanPayment()">
           <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span id="daanCtaText">Offer Daan — â‚¹108</span>
+          <span id="daanCtaText">Offer Daan — ₹49</span>
         </button>
 
         <!-- Contributor Benefits -->
         <div class="daan-section" style="margin-top:1.5rem;">
           <div class="daan-section-title">Contributor Benefits</div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">ðŸ”</span>
+            <span class="daan-benefit-icon">🔍</span>
             <div class="daan-benefit-text">Advanced discovery filters
               <span class="daan-benefit-note">Filter by language, location radius, specific practices</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">ðŸ”’</span>
+            <span class="daan-benefit-icon">🔒</span>
             <div class="daan-benefit-text">Advanced privacy controls
               <span class="daan-benefit-note">Granular visibility settings per field</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">ðŸ””</span>
+            <span class="daan-benefit-icon">🔔</span>
             <div class="daan-benefit-text">Event & session reminders
               <span class="daan-benefit-note">Push notifications before events you RSVP'd</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">ðŸ“š</span>
+            <span class="daan-benefit-icon">📚</span>
             <div class="daan-benefit-text">Offline reading & bookmarks
               <span class="daan-benefit-note">Save texts to read without network</span>
             </div>
           </div>
           <div class="daan-benefit">
-            <span class="daan-benefit-icon">ðŸ“Š</span>
+            <span class="daan-benefit-icon">📊</span>
             <div class="daan-benefit-text">Contributor dashboard & impact reports
               <span class="daan-benefit-note">See exactly how your Daan is allocated</span>
             </div>
@@ -2539,12 +2670,12 @@ async function loadHome() {
     const data = await api('GET', '/users/me/feed?limit=20');
     const posts = data.data || data;
     if (!posts.length) {
-      container.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸª·</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>Community Updates are quiet.<br>Discover practitioners and connect with them to see their posts here.</p></div>`;
       return;
     }
     container.innerHTML = posts.map(renderPostCard).join('');
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">âš ï¸</div><p>${err.message}</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">⚠ï¸</div><p>${err.message}</p></div>`;
   }
 }
 
@@ -2591,7 +2722,7 @@ async function loadDailyVerse() {
     if (!verse || !verse.content) return;
     container.innerHTML = `
       <div class="daily-verse">
-        <div class="daily-verse-label">âœ¦ Daily Verse</div>
+        <div class="daily-verse-label">✦ Daily Verse</div>
         <div class="daily-verse-text">"${verse.content}"</div>
         <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? 'Â· '+verse.segmentKey : ''}</div>
       </div>`;
@@ -2637,7 +2768,7 @@ async function loadProfileTab() {
           onclick="openProfile('${user.id}')">View Profile</button>
       </div>
       <button onclick="openDhammaDaan()" style="margin-top:0.7rem;background:linear-gradient(135deg,#D4A843,#B88E35);color:white;border:none;border-radius:20px;padding:0.45rem 1.2rem;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:inherit;">
-        ${user.isContributor ? 'â—† Contributor' : 'â—‡ Offer Dhamma Daan'}
+        ${user.isContributor ? '◆ Contributor' : '◇ Offer Dhamma Daan'}
       </button>`;
   } catch(e) {
     el.innerHTML = `<div style="padding:1.5rem;text-align:center;color:var(--stone);font-size:0.85rem;">${escHtml(e.message)}</div>`;
@@ -2661,38 +2792,64 @@ function closeFab() {
 // ============================================================
 //  DHAMMA DAAN
 // ============================================================
-let daanState = { selectedPaise: 10800 };  // default â‚¹108
+let daanState = { selectedPaise: 4900 };  // default ₹49
 
 function openDhammaDaan() {
   openPanel('panel-dhamma-daan');
   loadDaanDashboard();
-  // Show contributor banner if already a contributor
+  updateDaanAllocation();
   if (state.user?.isContributor) {
     document.getElementById('daan-contributor-banner').style.display = 'block';
   }
 }
 
-function selectDaanAmount(paise, btn) {
-  daanState.selectedPaise = paise;
-  document.querySelectorAll('.daan-amount-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('daanCustomInput').value = '';
-  updateDaanCta();
+// Logarithmic scale: slider internal 0-100 maps to ₹49-₹10,00,000
+function _sliderToRupees(v) {
+  const logMin = Math.log(49), logMax = Math.log(1000000);
+  return Math.round(Math.exp(logMin + (v / 100) * (logMax - logMin)));
+}
+function _rupeesToSlider(r) {
+  const logMin = Math.log(49), logMax = Math.log(1000000);
+  return Math.round(((Math.log(Math.max(49, r)) - logMin) / (logMax - logMin)) * 100);
+}
+function _fmtRupees(r) {
+  if (r % 1 === 0) return '₹' + r.toLocaleString('en-IN');
+  return '₹' + r.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function onDaanCustomInput(input) {
-  const val = parseInt(input.value, 10);
-  if (!isNaN(val) && val >= 49) {
-    daanState.selectedPaise = val * 100;
-    document.querySelectorAll('.daan-amount-btn').forEach(b => b.classList.remove('active'));
-    updateDaanCta();
-  }
+function onDaanSlider(slider) {
+  const rupees = _sliderToRupees(parseInt(slider.value, 10));
+  daanState.selectedPaise = rupees * 100;
+  const inp = document.getElementById('daanCustomInput');
+  if (inp) inp.value = rupees;
+  _updateSliderFill(slider);
+  updateDaanAllocation();
 }
 
-function updateDaanCta() {
-  const rupees = Math.round(daanState.selectedPaise / 100);
-  const text = document.getElementById('daanCtaText');
-  if (text) text.textContent = `Offer Daan — â‚¹${rupees.toLocaleString('en-IN')}`;
+function onDaanManualInput(input) {
+  let val = parseInt(input.value, 10);
+  if (isNaN(val) || val < 49) return;
+  if (val > 1000000) { val = 1000000; input.value = val; }
+  daanState.selectedPaise = val * 100;
+  const slider = document.getElementById('daanSlider');
+  if (slider) { slider.value = _rupeesToSlider(val); _updateSliderFill(slider); }
+  updateDaanAllocation();
+}
+
+function _updateSliderFill(slider) {
+  const pct = (parseInt(slider.value, 10) / 100) * 100;
+  slider.style.setProperty('--pct', pct + '%');
+}
+
+function updateDaanAllocation() {
+  const rupees = daanState.selectedPaise / 100;
+  const half   = rupees / 2;
+  const el = (id) => document.getElementById(id);
+  if (el('daanAmountBig'))  el('daanAmountBig').textContent  = _fmtRupees(rupees);
+  if (el('daanAllocTotal')) el('daanAllocTotal').textContent = _fmtRupees(rupees);
+  if (el('daanAllocOps'))   el('daanAllocOps').textContent   = _fmtRupees(half);
+  if (el('daanAllocFund'))  el('daanAllocFund').textContent  = _fmtRupees(half);
+  if (el('daanCtaText'))    el('daanCtaText').textContent    = `Offer Daan â€" ${_fmtRupees(rupees)}`;
 }
 
 async function initiateDaanPayment() {
@@ -2700,7 +2857,7 @@ async function initiateDaanPayment() {
   btn.disabled = true;
   try {
     if (daanState.selectedPaise < 4900) {
-      showToast('Minimum contribution is â‚¹49'); btn.disabled = false; return;
+      showToast('Minimum contribution is ₹49'); btn.disabled = false; return;
     }
     // 1. Create Razorpay order on backend
     const order = await api('POST', '/dhamma-daan/orders', { amountPaise: daanState.selectedPaise });
@@ -2757,7 +2914,7 @@ async function initiateDaanPayment() {
 async function loadDaanDashboard() {
   try {
     const d = await api('GET', '/dhamma-daan/dashboard');
-    const fmt = p => 'â‚¹' + Math.floor(p / 100).toLocaleString('en-IN');
+    const fmt = p => '₹' + Math.floor(p / 100).toLocaleString('en-IN');
     document.getElementById('daanStatGrid').innerHTML = `
       <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalCollectedPaise)}</div><div class="daan-stat-l">Total Collected</div></div>
       <div class="daan-stat-card"><div class="daan-stat-n">${fmt(d.totalFundPaise)}</div><div class="daan-stat-l">Dhamma Fund</div></div>
@@ -2778,7 +2935,7 @@ async function loadDaanDashboard() {
       <div class="daan-alloc-card">
         <div class="daan-alloc-cat">${catLabel[a.category] || a.category}</div>
         <div class="daan-alloc-title">${escHtml(a.title)}</div>
-        <div class="daan-alloc-meta">â‚¹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' Â· ' + escHtml(a.beneficiary) : ''}</div>
+        <div class="daan-alloc-meta">₹${Math.floor(a.amountPaise/100).toLocaleString('en-IN')}${a.beneficiary ? ' Â· ' + escHtml(a.beneficiary) : ''}</div>
         ${a.impactReport ? `<div style="font-size:0.78rem;color:var(--stone);margin-top:0.35rem;line-height:1.4;">${escHtml(a.impactReport)}</div>` : ''}
       </div>`).join('');
   } catch(e) { /* silent — dashboard is informational */ }
@@ -2988,7 +3145,7 @@ async function fetchDiscoverPeople(params) {
     const data = await api('GET', `/discover/people?${qs}`);
     const people = data.data || data;
     if (!people.length) {
-      ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ”</div><p>No practitioners found with these filters.</p></div>';
+      ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><p>No practitioners found with these filters.</p></div>';
       return;
     }
     ppl.innerHTML = people.map(p => renderPersonCard(p)).join('');
@@ -3025,7 +3182,7 @@ async function loadNearbyPeople() {
       const data = await api('GET', `/discover/nearby?gridLat=${gridLat}&gridLng=${gridLng}`);
       const people = data.data || [];
       if (!people.length) {
-        ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ“</div><p>No practitioners found nearby. Try expanding your search.</p></div>';
+        ppl.innerHTML = '<div class="empty-state"><div class="empty-icon">📍</div><p>No practitioners found nearby. Try expanding your search.</p></div>';
         return;
       }
       ppl.innerHTML = people.map(p => renderPersonCard(p, p.approximateDistance)).join('');
@@ -3142,7 +3299,7 @@ async function searchLibrary(q, tradition, collection) {
     const data = await api('GET', `/library/search?${qs}`);
     const texts = data.data || data;
     if (!texts.length) {
-      resultsEl.innerHTML = '<div class="empty-state"><div class="empty-icon">ðŸ“–</div><p>No texts found. Try a different search.</p></div>';
+      resultsEl.innerHTML = '<div class="empty-state"><div class="empty-icon">📖</div><p>No texts found. Try a different search.</p></div>';
       return;
     }
     resultsEl.innerHTML = `
@@ -3209,7 +3366,7 @@ async function openTextDetail(textId) {
       ${text.attribution ? `<div class="reader-text-attr">${escHtml(text.attribution)}</div>` : ''}
       <div class="reader-rule"></div>
       ${segments.length === 0
-        ? '<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">â˜¸</div><p>No passages available for this text yet.</p></div>'
+        ? '<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">☸</div><p>No passages available for this text yet.</p></div>'
         : segments.map(s => `
           <div class="reader-segment">
             ${s.segmentKey ? `<span class="reader-segment-key">${escHtml(s.segmentKey)}</span>` : ''}
@@ -3330,7 +3487,7 @@ async function loadChatThreads() {
   try {
     const threads = await api('GET', '/messages/threads');
     if (!threads.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸ’¬</div>
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div>
         <p>No messages yet.<br>Discover a practitioner and send them a message.</p></div>`;
       return;
     }
@@ -3410,7 +3567,7 @@ function renderMessages(messages) {
   const area = document.getElementById('messages-area');
   if (!messages.length) {
     area.innerHTML = `<div class="empty-state" style="margin-top:2rem;">
-      <div class="empty-icon">ðŸ™</div>
+      <div class="empty-icon">🙏</div>
       <p>Start the conversation with a kind message.</p></div>`;
     return;
   }
@@ -3771,7 +3928,7 @@ async function handleAvatarUpload(input) {
     const { url } = await resp.json();
     // Show preview immediately
     preview.innerHTML = `<img src="${escHtml(url)}" style="width:100%;height:100%;object-fit:cover;" alt="">`;
-    status.textContent = 'âœ“ Photo updated';
+    status.textContent = '✓ Photo updated';
     // Update cached user photo
     if (state.user) {
       state.user.profilePhoto = url;
@@ -3864,7 +4021,7 @@ function obGoToStep(step) {
     d.classList.toggle('done',   i < step - 1);
   });
   const txt = document.getElementById('ob-continue-text');
-  if (txt) txt.textContent = step === 3 ? 'Enter the Sangha â†’' : 'Continue â†’';
+  if (txt) txt.textContent = step === 3 ? 'Enter the Sangha →' : 'Continue →';
 }
 
 function obChipToggle(chip, singleSelect) {
@@ -3916,7 +4073,7 @@ async function submitOnboarding() {
   } catch(e) { /* non-blocking */ }
   localStorage.setItem('sangham_onboarded', '1');
   btn.disabled = false;
-  txt.textContent = 'Continue â†’';
+  txt.textContent = 'Continue →';
   routeTo('view-app');
   updateHeaderAvatar();
   populateCreatePostUI();
@@ -3949,7 +4106,7 @@ async function loadEvents() {
     const events = data.data || (Array.isArray(data) ? data : []);
     if (!events.length) {
       el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
-        <div class="empty-icon">ðŸª·</div>
+        <div class="empty-icon">🪷</div>
         <p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p>
       </div>`;
       return;
@@ -3993,7 +4150,7 @@ function renderEventCard(ev) {
       <div class="event-footer">
         <span class="event-rsvp-count">${rsvpCount > 0 ? rsvpCount + ' going' : 'Be first to RSVP'}</span>
         <div style="display:flex;gap:0.5rem;align-items:center;">
-          ${ev.onlineUrl ? `<a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:0.73rem;color:var(--saffron-dark);text-decoration:none;">Join Online â†—</a>` : ''}
+          ${ev.onlineUrl ? `<a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener noreferrer" style="font-size:0.73rem;color:var(--saffron-dark);text-decoration:none;">Join Online ↗</a>` : ''}
           <button class="btn-ghost" style="font-size:0.73rem;padding:0.3rem 0.7rem;" onclick="rsvpEvent('${ev.id}',this)">RSVP</button>
         </div>
       </div>
@@ -4003,7 +4160,7 @@ function renderEventCard(ev) {
 async function rsvpEvent(eventId, btn) {
   try {
     await api('POST', `/events/${eventId}/rsvp`, { status: 'GOING' });
-    btn.textContent = 'Going âœ“';
+    btn.textContent = 'Going ✓';
     btn.classList.add('followed');
     showToast('RSVP confirmed', 'success');
   } catch(err) { showToast(err.message, 'error'); }
@@ -4026,7 +4183,7 @@ async function loadCommunities() {
     if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
     if (!comms.length) {
       el.innerHTML = `<div class="empty-state" style="padding-top:2rem;">
-        <div class="empty-icon">ðŸ›ï¸</div>
+        <div class="empty-icon">🏛ï¸</div>
         <p>No communities found.<br>Create one for your local Sangha.</p>
       </div>`;
       return;
@@ -4125,7 +4282,7 @@ async function loadEvents() {
       if (eventsTradFilter) qs += `&tradition=${eventsTradFilter}`;
       const events = await api('GET', qs);
       if (!events.length) {
-        el.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸ“</div><p>No events within 100 km.<br>Try expanding your search.</p></div>`;
+        el.innerHTML = `<div class="empty-state"><div class="empty-icon">📍</div><p>No events within 100 km.<br>Try expanding your search.</p></div>`;
         return;
       }
       el.innerHTML = events.map(renderEventCard).join('');
@@ -4136,7 +4293,7 @@ async function loadEvents() {
       const data = await api('GET', qs);
       const events = data.data || (Array.isArray(data) ? data : []);
       if (!events.length) {
-        el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">ðŸª·</div><p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p></div>`;
+        el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🪷</div><p>No upcoming events yet.<br>Be the first to organise one for your Sangha.</p></div>`;
         return;
       }
       el.innerHTML = events.map(renderEventCard).join('');
@@ -4272,7 +4429,7 @@ async function loadCommunities() {
     const q = document.getElementById('commSearch').value.trim().toLowerCase();
     if (q) comms = comms.filter(c => c.name.toLowerCase().includes(q));
     if (!comms.length) {
-      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">ðŸ›ï¸</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
+      el.innerHTML = `<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">🏛ï¸</div><p>No communities found.<br>Create one for your local Sangha.</p></div>`;
       return;
     }
     el.innerHTML = comms.map(renderCommCard).join('');
@@ -4513,7 +4670,7 @@ function renderFollowList() {
       : followState.sort === 'mutual' ? 'No mutual connections yet.'
       : followState.segment === 'followers' ? 'No connected members yet. Share your profile to grow your network.'
       : 'No connections yet. Visit Discover to find practitioners.';
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">ðŸª·</div><p>${msg}</p></div>`;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>${msg}</p></div>`;
     return;
   }
   container.innerHTML = list.map(renderFollowCard).join('');
@@ -4541,7 +4698,7 @@ function renderFollowCard(u) {
       actionBtn = `<button class="follow-card-action follow-back" onclick="followCardAction('${u.id}','follow',this)">Connect Back</button>`;
     }
   } else {
-    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual âœ“' : 'Connected'}</button>`;
+    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual ✓' : 'Connected'}</button>`;
   }
 
   return `<div class="follow-card">
