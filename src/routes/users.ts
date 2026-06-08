@@ -20,6 +20,76 @@ const updateProfileSchema = z.object({
   role: z.enum(['PRACTITIONER', 'BHIKKHU', 'BHIKKHUNI', 'SCHOLAR']).optional(),
 });
 
+// GET /users/me/followers — people who follow me, annotated with isFollowingBack
+router.get('/me/followers', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
+
+  const [rows, total] = await Promise.all([
+    prisma.follow.findMany({
+      where: { followedId: req.user!.id },
+      orderBy: { createdAt: 'desc' },
+      take: limit, skip,
+      include: {
+        follower: {
+          select: {
+            id: true, displayName: true, profilePhoto: true, bio: true,
+            traditions: true, country: true, city: true, role: true,
+            isVerifiedClergy: true, isVerifiedTeacher: true,
+            tags: { select: { tag: true } },
+          },
+        },
+      },
+    }),
+    prisma.follow.count({ where: { followedId: req.user!.id } }),
+  ]);
+
+  const followerIds = rows.map(r => r.followerId);
+  const iFollowSet = new Set(
+    (await prisma.follow.findMany({
+      where: { followerId: req.user!.id, followedId: { in: followerIds } },
+      select: { followedId: true },
+    })).map(f => f.followedId)
+  );
+
+  const data = rows.map(r => ({ ...r.follower, followedAt: r.createdAt, isFollowingBack: iFollowSet.has(r.followerId) }));
+  res.json(paginatedResponse(data, total, parsePagination(req.query as Record<string, unknown>)));
+});
+
+// GET /users/me/following — people I follow, annotated with followsBack
+router.get('/me/following', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
+
+  const [rows, total] = await Promise.all([
+    prisma.follow.findMany({
+      where: { followerId: req.user!.id },
+      orderBy: { createdAt: 'desc' },
+      take: limit, skip,
+      include: {
+        followed: {
+          select: {
+            id: true, displayName: true, profilePhoto: true, bio: true,
+            traditions: true, country: true, city: true, role: true,
+            isVerifiedClergy: true, isVerifiedTeacher: true,
+            tags: { select: { tag: true } },
+          },
+        },
+      },
+    }),
+    prisma.follow.count({ where: { followerId: req.user!.id } }),
+  ]);
+
+  const followedIds = rows.map(r => r.followedId);
+  const followsBackSet = new Set(
+    (await prisma.follow.findMany({
+      where: { followerId: { in: followedIds }, followedId: req.user!.id },
+      select: { followerId: true },
+    })).map(f => f.followerId)
+  );
+
+  const data = rows.map(r => ({ ...r.followed, followedAt: r.createdAt, followsBack: followsBackSet.has(r.followedId) }));
+  res.json(paginatedResponse(data, total, parsePagination(req.query as Record<string, unknown>)));
+});
+
 // GET /users/:id
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   const user = await prisma.user.findUnique({

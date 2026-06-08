@@ -888,6 +888,71 @@
     }
     .comm-meta { font-size: 0.73rem; color: var(--stone); line-height: 1.5; }
 
+    /* =========================================
+       13. FOLLOW TAB
+       ========================================= */
+    .follow-segment {
+      display: flex; background: var(--surface-alt); border-radius: 10px;
+      margin: 1rem 1rem 0.75rem; padding: 3px; gap: 3px;
+    }
+    .follow-seg-btn {
+      flex: 1; padding: 0.45rem 0; border: none; background: transparent;
+      border-radius: 8px; font-size: 0.82rem; font-weight: 600;
+      color: var(--stone-light); cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .follow-seg-btn.active {
+      background: var(--surface); color: var(--charcoal);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .follow-count-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--saffron); color: white;
+      font-size: 0.62rem; font-weight: 700; border-radius: 20px;
+      padding: 1px 5px; margin-left: 4px; min-width: 18px;
+    }
+    .follow-search {
+      margin: 0 1rem 0.6rem; display: flex; align-items: center;
+      background: var(--surface-alt); border-radius: 10px; padding: 0 0.75rem; gap: 0.5rem;
+    }
+    .follow-search svg { width: 16px; height: 16px; stroke: var(--stone-light); flex-shrink: 0; fill: none; stroke-width: 1.5; }
+    .follow-search input {
+      flex: 1; border: none; background: transparent; padding: 0.55rem 0;
+      font-size: 0.85rem; color: var(--charcoal); outline: none; font-family: inherit;
+    }
+    .follow-sort {
+      display: flex; gap: 0.4rem; padding: 0 1rem 0.75rem; overflow-x: auto;
+    }
+    .follow-sort::-webkit-scrollbar { display: none; }
+    .follow-sort-chip {
+      padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid var(--border);
+      font-size: 0.72rem; font-weight: 500; color: var(--stone-light);
+      background: var(--surface); cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    }
+    .follow-sort-chip.active {
+      background: var(--saffron); color: white; border-color: var(--saffron);
+    }
+    .follow-list { padding: 0 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .follow-card {
+      display: flex; align-items: center; gap: 0.85rem;
+      background: var(--surface); border-radius: 14px; padding: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .follow-card-avatar {
+      width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+      background: var(--saffron); flex-shrink: 0; cursor: pointer;
+    }
+    .follow-card-info { flex: 1; min-width: 0; cursor: pointer; }
+    .follow-card-name { font-weight: 600; font-size: 0.88rem; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .follow-card-meta { font-size: 0.72rem; color: var(--stone-light); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .follow-card-action {
+      flex-shrink: 0; padding: 0.35rem 0.85rem; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; border: 1.5px solid;
+      transition: all 0.2s; white-space: nowrap; font-family: inherit;
+    }
+    .follow-card-action.follow-back { background: var(--saffron); color: white; border-color: var(--saffron); }
+    .follow-card-action.following-btn { background: transparent; color: var(--stone-light); border-color: var(--border); }
+    .follow-card-action:disabled { opacity: 0.6; cursor: not-allowed; }
+
     /* Annotation prompt sheet */
     .reader-annotate-sheet {
       position: absolute; bottom: 0; left: 0; right: 0;
@@ -1172,6 +1237,34 @@
         <div id="commList"></div>
       </div>
 
+      <!-- FOLLOW TAB -->
+      <div id="tab-follow" class="tab-panel">
+        <div class="section-title" style="padding-bottom:0;">Connections</div>
+
+        <div class="follow-segment">
+          <button class="follow-seg-btn active" id="seg-followers" onclick="switchFollowSeg('followers')">
+            Followers <span class="follow-count-badge" id="fc-followers">–</span>
+          </button>
+          <button class="follow-seg-btn" id="seg-following" onclick="switchFollowSeg('following')">
+            Following <span class="follow-count-badge" id="fc-following">–</span>
+          </button>
+        </div>
+
+        <div class="follow-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="followSearchInput" placeholder="Search by name, location…" oninput="renderFollowList()">
+        </div>
+
+        <div class="follow-sort">
+          <div class="follow-sort-chip active" id="fsort-recent" onclick="setFollowSort('recent',this)">Recent</div>
+          <div class="follow-sort-chip" id="fsort-az" onclick="setFollowSort('az',this)">A – Z</div>
+          <div class="follow-sort-chip" id="fsort-mutual" onclick="setFollowSort('mutual',this)">Mutual</div>
+        </div>
+
+        <div class="follow-list" id="followList"><div class="spinner"></div></div>
+        <div style="height:4rem;"></div>
+      </div>
+
     </main>
 
     <!-- Bottom Nav -->
@@ -1184,7 +1277,10 @@
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Discover
       </div>
-      <div class="nav-spacer"></div>
+      <div class="nav-item" onclick="switchTab('follow')" id="nav-follow">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Follow
+      </div>
       <div class="nav-item" onclick="switchTab('events')" id="nav-events">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Events
@@ -1698,6 +1794,7 @@ function switchTab(tab) {
   if (tab === 'chat')        loadChatThreads();
   if (tab === 'events')      loadEvents();
   if (tab === 'communities') loadCommunities();
+  if (tab === 'follow')      loadFollow();
 }
 
 // ============================================================
@@ -2978,6 +3075,147 @@ function renderCommCard(c) {
 
 function openCommDetail(id) {
   showToast('Full community page — coming soon');
+}
+
+// ============================================================
+//  FOLLOW TAB
+// ============================================================
+const followState = {
+  segment: 'followers',
+  sort: 'recent',
+  followers: [],
+  following: [],
+};
+
+async function loadFollow() {
+  document.getElementById('followList').innerHTML = '<div class="spinner"></div>';
+  try {
+    const [flrRes, flgRes] = await Promise.all([
+      api('GET', '/users/me/followers?limit=200'),
+      api('GET', '/users/me/following?limit=200'),
+    ]);
+    followState.followers = flrRes.data || flrRes || [];
+    followState.following = flgRes.data || flgRes || [];
+    document.getElementById('fc-followers').textContent = flrRes.total ?? followState.followers.length;
+    document.getElementById('fc-following').textContent = flgRes.total ?? followState.following.length;
+    renderFollowList();
+  } catch(e) {
+    document.getElementById('followList').innerHTML = '<div class="empty-state"><p>Could not load connections.</p></div>';
+  }
+}
+
+function switchFollowSeg(seg) {
+  followState.segment = seg;
+  document.getElementById('seg-followers').classList.toggle('active', seg === 'followers');
+  document.getElementById('seg-following').classList.toggle('active', seg === 'following');
+  const inp = document.getElementById('followSearchInput');
+  if (inp) inp.value = '';
+  renderFollowList();
+}
+
+function setFollowSort(sort, chip) {
+  followState.sort = sort;
+  document.querySelectorAll('.follow-sort-chip').forEach(c => c.classList.remove('active'));
+  if (chip) chip.classList.add('active');
+  renderFollowList();
+}
+
+function renderFollowList() {
+  const base = followState.segment === 'followers' ? followState.followers : followState.following;
+  const q = (document.getElementById('followSearchInput')?.value || '').toLowerCase().trim();
+
+  let list = base;
+  if (q) {
+    list = list.filter(u =>
+      (u.displayName || '').toLowerCase().includes(q) ||
+      (u.bio || '').toLowerCase().includes(q) ||
+      (u.city || '').toLowerCase().includes(q) ||
+      (u.country || '').toLowerCase().includes(q)
+    );
+  }
+  if (followState.sort === 'mutual') {
+    list = list.filter(u => followState.segment === 'followers' ? u.isFollowingBack : u.followsBack);
+  } else if (followState.sort === 'az') {
+    list = [...list].sort((a, b) => (a.displayName || '').localeCompare(b.displayName || ''));
+  }
+
+  const container = document.getElementById('followList');
+  if (!list.length) {
+    const msg = q ? `No results for "${escHtml(q)}"`
+      : followState.sort === 'mutual' ? 'No mutual connections yet.'
+      : followState.segment === 'followers' ? 'No followers yet. Share your profile to grow your network.'
+      : 'Not following anyone yet. Visit Discover to find practitioners.';
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">🪷</div><p>${msg}</p></div>`;
+    return;
+  }
+  container.innerHTML = list.map(renderFollowCard).join('');
+}
+
+function renderFollowCard(u) {
+  const initials = (u.displayName || '?').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  const avatarStyle = `width:46px;height:46px;border-radius:50%;background:var(--saffron);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.1rem;flex-shrink:0;cursor:pointer;`;
+  const avatar = u.profilePhoto
+    ? `<img class="follow-card-avatar" src="${u.profilePhoto}" alt="" onclick="openProfile('${u.id}')" onerror="this.outerHTML='<div style=\\'${avatarStyle}\\' onclick=\\'openProfile(\\'${u.id}\\')\\'>${initials}</div>'">`
+    : `<div style="${avatarStyle}" onclick="openProfile('${u.id}')">${initials}</div>`;
+
+  const trad = u.traditions?.length
+    ? `<span style="font-size:0.63rem;padding:1px 5px;border-radius:10px;background:rgba(212,168,67,0.12);color:var(--saffron-dark);margin-left:4px;">${u.traditions[0]}</span>`
+    : '';
+  const loc  = [u.city, u.country].filter(Boolean).join(', ');
+  const role = u.role ? u.role.charAt(0) + u.role.slice(1).toLowerCase().replace(/_/g,' ') : '';
+  const meta = [role, loc].filter(Boolean).join(' · ') || (u.bio ? u.bio.slice(0, 55) : 'Sangham member');
+
+  let actionBtn;
+  if (followState.segment === 'followers') {
+    if (u.isFollowingBack) {
+      actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">Following</button>`;
+    } else {
+      actionBtn = `<button class="follow-card-action follow-back" onclick="followCardAction('${u.id}','follow',this)">Follow Back</button>`;
+    }
+  } else {
+    actionBtn = `<button class="follow-card-action following-btn" onclick="followCardAction('${u.id}','unfollow',this)">${u.followsBack ? 'Mutual ✓' : 'Following'}</button>`;
+  }
+
+  return `<div class="follow-card">
+    ${avatar}
+    <div class="follow-card-info" onclick="openProfile('${u.id}')">
+      <div class="follow-card-name">${escHtml(u.displayName || 'Practitioner')}${trad}</div>
+      <div class="follow-card-meta">${escHtml(meta)}</div>
+    </div>
+    ${actionBtn}
+  </div>`;
+}
+
+async function followCardAction(userId, action, btn) {
+  btn.disabled = true;
+  try {
+    if (action === 'follow') {
+      await api('POST', '/users/' + userId + '/follow');
+      const u = followState.followers.find(x => x.id === userId);
+      if (u) u.isFollowingBack = true;
+      btn.className = 'follow-card-action following-btn';
+      btn.textContent = 'Following';
+      btn.onclick = () => followCardAction(userId, 'unfollow', btn);
+    } else {
+      await api('DELETE', '/users/' + userId + '/follow');
+      if (followState.segment === 'following') {
+        followState.following = followState.following.filter(x => x.id !== userId);
+        document.getElementById('fc-following').textContent = followState.following.length;
+        renderFollowList();
+        return;
+      } else {
+        const u = followState.followers.find(x => x.id === userId);
+        if (u) u.isFollowingBack = false;
+        btn.className = 'follow-card-action follow-back';
+        btn.textContent = 'Follow Back';
+        btn.onclick = () => followCardAction(userId, 'follow', btn);
+      }
+    }
+  } catch(e) {
+    showToast('Error updating follow');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // ============================================================
