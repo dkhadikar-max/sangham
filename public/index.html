@@ -555,6 +555,155 @@
       border: none; cursor: pointer; display: none;
       align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
+
+    /* =========================================
+       10. TEXT READER (Kindle-style)
+       ========================================= */
+    .reader-theme-sepia { --reader-bg:#FAF6F0; --reader-text:#3D2B1F; --reader-dim:rgba(61,43,31,0.12); }
+    .reader-theme-white { --reader-bg:#FFFFFF; --reader-text:#1C1917; --reader-dim:rgba(28,25,23,0.1); }
+    .reader-theme-dark  { --reader-bg:#1A1611; --reader-text:#E8DEC8; --reader-dim:rgba(232,222,200,0.1); }
+
+    #panel-reader { background: var(--reader-bg); transition: background 0.25s; }
+
+    .reader-progress-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: rgba(212,168,67,0.12); z-index: 12;
+    }
+    .reader-progress-fill {
+      height: 100%; background: var(--saffron); width: 0%;
+      transition: width 0.12s linear;
+    }
+
+    .reader-header {
+      position: absolute; top: 2px; left: 0; right: 0;
+      background: var(--reader-bg); border-bottom: 1px solid var(--reader-dim, var(--border));
+      padding: 0.7rem 0.9rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      z-index: 11; transition: background 0.25s, opacity 0.2s, transform 0.2s;
+    }
+    .reader-header.hidden { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+
+    .reader-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600;
+      color: var(--reader-text); flex: 1;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .reader-controls { display: flex; gap: 0.2rem; }
+    .reader-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: transparent; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--reader-text); opacity: 0.55;
+      transition: opacity 0.2s; flex-shrink: 0;
+    }
+    .reader-btn:hover { opacity: 1; }
+    .reader-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .reader-btn.bookmarked svg { fill: var(--saffron); stroke: var(--saffron); opacity: 1; }
+    .reader-btn.bookmarked { opacity: 1; }
+
+    .reader-body {
+      position: absolute; inset: 0; overflow-y: auto;
+      padding: 4.2rem 1.5rem 2.5rem;
+      background: var(--reader-bg); transition: background 0.25s;
+    }
+    .reader-inner { max-width: 600px; margin: 0 auto; }
+
+    .reader-text-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.65rem; font-weight: 600; line-height: 1.25;
+      color: var(--reader-text); text-align: center; margin-bottom: 0.4rem;
+    }
+    .reader-text-attr {
+      font-family: 'Inter', sans-serif; font-size: 0.68rem;
+      color: var(--saffron-dark); text-align: center; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 1.8rem; opacity: 0.8;
+    }
+    .reader-rule {
+      width: 40px; height: 1px; background: var(--saffron);
+      margin: 0 auto 2rem; opacity: 0.35;
+    }
+
+    .reader-segment { margin-bottom: 1.5rem; }
+    .reader-segment-key {
+      display: block; font-family: 'Inter', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--saffron-dark); opacity: 0.45; margin-bottom: 0.25rem;
+    }
+    .reader-segment-text {
+      font-family: 'Cormorant Garamond', serif;
+      line-height: 1.9; color: var(--reader-text);
+      border-radius: 3px; padding: 0.1rem 0.25rem; margin: 0 -0.25rem;
+      cursor: pointer; transition: background 0.15s; display: block;
+    }
+    .reader-segment-text:hover  { background: rgba(212,168,67,0.1); }
+    .reader-segment-text:active { background: rgba(212,168,67,0.18); }
+
+    .reader-annotation-hint {
+      font-family: 'Inter', sans-serif; font-size: 0.6rem;
+      color: var(--saffron-dark); opacity: 0;
+      text-align: right; margin-top: 0.1rem;
+      transition: opacity 0.2s; pointer-events: none;
+    }
+    .reader-segment:hover .reader-annotation-hint { opacity: 0.55; }
+
+    /* Font size variants */
+    #panel-reader.reader-size-sm .reader-segment-text { font-size: 1rem; }
+    #panel-reader.reader-size-md .reader-segment-text { font-size: 1.15rem; }
+    #panel-reader.reader-size-lg .reader-segment-text { font-size: 1.3rem; }
+
+    /* Settings sheet */
+    .reader-settings {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: var(--reader-bg); border-top: 1px solid var(--reader-dim, var(--border));
+      padding: 1rem 1.2rem 1.2rem; z-index: 20;
+      display: none; animation: slideUp 0.2s ease;
+      transition: background 0.25s;
+    }
+    .reader-settings.open { display: block; }
+    .reader-settings-row {
+      display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.75rem;
+    }
+    .reader-settings-row:last-child { margin-bottom: 0; }
+    .reader-settings-label {
+      font-family: 'Inter', sans-serif; font-size: 0.72rem;
+      color: var(--reader-text); opacity: 0.5; width: 52px; flex-shrink: 0;
+    }
+    .reader-theme-swatch {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.15s; flex-shrink: 0;
+    }
+    .reader-theme-swatch.active { border-color: var(--saffron); }
+    .reader-size-btn {
+      flex: 1; padding: 0.35rem 0.5rem;
+      border: 1px solid var(--reader-dim, var(--border-solid));
+      border-radius: 4px; background: transparent; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--reader-text); transition: all 0.15s; text-align: center;
+    }
+    .reader-size-btn.active {
+      background: var(--saffron); border-color: var(--saffron); color: #FAF6F0;
+    }
+
+    /* Annotation prompt sheet */
+    .reader-annotate-sheet {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: var(--reader-bg); border-top: 1px solid var(--reader-dim, var(--border));
+      padding: 1rem 1.2rem 1.2rem; z-index: 21;
+      display: none; animation: slideUp 0.2s ease;
+    }
+    .reader-annotate-sheet.open { display: block; }
+    .reader-annotate-sheet textarea {
+      width: 100%; border: 1px solid var(--reader-dim, var(--border-solid));
+      border-radius: 6px; padding: 0.7rem 0.9rem; resize: none;
+      font-family: 'Inter', sans-serif; font-size: 0.9rem; min-height: 80px;
+      background: transparent; color: var(--reader-text); outline: none;
+      line-height: 1.5;
+    }
+    .reader-annotate-sheet textarea:focus { border-color: var(--saffron); }
+    .reader-annotate-actions {
+      display: flex; gap: 0.6rem; margin-top: 0.6rem; justify-content: flex-end;
+    }
   </style>
 </head>
 <body>
@@ -785,6 +934,52 @@
         <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
+      </div>
+    </div>
+
+    <!-- ── PANEL: TEXT READER ── -->
+    <div id="panel-reader" class="panel reader-theme-sepia reader-size-md">
+      <div class="reader-progress-bar"><div class="reader-progress-fill" id="reader-progress"></div></div>
+      <header class="reader-header" id="reader-header">
+        <button class="reader-btn" onclick="closePanel('panel-reader')" aria-label="Back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="reader-title" id="reader-title"></div>
+        <div class="reader-controls">
+          <button class="reader-btn" id="reader-bookmark-btn" onclick="toggleReaderBookmark()" aria-label="Bookmark">
+            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+          <button class="reader-btn" id="reader-settings-btn" onclick="toggleReaderSettings()" aria-label="Display settings">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="reader-body" id="reader-body" onscroll="onReaderScroll()">
+        <div class="reader-inner" id="reader-content"></div>
+      </div>
+      <!-- Display settings sheet -->
+      <div class="reader-settings" id="reader-settings">
+        <div class="reader-settings-row">
+          <span class="reader-settings-label">Theme</span>
+          <button class="reader-theme-swatch active" style="background:#FAF6F0;border-color:#D4A843;" id="swatch-sepia" onclick="setReaderTheme('sepia',this)" title="Sepia"></button>
+          <button class="reader-theme-swatch" style="background:#FFFFFF;border:2px solid #E8E0D0;" id="swatch-white" onclick="setReaderTheme('white',this)" title="White"></button>
+          <button class="reader-theme-swatch" style="background:#1A1611;" id="swatch-dark" onclick="setReaderTheme('dark',this)" title="Dark"></button>
+        </div>
+        <div class="reader-settings-row">
+          <span class="reader-settings-label">Size</span>
+          <button class="reader-size-btn" style="font-size:0.88rem;" id="size-sm" onclick="setReaderSize('sm',this)">A</button>
+          <button class="reader-size-btn active" style="font-size:1rem;" id="size-md" onclick="setReaderSize('md',this)">A</button>
+          <button class="reader-size-btn" style="font-size:1.12rem;" id="size-lg" onclick="setReaderSize('lg',this)">A</button>
+        </div>
+      </div>
+      <!-- Annotation sheet -->
+      <div class="reader-annotate-sheet" id="reader-annotate-sheet">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--reader-text);margin-bottom:0.6rem;opacity:0.7;">Personal note</div>
+        <textarea id="reader-annotate-input" placeholder="Write a reflection on this passage…" rows="3"></textarea>
+        <div class="reader-annotate-actions">
+          <button class="btn-ghost" style="font-size:0.8rem;padding:0.4rem 0.8rem;" onclick="closeAnnotateSheet()">Cancel</button>
+          <button class="btn-primary" style="font-size:0.8rem;padding:0.4rem 0.9rem;" onclick="submitAnnotation()">Save</button>
+        </div>
       </div>
     </div>
 
@@ -1453,12 +1648,154 @@ function clearLearnSearch() {
   document.querySelector('#tab-learn .section-title').style.display = 'block';
 }
 
+// ============================================================
+//  TEXT READER
+// ============================================================
+const readerState = {
+  textId: null, isBookmarked: false,
+  settingsOpen: false, pendingSegmentId: null,
+  lastScrollY: 0,
+};
+
 async function openTextDetail(textId) {
-  // For now show a toast — full text reader would be another panel
-  showToast('Loading text…');
+  readerState.textId = textId;
+  readerState.isBookmarked = false;
+  readerState.settingsOpen = false;
+  readerState.pendingSegmentId = null;
+
+  const content  = document.getElementById('reader-content');
+  const titleEl  = document.getElementById('reader-title');
+  const body     = document.getElementById('reader-body');
+  const progress = document.getElementById('reader-progress');
+
+  titleEl.textContent = '';
+  content.innerHTML   = '<div class="spinner" style="margin-top:5rem;"></div>';
+  progress.style.width = '0%';
+  body.scrollTop = 0;
+  document.getElementById('reader-header').classList.remove('hidden');
+  document.getElementById('reader-settings').classList.remove('open');
+  document.getElementById('reader-annotate-sheet').classList.remove('open');
+  readerState.lastScrollY = 0;
+  updateBookmarkBtn(false);
+
+  openPanel('panel-reader');
+
   try {
-    const text = await api('GET', `/library/texts/${textId}`);
-    showToast(`"${text.title}" — ${text.segments?.length||0} passages`, 'success');
+    const text     = await api('GET', `/library/texts/${textId}`);
+    const segments = text.segments || [];
+
+    titleEl.textContent = text.title || '';
+
+    content.innerHTML = `
+      <h1 class="reader-text-title">${escHtml(text.title || '')}</h1>
+      ${text.attribution ? `<div class="reader-text-attr">${escHtml(text.attribution)}</div>` : ''}
+      <div class="reader-rule"></div>
+      ${segments.length === 0
+        ? '<div class="empty-state" style="padding-top:2rem;"><div class="empty-icon">☸</div><p>No passages available for this text yet.</p></div>'
+        : segments.map(s => `
+          <div class="reader-segment">
+            ${s.segmentKey ? `<span class="reader-segment-key">${escHtml(s.segmentKey)}</span>` : ''}
+            <span class="reader-segment-text" data-seg="${escHtml(s.id)}" onclick="openAnnotateSheet('${escHtml(s.id)}')">${escHtml(s.content || '')}</span>
+            <div class="reader-annotation-hint">Tap to add a note</div>
+          </div>`).join('')}
+    `;
+  } catch(err) {
+    content.innerHTML = `<div class="empty-state" style="padding-top:3rem;"><p>${escHtml(err.message)}</p></div>`;
+  }
+}
+
+function onReaderScroll() {
+  const body     = document.getElementById('reader-body');
+  const header   = document.getElementById('reader-header');
+  const progress = document.getElementById('reader-progress');
+  const settings = document.getElementById('reader-settings');
+  const annotate = document.getElementById('reader-annotate-sheet');
+
+  const scrollable = body.scrollHeight - body.clientHeight;
+  if (scrollable > 0) {
+    progress.style.width = ((body.scrollTop / scrollable) * 100).toFixed(1) + '%';
+  }
+
+  const delta = body.scrollTop - readerState.lastScrollY;
+  readerState.lastScrollY = body.scrollTop;
+
+  if (delta > 8 && body.scrollTop > 100) {
+    header.classList.add('hidden');
+    settings.classList.remove('open');
+    annotate.classList.remove('open');
+    readerState.settingsOpen = false;
+  } else if (delta < -8 || body.scrollTop < 80) {
+    header.classList.remove('hidden');
+  }
+}
+
+function toggleReaderSettings() {
+  const settings = document.getElementById('reader-settings');
+  const annotate = document.getElementById('reader-annotate-sheet');
+  annotate.classList.remove('open');
+  readerState.settingsOpen = !readerState.settingsOpen;
+  settings.classList.toggle('open', readerState.settingsOpen);
+}
+
+function setReaderTheme(theme, btn) {
+  const panel = document.getElementById('panel-reader');
+  panel.className = panel.className.replace(/reader-theme-\w+/g, '').trim() + ' reader-theme-' + theme;
+  document.querySelectorAll('.reader-theme-swatch').forEach(b => {
+    b.classList.remove('active');
+    b.style.borderColor = '';
+  });
+  btn.classList.add('active');
+  btn.style.borderColor = '#D4A843';
+}
+
+function setReaderSize(size, btn) {
+  const panel = document.getElementById('panel-reader');
+  panel.className = panel.className.replace(/reader-size-\w+/g, '').trim() + ' reader-size-' + size;
+  document.querySelectorAll('.reader-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+async function toggleReaderBookmark() {
+  if (!readerState.textId) return;
+  try {
+    if (readerState.isBookmarked) {
+      await api('DELETE', `/library/texts/${readerState.textId}/bookmarks`);
+      readerState.isBookmarked = false;
+      showToast('Bookmark removed');
+    } else {
+      await api('POST', `/library/texts/${readerState.textId}/bookmarks`);
+      readerState.isBookmarked = true;
+      showToast('Bookmarked', 'success');
+    }
+    updateBookmarkBtn(readerState.isBookmarked);
+  } catch(err) { showToast(err.message, 'error'); }
+}
+
+function updateBookmarkBtn(bookmarked) {
+  document.getElementById('reader-bookmark-btn').classList.toggle('bookmarked', bookmarked);
+}
+
+function openAnnotateSheet(segmentId) {
+  readerState.pendingSegmentId = segmentId;
+  document.getElementById('reader-settings').classList.remove('open');
+  readerState.settingsOpen = false;
+  document.getElementById('reader-annotate-input').value = '';
+  document.getElementById('reader-annotate-sheet').classList.add('open');
+}
+
+function closeAnnotateSheet() {
+  document.getElementById('reader-annotate-sheet').classList.remove('open');
+  readerState.pendingSegmentId = null;
+}
+
+async function submitAnnotation() {
+  const id   = readerState.pendingSegmentId;
+  const note = document.getElementById('reader-annotate-input').value.trim();
+  if (!id || !note) return;
+  try {
+    await api('POST', `/library/segments/${id}/annotations`, { content: note, isPublic: false });
+    showToast('Note saved', 'success');
+    closeAnnotateSheet();
   } catch(err) { showToast(err.message, 'error'); }
 }
 
