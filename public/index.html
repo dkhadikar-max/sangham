@@ -1287,7 +1287,13 @@
 
       <!-- CHAT TAB -->
       <div id="tab-chat" class="tab-panel">
-        <div class="chat-prompt">
+        <div style="display:flex;align-items:center;gap:0.8rem;background:var(--surface);border-bottom:1px solid var(--border);padding:0.8rem 1rem;position:sticky;top:0;z-index:2;flex-shrink:0;">
+          <div class="panel-back" onclick="backFromChat()">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--charcoal);flex:1;">Messages</div>
+        </div>
+        <div class="chat-prompt" style="padding-top:0.5rem;">
           <p>Your direct messages with practitioners of the Sangha.</p>
         </div>
         <div id="chatThreads"></div>
@@ -1844,6 +1850,7 @@ let state = {
   user:        null,
   token:       null,
   currentTab:  'home',
+  previousTab: 'home',
   currentPost: null,           // for post detail panel
   currentPartnerId: null,      // for thread panel
   currentPartnerName: null,
@@ -2035,6 +2042,11 @@ function initApp() {
   switchTab('home');
   initSocket();
   loadChatUnreadCount();
+  // Seed followedUsers set so Follow/Following buttons show the right state
+  api('GET', '/users/me/following?limit=500').then(res => {
+    const list = res.data || res || [];
+    list.forEach(u => state.followedUsers.add(u.id));
+  }).catch(() => {});
 }
 
 function updateHeaderAvatar() {
@@ -2068,11 +2080,13 @@ function populateCreatePostUI() {
 //  TAB SWITCHING
 // ============================================================
 function switchTab(tab) {
+  if (state.currentTab !== tab) state.previousTab = state.currentTab;
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
   document.getElementById('tab-' + tab).classList.add('active');
-  document.getElementById('nav-' + tab).classList.add('active');
+  const navEl = document.getElementById('nav-' + tab);
+  if (navEl) navEl.classList.add('active'); // chat has no nav item
   state.currentTab = tab;
 
   if (tab === 'home')        loadHome();
@@ -2667,7 +2681,8 @@ async function loadChatThreads() {
   const el = document.getElementById('chatThreads');
   el.innerHTML = '<div class="spinner"></div>';
   // Clear unread badge
-  document.getElementById('chatBadge').style.display = 'none';
+  const chatBadgeEl = document.getElementById('headerChatBadge');
+  if (chatBadgeEl) chatBadgeEl.style.display = 'none';
 
   try {
     const threads = await api('GET', '/messages/threads');
@@ -2821,6 +2836,10 @@ function closeThread() {
   closePanel('panel-thread');
 }
 
+function backFromChat() {
+  switchTab(state.previousTab && state.previousTab !== 'chat' ? state.previousTab : 'home');
+}
+
 function startDM(partnerId, partnerName) {
   if (state.currentTab !== 'chat') switchTab('chat');
   openThread(partnerId, partnerName);
@@ -2859,10 +2878,12 @@ function initSocket() {
         appendMessage(data.message, false);
       } else {
         // Increment unread badge
-        const badge = document.getElementById('chatBadge');
-        const cur   = parseInt(badge.textContent) || 0;
-        badge.textContent = cur + 1;
-        badge.style.display = 'flex';
+        const badge = document.getElementById('headerChatBadge');
+        if (badge) {
+          const cur = parseInt(badge.textContent) || 0;
+          badge.textContent = cur + 1;
+          badge.style.display = 'flex';
+        }
         showToast(`New message from ${state.currentPartnerName || 'someone'}`);
       }
     });
@@ -3847,6 +3868,7 @@ async function followCardAction(userId, action, btn) {
   try {
     if (action === 'follow') {
       await api('POST', '/users/' + userId + '/follow');
+      state.followedUsers.add(userId);
       const u = followState.followers.find(x => x.id === userId);
       if (u) u.isFollowingBack = true;
       btn.className = 'follow-card-action following-btn';
@@ -3854,6 +3876,7 @@ async function followCardAction(userId, action, btn) {
       btn.onclick = () => followCardAction(userId, 'unfollow', btn);
     } else {
       await api('DELETE', '/users/' + userId + '/follow');
+      state.followedUsers.delete(userId);
       if (followState.segment === 'following') {
         followState.following = followState.following.filter(x => x.id !== userId);
         document.getElementById('fc-following').textContent = followState.following.length;
