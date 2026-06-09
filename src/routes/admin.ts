@@ -27,8 +27,9 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response): Promise
     select: { id: true, email: true, displayName: true, role: true, profilePhoto: true },
   });
   if (!user) { res.status(404).json({ error: 'User not found' }); return; }
-  const allowed = [UserRole.MODERATOR, UserRole.SUPER_ADMIN];
-  if (!allowed.includes(user.role)) { res.status(403).json({ error: 'Admin access required' }); return; }
+  if (user.role !== UserRole.MODERATOR && user.role !== UserRole.SUPER_ADMIN) {
+    res.status(403).json({ error: 'Admin access required' }); return;
+  }
   res.json(user);
 });
 
