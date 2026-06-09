@@ -28,13 +28,27 @@ router.get('/threads', authenticate, async (req: AuthRequest, res: Response): Pr
     partnerId: string; lastMessage: string; lastAt: Date; unreadCount: bigint;
   }>>`
     SELECT
-      CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END AS "partnerId",
-      MAX(created_at) AS "lastAt",
-      COUNT(*) FILTER (WHERE recipient_id = ${req.user!.id} AND is_read = false) AS "unreadCount"
-    FROM messages
-    WHERE sender_id = ${req.user!.id} OR recipient_id = ${req.user!.id}
-    GROUP BY "partnerId"
-    ORDER BY "lastAt" DESC
+      partner_id AS "partnerId",
+      last_at AS "lastAt",
+      last_message AS "lastMessage",
+      unread_count AS "unreadCount"
+    FROM (
+      SELECT
+        CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END AS partner_id,
+        created_at AS last_at,
+        ciphertext AS last_message,
+        COUNT(*) FILTER (WHERE recipient_id = ${req.user!.id} AND is_read = false)
+          OVER (PARTITION BY CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END)
+          AS unread_count,
+        ROW_NUMBER() OVER (
+          PARTITION BY CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END
+          ORDER BY created_at DESC
+        ) AS rn
+      FROM messages
+      WHERE sender_id = ${req.user!.id} OR recipient_id = ${req.user!.id}
+    ) t
+    WHERE rn = 1
+    ORDER BY last_at DESC
     LIMIT 50
   `;
 

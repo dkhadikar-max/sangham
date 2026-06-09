@@ -48,7 +48,19 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
     },
   });
   if (!post) throw new AppError('Post not found', 404);
-  res.json(post);
+
+  // Enrich comments with author display names
+  const authorIds = [...new Set(post.comments.map(c => c.authorId))];
+  const authors = authorIds.length
+    ? await prisma.user.findMany({
+        where: { id: { in: authorIds } },
+        select: { id: true, displayName: true, profilePhoto: true },
+      })
+    : [];
+  const authorMap = Object.fromEntries(authors.map(a => [a.id, a]));
+  const enrichedComments = post.comments.map(c => ({ ...c, author: authorMap[c.authorId] ?? null }));
+
+  res.json({ ...post, comments: enrichedComments });
 });
 
 // POST /posts/:id/like

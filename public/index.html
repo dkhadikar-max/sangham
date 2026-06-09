@@ -547,7 +547,6 @@ round:var(--error-600)}
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="learnSearch" placeholder="Search suttas, texts..." oninput="debounceLearn()">
         </div>
-        <div id="learnDailyVerse"></div>
         <h2 class="section-title">Collections</h2>
         <div id="learnCollections"></div>
         <div id="learnResults"></div>
@@ -1122,8 +1121,9 @@ function renderComments(comments) {
     return;
   }
   el.innerHTML = comments.map(c => {
-    const initials = (c.authorId||'?').charAt(0).toUpperCase();
-    return `<div class="comment-item"><div class="avatar avatar-sm" style="width:28px;height:28px;font-size:var(--text-xs)">${initials}</div><div class="comment-body"><div class="comment-author">${escHtml(c.authorId||'')}</div><div class="comment-text">${escHtml(c.content)}</div></div></div>`;
+    const name = c.author?.displayName || 'Practitioner';
+    const initials = name.charAt(0).toUpperCase();
+    return `<div class="comment-item"><div class="avatar avatar-sm" style="width:28px;height:28px;font-size:var(--text-xs)">${initials}</div><div class="comment-body"><div class="comment-author">${escHtml(name)}</div><div class="comment-text">${escHtml(c.content)}</div></div></div>`;
   }).join('');
 }
 
@@ -1156,6 +1156,8 @@ function selectPostType(chip, type) {
 function openCreatePost() {
   document.getElementById('postContent').value = '';
   document.getElementById('postTradition').value = '';
+  selectedPostType = 'TEXT';
+  document.querySelectorAll('.post-type-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
   openBottomSheet('bottomSheetCreate');
 }
 
