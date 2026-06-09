@@ -155,7 +155,9 @@ model User {
   isContributor     Boolean   @default(false) @map("is_contributor")
   contributorSince  DateTime? @map("contributor_since")
 
-  daanContributions DhammaDaanContribution[]
+  daanContributions  DhammaDaanContribution[]
+  projectsOwned      Project[]        @relation("ProjectOwner")
+  projectMemberships ProjectMember[]
 
   @@map("users")
 }
@@ -442,6 +444,7 @@ model Association {
   children         Association[]       @relation("FederationHierarchy")
   members          AssociationMember[]
   events           Event[]
+  projects         Project[]
 
   @@map("associations")
 }
@@ -785,6 +788,68 @@ model DhammaDaanAllocation {
   createdBy     String             @map("created_by")
 
   @@map("dhamma_daan_allocations")
+}
+
+// ── Projects ──────────────────────────────────────────────────────────────────
+
+enum ProjectStatus {
+  OPEN
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectCategory {
+  TRANSLATION
+  EDUCATION
+  VOLUNTEER
+  RESEARCH
+  TECHNOLOGY
+  ENVIRONMENT
+  SOCIAL_IMPACT
+  COMMUNITY_BUILDING
+  ARTS_CULTURE
+  HEALTHCARE
+}
+
+model Project {
+  id                 String          @id @default(uuid())
+  ownerId            String          @map("owner_id")
+  associationId      String?         @map("association_id")
+  title              String          @db.VarChar(200)
+  purpose            String          @db.VarChar(500)
+  description        String?         @db.Text
+  category           ProjectCategory
+  skillsNeeded       String[]        @map("skills_needed")
+  participantsNeeded Int             @default(0) @map("participants_needed")
+  deadline           DateTime?
+  status             ProjectStatus   @default(OPEN)
+  isPublished        Boolean         @default(true) @map("is_published")
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+
+  owner              User            @relation("ProjectOwner", fields: [ownerId], references: [id])
+  association        Association?    @relation(fields: [associationId], references: [id])
+  members            ProjectMember[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@map("projects")
+}
+
+model ProjectMember {
+  id        String   @id @default(uuid())
+  projectId String   @map("project_id")
+  userId    String   @map("user_id")
+  role      String   @default("CONTRIBUTOR") @map("role")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  isActive  Boolean  @default(true) @map("is_active")
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+  @@map("project_members")
 }
 
 model TeacherVerification {

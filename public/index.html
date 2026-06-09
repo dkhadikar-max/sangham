@@ -1080,6 +1080,84 @@
     .comm-empty-cta button { background:var(--saffron); color:white; border:none; border-radius:22px; padding:0.55rem 1.4rem; font-size:0.85rem; font-weight:600; cursor:pointer; font-family:inherit; }
 
     /* =========================================
+       PROJECTS
+       ========================================= */
+    .proj-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1rem; margin: 0 1rem 0.75rem; cursor: pointer;
+      transition: box-shadow 0.15s;
+    }
+    .proj-card:active { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .proj-card-top { display: flex; align-items: flex-start; gap: 0.85rem; }
+    .proj-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, #6366f1, #7c3aed);
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    }
+    .proj-info { flex: 1; min-width: 0; }
+    .proj-title {
+      font-size: 0.92rem; font-weight: 600; color: var(--charcoal);
+      margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .proj-purpose {
+      font-size: 0.78rem; color: var(--stone); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .proj-signals { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.55rem; }
+    .proj-signal { font-size: 0.65rem; padding: 0.18rem 0.55rem; border-radius: 20px; background: var(--rice-paper); color: var(--stone); border: 1px solid var(--border); }
+    .proj-signal.open-signal { background: rgba(34,197,94,0.08); color: #16a34a; border-color: rgba(34,197,94,0.3); }
+    .proj-signal.active-signal { background: rgba(212,168,67,0.1); color: var(--saffron-dark); border-color: rgba(212,168,67,0.3); }
+    .proj-signal.skill-signal { background: rgba(99,102,241,0.08); color: #4f46e5; border-color: rgba(99,102,241,0.25); }
+    .proj-join-btn {
+      flex-shrink: 0; padding: 0.28rem 0.8rem; font-size: 0.73rem; font-weight: 600;
+      background: linear-gradient(135deg, #6366f1, #7c3aed); color: white;
+      border: none; border-radius: 20px; cursor: pointer; font-family: inherit;
+    }
+    .proj-join-btn.leave { background: transparent; color: var(--stone); border: 1.5px solid var(--border-solid); }
+    .proj-empty-cta { text-align: center; padding: 1.5rem 1.2rem; }
+    .proj-empty-cta p { font-size: 0.85rem; color: var(--stone); margin: 0 0 1rem; line-height: 1.6; }
+    .proj-empty-cta button { background: linear-gradient(135deg, #6366f1, #7c3aed); color: white; border: none; border-radius: 22px; padding: 0.55rem 1.4rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    /* Project detail panel */
+    #panel-project-detail .proj-detail-header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      padding: 3.5rem 1.2rem 1.5rem; color: white; position: relative;
+    }
+    #panel-project-detail .proj-detail-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: rgba(255,255,255,0.2); display: flex; align-items: center;
+      justify-content: center; font-size: 1.8rem; margin-bottom: 0.75rem;
+    }
+    #panel-project-detail .proj-detail-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+      font-weight: 700; margin-bottom: 0.2rem;
+    }
+    #panel-project-detail .proj-detail-meta { font-size: 0.8rem; opacity: 0.85; }
+    .proj-detail-body { padding: 1rem 1.2rem; overflow-y: auto; }
+    .proj-detail-section { margin-bottom: 1.4rem; }
+    .proj-detail-section-title {
+      font-size: 0.72rem; font-weight: 700; color: var(--stone);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+    }
+    .proj-join-main-btn {
+      width: 100%; padding: 0.75rem; border-radius: 12px; border: none;
+      font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit;
+      margin-bottom: 1rem; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white;
+    }
+    .proj-join-main-btn.leave { background: transparent; border: 1.5px solid var(--border-solid); color: var(--stone); }
+    .proj-skill-chip {
+      display: inline-block; padding: 0.25rem 0.65rem; border-radius: 20px;
+      background: rgba(99,102,241,0.08); color: #4f46e5;
+      border: 1px solid rgba(99,102,241,0.25);
+      font-size: 0.73rem; font-weight: 500; margin: 0 0.35rem 0.35rem 0;
+    }
+    .proj-member-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #7c3aed); border: 2px solid var(--surface);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: white; margin-right: -8px; cursor: pointer;
+    }
+
+    /* =========================================
        13. FOLLOW TAB
        ========================================= */
     .follow-segment {
@@ -1805,6 +1883,15 @@
           <div id="home-communities" class="home-comm-list"></div>
         </div>
 
+        <!-- Active Projects -->
+        <div class="home-section">
+          <div class="home-section-header">
+            <span class="home-section-title">Active Projects</span>
+            <span class="home-section-more" onclick="openProjectsBrowse()">See all →</span>
+          </div>
+          <div id="home-projects"></div>
+        </div>
+
         <!-- P6: Upcoming Events -->
         <div class="home-section">
           <div class="home-section-header">
@@ -2073,6 +2160,10 @@
         <li class="fab-dial-item">
           <button class="fab-dial-btn" onclick="openCreateComm();closeFab()" title="Community">🏛️</button>
           <span class="fab-dial-label">Create Community</span>
+        </li>
+        <li class="fab-dial-item">
+          <button class="fab-dial-btn" onclick="openCreateProject();closeFab()" title="Project">🤝</button>
+          <span class="fab-dial-label">Start Project</span>
         </li>
         <li class="fab-dial-item">
           <button class="fab-dial-btn" onclick="showToast('Share Resource — coming soon');closeFab()" title="Resource">📚</button>
@@ -2535,6 +2626,125 @@
       </div>
     </div>
 
+    <!-- ── PANEL: CREATE PROJECT ── -->
+    <div id="panel-create-project" class="panel slide-up">
+      <div class="panel-header">
+        <div class="panel-back" onclick="closePanel('panel-create-project')">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div class="panel-title">Start a Project</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="create-form">
+        <div class="input-group">
+          <label>Project Title *</label>
+          <input type="text" id="pj-title" placeholder="e.g. Translate Dhammapada into Hindi" maxlength="200">
+        </div>
+        <div class="input-group">
+          <label>Purpose *</label>
+          <input type="text" id="pj-purpose" placeholder="One sentence: what will this project achieve?" maxlength="500">
+        </div>
+        <div class="input-group">
+          <label>Category *</label>
+          <div class="create-chips" id="pj-cat-chips">
+            <div class="create-chip active" data-val="TRANSLATION" onclick="ceChip(this,'pjcat',true)">Translation</div>
+            <div class="create-chip" data-val="EDUCATION" onclick="ceChip(this,'pjcat',true)">Education</div>
+            <div class="create-chip" data-val="VOLUNTEER" onclick="ceChip(this,'pjcat',true)">Volunteer</div>
+            <div class="create-chip" data-val="RESEARCH" onclick="ceChip(this,'pjcat',true)">Research</div>
+            <div class="create-chip" data-val="TECHNOLOGY" onclick="ceChip(this,'pjcat',true)">Technology</div>
+            <div class="create-chip" data-val="ENVIRONMENT" onclick="ceChip(this,'pjcat',true)">Environment</div>
+            <div class="create-chip" data-val="SOCIAL_IMPACT" onclick="ceChip(this,'pjcat',true)">Social Impact</div>
+            <div class="create-chip" data-val="COMMUNITY_BUILDING" onclick="ceChip(this,'pjcat',true)">Community Building</div>
+            <div class="create-chip" data-val="ARTS_CULTURE" onclick="ceChip(this,'pjcat',true)">Arts &amp; Culture</div>
+            <div class="create-chip" data-val="HEALTHCARE" onclick="ceChip(this,'pjcat',true)">Healthcare</div>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Skills Needed</label>
+          <div class="create-chips" id="pj-skills-chips">
+            <div class="create-chip" data-val="Writing" onclick="ceChip(this,'pjskills',false)">Writing</div>
+            <div class="create-chip" data-val="Translation" onclick="ceChip(this,'pjskills',false)">Translation</div>
+            <div class="create-chip" data-val="Design" onclick="ceChip(this,'pjskills',false)">Design</div>
+            <div class="create-chip" data-val="Development" onclick="ceChip(this,'pjskills',false)">Development</div>
+            <div class="create-chip" data-val="Research" onclick="ceChip(this,'pjskills',false)">Research</div>
+            <div class="create-chip" data-val="Teaching" onclick="ceChip(this,'pjskills',false)">Teaching</div>
+            <div class="create-chip" data-val="Fundraising" onclick="ceChip(this,'pjskills',false)">Fundraising</div>
+            <div class="create-chip" data-val="Photography" onclick="ceChip(this,'pjskills',false)">Photography</div>
+            <div class="create-chip" data-val="Volunteering" onclick="ceChip(this,'pjskills',false)">Volunteering</div>
+            <div class="create-chip" data-val="Legal" onclick="ceChip(this,'pjskills',false)">Legal</div>
+          </div>
+        </div>
+        <div class="date-row input-group">
+          <div>
+            <label>Collaborators Needed</label>
+            <input type="number" id="pj-participants" placeholder="0 = unlimited" min="0" max="500">
+          </div>
+          <div>
+            <label>Deadline</label>
+            <input type="date" id="pj-deadline">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Description</label>
+          <textarea id="pj-desc" placeholder="Full description — what needs to be done, how to contribute…" rows="4" maxlength="5000"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:0.5rem;background:linear-gradient(135deg,#6366f1,#7c3aed);" id="pj-submit-btn" onclick="submitCreateProject()">
+          <span id="pj-submit-text">Start Project</span>
+        </button>
+        <div style="height:1.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: PROJECT DETAIL ── -->
+    <div id="panel-project-detail" class="panel">
+      <div class="proj-detail-header">
+        <div class="panel-back" onclick="closePanel('panel-project-detail')" style="position:absolute;top:1rem;left:1rem;">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:white;fill:none;stroke-width:2;"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div class="proj-detail-icon" id="pd-icon">🤝</div>
+        <div class="proj-detail-title" id="pd-title">Loading…</div>
+        <div class="proj-detail-meta" id="pd-meta"></div>
+      </div>
+      <div class="proj-detail-body">
+        <button class="proj-join-main-btn join" id="pd-join-btn" onclick="toggleProjectMembership()">Collaborate on Project</button>
+        <div class="proj-detail-section">
+          <div class="proj-detail-section-title">Purpose</div>
+          <p id="pd-purpose" style="font-size:0.88rem;color:var(--charcoal);line-height:1.6;margin:0;"></p>
+        </div>
+        <div class="proj-detail-section" id="pd-desc-section" style="display:none;">
+          <div class="proj-detail-section-title">About This Project</div>
+          <p id="pd-desc" style="font-size:0.88rem;color:var(--charcoal);line-height:1.6;margin:0;"></p>
+        </div>
+        <div class="proj-detail-section" id="pd-skills-section" style="display:none;">
+          <div class="proj-detail-section-title">Skills Needed</div>
+          <div id="pd-skills"></div>
+        </div>
+        <div class="proj-detail-section">
+          <div class="proj-detail-section-title">Collaborators <span id="pd-member-count" style="font-weight:400;opacity:0.6;"></span></div>
+          <div id="pd-members" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:0.5rem;"></div>
+        </div>
+        <div class="proj-detail-section">
+          <div class="proj-detail-section-title">Started By</div>
+          <div id="pd-owner" style="display:flex;align-items:center;gap:0.65rem;margin-top:0.4rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: BROWSE PROJECTS ── -->
+    <div id="panel-projects-browse" class="panel">
+      <div class="panel-header">
+        <div class="panel-back" onclick="closePanel('panel-projects-browse')">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div class="panel-title">Active Projects</div>
+        <button class="btn-create" onclick="openCreateProject()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Start
+        </button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding-top:0.75rem;" id="pb-list"></div>
+    </div>
+
     <!-- ── PANEL: DHAMMA DAAN ── -->
     <div id="panel-dhamma-daan" class="panel slide-up">
       <div class="panel-header">
@@ -2947,6 +3157,7 @@ function loadHome() {
   loadHomeHero();
   loadHomeRecommended();
   loadHomeCommunities();
+  loadHomeProjects();
   loadHomeEvents();
   loadHomeDiscussions();
   loadHomeLearning();
@@ -4845,7 +5056,7 @@ function toggleOnlineFields() {
 }
 
 function ceChip(chip, group, single) {
-  const groupMap = { type: 'ce-type-chips', trad: 'ce-trad-chips', cat: 'cg-cat-chips', gtrad: 'cg-trad-chips', vis: 'cg-vis-chips' };
+  const groupMap = { type: 'ce-type-chips', trad: 'ce-trad-chips', cat: 'cg-cat-chips', gtrad: 'cg-trad-chips', vis: 'cg-vis-chips', pjcat: 'pj-cat-chips', pjskills: 'pj-skills-chips' };
   if (single) document.querySelectorAll(`#${groupMap[group]} .create-chip`).forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
 }
@@ -5056,6 +5267,248 @@ async function toggleCommMembership() {
     showToast(err.message, 'error');
   } finally {
     btn.disabled = false;
+  }
+}
+
+// ============================================================
+//  PROJECTS
+// ============================================================
+const PROJ_CAT_LABEL = {
+  TRANSLATION:        'Translation',
+  EDUCATION:          'Education',
+  VOLUNTEER:          'Volunteer',
+  RESEARCH:           'Research',
+  TECHNOLOGY:         'Technology',
+  ENVIRONMENT:        'Environment',
+  SOCIAL_IMPACT:      'Social Impact',
+  COMMUNITY_BUILDING: 'Community Building',
+  ARTS_CULTURE:       'Arts & Culture',
+  HEALTHCARE:         'Healthcare',
+};
+
+const PROJ_CAT_ICON = {
+  TRANSLATION: '📜', EDUCATION: '📚', VOLUNTEER: '🤝', RESEARCH: '🔬',
+  TECHNOLOGY: '💻', ENVIRONMENT: '🌱', SOCIAL_IMPACT: '✊',
+  COMMUNITY_BUILDING: '🏘️', ARTS_CULTURE: '🎨', HEALTHCARE: '🏥',
+};
+
+let projectDetailState = { id: null, isMember: false, isOwner: false };
+
+// Home screen — Active Projects
+async function loadHomeProjects() {
+  const el = document.getElementById('home-projects');
+  if (!el) return;
+  try {
+    const data = await api('GET', '/projects?status=OPEN&limit=3');
+    const projects = Array.isArray(data) ? data : (data.data || []);
+    if (!projects.length) {
+      el.innerHTML = `<div style="padding:0.5rem 1rem 0.25rem;font-size:0.83rem;color:var(--stone-light);">No active projects yet. <span style="color:#6366f1;cursor:pointer;" onclick="openCreateProject()">Start one →</span></div>`;
+      return;
+    }
+    el.innerHTML = projects.map(p => renderProjCard(p, false)).join('');
+  } catch(_) {
+    el.innerHTML = '';
+  }
+}
+
+// Render a project card
+function renderProjCard(p, showJoin) {
+  const icon = PROJ_CAT_ICON[p.category] || '🤝';
+  const catLabel = PROJ_CAT_LABEL[p.category] || p.category;
+  const memberCount = p._count?.members || 0;
+  const signals = [];
+  if (p.status === 'OPEN')   signals.push(`<span class="proj-signal open-signal">Open</span>`);
+  if (p.status === 'ACTIVE') signals.push(`<span class="proj-signal active-signal">Active</span>`);
+  signals.push(`<span class="proj-signal">${memberCount} collaborator${memberCount !== 1 ? 's' : ''}</span>`);
+  if (p.skillsNeeded && p.skillsNeeded.length) {
+    p.skillsNeeded.slice(0, 2).forEach(s => signals.push(`<span class="proj-signal skill-signal">${escHtml(s)}</span>`));
+  }
+  if (p.deadline) {
+    const d = new Date(p.deadline);
+    const ds = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    signals.push(`<span class="proj-signal">Due ${ds}</span>`);
+  }
+  return `<div class="proj-card" onclick="openProjectDetail('${p.id}')">
+    <div class="proj-card-top">
+      <div class="proj-icon">${icon}</div>
+      <div class="proj-info">
+        <div class="proj-title">${escHtml(p.title)}</div>
+        <div class="proj-purpose">${escHtml(p.purpose)}</div>
+      </div>
+    </div>
+    <div class="proj-signals">${signals.join('')}</div>
+  </div>`;
+}
+
+// Browse projects — minimal panel using a scrollable section
+async function openProjectsBrowse() {
+  // Re-use existing "browse all" pattern: switch to communities tab or show inline modal
+  // For now open a simple overlay with all open projects
+  const overlay = document.getElementById('panel-projects-browse');
+  if (!overlay) return;
+  openPanel('panel-projects-browse');
+  const el = document.getElementById('pb-list');
+  el.innerHTML = `<div class="spinner" style="margin:2rem auto;"></div>`;
+  try {
+    const data = await api('GET', '/projects?status=OPEN&limit=30');
+    const projects = Array.isArray(data) ? data : (data.data || []);
+    if (!projects.length) {
+      el.innerHTML = `<div class="proj-empty-cta"><div style="font-size:2rem;margin-bottom:0.75rem;">🤝</div><p>No active projects yet.<br>Be the first to start one for the Sangha.</p><button onclick="openCreateProject()">Start a Project</button></div>`;
+      return;
+    }
+    el.innerHTML = projects.map(p => renderProjCard(p, true)).join('');
+  } catch(err) {
+    el.innerHTML = `<div style="padding:1rem;color:var(--stone);font-size:0.85rem;">${err.message}</div>`;
+  }
+}
+
+// Open project detail panel
+async function openProjectDetail(id) {
+  projectDetailState.id = id;
+  document.getElementById('pd-title').textContent = 'Loading…';
+  document.getElementById('pd-meta').textContent = '';
+  document.getElementById('pd-purpose').textContent = '';
+  document.getElementById('pd-members').innerHTML = '';
+  document.getElementById('pd-desc-section').style.display = 'none';
+  document.getElementById('pd-skills-section').style.display = 'none';
+  openPanel('panel-project-detail');
+
+  try {
+    const p = await api('GET', `/projects/${id}`);
+    projectDetailState.isMember = p.isMember;
+    projectDetailState.isOwner  = p.isOwner;
+
+    document.getElementById('pd-icon').textContent  = PROJ_CAT_ICON[p.category] || '🤝';
+    document.getElementById('pd-title').textContent = p.title;
+    const memberCount = p._count?.members || 0;
+    const catLabel = PROJ_CAT_LABEL[p.category] || p.category;
+    const parts = [catLabel];
+    if (p.association) parts.push(p.association.name);
+    document.getElementById('pd-meta').textContent = parts.join(' · ');
+
+    document.getElementById('pd-purpose').textContent = p.purpose;
+
+    if (p.description) {
+      document.getElementById('pd-desc').textContent = p.description;
+      document.getElementById('pd-desc-section').style.display = '';
+    }
+
+    if (p.skillsNeeded && p.skillsNeeded.length) {
+      document.getElementById('pd-skills').innerHTML = p.skillsNeeded.map(s => `<span class="proj-skill-chip">${escHtml(s)}</span>`).join('');
+      document.getElementById('pd-skills-section').style.display = '';
+    }
+
+    document.getElementById('pd-member-count').textContent = `(${memberCount})`;
+    const membersEl = document.getElementById('pd-members');
+    if (p.members && p.members.length) {
+      membersEl.innerHTML = p.members.slice(0, 12).map(m => {
+        const initials = (m.user.displayName || '?').charAt(0).toUpperCase();
+        return `<div class="proj-member-avatar" title="${escHtml(m.user.displayName)}" onclick="openProfile('${m.user.id}')">${initials}</div>`;
+      }).join('');
+    } else {
+      membersEl.innerHTML = `<span style="font-size:0.82rem;color:var(--stone-light);">No collaborators yet — be the first!</span>`;
+    }
+
+    const ownerEl = document.getElementById('pd-owner');
+    const initials = (p.owner.displayName || '?').charAt(0).toUpperCase();
+    ownerEl.innerHTML = `
+      <div class="proj-member-avatar" style="margin-right:0;" onclick="openProfile('${p.owner.id}')">${initials}</div>
+      <span style="font-size:0.85rem;color:var(--charcoal);cursor:pointer;" onclick="openProfile('${p.owner.id}')">${escHtml(p.owner.displayName)}</span>`;
+
+    updateProjJoinBtn();
+  } catch(err) {
+    document.getElementById('pd-title').textContent = 'Error loading project';
+    document.getElementById('pd-meta').textContent = err.message;
+  }
+}
+
+function updateProjJoinBtn() {
+  const btn = document.getElementById('pd-join-btn');
+  if (!btn) return;
+  if (projectDetailState.isOwner) {
+    btn.textContent = 'Your Project';
+    btn.className = 'proj-join-main-btn leave';
+    btn.disabled = true;
+    return;
+  }
+  if (projectDetailState.isMember) {
+    btn.textContent = 'Leave Project';
+    btn.className = 'proj-join-main-btn leave';
+  } else {
+    btn.textContent = 'Collaborate on Project';
+    btn.className = 'proj-join-main-btn join';
+  }
+  btn.disabled = false;
+}
+
+async function toggleProjectMembership() {
+  const btn = document.getElementById('pd-join-btn');
+  if (!btn || projectDetailState.isOwner) return;
+  btn.disabled = true;
+  try {
+    if (projectDetailState.isMember) {
+      await api('DELETE', `/projects/${projectDetailState.id}/leave`);
+      projectDetailState.isMember = false;
+      showToast('You have left the project', 'success');
+    } else {
+      await api('POST', `/projects/${projectDetailState.id}/join`);
+      projectDetailState.isMember = true;
+      showToast('You are now collaborating on this project!', 'success');
+    }
+    updateProjJoinBtn();
+    // Refresh member list
+    openProjectDetail(projectDetailState.id);
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Create project form
+function openCreateProject() {
+  document.getElementById('pj-title').value     = '';
+  document.getElementById('pj-purpose').value   = '';
+  document.getElementById('pj-desc').value      = '';
+  document.getElementById('pj-participants').value = '0';
+  document.getElementById('pj-deadline').value  = '';
+  document.querySelectorAll('#pj-cat-chips .create-chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+  document.querySelectorAll('#pj-skills-chips .create-chip').forEach(c => c.classList.remove('active'));
+  openPanel('panel-create-project');
+}
+
+async function submitCreateProject() {
+  const title = document.getElementById('pj-title').value.trim();
+  if (!title) { showToast('Please enter a project title', 'error'); return; }
+  const purpose = document.getElementById('pj-purpose').value.trim();
+  if (!purpose) { showToast('Please enter the project purpose', 'error'); return; }
+
+  const catEl = document.querySelector('#pj-cat-chips .create-chip.active');
+  const category = catEl ? catEl.dataset.val : 'VOLUNTEER';
+
+  const skillsNeeded = Array.from(document.querySelectorAll('#pj-skills-chips .create-chip.active'))
+    .map(c => c.dataset.val);
+
+  const description    = document.getElementById('pj-desc').value.trim() || null;
+  const participantsNeeded = parseInt(document.getElementById('pj-participants').value) || 0;
+  const deadlineVal    = document.getElementById('pj-deadline').value;
+  const deadline       = deadlineVal || null;
+
+  const btn = document.getElementById('pj-submit-btn');
+  const txt = document.getElementById('pj-submit-text');
+  btn.disabled = true;
+  txt.textContent = 'Starting…';
+  try {
+    const result = await api('POST', '/projects', { title, purpose, description, category, skillsNeeded, participantsNeeded, deadline });
+    showToast('Project started! Collaborators can now join.', 'success');
+    closePanel('panel-create-project');
+    loadHomeProjects();
+    setTimeout(() => openProjectDetail(result.id), 400);
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    txt.textContent = 'Start Project';
   }
 }
 
