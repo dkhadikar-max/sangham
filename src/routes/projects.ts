@@ -26,7 +26,7 @@ const CAT_ICON: Record<string, string> = {
 
 // GET /projects — browse open/active projects
 router.get('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  const { category, status = 'OPEN', q, limit = '20', page = '1' } = req.query;
+  const { category, status = 'OPEN', q, associationId, limit = '20', page = '1' } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
 
   const where: Record<string, unknown> = {
@@ -36,6 +36,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response): Promise<v
   if (category && Object.values(ProjectCategory).includes(category as ProjectCategory)) {
     where.category = category as ProjectCategory;
   }
+  if (associationId) where.associationId = associationId as string;
   if (q) where.title = { contains: q as string, mode: 'insensitive' };
 
   const [projects, total] = await Promise.all([

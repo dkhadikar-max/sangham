@@ -65,7 +65,7 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
   if (category) where.category = category;
   const assocs = await prisma.association.findMany({
     where, take: 50, orderBy: { name: 'asc' },
-    select: { id: true, name: true, country: true, city: true, tradition: true, category: true, isVerified: true, _count: { select: { members: { where: { isActive: true } } } } },
+    select: { id: true, name: true, country: true, city: true, tradition: true, category: true, description: true, isVerified: true, _count: { select: { members: { where: { isActive: true } } } } },
   });
   res.json(assocs);
 });

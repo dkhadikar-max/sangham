@@ -476,6 +476,7 @@ round:var(--error-600)}
     #tab-communities .search-bar{margin:var(--space-4) var(--space-4) var(--space-2)}
 
     /* Community tabs */
+    .comm-tab-panel .section-title{padding-left:0;padding-right:0}
     .comm-tabs{display:flex;border-bottom:1px solid var(--border-subtle);overflow-x:auto;flex-shrink:0;background:var(--surface-primary);position:sticky;top:0;z-index:1}
     .comm-tabs::-webkit-scrollbar{display:none}
     .comm-tab-btn{flex-shrink:0;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-secondary);border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;transition:color .15s,border-color .15s}
@@ -1107,10 +1108,11 @@ document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')
 //  PANEL MANAGEMENT
 // ============================================================
 function openPanel(id) {
-  document.getElementById(id).classList.add('active');
+  const el = document.getElementById(id);
+  if (el && !el.classList.contains('active')) el.classList.add('active');
 }
 function closePanel(id) {
-  document.getElementById(id).classList.remove('active');
+  document.getElementById(id)?.classList.remove('active');
 }
 
 function openBottomSheet(id) {
@@ -2027,12 +2029,35 @@ function debounceComm() {
   commSearchTimer = setTimeout(loadCommunities, 400);
 }
 
+// Bug 2 & 3 helpers — back-button nav and join-btn reset
+function setCommunityBack(mode) {
+  const btn = document.querySelector('#panel-community .panel-back');
+  if (!btn) return;
+  if (mode === 'close') {
+    btn.onclick = () => closePanel('panel-community');
+    btn.setAttribute('aria-label', 'Go back');
+  } else {
+    btn.onclick = () => goBackToCommunity();
+    btn.setAttribute('aria-label', 'Back to community');
+  }
+}
+
+function goBackToCommunity() {
+  if (!communityState.currentId) { closePanel('panel-community'); return; }
+  setCommunityBack('close');
+  openCommunity(communityState.currentId);
+}
+
 async function openCommunity(assocId) {
   communityState.currentId = assocId;
   communityState.isMember   = false;
   communityState.isPresident = false;
   const content = document.getElementById('community-panel-content');
   const joinBtn = document.getElementById('community-join-btn');
+  // Bug 3: always reset onclick before showing the panel
+  joinBtn.onclick = () => toggleCommunityMembership();
+  // Bug 2: back button closes panel when viewing community root
+  setCommunityBack('close');
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   joinBtn.style.display = 'none';
   openPanel('panel-community');
@@ -2097,7 +2122,8 @@ function renderCommunityDetail(a, membership) {
 
     <div id="comm-tab-overview" class="comm-tab-panel active">
       ${events ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Upcoming Events</h2>${events}` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No upcoming events.</p>'}
-      ${members ? `<h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2><div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : ''}
+      <h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2>
+      ${members ? `<div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No members yet.</p>'}
     </div>
 
     <div id="comm-tab-learning" class="comm-tab-panel">
@@ -2209,8 +2235,12 @@ function renderResourceCard(r) {
   const icon = ICONS[r.type] || '📎';
   const dur  = r.durationSecs ? `${Math.round(r.durationSecs/60)}m` : '';
   const typeLabel = (r.type||'').replace(/_/g,' ');
-  return `<div class="resource-card" onclick="openResource('${r.id}')">
-    <div class="resource-thumb-placeholder">${icon}</div>
+  // Bug 6: show thumbnail when available; Bug 9: use data-url, no API call needed
+  const thumb = r.thumbnailUrl
+    ? `<img class="resource-thumb" src="${escHtml(r.thumbnailUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+    : '';
+  return `<div class="resource-card" data-url="${escHtml(r.url)}" onclick="openResourceByEl(this)">
+    ${thumb}<div class="resource-thumb-placeholder" style="${r.thumbnailUrl ? 'display:none' : ''}">${icon}</div>
     <div class="resource-body">
       <span class="resource-type-badge">${typeLabel}</span>
       <div class="resource-title">${escHtml(r.title)}</div>
@@ -2251,13 +2281,13 @@ let currentCourseId = null;
 
 async function openCourse(courseId) {
   currentCourseId = courseId;
-  // Reuse community panel for course detail
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
   document.getElementById('community-panel-title').textContent = 'Course';
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  openPanel('panel-community');
+  setCommunityBack('back'); // Bug 2: back goes to community, not close
+  openPanel('panel-community'); // Bug 4: no-op if already open
   try {
     const course = await api('GET', `/courses/${courseId}`);
     document.getElementById('community-panel-title').textContent = course.title;
@@ -2291,20 +2321,16 @@ function renderCourseDetail(course) {
       ${lessons ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Lessons</h2><div class="comm-member-list" style="padding:0;margin:0">${lessons}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No lessons yet.</p>'}
       <div class="discussion-section">
         <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
-        <div id="course-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
+        <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
         ${state.user ? renderDiscussionCompose('course', courseId) : ''}
       </div>
     </div>`;
 }
 
-// Resource detail — open in new tab (metadata only — video hosted externally)
-async function openResource(resourceId) {
-  try {
-    const r = await api('GET', `/resources/${resourceId}`);
-    window.open(r.url, '_blank', 'noopener');
-  } catch(err) {
-    showToast('Unable to open resource', 'error');
-  }
+// Bug 9: open resource URL directly from the card data-url — no API call needed
+function openResourceByEl(el) {
+  const url = el.dataset.url;
+  if (url) window.open(url, '_blank', 'noopener');
 }
 
 // Study circle detail
@@ -2318,7 +2344,8 @@ async function openCircle(circleId) {
   document.getElementById('community-panel-title').textContent = 'Study Circle';
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  openPanel('panel-community');
+  setCommunityBack('back'); // Bug 2
+  openPanel('panel-community'); // Bug 4: no-op if already open
   try {
     const circle = await api('GET', `/study-circles/${circleId}`);
     currentCircleMember = !!circle.isMember;
@@ -2355,7 +2382,7 @@ function renderCircleDetail(c) {
       ${members ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Members (${c._count?.members||0})</h2><div class="comm-member-list" style="padding:0;margin:0">${members}</div>` : ''}
       <div class="discussion-section">
         <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
-        <div id="circle-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet.</p>'}</div>
+        <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet.</p>'}</div>
         ${state.user ? renderDiscussionCompose('study-circle', c.id) : ''}
       </div>
     </div>`;
@@ -2394,7 +2421,8 @@ async function openProjectDetail(projectId) {
   document.getElementById('community-panel-title').textContent = 'Project';
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  openPanel('panel-community');
+  setCommunityBack('back'); // Bug 2
+  openPanel('panel-community'); // Bug 4: no-op if already open
   try {
     const p = await api('GET', `/projects/${projectId}`);
     document.getElementById('community-panel-title').textContent = p.title;
@@ -2488,8 +2516,8 @@ async function submitDiscussionPost(entityType, entityId) {
   if (!content) return;
   try {
     const post = await api('POST', `/discussions/${entityType}/${entityId}`, { content });
-    const container = entityType === 'course' ? 'course-discussion-posts' : 'circle-discussion-posts';
-    const el = document.getElementById(container);
+    // Bug 8: all detail views use the same container ID
+    const el = document.getElementById('active-discussion-posts');
     if (el) {
       if (el.querySelector('p')) el.innerHTML = '';
       el.insertAdjacentHTML('beforeend', renderDiscussionPost(post));
