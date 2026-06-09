@@ -79,7 +79,7 @@ router.get('/people', authenticate, async (req: AuthRequest, res: Response): Pro
 
   const [users, total] = await Promise.all([
     prisma.user.findMany({ where, take: limit, skip, select: safeUserSelect,
-      orderBy: { contributionScore: { totalScore: 'desc' } } }),
+      orderBy: [{ updatedAt: 'desc' }] }),
     prisma.user.count({ where }),
   ]);
 
@@ -123,7 +123,7 @@ router.get('/nearby', authenticate, async (req: AuthRequest, res: Response): Pro
   const users = await prisma.user.findMany({
     where, take: 30,
     select: { ...safeUserSelect },
-    orderBy: { contributionScore: { totalScore: 'desc' } },
+    orderBy: [{ updatedAt: 'desc' }],
   });
 
   // Attach approximate distance — NEVER exact
@@ -185,7 +185,7 @@ router.get('/recommended', authenticate, async (req: AuthRequest, res: Response)
     },
     take: 20,
     select: safeUserSelect,
-    orderBy: { contributionScore: { totalScore: 'desc' } },
+    orderBy: [{ updatedAt: 'desc' }],
   });
 
   res.json({ data: candidates });

@@ -78,11 +78,12 @@ router.get('/nearby', async (req: AuthRequest, res: Response): Promise<void> => 
 
 // GET /events — general listing
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { tradition, type } = req.query;
+  const { tradition, type, q } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
   const where: Record<string, unknown> = { isPublished: true, startsAt: { gte: new Date() } };
   if (tradition) where.traditionTag = tradition;
   if (type) where.eventType = type;
+  if (q) where.title = { contains: q as string, mode: 'insensitive' };
   const [events, total] = await Promise.all([
     prisma.event.findMany({
       where, orderBy: { startsAt: 'asc' }, take: limit, skip,

@@ -595,6 +595,21 @@ round:var(--error-600)}
     .dhamma-daan-home-btn{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);background:linear-gradient(135deg,var(--saffron-50),var(--saffron-100));border:1px solid var(--saffron-200);border-radius:var(--radius-xl);cursor:pointer;text-align:left;width:100%;font-family:var(--font-body);margin-bottom:var(--space-3)}
     .dhamma-daan-home-btn:hover{background:linear-gradient(135deg,var(--saffron-100),var(--saffron-200));border-color:var(--saffron-300)}
 
+    /* Person card extras */
+    .person-langs{font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .btn.connected,.btn.followed{background:var(--surface-muted);color:var(--text-secondary);border:1px solid var(--border-default)}
+    /* Global search results */
+    .gs-section{margin-bottom:var(--space-5)}
+    .gs-section-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2)}
+    .gs-section-title{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider)}
+    .gs-see-all{font-size:var(--text-xs);color:var(--saffron-600);background:none;border:none;cursor:pointer;padding:0}
+    .gs-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;border-bottom:1px solid var(--border-subtle);cursor:pointer}
+    .gs-row:last-child{border-bottom:none}
+    .gs-row-icon{width:32px;height:32px;border-radius:50%;background:var(--surface-muted);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden}
+    .gs-row-icon img{width:100%;height:100%;object-fit:cover}
+    .gs-name{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary)}
+    .gs-meta{font-size:var(--text-xs);color:var(--text-tertiary)}
+    .gs-empty{text-align:center;padding:var(--space-10) 0;color:var(--text-tertiary);font-size:var(--text-sm)}
     /* Text reader panel */
     .text-reader{padding:var(--space-4)}
     .text-reader-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3)}
@@ -722,6 +737,9 @@ round:var(--error-600)}
         <div class="comm-tabs" id="discoverTabs" style="border-bottom:1px solid var(--border-subtle)">
           <button class="comm-tab-btn active" onclick="switchDiscoverTab('people',this)">People</button>
           <button class="comm-tab-btn" onclick="switchDiscoverTab('events',this)">Events</button>
+          <button class="nav-item" style="flex:0;padding:var(--space-2) var(--space-3);color:var(--text-secondary)" onclick="openGlobalSearch()" aria-label="Search all" title="Search all">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
         </div>
         <div id="discover-tab-people" class="comm-tab-panel active">
           <div class="search-bar" style="margin:var(--space-3) var(--space-4) var(--space-2)">
@@ -746,6 +764,18 @@ round:var(--error-600)}
           <div style="padding:0 var(--space-4) var(--space-2)">
             <button class="chip" id="teacher-filter-chip" onclick="filterDiscoverTeachers(this)">🎓 Verified Teachers</button>
             <button class="btn btn-ghost btn-sm" id="post-intent-btn" style="display:none;float:right;margin-top:-2px" onclick="openCreateIntent()">+ Post Intent</button>
+          </div>
+          <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);align-items:center">
+            <span style="font-size:var(--text-xs);color:var(--text-tertiary);flex-shrink:0">Language:</span>
+            <div class="chip-scroll" id="discoverLangFilters" style="gap:var(--space-2)">
+              <button class="chip active" onclick="filterDiscoverLang(null,this)">Any</button>
+              <button class="chip" onclick="filterDiscoverLang('English',this)">English</button>
+              <button class="chip" onclick="filterDiscoverLang('Hindi',this)">Hindi</button>
+              <button class="chip" onclick="filterDiscoverLang('Marathi',this)">Marathi</button>
+              <button class="chip" onclick="filterDiscoverLang('Pali',this)">Pali</button>
+              <button class="chip" onclick="filterDiscoverLang('Sinhala',this)">Sinhala</button>
+              <button class="chip" onclick="filterDiscoverLang('Japanese',this)">Japanese</button>
+            </div>
           </div>
           <div id="discoverPeople"></div>
         </div>
@@ -1162,6 +1192,24 @@ round:var(--error-600)}
     </div>
 
     <!-- PANEL: TEACHER APPLICATION -->
+    <!-- GLOBAL SEARCH PANEL -->
+    <div id="panel-global-search" class="panel">
+      <div class="panel-header" style="gap:var(--space-2)">
+        <button class="panel-back" onclick="closePanel('panel-global-search')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="search-bar" style="flex:1;margin:0">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="globalSearchInput" class="input" placeholder="Search people, communities, events..." oninput="debounceGlobalSearch()" autocomplete="off" style="border:none;background:transparent;box-shadow:none;padding-left:0">
+        </div>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div id="globalSearchResults">
+          <div class="gs-empty">Search across people, communities and events</div>
+        </div>
+      </div>
+    </div>
+
     <div id="panel-teacher-apply" class="panel">
       <div class="panel-header">
         <button class="panel-back" onclick="closePanel('panel-teacher-apply')" aria-label="Go back">
@@ -1710,6 +1758,7 @@ let discoverCategories = [];
 let _discoverEventsLoaded = false;
 let _discoverIntentFilter = null;
 let _discoverTeacherFilter = false;
+let _discoverLangFilter = null;
 
 async function loadDiscover() {
   const catContainer = document.getElementById('discoverCategories');
@@ -1812,6 +1861,7 @@ async function fetchDiscoverPeople(params) {
       ...params,
       ...(_discoverIntentFilter  ? { seekingIntent: _discoverIntentFilter }  : {}),
       ...(_discoverTeacherFilter ? { isVerifiedTeacher: true }               : {}),
+      ...(_discoverLangFilter    ? { language: _discoverLangFilter }          : {}),
     };
     const qs = new URLSearchParams(merged).toString();
     const data = await api('GET', `/discover/people?${qs}`);
@@ -1824,6 +1874,13 @@ async function fetchDiscoverPeople(params) {
   } catch(err) {
     ppl.innerHTML = renderEmptyState('discover');
   }
+}
+
+function filterDiscoverLang(lang, chip) {
+  document.querySelectorAll('#discoverLangFilters .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  _discoverLangFilter = lang;
+  fetchDiscoverPeople(state.discoverFilter || {});
 }
 
 function filterDiscoverIntent(category, chip) {
@@ -1898,50 +1955,133 @@ function debounceDiscover() {
 
 function clearDiscoverFilters() {
   document.querySelectorAll('#discoverCategories .chip').forEach(c => c.classList.remove('active'));
-  document.querySelector('#discoverCategories .chip').classList.add('active');
+  document.querySelector('#discoverCategories .chip')?.classList.add('active');
+  document.querySelectorAll('#intentFilters .chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+  document.querySelectorAll('#discoverLangFilters .chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+  const tchip = document.getElementById('teacher-filter-chip');
+  if (tchip) tchip.classList.remove('active');
   document.getElementById('discoverSearch').value = '';
+  _discoverIntentFilter = null;
+  _discoverTeacherFilter = false;
+  _discoverLangFilter = null;
+  state.discoverFilter = null;
   fetchDiscoverPeople({});
 }
 
+// ── Global Search ──────────────────────────────────────────────────────────────
+let _globalSearchTimer = null;
+
+function openGlobalSearch() {
+  openPanel('panel-global-search');
+  setTimeout(() => document.getElementById('globalSearchInput')?.focus(), 300);
+}
+
+function debounceGlobalSearch() {
+  clearTimeout(_globalSearchTimer);
+  _globalSearchTimer = setTimeout(runGlobalSearch, 400);
+}
+
+async function runGlobalSearch() {
+  const q = (document.getElementById('globalSearchInput')?.value || '').trim();
+  const el = document.getElementById('globalSearchResults');
+  if (!q) {
+    el.innerHTML = '<div class="gs-empty">Search across people, communities and events</div>';
+    return;
+  }
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const [peopleRes, commsRes, eventsRes] = await Promise.allSettled([
+      api('GET', `/discover/people?q=${encodeURIComponent(q)}&limit=4`),
+      api('GET', `/associations?name=${encodeURIComponent(q)}&limit=4`),
+      api('GET', `/events?q=${encodeURIComponent(q)}&limit=4`),
+    ]);
+    const people = peopleRes.status === 'fulfilled' ? (peopleRes.value.data || peopleRes.value || []) : [];
+    const comms  = commsRes.status  === 'fulfilled' ? (commsRes.value  || []) : [];
+    const events = eventsRes.status === 'fulfilled' ? (eventsRes.value.data || eventsRes.value || []) : [];
+
+    if (!people.length && !comms.length && !events.length) {
+      el.innerHTML = `<div class="gs-empty">No results for "${escHtml(q)}"</div>`;
+      return;
+    }
+    el.innerHTML = [
+      renderGsSection('People', people, q, p => `
+        <div class="gs-row" onclick="closePanel('panel-global-search');openProfile('${p.id}')">
+          <div class="gs-row-icon">${p.profilePhoto ? `<img src="${p.profilePhoto}">` : escHtml((p.displayName||'?').charAt(0))}</div>
+          <div><div class="gs-name">${escHtml(p.displayName||'')}</div><div class="gs-meta">${escHtml((p.traditions||[]).join(', '))} ${p.location?.city||p.city?'· '+(p.location?.city||p.city):''}</div></div>
+        </div>`),
+      renderGsSection('Communities', comms, q, c => `
+        <div class="gs-row" onclick="closePanel('panel-global-search');openCommunity('${c.id}')">
+          <div class="gs-row-icon" style="border-radius:var(--radius-lg)">🏛</div>
+          <div><div class="gs-name">${escHtml(c.name||'')}</div><div class="gs-meta">${escHtml(c.city||c.country||'')} · ${c._count?.members??0} members</div></div>
+        </div>`),
+      renderGsSection('Events', events, q, ev => `
+        <div class="gs-row" onclick="closePanel('panel-global-search');switchTab('discover');setTimeout(()=>switchDiscoverTab('events',document.querySelector('#discoverTabs .comm-tab-btn:last-of-type')),100)">
+          <div class="gs-row-icon" style="border-radius:var(--radius-lg)">📅</div>
+          <div><div class="gs-name">${escHtml(ev.title||'')}</div><div class="gs-meta">${timeAgo(ev.startsAt)} · ${escHtml(ev.locationName||'Online')}</div></div>
+        </div>`),
+    ].filter(Boolean).join('');
+  } catch(err) {
+    el.innerHTML = '<div class="gs-empty">Unable to search. Try again.</div>';
+  }
+}
+
+function renderGsSection(title, items, q, renderRow) {
+  if (!items.length) return '';
+  return `<div class="gs-section">
+    <div class="gs-section-hd">
+      <div class="gs-section-title">${title}</div>
+    </div>
+    ${items.slice(0, 3).map(renderRow).join('')}
+  </div>`;
+}
+
+const ROLE_LABELS = { BHIKKHU:'Bhikkhu', BHIKKHUNI:'Bhikkhuni', SCHOLAR:'Scholar', ASSOCIATION_ADMIN:'Assoc. Admin', TRUSTED:'Trusted', MODERATOR:'Moderator', SUPER_ADMIN:'Admin' };
+
 function renderPersonCard(p, delay = 0, distance) {
-const initials = (p.displayName || '?').charAt(0).toUpperCase();
+  const initials = (p.displayName || '?').charAt(0).toUpperCase();
   const avatar   = p.profilePhoto ? `<img src="${p.profilePhoto}" alt="${p.displayName || ''}">` : initials;
   const traditions = (p.traditions || []).join(', ');
   const tags       = (p.tags || []).map(t => t.tag || t).join(' · ');
-  const followed   = state.followedUsers.has(p.id);
+  const connected  = state.followedUsers.has(p.id);
   const isMe       = p.id === state.user?.id;
-  const loc = p.location?.city ? `${p.location.city}${p.location.country?', '+p.location.country:''}` : '';
+  const loc        = distance || (p.location?.city ? `${p.location.city}${p.location.country ? ', ' + p.location.country : ''}` : (p.city ? `${p.city}${p.country ? ', ' + p.country : ''}` : ''));
   const verifiedBadge = p.isVerifiedClergy || p.isVerifiedTeacher ? '<span class="badge-verified badge-verified-teacher" title="Verified"></span>' : '';
+  const roleLabel  = ROLE_LABELS[p.role] || '';
+  const langs      = (p.languages || []).slice(0, 3).join(', ');
 
   return `<div class="person-card" style="animation-delay:${delay}s">
     <div class="avatar avatar-md" onclick="openProfile('${p.id}')">${avatar}</div>
     <div class="person-info" onclick="openProfile('${p.id}')">
       <div class="person-name">${escHtml(p.displayName || 'Anonymous')} ${verifiedBadge}</div>
       <div class="person-meta">
+        ${roleLabel ? `<span>${escHtml(roleLabel)}</span>` : ''}
         ${traditions ? `<span>${escHtml(traditions)}</span>` : ''}
         ${loc ? `<span>${escHtml(loc)}</span>` : ''}
-        ${distance !== undefined && distance !== null ? `<span>${Math.round(distance)} km away</span>` : ''}
       </div>
-      ${tags ? `<div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)">${escHtml(tags)}</div>` : ''}
+      ${langs ? `<div class="person-langs">${escHtml(langs)}</div>` : ''}
+      ${tags ? `<div style="font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px">${escHtml(tags)}</div>` : ''}
     </div>
     ${!isMe ? `<div class="person-actions">
-      <button class="btn btn-ghost btn-sm${followed ? ' followed' : ''}" onclick="event.stopPropagation();followUser('${p.id}', this)">${followed ? 'Following' : 'Follow'}</button>
+      <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openChat('${p.id}')">Msg</button>
+      <button class="btn btn-sm ${connected ? 'connected' : 'btn-primary'}" onclick="event.stopPropagation();followUser('${p.id}', this)">${connected ? 'Connected' : 'Connect'}</button>
     </div>` : ''}
   </div>`;
 }
 async function followUser(userId, btn) {
   try {
-    const followed = state.followedUsers.has(userId);
-    if (followed) {
+    const isConnected = state.followedUsers.has(userId);
+    if (isConnected) {
       await api('DELETE', `/users/${userId}/follow`);
-state.followedUsers.delete(userId);
-      btn.textContent = 'Follow';
-      btn.classList.remove('followed');
+      state.followedUsers.delete(userId);
+      btn.textContent = 'Connect';
+      btn.classList.remove('connected');
+      btn.classList.add('btn-primary');
     } else {
       await api('POST', `/users/${userId}/follow`);
       state.followedUsers.add(userId);
-      btn.textContent = 'Following';
-      btn.classList.add('followed');
+      btn.textContent = 'Connected';
+      btn.classList.add('connected');
+      btn.classList.remove('btn-primary');
       if (navigator.vibrate) navigator.vibrate(15);
     }
   } catch(err) { showToast(err.message, 'error'); }
