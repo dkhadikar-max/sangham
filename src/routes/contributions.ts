@@ -50,6 +50,10 @@ router.get('/:userId', async (req: AuthRequest, res: Response): Promise<void> =>
       translationContributions: true,
       libraryAnnotations: true,
       sessionsHosted: true,
+      resourcesShared: true,
+      coursesCreated: true,
+      studyCirclesFacilitated: true,
+      projectsJoined: true,
       totalScore: true,
     },
   });

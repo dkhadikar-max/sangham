@@ -156,8 +156,13 @@ model User {
   contributorSince  DateTime? @map("contributor_since")
 
   daanContributions  DhammaDaanContribution[]
-  projectsOwned      Project[]        @relation("ProjectOwner")
-  projectMemberships ProjectMember[]
+  projectsOwned        Project[]          @relation("ProjectOwner")
+  projectMemberships   ProjectMember[]
+  resourcesContributed Resource[]         @relation("ResourceContributor")
+  coursesInstructed    Course[]           @relation("CourseInstructor")
+  studyCirclesFacilitated StudyCircle[]   @relation("StudyCircleFacilitator")
+  studyCircleMemberships StudyCircleMember[]
+  discussionPosts      DiscussionPost[]   @relation("DiscussionPostAuthor")
 
   @@map("users")
 }
@@ -403,6 +408,7 @@ model Event {
   organiser       User      @relation("EventOrganiser", fields: [organiserId], references: [id])
   association     Association? @relation(fields: [associationId], references: [id])
   rsvps           EventRsvp[]
+  studyCircles    StudyCircle[]
 
   @@index([startsAt])
   @@index([lat, lng])
@@ -445,6 +451,10 @@ model Association {
   members          AssociationMember[]
   events           Event[]
   projects         Project[]
+  modules          CommunityModule?
+  resources        Resource[]
+  courses          Course[]
+  studyCircles     StudyCircle[]
 
   @@map("associations")
 }
@@ -717,6 +727,11 @@ model ContributionScore {
   libraryAnnotations      Int      @default(0) @map("library_annotations")
   // Sessions
   sessionsHosted          Int      @default(0) @map("sessions_hosted")
+  // Knowledge ecosystem
+  resourcesShared          Int      @default(0) @map("resources_shared")
+  coursesCreated           Int      @default(0) @map("courses_created")
+  studyCirclesFacilitated  Int      @default(0) @map("study_circles_facilitated")
+  projectsJoined           Int      @default(0) @map("projects_joined")
   // Total (computed column — updated by job)
   totalScore              Int      @default(0) @map("total_score")
   updatedAt               DateTime @updatedAt @map("updated_at")
@@ -828,9 +843,11 @@ model Project {
   createdAt          DateTime        @default(now()) @map("created_at")
   updatedAt          DateTime        @updatedAt @map("updated_at")
 
-  owner              User            @relation("ProjectOwner", fields: [ownerId], references: [id])
-  association        Association?    @relation(fields: [associationId], references: [id])
+  owner              User             @relation("ProjectOwner", fields: [ownerId], references: [id])
+  association        Association?     @relation(fields: [associationId], references: [id])
   members            ProjectMember[]
+  resources          Resource[]
+  thread             DiscussionThread?
 
   @@index([status])
   @@index([ownerId])
@@ -850,6 +867,176 @@ model ProjectMember {
 
   @@unique([projectId, userId])
   @@map("project_members")
+}
+
+// ── Community Knowledge Ecosystem ────────────────────────────────────────────
+
+enum ResourceType {
+  YOUTUBE_VIDEO
+  YOUTUBE_PLAYLIST
+  PDF
+  ARTICLE
+  RESEARCH_PAPER
+  WORKSHOP_RECORDING
+  GUIDE
+  BOOK_SUMMARY
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum StudyCircleStatus {
+  OPEN
+  ACTIVE
+  CLOSED
+}
+
+model CommunityModule {
+  id                   String      @id @default(uuid())
+  associationId        String      @unique @map("association_id")
+  learningEnabled      Boolean     @default(true)  @map("learning_enabled")
+  projectsEnabled      Boolean     @default(true)  @map("projects_enabled")
+  circlesEnabled       Boolean     @default(true)  @map("circles_enabled")
+  contributionEnabled  Boolean     @default(true)  @map("contribution_enabled")
+  updatedAt            DateTime    @updatedAt @map("updated_at")
+
+  association          Association @relation(fields: [associationId], references: [id], onDelete: Cascade)
+
+  @@map("community_modules")
+}
+
+model Resource {
+  id             String       @id @default(uuid())
+  type           ResourceType
+  title          String       @db.VarChar(200)
+  description    String?      @db.Text
+  url            String       @db.Text
+  thumbnailUrl   String?      @map("thumbnail_url") @db.Text
+  creator        String?      @db.VarChar(200)
+  durationSecs   Int?         @map("duration_secs")
+  language       String       @default("en")
+  contributorId  String       @map("contributor_id")
+  associationId  String?      @map("association_id")
+  projectId      String?      @map("project_id")
+  isPublished    Boolean      @default(true) @map("is_published")
+  createdAt      DateTime     @default(now()) @map("created_at")
+
+  contributor    User         @relation("ResourceContributor", fields: [contributorId], references: [id], onDelete: Cascade)
+  association    Association? @relation(fields: [associationId], references: [id], onDelete: SetNull)
+  project        Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  lessons        CourseLesson[]
+  thread         DiscussionThread?
+
+  @@index([associationId])
+  @@index([type])
+  @@map("resources")
+}
+
+model Course {
+  id             String       @id @default(uuid())
+  associationId  String       @map("association_id")
+  title          String       @db.VarChar(200)
+  description    String?      @db.Text
+  instructorId   String?      @map("instructor_id")
+  language       String       @default("en")
+  status         CourseStatus @default(DRAFT)
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  association    Association  @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  instructor     User?        @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
+  lessons        CourseLesson[]
+  thread         DiscussionThread?
+
+  @@index([associationId])
+  @@map("courses")
+}
+
+model CourseLesson {
+  id           String   @id @default(uuid())
+  courseId     String   @map("course_id")
+  title        String   @db.VarChar(200)
+  content      String?  @db.Text
+  resourceId   String?  @map("resource_id")
+  sequence     Int      @default(0)
+  isPublished  Boolean  @default(true) @map("is_published")
+
+  course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  resource     Resource? @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+
+  @@index([courseId])
+  @@map("course_lessons")
+}
+
+model StudyCircle {
+  id                  String            @id @default(uuid())
+  associationId       String            @map("association_id")
+  topic               String            @db.VarChar(200)
+  description         String?           @db.Text
+  facilitatorId       String            @map("facilitator_id")
+  scheduleDescription String?           @map("schedule_description") @db.VarChar(300)
+  status              StudyCircleStatus @default(OPEN)
+  eventId             String?           @map("event_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+
+  association         Association       @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  facilitator         User              @relation("StudyCircleFacilitator", fields: [facilitatorId], references: [id], onDelete: Cascade)
+  event               Event?            @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  members             StudyCircleMember[]
+  thread              DiscussionThread?
+
+  @@index([associationId])
+  @@map("study_circles")
+}
+
+model StudyCircleMember {
+  id            String      @id @default(uuid())
+  studyCircleId String      @map("study_circle_id")
+  userId        String      @map("user_id")
+  joinedAt      DateTime    @default(now()) @map("joined_at")
+
+  studyCircle   StudyCircle @relation(fields: [studyCircleId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([studyCircleId, userId])
+  @@map("study_circle_members")
+}
+
+model DiscussionThread {
+  id            String   @id @default(uuid())
+  title         String   @db.VarChar(200)
+  courseId      String?  @unique @map("course_id")
+  resourceId    String?  @unique @map("resource_id")
+  studyCircleId String?  @unique @map("study_circle_id")
+  projectId     String?  @unique @map("project_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  course        Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  resource      Resource?    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  studyCircle   StudyCircle? @relation(fields: [studyCircleId], references: [id], onDelete: Cascade)
+  project       Project?     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  posts         DiscussionPost[]
+
+  @@map("discussion_threads")
+}
+
+model DiscussionPost {
+  id        String   @id @default(uuid())
+  threadId  String   @map("thread_id")
+  authorId  String   @map("author_id")
+  content   String   @db.VarChar(2000)
+  parentId  String?  @map("parent_id")
+  isDeleted Boolean  @default(false) @map("is_deleted")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  thread    DiscussionThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author    User             @relation("DiscussionPostAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([threadId])
+  @@map("discussion_posts")
 }
 
 model TeacherVerification {

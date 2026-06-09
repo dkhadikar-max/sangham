@@ -474,6 +474,61 @@ round:var(--error-600)}
     .comm-member-role{font-size:var(--text-xs);color:var(--text-tertiary);margin-left:auto}
     #panel-community .panel-content{padding:0;overflow-y:auto}
     #tab-communities .search-bar{margin:var(--space-4) var(--space-4) var(--space-2)}
+
+    /* Community tabs */
+    .comm-tabs{display:flex;border-bottom:1px solid var(--border-subtle);overflow-x:auto;flex-shrink:0;background:var(--surface-primary);position:sticky;top:0;z-index:1}
+    .comm-tabs::-webkit-scrollbar{display:none}
+    .comm-tab-btn{flex-shrink:0;padding:var(--space-3) var(--space-4);font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-secondary);border:none;background:transparent;border-bottom:2px solid transparent;cursor:pointer;transition:color .15s,border-color .15s}
+    .comm-tab-btn.active{color:var(--saffron-600);border-bottom-color:var(--saffron-500)}
+    .comm-tab-panel{display:none;padding:var(--space-4)}
+    .comm-tab-panel.active{display:block}
+
+    /* Resource cards */
+    .resource-card{background:var(--surface-secondary);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--space-3);cursor:pointer;transition:box-shadow .15s}
+    .resource-card:hover{box-shadow:var(--shadow-md)}
+    .resource-thumb{width:100%;height:120px;object-fit:cover;background:var(--surface-tertiary)}
+    .resource-thumb-placeholder{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--saffron-100),var(--saffron-200))}
+    .resource-body{padding:var(--space-3)}
+    .resource-type-badge{display:inline-block;font-size:10px;background:var(--saffron-100);color:var(--saffron-700);padding:2px 6px;border-radius:var(--radius-full);font-weight:var(--weight-medium);margin-bottom:var(--space-1)}
+    .resource-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-1)}
+    .resource-meta{font-size:var(--text-xs);color:var(--text-tertiary)}
+
+    /* Course cards */
+    .course-card{background:var(--surface-secondary);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-3);cursor:pointer;border-left:3px solid var(--saffron-400)}
+    .course-card:hover{box-shadow:var(--shadow-md)}
+    .course-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .course-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)}
+    .course-status-badge{font-size:10px;padding:2px 6px;border-radius:var(--radius-full);font-weight:var(--weight-medium)}
+    .course-status-PUBLISHED{background:var(--lotus-100);color:var(--lotus-700)}
+    .course-status-DRAFT{background:var(--stone-100);color:var(--stone-600)}
+    .course-status-ARCHIVED{background:var(--stone-200);color:var(--stone-500)}
+
+    /* Study circle cards */
+    .circle-card{background:var(--surface-secondary);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-3);cursor:pointer}
+    .circle-card:hover{box-shadow:var(--shadow-md)}
+    .circle-topic{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .circle-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)}
+    .circle-status{display:inline-block;font-size:10px;padding:2px 6px;border-radius:var(--radius-full);font-weight:var(--weight-medium);margin-top:var(--space-2)}
+    .circle-status-OPEN{background:var(--lotus-100);color:var(--lotus-700)}
+    .circle-status-ACTIVE{background:var(--saffron-100);color:var(--saffron-700)}
+    .circle-status-CLOSED{background:var(--stone-200);color:var(--stone-500)}
+
+    /* Discussion inline */
+    .discussion-section{margin-top:var(--space-4);border-top:1px solid var(--border-subtle);padding-top:var(--space-4)}
+    .discussion-post{display:flex;gap:var(--space-3);margin-bottom:var(--space-4)}
+    .discussion-body{flex:1;background:var(--surface-secondary);border-radius:var(--radius-lg);padding:var(--space-3)}
+    .discussion-author{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary)}
+    .discussion-content{font-size:var(--text-sm);color:var(--text-secondary);margin-top:var(--space-1)}
+    .discussion-time{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)}
+    .discussion-compose{display:flex;gap:var(--space-2);margin-top:var(--space-3)}
+    .discussion-compose textarea{flex:1;border-radius:var(--radius-lg);border:1px solid var(--border-default);background:var(--surface-secondary);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--text-primary);resize:none}
+    .discussion-compose textarea:focus{outline:none;border-color:var(--saffron-400)}
+
+    /* Contribution panel */
+    .contrib-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-top:var(--space-4)}
+    .contrib-item{background:var(--surface-secondary);border-radius:var(--radius-lg);padding:var(--space-4);text-align:center}
+    .contrib-value{font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--saffron-600)}
+    .contrib-label{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)}
   </style>
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -2032,8 +2087,418 @@ function renderCommunityDetail(a, membership) {
       </div>
       ${a.description ? `<div class="comm-detail-desc">${escHtml(a.description)}</div>` : ''}
     </div>
-    ${events ? `<h2 class="section-title" style="padding:0 var(--space-4) var(--space-2)">Upcoming Events</h2><div style="padding:0 var(--space-4) var(--space-2)">${events}</div>` : ''}
-    ${members ? `<h2 class="section-title" style="padding:0 var(--space-4) var(--space-2)">Members</h2><div class="comm-member-list">${members}</div>` : ''}`;
+
+    <div class="comm-tabs">
+      <button class="comm-tab-btn active" onclick="switchCommTab('overview',this)">Overview</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('learning',this)">Learning</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('projects',this)">Projects</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('circles',this)">Circles</button>
+    </div>
+
+    <div id="comm-tab-overview" class="comm-tab-panel active">
+      ${events ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Upcoming Events</h2>${events}` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No upcoming events.</p>'}
+      ${members ? `<h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2><div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : ''}
+    </div>
+
+    <div id="comm-tab-learning" class="comm-tab-panel">
+      <div id="comm-learning-content"><div class="spinner-center"><div class="spinner"></div></div></div>
+    </div>
+
+    <div id="comm-tab-projects" class="comm-tab-panel">
+      <div id="comm-projects-content"><div class="spinner-center"><div class="spinner"></div></div></div>
+    </div>
+
+    <div id="comm-tab-circles" class="comm-tab-panel">
+      <div id="comm-circles-content"><div class="spinner-center"><div class="spinner"></div></div></div>
+    </div>`;
+}
+
+function switchCommTab(tab, btn) {
+  document.querySelectorAll('.comm-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.comm-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('comm-tab-' + tab)?.classList.add('active');
+  if (tab === 'learning' && document.getElementById('comm-learning-content')?.querySelector('.spinner-center')) {
+    loadCommunityLearning(communityState.currentId);
+  }
+  if (tab === 'projects' && document.getElementById('comm-projects-content')?.querySelector('.spinner-center')) {
+    loadCommunityProjects(communityState.currentId);
+  }
+  if (tab === 'circles' && document.getElementById('comm-circles-content')?.querySelector('.spinner-center')) {
+    loadCommunityCircles(communityState.currentId);
+  }
+}
+
+async function loadCommunityLearning(assocId) {
+  const el = document.getElementById('comm-learning-content');
+  if (!el) return;
+  try {
+    const [coursesRes, resourcesRes] = await Promise.all([
+      api('GET', `/courses?associationId=${assocId}&status=PUBLISHED&limit=10`),
+      api('GET', `/resources?associationId=${assocId}&limit=10`),
+    ]);
+    const courses   = coursesRes.data   || coursesRes   || [];
+    const resources = resourcesRes.data || resourcesRes || [];
+
+    let html = '';
+    if (courses.length) {
+      html += `<h2 class="section-title" style="margin-bottom:var(--space-3)">Courses</h2>`;
+      html += courses.map(c => renderCourseCard(c)).join('');
+    }
+    if (resources.length) {
+      html += `<h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Resources</h2>`;
+      html += resources.map(r => renderResourceCard(r)).join('');
+    }
+    if (!courses.length && !resources.length) {
+      html = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No learning content yet. Be the first to add a course or resource.</p>';
+    }
+    el.innerHTML = html;
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load learning content.</p>';
+  }
+}
+
+async function loadCommunityProjects(assocId) {
+  const el = document.getElementById('comm-projects-content');
+  if (!el) return;
+  try {
+    const data = await api('GET', `/projects?associationId=${assocId}&status=OPEN&limit=10`);
+    const projects = data.data || data || [];
+    if (!projects.length) {
+      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No active projects yet.</p>';
+      return;
+    }
+    el.innerHTML = projects.map(p => renderCommProjectCard(p)).join('');
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load projects.</p>';
+  }
+}
+
+async function loadCommunityCircles(assocId) {
+  const el = document.getElementById('comm-circles-content');
+  if (!el) return;
+  try {
+    const data = await api('GET', `/study-circles?associationId=${assocId}&limit=10`);
+    const circles = data.data || data || [];
+    if (!circles.length) {
+      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No study circles yet.</p>';
+      return;
+    }
+    el.innerHTML = circles.map(c => renderCircleCard(c)).join('');
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load study circles.</p>';
+  }
+}
+
+function renderCourseCard(c) {
+  const lessonCount = c._count?.lessons ?? 0;
+  const instructor  = c.instructor?.displayName || 'Community';
+  const statusClass = 'course-status-' + (c.status || 'DRAFT');
+  return `<div class="course-card" onclick="openCourse('${c.id}')">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div class="course-title">${escHtml(c.title)}</div>
+      <span class="course-status-badge ${statusClass}">${c.status||'DRAFT'}</span>
+    </div>
+    <div class="course-meta">${escHtml(instructor)} · ${lessonCount} lesson${lessonCount!==1?'s':''} · ${c.language?.toUpperCase()||'EN'}</div>
+    ${c.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);margin-top:var(--space-2)">${escHtml(c.description.slice(0,120))}${c.description.length>120?'…':''}</div>` : ''}
+  </div>`;
+}
+
+function renderResourceCard(r) {
+  const ICONS = { YOUTUBE_VIDEO:'▶️', YOUTUBE_PLAYLIST:'📋', PDF:'📄', ARTICLE:'📰', RESEARCH_PAPER:'🔬', WORKSHOP_RECORDING:'🎥', GUIDE:'📖', BOOK_SUMMARY:'📚' };
+  const icon = ICONS[r.type] || '📎';
+  const dur  = r.durationSecs ? `${Math.round(r.durationSecs/60)}m` : '';
+  const typeLabel = (r.type||'').replace(/_/g,' ');
+  return `<div class="resource-card" onclick="openResource('${r.id}')">
+    <div class="resource-thumb-placeholder">${icon}</div>
+    <div class="resource-body">
+      <span class="resource-type-badge">${typeLabel}</span>
+      <div class="resource-title">${escHtml(r.title)}</div>
+      <div class="resource-meta">${r.creator ? escHtml(r.creator)+' · ' : ''}${dur}${dur?' · ':''}${r.language?.toUpperCase()||'EN'}</div>
+    </div>
+  </div>`;
+}
+
+function renderCommProjectCard(p) {
+  const memberCount = p._count?.members ?? 0;
+  return `<div class="comm-card" onclick="openProjectDetail('${p.id}')">
+    <div class="comm-card-header">
+      <div class="comm-icon">${p.icon || '🤝'}</div>
+      <div class="comm-card-info">
+        <div class="comm-card-name">${escHtml(p.title)}</div>
+        <div class="comm-card-meta"><span>${memberCount} collaborators</span><span>${p.status||'OPEN'}</span></div>
+      </div>
+    </div>
+    ${p.purpose ? `<div class="comm-card-desc">${escHtml(p.purpose)}</div>` : ''}
+  </div>`;
+}
+
+function renderCircleCard(c) {
+  const memberCount = c._count?.members ?? 0;
+  const statusClass = 'circle-status-' + (c.status || 'OPEN');
+  return `<div class="circle-card" onclick="openCircle('${c.id}')">
+    <div class="circle-topic">${escHtml(c.topic)}</div>
+    <div class="circle-meta">
+      Facilitated by ${escHtml(c.facilitator?.displayName || 'Unknown')} · ${memberCount} members
+      ${c.scheduleDescription ? ' · ' + escHtml(c.scheduleDescription) : ''}
+    </div>
+    <span class="circle-status ${statusClass}">${c.status||'OPEN'}</span>
+  </div>`;
+}
+
+// Course detail panel
+let currentCourseId = null;
+
+async function openCourse(courseId) {
+  currentCourseId = courseId;
+  // Reuse community panel for course detail
+  const content = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'Course';
+  joinBtn.style.display = 'none';
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  openPanel('panel-community');
+  try {
+    const course = await api('GET', `/courses/${courseId}`);
+    document.getElementById('community-panel-title').textContent = course.title;
+    content.innerHTML = renderCourseDetail(course);
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+function renderCourseDetail(course) {
+  const lessons = (course.lessons || []).map((l, i) => {
+    const res = l.resource;
+    const ICONS = { YOUTUBE_VIDEO:'▶️', YOUTUBE_PLAYLIST:'📋', PDF:'📄', ARTICLE:'📰', RESEARCH_PAPER:'🔬', WORKSHOP_RECORDING:'🎥', GUIDE:'📖', BOOK_SUMMARY:'📚' };
+    const icon = res ? (ICONS[res.type] || '📎') : '📝';
+    return `<div class="comm-member-item" style="cursor:default">
+      <div style="min-width:28px;text-align:center">${icon}</div>
+      <div>
+        <div style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary)">${escHtml(l.title)}</div>
+        ${res ? `<div style="font-size:var(--text-xs);color:var(--text-tertiary)">${(res.type||'').replace(/_/g,' ')}</div>` : ''}
+      </div>
+      ${res ? `<a href="${escHtml(res.url)}" target="_blank" rel="noopener" style="margin-left:auto;font-size:var(--text-xs);color:var(--saffron-600)">Open</a>` : ''}
+    </div>`;
+  }).join('');
+
+  const posts = (course.thread?.posts || []).map(p => renderDiscussionPost(p)).join('');
+
+  return `
+    <div style="padding:var(--space-4)">
+      ${course.instructor ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-2)">Instructor: ${escHtml(course.instructor.displayName)}</div>` : ''}
+      ${course.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(course.description)}</div>` : ''}
+      ${lessons ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Lessons</h2><div class="comm-member-list" style="padding:0;margin:0">${lessons}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No lessons yet.</p>'}
+      <div class="discussion-section">
+        <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
+        <div id="course-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
+        ${state.user ? renderDiscussionCompose('course', courseId) : ''}
+      </div>
+    </div>`;
+}
+
+// Resource detail — open in new tab (metadata only — video hosted externally)
+async function openResource(resourceId) {
+  try {
+    const r = await api('GET', `/resources/${resourceId}`);
+    window.open(r.url, '_blank', 'noopener');
+  } catch(err) {
+    showToast('Unable to open resource', 'error');
+  }
+}
+
+// Study circle detail
+let currentCircleId    = null;
+let currentCircleMember = false;
+
+async function openCircle(circleId) {
+  currentCircleId = circleId;
+  const content = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'Study Circle';
+  joinBtn.style.display = 'none';
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  openPanel('panel-community');
+  try {
+    const circle = await api('GET', `/study-circles/${circleId}`);
+    currentCircleMember = !!circle.isMember;
+    document.getElementById('community-panel-title').textContent = circle.topic;
+    if (state.user && circle.facilitatorId !== state.user?.id) {
+      joinBtn.style.display = '';
+      joinBtn.textContent   = currentCircleMember ? 'Leave Circle' : 'Join Circle';
+      joinBtn.className     = currentCircleMember ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
+      joinBtn.onclick       = () => toggleCircleMembership();
+    }
+    content.innerHTML = renderCircleDetail(circle);
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+function renderCircleDetail(c) {
+  const members = (c.members || []).map(m => {
+    const u = m.user || {};
+    const initials = (u.displayName||'?').charAt(0).toUpperCase();
+    const av = u.profilePhoto ? `<img src="${escHtml(u.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
+    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||'Unknown')}</div></div>`;
+  }).join('');
+  const posts = (c.thread?.posts || []).map(p => renderDiscussionPost(p)).join('');
+
+  return `
+    <div style="padding:var(--space-4)">
+      <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-2)">
+        Facilitated by ${escHtml(c.facilitator?.displayName||'Unknown')}
+        ${c.scheduleDescription ? ' · '+escHtml(c.scheduleDescription) : ''}
+      </div>
+      ${c.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(c.description)}</div>` : ''}
+      ${c.event ? `<div style="background:var(--saffron-50);border-radius:var(--radius-lg);padding:var(--space-3);margin-bottom:var(--space-4);font-size:var(--text-sm)">🗓 Linked event: <strong>${escHtml(c.event.title)}</strong> — ${timeAgo(c.event.startsAt)}</div>` : ''}
+      ${members ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Members (${c._count?.members||0})</h2><div class="comm-member-list" style="padding:0;margin:0">${members}</div>` : ''}
+      <div class="discussion-section">
+        <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
+        <div id="circle-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet.</p>'}</div>
+        ${state.user ? renderDiscussionCompose('study-circle', c.id) : ''}
+      </div>
+    </div>`;
+}
+
+async function toggleCircleMembership() {
+  if (!currentCircleId || !state.user) return;
+  const btn = document.getElementById('community-join-btn');
+  btn.disabled = true;
+  try {
+    if (currentCircleMember) {
+      await api('DELETE', `/study-circles/${currentCircleId}/leave`);
+      currentCircleMember = false;
+      btn.textContent = 'Join Circle';
+      btn.className   = 'btn btn-primary btn-sm';
+      showToast('Left study circle', 'success');
+    } else {
+      await api('POST', `/study-circles/${currentCircleId}/join`);
+      currentCircleMember = true;
+      btn.textContent = 'Leave Circle';
+      btn.className   = 'btn btn-ghost btn-sm';
+      showToast('Joined study circle!', 'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+    }
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Project detail (community panel reuse)
+async function openProjectDetail(projectId) {
+  const content = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'Project';
+  joinBtn.style.display = 'none';
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  openPanel('panel-community');
+  try {
+    const p = await api('GET', `/projects/${projectId}`);
+    document.getElementById('community-panel-title').textContent = p.title;
+    if (state.user && !p.isOwner) {
+      joinBtn.style.display = '';
+      joinBtn.textContent   = p.isMember ? 'Leave Project' : 'Join Project';
+      joinBtn.className     = p.isMember ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
+      joinBtn.onclick       = () => toggleProjectMembership(projectId, p.isMember);
+    }
+    content.innerHTML = renderProjectDetail(p);
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+function renderProjectDetail(p) {
+  const members = (p.members || []).map(m => {
+    const u = m.user || {};
+    const initials = (u.displayName||'?').charAt(0).toUpperCase();
+    const av = u.profilePhoto ? `<img src="${escHtml(u.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
+    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||'Unknown')}</div><span class="comm-member-role">${m.role||'CONTRIBUTOR'}</span></div>`;
+  }).join('');
+  const skills = (p.skillsNeeded || []).map(s => `<span class="profile-tradition-tag">${escHtml(s)}</span>`).join('');
+
+  return `
+    <div style="padding:var(--space-4)">
+      <div style="display:flex;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3)">
+        <div style="font-size:2.5rem">${p.icon||'🤝'}</div>
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--saffron-600)">${p.status||'OPEN'} · ${(p.category||'').replace(/_/g,' ')}</div>
+          ${p.deadline ? `<div style="font-size:var(--text-xs);color:var(--text-tertiary)">Deadline: ${timeAgo(p.deadline)}</div>` : ''}
+        </div>
+      </div>
+      <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2)">Purpose</div>
+      <div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(p.purpose)}</div>
+      ${p.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(p.description)}</div>` : ''}
+      ${skills ? `<div style="margin-bottom:var(--space-4)"><div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);margin-bottom:var(--space-2)">Skills Needed</div>${skills}</div>` : ''}
+      ${members ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Collaborators</h2><div class="comm-member-list" style="padding:0;margin:0">${members}</div>` : ''}
+    </div>`;
+}
+
+async function toggleProjectMembership(projectId, isMember) {
+  const btn = document.getElementById('community-join-btn');
+  btn.disabled = true;
+  try {
+    if (isMember) {
+      await api('DELETE', `/projects/${projectId}/leave`);
+      btn.textContent = 'Join Project';
+      btn.className   = 'btn btn-primary btn-sm';
+      btn.onclick     = () => toggleProjectMembership(projectId, false);
+      showToast('Left project', 'success');
+    } else {
+      await api('POST', `/projects/${projectId}/join`);
+      btn.textContent = 'Leave Project';
+      btn.className   = 'btn btn-ghost btn-sm';
+      btn.onclick     = () => toggleProjectMembership(projectId, true);
+      showToast('Joined project!', 'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+    }
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Discussion helpers
+function renderDiscussionPost(p) {
+  const initials = (p.author?.displayName||'?').charAt(0).toUpperCase();
+  const av = p.author?.profilePhoto ? `<img src="${escHtml(p.author.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
+  return `<div class="discussion-post">
+    <div class="avatar avatar-sm" onclick="openProfile('${p.author?.id||''}')">${av}</div>
+    <div class="discussion-body">
+      <div class="discussion-author">${escHtml(p.author?.displayName||'Practitioner')}</div>
+      <div class="discussion-content">${escHtml(p.content)}</div>
+      <div class="discussion-time">${timeAgo(p.createdAt)}</div>
+    </div>
+  </div>`;
+}
+
+function renderDiscussionCompose(entityType, entityId) {
+  return `<div class="discussion-compose">
+    <textarea id="disc-input-${entityType}-${entityId}" rows="2" placeholder="Share a thought or question…" oninput="autoResizeTextarea(this)"></textarea>
+    <button class="btn btn-primary btn-sm" onclick="submitDiscussionPost('${entityType}','${entityId}')">Post</button>
+  </div>`;
+}
+
+async function submitDiscussionPost(entityType, entityId) {
+  const input = document.getElementById(`disc-input-${entityType}-${entityId}`);
+  const content = input?.value.trim();
+  if (!content) return;
+  try {
+    const post = await api('POST', `/discussions/${entityType}/${entityId}`, { content });
+    const container = entityType === 'course' ? 'course-discussion-posts' : 'circle-discussion-posts';
+    const el = document.getElementById(container);
+    if (el) {
+      if (el.querySelector('p')) el.innerHTML = '';
+      el.insertAdjacentHTML('beforeend', renderDiscussionPost(post));
+    }
+    input.value = '';
+    input.style.height = '';
+  } catch(err) {
+    showToast(err.message, 'error');
+  }
 }
 
 async function toggleCommunityMembership() {

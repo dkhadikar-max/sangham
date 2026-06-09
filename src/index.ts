@@ -34,6 +34,10 @@ import contributionRoutes from './routes/contributions';
 import teacherRoutes      from './routes/teachers';
 import dhammaDaanRoutes   from './routes/dhammaDaan';
 import projectRoutes      from './routes/projects';
+import resourceRoutes     from './routes/resources';
+import courseRoutes       from './routes/courses';
+import studyCircleRoutes  from './routes/studyCircles';
+import discussionRoutes   from './routes/discussions';
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -126,6 +130,10 @@ app.use(`${API}/contributions`, contributionRoutes);
 app.use(`${API}/teachers`,      teacherRoutes);
 app.use(`${API}/dhamma-daan`,   dhammaDaanRoutes);
 app.use(`${API}/projects`,      projectRoutes);
+app.use(`${API}/resources`,     resourceRoutes);
+app.use(`${API}/courses`,       courseRoutes);
+app.use(`${API}/study-circles`, studyCircleRoutes);
+app.use(`${API}/discussions`,   discussionRoutes);
 app.use(`${API}/uploads`,       uploadRoutes);
 
 // ── Admin panel (separate route, before SPA fallback) ──────────────────────

@@ -130,4 +130,44 @@ router.delete('/:id/members/:userId', authenticate, async (req: AuthRequest, res
   res.json({ message: 'Member removed' });
 });
 
+// GET /associations/:id/modules — get module settings
+router.get('/:id/modules', async (req: AuthRequest, res: Response): Promise<void> => {
+  let modules = await prisma.communityModule.findUnique({ where: { associationId: req.params.id } });
+  if (!modules) {
+    // Auto-create with all enabled
+    modules = await prisma.communityModule.create({
+      data: { associationId: req.params.id },
+    });
+  }
+  res.json(modules);
+});
+
+// PUT /associations/:id/modules — update module settings (admin only)
+router.put('/:id/modules', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const isAdmin = await prisma.associationMember.findFirst({
+    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] } },
+  });
+  const isSuperAdmin = req.user!.role === UserRole.SUPER_ADMIN;
+  if (!isAdmin && !isSuperAdmin) throw new AppError('Community admin required', 403);
+
+  const { learningEnabled, projectsEnabled, circlesEnabled, contributionEnabled } = req.body;
+  const modules = await prisma.communityModule.upsert({
+    where: { associationId: req.params.id },
+    create: {
+      associationId: req.params.id,
+      learningEnabled:     learningEnabled     ?? true,
+      projectsEnabled:     projectsEnabled     ?? true,
+      circlesEnabled:      circlesEnabled      ?? true,
+      contributionEnabled: contributionEnabled ?? true,
+    },
+    update: {
+      ...(learningEnabled     !== undefined && { learningEnabled }),
+      ...(projectsEnabled     !== undefined && { projectsEnabled }),
+      ...(circlesEnabled      !== undefined && { circlesEnabled }),
+      ...(contributionEnabled !== undefined && { contributionEnabled }),
+    },
+  });
+  res.json(modules);
+});
+
 export default router;
