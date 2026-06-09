@@ -38,6 +38,24 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
   res.status(201).json(assoc);
 });
 
+// GET /associations/mine — communities the current user has joined
+router.get('/mine', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const memberships = await prisma.associationMember.findMany({
+    where: { userId: req.user!.id, isActive: true },
+    orderBy: { joinedAt: 'desc' },
+    include: {
+      association: {
+        select: {
+          id: true, name: true, tradition: true, category: true,
+          country: true, city: true, isVerified: true,
+          _count: { select: { members: { where: { isActive: true } } } },
+        },
+      },
+    },
+  });
+  res.json(memberships.map(m => ({ ...m.association, memberRole: m.memberRole })));
+});
+
 // GET /associations/:id
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   const assoc = await prisma.association.findUnique({

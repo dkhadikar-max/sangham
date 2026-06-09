@@ -675,7 +675,15 @@ round:var(--error-600)}
 
       <!-- COMMUNITIES TAB -->
       <div id="tab-communities" class="tab-panel">
-        <div class="search-bar" style="margin:var(--space-4) var(--space-4) var(--space-2)">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-4) var(--space-4) var(--space-2)">
+          <h2 class="section-title" style="margin:0">Sanghas</h2>
+          <button class="btn btn-ghost btn-sm" id="create-sangha-btn" onclick="openCreateCommunity()" style="display:none">+ New Sangha</button>
+        </div>
+        <div id="mySanghasSection" style="display:none;padding:0 var(--space-4) var(--space-2)">
+          <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">Your Communities</div>
+          <div id="mySanghasList" class="chip-scroll" style="gap:var(--space-2);padding-bottom:var(--space-2)"></div>
+        </div>
+        <div class="search-bar" style="margin:0 var(--space-4) var(--space-2)">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="commSearch" placeholder="Search communities..." oninput="debounceComm()">
         </div>
@@ -892,6 +900,47 @@ round:var(--error-600)}
       </div>
       <div class="panel-content" id="text-panel-content">
         <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+      </div>
+    </div>
+
+    <!-- PANEL: CREATE COMMUNITY -->
+    <div id="panel-create-community" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-create-community')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Create Sangha</div>
+        <button class="btn btn-primary btn-sm" id="create-community-submit-btn" onclick="submitCreateCommunity()">Create</button>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div class="input-group"><label>Name *</label><input id="cc-name" class="input" placeholder="e.g. Mumbai Dhamma Sangha"></div>
+        <div class="input-group"><label>Tradition *</label>
+          <select id="cc-tradition" class="create-form-select">
+            <option value="">Select tradition…</option>
+            <option value="THERAVADA">Theravada</option>
+            <option value="MAHAYANA">Mahayana</option>
+            <option value="VAJRAYANA">Vajrayana</option>
+            <option value="NAVAYANA">Navayana / Ambedkarite</option>
+            <option value="MULTIPLE">Multiple</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Category *</label>
+          <select id="cc-category" class="create-form-select">
+            <option value="">Select category…</option>
+            <option value="TEMPLE">Temple</option>
+            <option value="NGO">NGO</option>
+            <option value="STUDY_GROUP">Study Group</option>
+            <option value="AMBEDKARITE_SANGHA">Ambedkarite Sangha</option>
+            <option value="UNIVERSITY_CLUB">University Club</option>
+            <option value="NATIONAL_FEDERATION">National Federation</option>
+            <option value="INTERNATIONAL_BODY">International Body</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Country Code * (2 letters, e.g. IN)</label><input id="cc-country" class="input" maxlength="2" placeholder="IN" style="text-transform:uppercase"></div>
+        <div class="input-group"><label>City (optional)</label><input id="cc-city" class="input" placeholder="Mumbai"></div>
+        <div class="input-group"><label>Description (optional)</label><textarea id="cc-desc" class="input" rows="3" style="resize:vertical" placeholder="What is this community about?"></textarea></div>
+        <div class="input-group"><label>Website URL (optional)</label><input id="cc-website" class="input" type="url" placeholder="https://…"></div>
       </div>
     </div>
 
@@ -1169,7 +1218,7 @@ document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')
 
   if (tab === 'home')        loadHome();
   if (tab === 'discover')    loadDiscover();
-  if (tab === 'communities') loadCommunities();
+  if (tab === 'communities') { loadCommunities(); loadMyCommunities(); }
   if (tab === 'learn')       loadLearn();
   if (tab === 'chat')        loadChatThreads();
 }
@@ -2123,6 +2172,14 @@ function toggleEditProfile() {
   if (profileEditMode) {
     btn.textContent = 'Cancel';
     const u = state.user;
+    const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
+    const TRAD_LABELS = { THERAVADA:'Theravada', MAHAYANA:'Mahayana', VAJRAYANA:'Vajrayana', NAVAYANA:'Navayana / Ambedkarite', MULTIPLE:'Multiple', OTHER:'Other' };
+    const myTraditions = u.traditions || [];
+    const tradCheckboxes = TRADITIONS.map(t => `
+      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) 0;font-size:var(--text-sm);cursor:pointer">
+        <input type="checkbox" id="edit-trad-${t}" value="${t}" ${myTraditions.includes(t) ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--saffron-500)">
+        ${TRAD_LABELS[t]}
+      </label>`).join('');
     content.innerHTML = `
       <div style="padding:var(--space-4)">
         <div class="profile-edit-form">
@@ -2131,6 +2188,7 @@ function toggleEditProfile() {
           <div class="input-group"><label>City</label><input id="edit-city" class="input" value="${escHtml(u.city||'')}"></div>
           <div class="input-group"><label>Country (2-letter code)</label><input id="edit-country" class="input" maxlength="2" value="${escHtml(u.country||'')}"></div>
           <div class="input-group"><label>Temple / Centre Affiliation</label><input id="edit-temple" class="input" value="${escHtml(u.templeAffiliation||'')}"></div>
+          <div class="input-group"><label>Traditions</label><div style="background:var(--surface-sunken);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3)">${tradCheckboxes}</div></div>
           <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Save Changes</button>
         </div>
       </div>`;
@@ -2141,12 +2199,15 @@ function toggleEditProfile() {
 }
 
 async function saveProfile() {
+  const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
+  const traditions = TRADITIONS.filter(t => document.getElementById('edit-trad-' + t)?.checked);
   const body = {
     displayName: document.getElementById('edit-displayName')?.value.trim() || undefined,
     bio: document.getElementById('edit-bio')?.value.trim() || undefined,
     city: document.getElementById('edit-city')?.value.trim() || undefined,
     country: document.getElementById('edit-country')?.value.trim().toUpperCase() || undefined,
     templeAffiliation: document.getElementById('edit-temple')?.value.trim() || undefined,
+    ...(traditions.length ? { traditions } : {}),
   };
   Object.keys(body).forEach(k => { if (body[k] === undefined) delete body[k]; });
   try {
@@ -2316,7 +2377,11 @@ function renderCommunityDetail(a, membership) {
     </div>
 
     <div id="comm-tab-overview" class="comm-tab-panel active">
-      ${events ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Upcoming Events</h2>${events}` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No upcoming events.</p>'}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
+        <h2 class="section-title" style="margin:0">Upcoming Events</h2>
+        ${membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY' ? `<button class="btn btn-ghost btn-sm" onclick="openCreateEvent('${a.id}')">+ Event</button>` : ''}
+      </div>
+      ${events || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No upcoming events.</p>'}
       <h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2>
       ${members ? `<div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No members yet.</p>'}
     </div>
@@ -2875,6 +2940,156 @@ async function toggleCommunityMembership() {
 }
 
 // ============================================================
+//  SPRINT 5: COMMUNITY CREATION + MY SANGHAS
+// ============================================================
+async function loadMyCommunities() {
+  if (!state.token) return;
+  const createBtn = document.getElementById('create-sangha-btn');
+  if (createBtn) createBtn.style.display = '';
+  try {
+    const mine = await api('GET', '/associations/mine');
+    const section = document.getElementById('mySanghasSection');
+    const list    = document.getElementById('mySanghasList');
+    if (!mine.length || !section || !list) return;
+    section.style.display = '';
+    list.innerHTML = mine.map(a => {
+      const icon = a.tradition === 'THERAVADA' ? '🪷' : a.tradition === 'MAHAYANA' ? '☸️' : a.tradition === 'VAJRAYANA' ? '🔔' : '🕌';
+      return `<button class="chip active" onclick="openCommunity('${a.id}')" style="display:flex;align-items:center;gap:var(--space-1)">
+        <span>${icon}</span><span>${escHtml(a.name)}</span>
+      </button>`;
+    }).join('');
+  } catch(e) { /* non-critical */ }
+}
+
+function openCreateCommunity() {
+  if (!state.user) { showToast('Sign in to create a community', 'info'); return; }
+  openPanel('panel-create-community');
+}
+
+async function submitCreateCommunity() {
+  const name      = document.getElementById('cc-name')?.value.trim();
+  const tradition = document.getElementById('cc-tradition')?.value;
+  const category  = document.getElementById('cc-category')?.value;
+  const country   = document.getElementById('cc-country')?.value.trim().toUpperCase();
+  const city      = document.getElementById('cc-city')?.value.trim();
+  const desc      = document.getElementById('cc-desc')?.value.trim();
+  const website   = document.getElementById('cc-website')?.value.trim();
+
+  if (!name)      { showToast('Name is required', 'error'); return; }
+  if (!tradition) { showToast('Tradition is required', 'error'); return; }
+  if (!category)  { showToast('Category is required', 'error'); return; }
+  if (!country || country.length !== 2) { showToast('Valid 2-letter country code required', 'error'); return; }
+
+  const btn = document.getElementById('create-community-submit-btn');
+  btn.disabled = true; btn.textContent = 'Creating…';
+  try {
+    const body = { name, tradition, category, country,
+      ...(city    ? { city }                  : {}),
+      ...(desc    ? { description: desc }     : {}),
+      ...(website ? { website }               : {}),
+    };
+    const assoc = await api('POST', '/associations', body);
+    showToast('Sangha created!', 'success');
+    if (navigator.vibrate) navigator.vibrate([15, 50, 15]);
+    closePanel('panel-create-community');
+    // Update state: user is now ASSOCIATION_ADMIN
+    state.user.role = 'ASSOCIATION_ADMIN';
+    saveSession();
+    // Refresh communities list and open the new community
+    await loadCommunities();
+    loadMyCommunities();
+    openCommunity(assoc.id);
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Create';
+  }
+}
+
+// ============================================================
+//  SPRINT 6: EVENT CREATION + PROFILE TRADITIONS (see saveProfile)
+// ============================================================
+function openCreateEvent(assocId) {
+  if (!state.user) { showToast('Sign in to create events', 'info'); return; }
+  communityState.subView = 'create-event';
+  const content = document.getElementById('community-panel-content');
+  const joinBtn = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'New Event';
+  joinBtn.style.display = '';
+  joinBtn.textContent   = 'Create';
+  joinBtn.className     = 'btn btn-primary btn-sm';
+  joinBtn.disabled      = false;
+  joinBtn.onclick       = () => submitCreateEvent(assocId);
+  setCommunityBack('back');
+  openPanel('panel-community');
+  content.innerHTML = `<div style="padding:var(--space-4)">${renderCreateEventForm()}</div>`;
+}
+
+function renderCreateEventForm() {
+  const types = ['RETREAT','CEREMONY','TALK','SEMINAR','PROTEST_MARCH','COMMUNITY_GATHERING','DHAMMA_DIKSHA','CONVERSION_CEREMONY','AMBEDKAR_JAYANTI'];
+  const typeOptions = types.map(t => `<option value="${t}">${t.replace(/_/g,' ')}</option>`).join('');
+  const now = new Date();
+  now.setHours(now.getHours() + 1, 0, 0, 0);
+  const defaultStart = now.toISOString().slice(0, 16);
+  return `
+    <div class="input-group"><label>Title *</label><input id="ev-title" class="input" placeholder="e.g. Weekly Dhamma Talk"></div>
+    <div class="input-group"><label>Event Type *</label>
+      <select id="ev-type" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
+    </div>
+    <div class="input-group"><label>Starts At *</label><input id="ev-start" class="input" type="datetime-local" value="${defaultStart}"></div>
+    <div class="input-group"><label>Ends At (optional)</label><input id="ev-end" class="input" type="datetime-local"></div>
+    <div class="input-group"><label>Timezone</label>
+      <select id="ev-tz" class="create-form-select">
+        <option value="Asia/Kolkata">India (IST)</option>
+        <option value="Asia/Colombo">Sri Lanka (SLT)</option>
+        <option value="Asia/Bangkok">Thailand (THA)</option>
+        <option value="Asia/Kathmandu">Nepal (NPT)</option>
+        <option value="UTC">UTC</option>
+        <option value="Europe/London">London (GMT/BST)</option>
+        <option value="America/New_York">New York (ET)</option>
+        <option value="America/Los_Angeles">Los Angeles (PT)</option>
+      </select>
+    </div>
+    <div class="input-group"><label>Online Link (optional)</label><input id="ev-url" class="input" type="url" placeholder="https://meet.google.com/…"></div>
+    <div class="input-group"><label>Location Name (optional)</label><input id="ev-location" class="input" placeholder="e.g. Ambedkar Bhavan, Mumbai"></div>
+    <div class="input-group"><label>Description (optional)</label><textarea id="ev-desc" class="input" rows="3" style="resize:vertical"></textarea></div>
+    <div class="input-group"><label>Capacity (0 = unlimited)</label><input id="ev-capacity" class="input" type="number" min="0" value="0"></div>`;
+}
+
+async function submitCreateEvent(assocId) {
+  const title    = document.getElementById('ev-title')?.value.trim();
+  const evType   = document.getElementById('ev-type')?.value;
+  const startVal = document.getElementById('ev-start')?.value;
+  const endVal   = document.getElementById('ev-end')?.value;
+  const tz       = document.getElementById('ev-tz')?.value || 'UTC';
+  const onlineUrl= document.getElementById('ev-url')?.value.trim();
+  const location = document.getElementById('ev-location')?.value.trim();
+  const desc     = document.getElementById('ev-desc')?.value.trim();
+  const capacity = parseInt(document.getElementById('ev-capacity')?.value) || 0;
+
+  if (!title)    { showToast('Title is required', 'error'); return; }
+  if (!evType)   { showToast('Event type is required', 'error'); return; }
+  if (!startVal) { showToast('Start time is required', 'error'); return; }
+
+  const startsAt = new Date(startVal).toISOString();
+  const endsAt   = endVal ? new Date(endVal).toISOString() : undefined;
+
+  _lockCreateBtn('Creating…');
+  try {
+    const body = { title, eventType: evType, startsAt, timezone: tz, associationId: assocId, capacity,
+      ...(endsAt   ? { endsAt }               : {}),
+      ...(onlineUrl? { onlineUrl }             : {}),
+      ...(location ? { locationName: location } : {}),
+      ...(desc     ? { description: desc }     : {}),
+    };
+    await api('POST', '/events', body);
+    showToast('Event created!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    await _afterCreateNav(assocId, 'overview');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+// ============================================================
 //  SPRINT 3: CONTENT CREATION FORMS
 // ============================================================
 let _activeCreateType   = null;
@@ -3070,6 +3285,7 @@ async function _afterCreateNav(assocId, tabName) {
   _activeCreateType    = null;
   _activeCreateAssocId = null;
   await openCommunity(assocId);
+  if (tabName === 'overview') return; // overview is the default tab
   setTimeout(() => {
     const tabs = document.querySelectorAll('.comm-tab-btn');
     const labels = { learning:'Learning', circles:'Circles', projects:'Projects' };
