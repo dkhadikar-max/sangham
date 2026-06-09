@@ -530,6 +530,35 @@ round:var(--error-600)}
     .contrib-item{background:var(--surface-secondary);border-radius:var(--radius-lg);padding:var(--space-4);text-align:center}
     .contrib-value{font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--saffron-600)}
     .contrib-label{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)}
+    .create-btn-row{display:flex;gap:var(--space-2);margin-bottom:var(--space-4);flex-wrap:wrap}
+    .create-form-select{width:100%;padding:var(--space-3) var(--space-4);border:1.5px solid var(--border-default);border-radius:var(--radius-md);font-family:var(--font-body);font-size:var(--text-base);background:var(--surface-sunken);color:var(--text-primary);outline:none;transition:all var(--duration-fast) var(--ease-out);appearance:none;-webkit-appearance:none}
+    .create-form-select:focus{border-color:var(--saffron-400);box-shadow:0 0 0 3px var(--saffron-100);background:var(--surface-elevated)}
+    .contrib-leaderboard-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)}
+    .contrib-leaderboard-item:last-child{border-bottom:none}
+    .contrib-rank{min-width:24px;text-align:center;font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--text-tertiary)}
+    .contrib-score-badge{background:var(--saffron-50);color:var(--saffron-700);font-size:var(--text-xs);font-weight:var(--weight-bold);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);margin-left:auto;white-space:nowrap}
+    .contrib-profile-section{padding:var(--space-4);border-top:1px solid var(--border-subtle);margin-top:var(--space-2)}
+    .contrib-profile-total{text-align:center;margin-bottom:var(--space-4)}
+    .contrib-profile-total-value{font-size:var(--text-4xl);font-weight:var(--weight-bold);color:var(--saffron-600);line-height:1}
+    .contrib-profile-total-label{font-size:var(--text-xs);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-top:var(--space-1)}
+
+    /* Text reader panel */
+    .text-reader{padding:var(--space-4)}
+    .text-reader-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3)}
+    .text-segment{padding:var(--space-4) 0;border-bottom:1px solid var(--border-subtle)}
+    .text-segment:last-child{border-bottom:none}
+    .text-segment-key{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-2);font-weight:var(--weight-medium);letter-spacing:var(--tracking-wide)}
+    .text-segment-content{font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-primary);font-family:var(--font-display)}
+    .text-segment-verse{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-2)}
+
+    /* Related content blocks */
+    .related-section{margin-top:var(--space-6);padding-top:var(--space-4);border-top:1px solid var(--border-subtle)}
+    .related-section-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-secondary);margin-bottom:var(--space-3);text-transform:uppercase;letter-spacing:var(--tracking-wider)}
+    .related-cta-row{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-3)}
+
+    /* Learn tab */
+    #learnTabs{margin-bottom:0;border-top:1px solid var(--border-subtle)}
+    [data-theme="dark"] .landing-nav{background:rgba(12,10,9,0.8)}
   </style>
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -656,8 +685,8 @@ round:var(--error-600)}
           <button class="chip" onclick="filterCommunities({tradition:'MAHAYANA'},this)">Mahayana</button>
           <button class="chip" onclick="filterCommunities({tradition:'VAJRAYANA'},this)">Vajrayana</button>
           <button class="chip" onclick="filterCommunities({category:'TEMPLE'},this)">Temples</button>
-          <button class="chip" onclick="filterCommunities({category:'SANGHA'},this)">Sanghas</button>
-          <button class="chip" onclick="filterCommunities({category:'DHARMA_CENTER'},this)">Dharma Centers</button>
+          <button class="chip" onclick="filterCommunities({category:'AMBEDKARITE_SANGHA'},this)">Sanghas</button>
+          <button class="chip" onclick="filterCommunities({category:'STUDY_GROUP'},this)">Study Groups</button>
         </div>
         <div class="comm-list" id="commList"></div>
       </div>
@@ -666,11 +695,30 @@ round:var(--error-600)}
       <div id="tab-learn" class="tab-panel">
         <div class="search-bar" style="margin:var(--space-4) var(--space-4) var(--space-2)">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="learnSearch" placeholder="Search suttas, texts..." oninput="debounceLearn()">
+          <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." oninput="debounceLearn()">
         </div>
-        <h2 class="section-title">Collections</h2>
-        <div id="learnCollections"></div>
-        <div id="learnResults"></div>
+        <div class="comm-tabs" id="learnTabs">
+          <button class="comm-tab-btn active" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses">Courses</button>
+          <button class="comm-tab-btn" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources">Resources</button>
+          <button class="comm-tab-btn" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles">Circles</button>
+          <button class="comm-tab-btn" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library">Library</button>
+        </div>
+        <div id="learn-tab-courses" class="comm-tab-panel active" style="padding:var(--space-4)">
+          <div id="learnCourses"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+        </div>
+        <div id="learn-tab-resources" class="comm-tab-panel" style="padding:var(--space-4)">
+          <div id="learnResources"></div>
+        </div>
+        <div id="learn-tab-circles" class="comm-tab-panel" style="padding:var(--space-4)">
+          <div id="learnCircles"></div>
+        </div>
+        <div id="learn-tab-library" class="comm-tab-panel" style="padding:var(--space-2) 0 0">
+          <div style="padding:0 var(--space-4)">
+            <h2 class="section-title" id="learnLibraryTitle">Collections</h2>
+          </div>
+          <div id="learnCollections" style="padding:0 var(--space-4)"></div>
+          <div id="learnResults"></div>
+        </div>
       </div>
 
       <!-- CHAT TAB -->
@@ -800,7 +848,10 @@ round:var(--error-600)}
         <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()" aria-label="Send message">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
-      <!-- PANEL: PROFILE -->
+      </div>
+    </div>
+
+    <!-- PANEL: PROFILE -->
     <div id="panel-profile" class="panel">
       <div class="panel-header">
         <button class="panel-back" onclick="closePanel('panel-profile')" aria-label="Go back">
@@ -827,8 +878,23 @@ round:var(--error-600)}
         <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
       </div>
     </div>
+
+    <!-- PANEL: TEXT READER -->
+    <div id="panel-text" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-text')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title" id="text-panel-title">Reading</div>
+        <button class="header-icon" onclick="bookmarkCurrentText()" title="Bookmark" aria-label="Bookmark text">
+          <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+      </div>
+      <div class="panel-content" id="text-panel-content">
+        <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+      </div>
     </div>
-    </div>
+
   </div>
 </div>
 
@@ -912,6 +978,10 @@ async function api(method, path, body, form) {
     const res = await fetch(API_BASE + path, opts);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
+      if (res.status === 401 && state.token) {
+        logout();
+        throw new Error('Session expired. Please sign in again.');
+      }
       const msg = data.error?.message || (typeof data.error === 'string' ? data.error : null)
                || data.message || `Error ${res.status}`;
       throw new Error(msg);
@@ -1147,8 +1217,9 @@ const posts = data.data || data;
 async function loadDailyVerse() {
   const container = document.getElementById('home-daily-verse');
   try {
-const verse = await api('GET', '/library/daily-verse');
+    const verse = await api('GET', '/library/daily-verse');
     if (!verse || !verse.content) return;
+    _currentVerseTextId = verse.textId || null;
     container.innerHTML = `
       <div class="daily-verse">
         <div class="daily-verse-label">✦ Daily Verse</div>
@@ -1477,14 +1548,90 @@ state.followedUsers.delete(userId);
 // ============================================================
 //  LEARN TAB
 // ============================================================
-async function loadLearn() {
-  const collectionsEl = document.getElementById('learnCollections');
-  if (collectionsEl.children.length) return;
+let _learnTabLoaded = {};
 
+async function loadLearn() {
+  if (!_learnTabLoaded.courses) loadLearnCourses();
+}
+
+function switchLearnTab(tab, btn) {
+  document.querySelectorAll('#learnTabs .comm-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-learn .comm-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('learn-tab-' + tab)?.classList.add('active');
+
+  const q = document.getElementById('learnSearch').value.trim();
+  if (tab === 'courses'   && !_learnTabLoaded.courses)   loadLearnCourses(q);
+  if (tab === 'resources' && !_learnTabLoaded.resources)  loadLearnResources(q);
+  if (tab === 'circles'   && !_learnTabLoaded.circles)    loadLearnCircles(q);
+  if (tab === 'library'   && !_learnTabLoaded.library)    loadLearnLibrary();
+}
+
+async function loadLearnCourses(q) {
+  const el = document.getElementById('learnCourses');
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const qs = new URLSearchParams({ status: 'PUBLISHED', limit: '20', ...(q ? { q } : {}) }).toString();
+    const data = await api('GET', `/courses?${qs}`);
+    const courses = data.data || data || [];
+    if (!courses.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-title">No courses yet</div><div class="empty-state-text">Courses created by communities will appear here.</div></div>';
+      return;
+    }
+    el.innerHTML = courses.map(c => renderCourseCard(c)).join('');
+    _learnTabLoaded.courses = true;
+  } catch(err) {
+    el.innerHTML = `<div style="padding:var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${escHtml(err.message)}</div>`;
+  }
+}
+
+async function loadLearnResources(q) {
+  const el = document.getElementById('learnResources');
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const qs = new URLSearchParams({ limit: '20', ...(q ? { q } : {}) }).toString();
+    const data = await api('GET', `/resources?${qs}`);
+    const resources = data.data || data || [];
+    if (!resources.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">No resources yet</div><div class="empty-state-text">Community-shared videos, articles, and guides appear here.</div></div>';
+      return;
+    }
+    el.innerHTML = resources.map(r => renderResourceCard(r)).join('');
+    _learnTabLoaded.resources = true;
+  } catch(err) {
+    el.innerHTML = `<div style="padding:var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${escHtml(err.message)}</div>`;
+  }
+}
+
+async function loadLearnCircles(q) {
+  const el = document.getElementById('learnCircles');
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const data = await api('GET', `/study-circles?limit=20`);
+    const circles = data.data || data || [];
+    if (!circles.length) {
+      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔵</div><div class="empty-state-title">No study circles yet</div><div class="empty-state-text">Join a community to find or start a study circle.</div></div>';
+      return;
+    }
+    el.innerHTML = circles.map(c => renderCircleCard(c)).join('');
+    _learnTabLoaded.circles = true;
+  } catch(err) {
+    el.innerHTML = `<div style="padding:var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${escHtml(err.message)}</div>`;
+  }
+}
+
+async function loadLearnLibrary() {
+  const collectionsEl = document.getElementById('learnCollections');
+  if (_learnTabLoaded.library) return;
   collectionsEl.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
     const cols = await api('GET', '/library/collections');
-    collectionsEl.innerHTML = cols.map((c, i) => `<div class="collection-card" onclick="searchLibrary('',null,'${c.id}')" style="animation-delay: ${i * 0.05}s"><div class="collection-name">${escHtml(c.name)}</div><div class="collection-meta">${c.tradition} · ${c._count?.texts||0} texts · ${c.licence}</div></div>`).join('');
+    collectionsEl.innerHTML = cols.map((c, i) =>
+      `<div class="collection-card" onclick="searchLibrary('',null,'${c.id}')" style="animation-delay: ${i * 0.05}s">
+        <div class="collection-name">${escHtml(c.name)}</div>
+        <div class="collection-meta">${c.tradition} · ${c._count?.texts||0} texts · ${c.licence}</div>
+      </div>`).join('');
+    _learnTabLoaded.library = true;
   } catch(err) {
     collectionsEl.innerHTML = renderEmptyState('learn');
   }
@@ -1494,11 +1641,19 @@ function debounceLearn() {
   clearTimeout(state.learnSearchTimer);
   state.learnSearchTimer = setTimeout(() => {
     const q = document.getElementById('learnSearch').value.trim();
-    if (q) searchLibrary(q);
-    else {
-      document.getElementById('learnResults').innerHTML = '';
-      document.getElementById('learnCollections').style.display = 'block';
-      document.querySelector('#tab-learn .section-title').style.display = 'block';
+    const activeTab = document.querySelector('#learnTabs .comm-tab-btn.active')?.id?.replace('learn-tab-btn-', '') || 'courses';
+    if (activeTab === 'library') {
+      if (q) searchLibrary(q);
+      else {
+        document.getElementById('learnResults').innerHTML = '';
+        document.getElementById('learnCollections').style.display = '';
+        document.getElementById('learnLibraryTitle').style.display = '';
+      }
+    } else {
+      // Reset loaded flag so search re-fetches
+      _learnTabLoaded[activeTab] = false;
+      if (activeTab === 'courses')   loadLearnCourses(q);
+      if (activeTab === 'resources') loadLearnResources(q);
     }
   }, 400);
 }
@@ -1508,17 +1663,21 @@ async function searchLibrary(q, tradition, collection) {
   if (!q && !collection) { resultsEl.innerHTML = ''; return; }
   resultsEl.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   document.getElementById('learnCollections').style.display = 'none';
-  document.querySelector('#tab-learn .section-title').style.display = 'none';
+  document.getElementById('learnLibraryTitle').style.display = 'none';
 
   try {
     const qs = new URLSearchParams({ limit: 20, ...(q?{q}:{}), ...(collection?{collection}:{}) }).toString();
     const data = await api('GET', `/library/search?${qs}`);
     const texts = data.data || data;
-    if (!texts.length) {
-      resultsEl.innerHTML = renderEmptyState('learn');
-      return;
-    }
-    resultsEl.innerHTML = `<div style="padding:var(--space-2) var(--space-4)"><span style="font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer" onclick="clearLearnSearch()">← All Collections</span></div>${texts.map((t, i) => `<div class="text-result" onclick="openTextDetail('${t.id}')" style="animation-delay: ${i * 0.05}s"><div class="text-result-title">${escHtml(t.title)}</div><div class="text-result-meta">${t.author||''}${t.translator?' · Trans: '+t.translator:''} · ${t.language} · ${t.collection?.name||''}</div></div>`).join('')}`;
+    if (!texts.length) { resultsEl.innerHTML = renderEmptyState('learn'); return; }
+    resultsEl.innerHTML = `
+      <div style="padding:var(--space-2) var(--space-4)">
+        <span style="font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer" onclick="clearLearnSearch()">← All Collections</span>
+      </div>
+      ${texts.map((t, i) => `<div class="text-result" onclick="openTextDetail('${t.id}')" style="animation-delay:${i*0.05}s;padding:var(--space-3) var(--space-4)">
+        <div class="text-result-title">${escHtml(t.title)}</div>
+        <div class="text-result-meta">${t.author||''}${t.translator?' · Trans: '+t.translator:''} · ${t.language} · ${t.collection?.name||''}</div>
+      </div>`).join('')}`;
   } catch(err) {
     resultsEl.innerHTML = renderEmptyState('learn');
   }
@@ -1527,16 +1686,49 @@ async function searchLibrary(q, tradition, collection) {
 function clearLearnSearch() {
   document.getElementById('learnSearch').value = '';
   document.getElementById('learnResults').innerHTML = '';
-  document.getElementById('learnCollections').style.display = 'block';
-  document.querySelector('#tab-learn .section-title').style.display = 'block';
+  document.getElementById('learnCollections').style.display = '';
+  document.getElementById('learnLibraryTitle').style.display = '';
 }
 
+let _currentTextId = null;
+
 async function openTextDetail(textId) {
-  showToast('Loading text...');
+  _currentTextId = textId;
+  const content = document.getElementById('text-panel-content');
+  const title   = document.getElementById('text-panel-title');
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  openPanel('panel-text');
   try {
     const text = await api('GET', `/library/texts/${textId}`);
-    showToast(`"${text.title}" — ${text.segments?.length||0} passages`, 'success');
-  } catch(err) { showToast(err.message, 'error'); }
+    title.textContent = text.title;
+    const segments = (text.segments || []).map(s => `
+      <div class="text-segment">
+        ${s.segmentKey ? `<div class="text-segment-key">${escHtml(s.segmentKey)}</div>` : ''}
+        <div class="text-segment-content">${escHtml(s.content)}</div>
+        ${s.verseNumber ? `<div class="text-segment-verse">v.${s.verseNumber}</div>` : ''}
+      </div>`).join('');
+    content.innerHTML = `
+      <div class="text-reader">
+        <div class="text-reader-meta">
+          ${text.author ? `<span>By ${escHtml(text.author)}</span>` : ''}
+          ${text.translator ? `<span>Trans: ${escHtml(text.translator)}</span>` : ''}
+          <span>${escHtml(text.language || '')}</span>
+          ${text.collection?.name ? `<span>${escHtml(text.collection.name)}</span>` : ''}
+          ${text.collection?.tradition ? `<span>${escHtml(text.collection.tradition)}</span>` : ''}
+        </div>
+        ${segments || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No content available for this text.</p>'}
+      </div>`;
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+function bookmarkCurrentText() {
+  if (!state.token) { showToast('Sign in to bookmark', 'info'); return; }
+  if (!_currentTextId) return;
+  api('POST', `/library/texts/${_currentTextId}/bookmarks`)
+    .then(() => { showToast('Text bookmarked', 'success'); if (navigator.vibrate) navigator.vibrate(15); })
+    .catch(err => showToast(err.message, 'error'));
 }
 // ============================================================
 //  CHAT TAB — THREAD LIST
@@ -1562,8 +1754,7 @@ async function loadChatThreads() {
       const preview  = t.lastMessage ? escHtml(t.lastMessage.substring(0,60)) : 'No messages yet';
       const time     = t.lastAt ? timeAgo(t.lastAt) : '';
       const unread   = Number(t.unreadCount) || 0;
-      const isOnline = Math.random() > 0.5;
-      return `<div class="thread-item" onclick="openThread('${partner.id}','${escHtml(partner.displayName||'')}')" style="animation-delay: ${i * 0.05}s"><div class="avatar avatar-md ${isOnline ? 'avatar-online' : 'avatar-offline'}">${avatar}</div><div class="thread-info"><div class="thread-name">${escHtml(partner.displayName||'Unknown')}</div><div class="thread-preview">${preview}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-1)"><div class="thread-time">${time}</div>${unread > 0 ? `<div class="thread-unread">${unread}</div>` : ''}</div></div>`;
+      return `<div class="thread-item" onclick="openThread('${partner.id}','${escHtml(partner.displayName||'')}')" style="animation-delay: ${i * 0.05}s"><div class="avatar avatar-md">${avatar}</div><div class="thread-info"><div class="thread-name">${escHtml(partner.displayName||'Unknown')}</div><div class="thread-preview">${preview}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-1)"><div class="thread-time">${time}</div>${unread > 0 ? `<div class="thread-unread">${unread}</div>` : ''}</div></div>`;
     }).join('');
   } catch(err) {
     el.innerHTML = renderEmptyState('chat');
@@ -1813,13 +2004,25 @@ function fmtRole(role) {
   return m[role] || role;
 }
 
+let _currentVerseTextId = null;
+
 function bookmarkVerse() {
-  showToast('Verse bookmarked', 'success');
-  if (navigator.vibrate) navigator.vibrate(15);
+  if (!state.token) { showToast('Sign in to bookmark', 'info'); return; }
+  if (!_currentVerseTextId) { showToast('Nothing to bookmark', 'info'); return; }
+  api('POST', `/library/texts/${_currentVerseTextId}/bookmarks`)
+    .then(() => { showToast('Verse bookmarked', 'success'); if (navigator.vibrate) navigator.vibrate(15); })
+    .catch(err => showToast(err.message, 'error'));
 }
 
 function shareVerse() {
-  showToast('Verse shared', 'success');
+  const verseEl = document.querySelector('.daily-verse-text');
+  const attrEl  = document.querySelector('.daily-verse-attr');
+  const text = (verseEl?.textContent || '').replace(/^"|"$/g, '') + (attrEl?.textContent ? '\n— ' + attrEl.textContent : '');
+  if (navigator.share) {
+    navigator.share({ title: 'Daily Verse — Sangham', text }).catch(() => {});
+  } else {
+    navigator.clipboard?.writeText(text).then(() => showToast('Verse copied to clipboard', 'success'));
+  }
 }
 
 // ============================================================
@@ -1848,6 +2051,8 @@ async function openProfile(userId) {
     document.getElementById('profile-panel-title').textContent = isOwn ? 'My Profile' : 'Profile';
     if (isOwn) editBtn.style.display = '';
     content.innerHTML = renderProfileView(user, isOwn);
+    loadProfilePosts(userId);
+    loadProfileContributions(userId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
   }
@@ -1888,6 +2093,7 @@ function renderProfileView(user, isOwn) {
     </div>
     ${actions}
     ${traditions || tags ? `<div class="profile-traditions">${traditions}${tags}</div>` : ''}
+    <div id="profile-contributions-container"></div>
     <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Posts</h2>
     <div id="profile-posts-container"></div>`;
 }
@@ -1908,19 +2114,6 @@ async function loadProfilePosts(userId) {
     container.innerHTML = '';
   }
 }
-
-// Called after profile panel renders — load posts lazily
-const _profilePanelObs = new MutationObserver(() => {
-  const container = document.getElementById('profile-posts-container');
-  if (container && profilePanelUserId) {
-    _profilePanelObs.disconnect();
-    loadProfilePosts(profilePanelUserId);
-  }
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const panel = document.getElementById('panel-profile');
-  if (panel) _profilePanelObs.observe(panel, { childList: true, subtree: true });
-});
 
 function toggleEditProfile() {
   if (!profilePanelUserId || profilePanelUserId !== state.user?.id) return;
@@ -1955,8 +2148,7 @@ async function saveProfile() {
     country: document.getElementById('edit-country')?.value.trim().toUpperCase() || undefined,
     templeAffiliation: document.getElementById('edit-temple')?.value.trim() || undefined,
   };
-  // Remove undefined fields
-  Object.keys(body).forEach(k => { if (!body[k]) delete body[k]; });
+  Object.keys(body).forEach(k => { if (body[k] === undefined) delete body[k]; });
   try {
     const updated = await api('PUT', '/users/me', body);
     state.user = { ...state.user, ...updated };
@@ -1976,7 +2168,7 @@ async function saveProfile() {
 // ============================================================
 let commFilter = {};
 let commSearchTimer = null;
-let communityState = { currentId: null, isMember: false, isPresident: false };
+let communityState = { currentId: null, isMember: false, isPresident: false, subView: null };
 
 async function loadCommunities() {
   const list = document.getElementById('commList');
@@ -2044,6 +2236,7 @@ function setCommunityBack(mode) {
 
 function goBackToCommunity() {
   if (!communityState.currentId) { closePanel('panel-community'); return; }
+  communityState.subView = null;
   setCommunityBack('close');
   openCommunity(communityState.currentId);
 }
@@ -2052,6 +2245,7 @@ async function openCommunity(assocId) {
   communityState.currentId = assocId;
   communityState.isMember   = false;
   communityState.isPresident = false;
+  communityState.subView    = null;
   const content = document.getElementById('community-panel-content');
   const joinBtn = document.getElementById('community-join-btn');
   // Bug 3: always reset onclick before showing the panel
@@ -2118,6 +2312,7 @@ function renderCommunityDetail(a, membership) {
       <button class="comm-tab-btn" onclick="switchCommTab('learning',this)">Learning</button>
       <button class="comm-tab-btn" onclick="switchCommTab('projects',this)">Projects</button>
       <button class="comm-tab-btn" onclick="switchCommTab('circles',this)">Circles</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('contributions',this)">Contributors</button>
     </div>
 
     <div id="comm-tab-overview" class="comm-tab-panel active">
@@ -2136,6 +2331,10 @@ function renderCommunityDetail(a, membership) {
 
     <div id="comm-tab-circles" class="comm-tab-panel">
       <div id="comm-circles-content"><div class="spinner-center"><div class="spinner"></div></div></div>
+    </div>
+
+    <div id="comm-tab-contributions" class="comm-tab-panel">
+      <div id="comm-contributions-content"><div class="spinner-center"><div class="spinner"></div></div></div>
     </div>`;
 }
 
@@ -2153,6 +2352,9 @@ function switchCommTab(tab, btn) {
   if (tab === 'circles' && document.getElementById('comm-circles-content')?.querySelector('.spinner-center')) {
     loadCommunityCircles(communityState.currentId);
   }
+  if (tab === 'contributions' && document.getElementById('comm-contributions-content')?.querySelector('.spinner-center')) {
+    loadCommunityContributions(communityState.currentId);
+  }
 }
 
 async function loadCommunityLearning(assocId) {
@@ -2167,6 +2369,12 @@ async function loadCommunityLearning(assocId) {
     const resources = resourcesRes.data || resourcesRes || [];
 
     let html = '';
+    if (communityState.isMember) {
+      html += `<div class="create-btn-row">
+        <button class="btn btn-primary btn-sm" onclick="openCreateForm('course','${assocId}')">+ New Course</button>
+        <button class="btn btn-ghost btn-sm" onclick="openCreateForm('resource','${assocId}')">+ Add Resource</button>
+      </div>`;
+    }
     if (courses.length) {
       html += `<h2 class="section-title" style="margin-bottom:var(--space-3)">Courses</h2>`;
       html += courses.map(c => renderCourseCard(c)).join('');
@@ -2176,7 +2384,7 @@ async function loadCommunityLearning(assocId) {
       html += resources.map(r => renderResourceCard(r)).join('');
     }
     if (!courses.length && !resources.length) {
-      html = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No learning content yet. Be the first to add a course or resource.</p>';
+      html += '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No learning content yet. Be the first to add a course or resource.</p>';
     }
     el.innerHTML = html;
   } catch(err) {
@@ -2190,11 +2398,15 @@ async function loadCommunityProjects(assocId) {
   try {
     const data = await api('GET', `/projects?associationId=${assocId}&status=OPEN&limit=10`);
     const projects = data.data || data || [];
+    let html = '';
+    if (communityState.isMember) {
+      html += `<div class="create-btn-row"><button class="btn btn-primary btn-sm" onclick="openCreateForm('project','${assocId}')">+ New Project</button></div>`;
+    }
     if (!projects.length) {
-      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No active projects yet.</p>';
+      el.innerHTML = html + '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No active projects yet.</p>';
       return;
     }
-    el.innerHTML = projects.map(p => renderCommProjectCard(p)).join('');
+    el.innerHTML = html + projects.map(p => renderCommProjectCard(p)).join('');
   } catch(err) {
     el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load projects.</p>';
   }
@@ -2206,11 +2418,15 @@ async function loadCommunityCircles(assocId) {
   try {
     const data = await api('GET', `/study-circles?associationId=${assocId}&limit=10`);
     const circles = data.data || data || [];
+    let html = '';
+    if (communityState.isMember) {
+      html += `<div class="create-btn-row"><button class="btn btn-primary btn-sm" onclick="openCreateForm('circle','${assocId}')">+ New Circle</button></div>`;
+    }
     if (!circles.length) {
-      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No study circles yet.</p>';
+      el.innerHTML = html + '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No study circles yet.</p>';
       return;
     }
-    el.innerHTML = circles.map(c => renderCircleCard(c)).join('');
+    el.innerHTML = html + circles.map(c => renderCircleCard(c)).join('');
   } catch(err) {
     el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load study circles.</p>';
   }
@@ -2281,6 +2497,7 @@ let currentCourseId = null;
 
 async function openCourse(courseId) {
   currentCourseId = courseId;
+  communityState.subView = 'course';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
   document.getElementById('community-panel-title').textContent = 'Course';
@@ -2292,8 +2509,41 @@ async function openCourse(courseId) {
     const course = await api('GET', `/courses/${courseId}`);
     document.getElementById('community-panel-title').textContent = course.title;
     content.innerHTML = renderCourseDetail(course);
+    if (communityState.currentId) loadCourseRelated(communityState.currentId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+async function loadCourseRelated(assocId) {
+  const el = document.getElementById('course-related-content');
+  if (!el) return;
+  try {
+    const [circlesRes, projectsRes] = await Promise.all([
+      api('GET', `/study-circles?associationId=${assocId}&status=OPEN&limit=3`),
+      api('GET', `/projects?associationId=${assocId}&status=OPEN&limit=3`),
+    ]);
+    const circles  = circlesRes.data  || circlesRes  || [];
+    const projects = projectsRes.data || projectsRes || [];
+    let html = '';
+    if (circles.length) {
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">Study Circles</div>`;
+      html += circles.map(c => `<div class="circle-card" style="margin-bottom:var(--space-2)" onclick="openCircle('${c.id}')"><div class="circle-topic">${escHtml(c.topic)}</div><div class="circle-meta">${c._count?.members||0} members</div></div>`).join('');
+    }
+    if (projects.length) {
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin:var(--space-3) 0 var(--space-2)">Active Projects</div>`;
+      html += projects.map(p => `<div class="comm-card" style="margin-bottom:var(--space-2)" onclick="openProjectDetail('${p.id}')"><div class="comm-card-name">${escHtml(p.title)}</div><div class="comm-card-meta"><span>${p._count?.members||0} collaborators</span></div></div>`).join('');
+    }
+    if (!circles.length && !projects.length) {
+      html = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No related circles or projects yet.</p>';
+    }
+    html += `<div class="related-cta-row">
+      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(4)')?.click(),300)">Browse Circles</button>
+      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(3)')?.click(),300)">Browse Projects</button>
+    </div>`;
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '';
   }
 }
 
@@ -2324,6 +2574,10 @@ function renderCourseDetail(course) {
         <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
         ${state.user ? renderDiscussionCompose('course', courseId) : ''}
       </div>
+      <div class="related-section" id="course-related">
+        <div class="related-section-title">Continue Your Journey</div>
+        <div id="course-related-content"><div class="spinner" style="width:20px;height:20px"></div></div>
+      </div>
     </div>`;
 }
 
@@ -2339,6 +2593,7 @@ let currentCircleMember = false;
 
 async function openCircle(circleId) {
   currentCircleId = circleId;
+  communityState.subView = 'circle';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
   document.getElementById('community-panel-title').textContent = 'Study Circle';
@@ -2357,9 +2612,26 @@ async function openCircle(circleId) {
       joinBtn.onclick       = () => toggleCircleMembership();
     }
     content.innerHTML = renderCircleDetail(circle);
+    if (communityState.currentId) loadCircleRelated(communityState.currentId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
   }
+}
+
+async function loadCircleRelated(assocId) {
+  const el = document.getElementById('circle-related-content');
+  if (!el) return;
+  try {
+    const data = await api('GET', `/courses?associationId=${assocId}&status=PUBLISHED&limit=3`);
+    const courses = data.data || data || [];
+    if (!courses.length) { el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No related courses yet.</p>'; return; }
+    el.innerHTML = courses.map(c =>
+      `<div class="course-card" onclick="openCourse('${c.id}')">
+        <div class="course-title">${escHtml(c.title)}</div>
+        <div class="course-meta">${escHtml(c.instructor?.displayName||'Community')} · ${c._count?.lessons||0} lessons</div>
+      </div>`).join('') +
+      `<div class="related-cta-row"><button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(2)')?.click(),300)">All Courses</button></div>`;
+  } catch(e) { el.innerHTML = ''; }
 }
 
 function renderCircleDetail(c) {
@@ -2384,6 +2656,10 @@ function renderCircleDetail(c) {
         <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
         <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet.</p>'}</div>
         ${state.user ? renderDiscussionCompose('study-circle', c.id) : ''}
+      </div>
+      <div class="related-section" id="circle-related">
+        <div class="related-section-title">Related Learning</div>
+        <div id="circle-related-content"><div class="spinner" style="width:20px;height:20px"></div></div>
       </div>
     </div>`;
 }
@@ -2416,6 +2692,7 @@ async function toggleCircleMembership() {
 
 // Project detail (community panel reuse)
 async function openProjectDetail(projectId) {
+  communityState.subView = 'project';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
   document.getElementById('community-panel-title').textContent = 'Project';
@@ -2433,9 +2710,40 @@ async function openProjectDetail(projectId) {
       joinBtn.onclick       = () => toggleProjectMembership(projectId, p.isMember);
     }
     content.innerHTML = renderProjectDetail(p);
+    if (communityState.currentId) loadProjectRelated(communityState.currentId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
   }
+}
+
+async function loadProjectRelated(assocId) {
+  const el = document.getElementById('project-related-content');
+  if (!el) return;
+  try {
+    const [coursesRes, resourcesRes] = await Promise.all([
+      api('GET', `/courses?associationId=${assocId}&status=PUBLISHED&limit=3`),
+      api('GET', `/resources?associationId=${assocId}&limit=3`),
+    ]);
+    const courses   = coursesRes.data   || coursesRes   || [];
+    const resources = resourcesRes.data || resourcesRes || [];
+    let html = '';
+    if (courses.length) {
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">Courses</div>`;
+      html += courses.map(c =>
+        `<div class="course-card" onclick="openCourse('${c.id}')">
+          <div class="course-title">${escHtml(c.title)}</div>
+          <div class="course-meta">${c._count?.lessons||0} lessons</div>
+        </div>`).join('');
+    }
+    if (resources.length) {
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin:var(--space-3) 0 var(--space-2)">Resources</div>`;
+      html += resources.map(r => renderResourceCard(r)).join('');
+    }
+    if (!courses.length && !resources.length) {
+      html = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No related learning content yet.</p>';
+    }
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = ''; }
 }
 
 function renderProjectDetail(p) {
@@ -2446,6 +2754,7 @@ function renderProjectDetail(p) {
     return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||'Unknown')}</div><span class="comm-member-role">${m.role||'CONTRIBUTOR'}</span></div>`;
   }).join('');
   const skills = (p.skillsNeeded || []).map(s => `<span class="profile-tradition-tag">${escHtml(s)}</span>`).join('');
+  const posts  = (p.thread?.posts || []).map(post => renderDiscussionPost(post)).join('');
 
   return `
     <div style="padding:var(--space-4)">
@@ -2461,6 +2770,15 @@ function renderProjectDetail(p) {
       ${p.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(p.description)}</div>` : ''}
       ${skills ? `<div style="margin-bottom:var(--space-4)"><div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);margin-bottom:var(--space-2)">Skills Needed</div>${skills}</div>` : ''}
       ${members ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Collaborators</h2><div class="comm-member-list" style="padding:0;margin:0">${members}</div>` : ''}
+      <div class="discussion-section">
+        <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
+        <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
+        ${state.user ? renderDiscussionCompose('project', p.id) : ''}
+      </div>
+      <div class="related-section" id="project-related">
+        <div class="related-section-title">Learning Resources</div>
+        <div id="project-related-content"><div class="spinner" style="width:20px;height:20px"></div></div>
+      </div>
     </div>`;
 }
 
@@ -2557,6 +2875,284 @@ async function toggleCommunityMembership() {
 }
 
 // ============================================================
+//  SPRINT 3: CONTENT CREATION FORMS
+// ============================================================
+let _activeCreateType   = null;
+let _activeCreateAssocId = null;
+
+function openCreateForm(type, assocId) {
+  if (!state.user) { showToast('Sign in to create content', 'info'); return; }
+  if (!communityState.isMember) { showToast('Join the community first', 'info'); return; }
+  _activeCreateType    = type;
+  _activeCreateAssocId = assocId;
+  communityState.subView = 'create';
+  const content  = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  const titles   = { course:'New Course', resource:'Add Resource', circle:'New Study Circle', project:'New Project' };
+  document.getElementById('community-panel-title').textContent = titles[type] || 'Create';
+  joinBtn.style.display = '';
+  joinBtn.textContent   = 'Create';
+  joinBtn.className     = 'btn btn-primary btn-sm';
+  joinBtn.disabled      = false;
+  joinBtn.onclick       = () => _dispatchCreateSubmit();
+  setCommunityBack('back');
+  openPanel('panel-community');
+  const forms = { course: renderCreateCourseForm, resource: renderCreateResourceForm, circle: renderCreateCircleForm, project: renderCreateProjectForm };
+  const fn = forms[type];
+  content.innerHTML = `<div style="padding:var(--space-4)">${fn ? fn() : ''}</div>`;
+}
+
+function _dispatchCreateSubmit() {
+  const fns = { course: submitCreateCourse, resource: submitCreateResource, circle: submitCreateCircle, project: submitCreateProject };
+  const fn = fns[_activeCreateType];
+  if (fn) fn(_activeCreateAssocId);
+}
+
+function renderCreateCourseForm() {
+  return `
+    <div class="input-group"><label>Course Title *</label><input id="cf-title" class="input" placeholder="e.g. Introduction to the Dhamma"></div>
+    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="What will students learn?"></textarea></div>
+    <div class="input-group"><label>Language</label>
+      <select id="cf-lang" class="create-form-select">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        <option value="mr">Marathi</option>
+        <option value="te">Telugu</option>
+        <option value="ta">Tamil</option>
+        <option value="kn">Kannada</option>
+        <option value="pa">Punjabi</option>
+        <option value="bn">Bengali</option>
+        <option value="si">Sinhala</option>
+        <option value="th">Thai</option>
+        <option value="bo">Tibetan</option>
+      </select>
+    </div>`;
+}
+
+function renderCreateResourceForm() {
+  const types = ['YOUTUBE_VIDEO','YOUTUBE_PLAYLIST','PDF','ARTICLE','RESEARCH_PAPER','WORKSHOP_RECORDING','GUIDE','BOOK_SUMMARY'];
+  const typeOptions = types.map(t => `<option value="${t}">${t.replace(/_/g,' ')}</option>`).join('');
+  return `
+    <div class="input-group"><label>Resource Type *</label>
+      <select id="cf-rtype" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
+    </div>
+    <div class="input-group"><label>Title *</label><input id="cf-title" class="input" placeholder="e.g. The Four Noble Truths — Lecture"></div>
+    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="https://…"></div>
+    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="2" style="resize:vertical"></textarea></div>
+    <div class="input-group"><label>Creator / Author</label><input id="cf-creator" class="input" placeholder="Bhante Gunaratana"></div>
+    <div class="input-group"><label>Thumbnail URL (optional)</label><input id="cf-thumb" class="input" type="url" placeholder="https://img.youtube.com/…"></div>
+    <div class="input-group"><label>Duration (minutes, optional)</label><input id="cf-dur" class="input" type="number" min="0" placeholder="60"></div>
+    <div class="input-group"><label>Language</label>
+      <select id="cf-lang" class="create-form-select">
+        <option value="en">English</option><option value="hi">Hindi</option><option value="mr">Marathi</option>
+        <option value="pa">Punjabi</option><option value="ta">Tamil</option><option value="si">Sinhala</option><option value="th">Thai</option>
+      </select>
+    </div>`;
+}
+
+function renderCreateCircleForm() {
+  return `
+    <div class="input-group"><label>Topic *</label><input id="cf-topic" class="input" placeholder="e.g. Reading the Dhammapada together"></div>
+    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="What will the circle focus on?"></textarea></div>
+    <div class="input-group"><label>Schedule (optional)</label><input id="cf-sched" class="input" placeholder="e.g. Every Sunday 10 AM IST"></div>`;
+}
+
+function renderCreateProjectForm() {
+  const cats = ['TRANSLATION','EDUCATION','VOLUNTEER','RESEARCH','TECHNOLOGY','ENVIRONMENT','SOCIAL_IMPACT','COMMUNITY_BUILDING','ARTS_CULTURE','HEALTHCARE'];
+  const catOptions = cats.map(c => `<option value="${c}">${c.replace(/_/g,' ')}</option>`).join('');
+  return `
+    <div class="input-group"><label>Project Title *</label><input id="cf-title" class="input" placeholder="e.g. Pali Canon Translation Project"></div>
+    <div class="input-group"><label>Purpose *</label><textarea id="cf-purpose" class="input" rows="2" style="resize:vertical" placeholder="What is the core goal of this project?"></textarea></div>
+    <div class="input-group"><label>Category *</label>
+      <select id="cf-category" class="create-form-select"><option value="">Select category…</option>${catOptions}</select>
+    </div>
+    <div class="input-group"><label>Description (optional)</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical"></textarea></div>
+    <div class="input-group"><label>Skills Needed (comma-separated)</label><input id="cf-skills" class="input" placeholder="e.g. Pali, Translation, Research"></div>
+    <div class="input-group"><label>Collaborators Needed (optional)</label><input id="cf-participants" class="input" type="number" min="0" placeholder="10"></div>
+    <div class="input-group"><label>Deadline (optional)</label><input id="cf-deadline" class="input" type="date"></div>`;
+}
+
+async function submitCreateCourse(assocId) {
+  const title = document.getElementById('cf-title')?.value.trim();
+  const desc  = document.getElementById('cf-desc')?.value.trim();
+  const lang  = document.getElementById('cf-lang')?.value || 'en';
+  if (!title) { showToast('Course title is required', 'error'); return; }
+  _lockCreateBtn('Creating…');
+  try {
+    await api('POST', '/courses', { title, description: desc || undefined, language: lang, associationId: assocId });
+    showToast('Course created!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    await _afterCreateNav(assocId, 'learning');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+async function submitCreateResource(assocId) {
+  const type    = document.getElementById('cf-rtype')?.value;
+  const title   = document.getElementById('cf-title')?.value.trim();
+  const url     = document.getElementById('cf-url')?.value.trim();
+  const desc    = document.getElementById('cf-desc')?.value.trim();
+  const creator = document.getElementById('cf-creator')?.value.trim();
+  const thumb   = document.getElementById('cf-thumb')?.value.trim();
+  const durMins = document.getElementById('cf-dur')?.value;
+  const lang    = document.getElementById('cf-lang')?.value || 'en';
+  if (!type)  { showToast('Resource type is required', 'error'); return; }
+  if (!title) { showToast('Title is required', 'error'); return; }
+  if (!url)   { showToast('URL is required', 'error'); return; }
+  _lockCreateBtn('Adding…');
+  try {
+    const body = { type, title, url, language: lang, associationId: assocId,
+      ...(desc    ? { description: desc } : {}),
+      ...(creator ? { creator }          : {}),
+      ...(thumb   ? { thumbnailUrl: thumb } : {}),
+      ...(durMins ? { durationSecs: Number(durMins) * 60 } : {}),
+    };
+    await api('POST', '/resources', body);
+    showToast('Resource added!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    await _afterCreateNav(assocId, 'learning');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+async function submitCreateCircle(assocId) {
+  const topic = document.getElementById('cf-topic')?.value.trim();
+  const desc  = document.getElementById('cf-desc')?.value.trim();
+  const sched = document.getElementById('cf-sched')?.value.trim();
+  if (!topic) { showToast('Topic is required', 'error'); return; }
+  _lockCreateBtn('Creating…');
+  try {
+    await api('POST', '/study-circles', { associationId: assocId, topic,
+      ...(desc  ? { description: desc }             : {}),
+      ...(sched ? { scheduleDescription: sched }    : {}),
+    });
+    showToast('Study circle created!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    await _afterCreateNav(assocId, 'circles');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+async function submitCreateProject(assocId) {
+  const title        = document.getElementById('cf-title')?.value.trim();
+  const purpose      = document.getElementById('cf-purpose')?.value.trim();
+  const category     = document.getElementById('cf-category')?.value;
+  const desc         = document.getElementById('cf-desc')?.value.trim();
+  const skillsRaw    = document.getElementById('cf-skills')?.value.trim();
+  const participants = document.getElementById('cf-participants')?.value;
+  const deadline     = document.getElementById('cf-deadline')?.value;
+  if (!title)    { showToast('Project title is required', 'error'); return; }
+  if (!purpose)  { showToast('Purpose is required', 'error'); return; }
+  if (!category) { showToast('Category is required', 'error'); return; }
+  _lockCreateBtn('Creating…');
+  try {
+    const skillsNeeded = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    await api('POST', '/projects', { title, purpose, category, associationId: assocId,
+      ...(desc         ? { description: desc }                    : {}),
+      ...(skillsNeeded.length ? { skillsNeeded }                  : {}),
+      ...(participants ? { participantsNeeded: Number(participants) } : {}),
+      ...(deadline     ? { deadline }                             : {}),
+    });
+    showToast('Project created!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    await _afterCreateNav(assocId, 'projects');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+function _lockCreateBtn(text) {
+  const btn = document.getElementById('community-join-btn');
+  if (btn) { btn.disabled = true; btn.textContent = text; }
+}
+
+function _unlockCreateBtn() {
+  const btn = document.getElementById('community-join-btn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Create'; }
+}
+
+async function _afterCreateNav(assocId, tabName) {
+  _activeCreateType    = null;
+  _activeCreateAssocId = null;
+  await openCommunity(assocId);
+  setTimeout(() => {
+    const tabs = document.querySelectorAll('.comm-tab-btn');
+    const labels = { learning:'Learning', circles:'Circles', projects:'Projects' };
+    const target = labels[tabName];
+    for (const btn of tabs) {
+      if (btn.textContent.trim() === target) { btn.click(); break; }
+    }
+  }, 150);
+}
+
+// ============================================================
+//  SPRINT 4: CONTRIBUTOR SURFACE
+// ============================================================
+async function loadProfileContributions(userId) {
+  const container = document.getElementById('profile-contributions-container');
+  if (!container) return;
+  try {
+    const score = await api('GET', `/contributions/${userId}`);
+    if (!score || score.totalScore === 0) return;
+    container.innerHTML = `
+      <div class="contrib-profile-section">
+        <div class="contrib-profile-total">
+          <div class="contrib-profile-total-value">${score.totalScore}</div>
+          <div class="contrib-profile-total-label">Contribution Score</div>
+        </div>
+        <div class="contrib-grid">
+          ${score.eventsHosted        ? `<div class="contrib-item"><div class="contrib-value">${score.eventsHosted}</div><div class="contrib-label">Events Hosted</div></div>` : ''}
+          ${score.sessionsHosted      ? `<div class="contrib-item"><div class="contrib-value">${score.sessionsHosted}</div><div class="contrib-label">Sessions Hosted</div></div>` : ''}
+          ${score.coursesCreated      ? `<div class="contrib-item"><div class="contrib-value">${score.coursesCreated}</div><div class="contrib-label">Courses Created</div></div>` : ''}
+          ${score.resourcesShared     ? `<div class="contrib-item"><div class="contrib-value">${score.resourcesShared}</div><div class="contrib-label">Resources Shared</div></div>` : ''}
+          ${score.studyCirclesFacilitated ? `<div class="contrib-item"><div class="contrib-value">${score.studyCirclesFacilitated}</div><div class="contrib-label">Circles Facilitated</div></div>` : ''}
+          ${score.projectsJoined      ? `<div class="contrib-item"><div class="contrib-value">${score.projectsJoined}</div><div class="contrib-label">Projects Joined</div></div>` : ''}
+          ${score.helpfulAnswers      ? `<div class="contrib-item"><div class="contrib-value">${score.helpfulAnswers}</div><div class="contrib-label">Helpful Answers</div></div>` : ''}
+        </div>
+      </div>`;
+  } catch(e) { /* silently skip — not every user has a score */ }
+}
+
+async function loadCommunityContributions(assocId) {
+  const el = document.getElementById('comm-contributions-content');
+  if (!el) return;
+  try {
+    const scores = await api('GET', `/contributions?associationId=${assocId}`);
+    if (!scores || !scores.length) {
+      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">No contribution scores recorded yet. Scores are earned by hosting events, creating courses, sharing resources, and more.</p>';
+      return;
+    }
+    const items = scores.map((s, i) => {
+      const u = s.user || {};
+      const initials = (u.displayName || '?').charAt(0).toUpperCase();
+      const av = u.profilePhoto
+        ? `<img src="${escHtml(u.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`
+        : initials;
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+      return `<div class="contrib-leaderboard-item" onclick="openProfile('${u.id}')">
+        <div class="contrib-rank">${medal || (i + 1)}</div>
+        <div class="avatar avatar-sm">${av}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(u.displayName || 'Practitioner')}</div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary)">
+            ${[
+              s.eventsHosted        ? `${s.eventsHosted} events`    : '',
+              s.coursesCreated      ? `${s.coursesCreated} courses`  : '',
+              s.resourcesShared     ? `${s.resourcesShared} resources` : '',
+              s.projectsJoined      ? `${s.projectsJoined} projects`  : '',
+            ].filter(Boolean).slice(0,2).join(' · ')}
+          </div>
+        </div>
+        <div class="contrib-score-badge">${s.totalScore} pts</div>
+      </div>`;
+    }).join('');
+    el.innerHTML = `
+      <div style="padding:var(--space-4) var(--space-4) var(--space-2)">
+        <h2 class="section-title">Top Contributors</h2>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1)">Scores reflect hosting, teaching, creating and collaborating.</p>
+      </div>
+      <div style="padding:0 var(--space-4)">${items}</div>`;
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">Unable to load contributors.</p>';
+  }
+}
+
+// ============================================================
 //  GESTURE SUPPORT
 // ============================================================
 let touchStartX = 0;
@@ -2577,6 +3173,7 @@ document.addEventListener('touchend', (e) => {
     const activePanel = document.querySelector('.panel.active');
     if (activePanel && !e.target.closest('input, textarea')) {
       if (activePanel.id === 'panel-thread') closeThread();
+      else if (activePanel.id === 'panel-community' && communityState.subView) goBackToCommunity();
       else closePanel(activePanel.id);
     }
   }

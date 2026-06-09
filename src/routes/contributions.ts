@@ -9,6 +9,30 @@ import { AppError } from '../middleware/errorHandler';
 
 const router = Router();
 
+// GET /contributions?associationId=xxx — contributor scores for community members
+router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
+  const { associationId } = req.query;
+  if (!associationId) { res.status(400).json({ error: 'associationId required' }); return; }
+  const members = await prisma.associationMember.findMany({
+    where: { associationId: associationId as string, isActive: true },
+    select: { userId: true },
+  });
+  const userIds = members.map(m => m.userId);
+  if (!userIds.length) { res.json([]); return; }
+  const scores = await prisma.contributionScore.findMany({
+    where: { userId: { in: userIds } },
+    orderBy: { totalScore: 'desc' },
+    take: 20,
+    select: {
+      totalScore: true, eventsHosted: true, sessionsHosted: true,
+      resourcesShared: true, coursesCreated: true, studyCirclesFacilitated: true,
+      projectsJoined: true, helpfulAnswers: true,
+      user: { select: { id: true, displayName: true, profilePhoto: true, isVerifiedClergy: true, isVerifiedTeacher: true } },
+    },
+  });
+  res.json(scores);
+});
+
 // GET /contributions/leaderboard — top contributors
 router.get('/leaderboard', async (_req: AuthRequest, res: Response): Promise<void> => {
   const leaders = await prisma.contributionScore.findMany({

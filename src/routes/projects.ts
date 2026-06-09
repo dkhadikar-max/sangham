@@ -68,7 +68,7 @@ router.get('/mine', authenticate, async (req: AuthRequest, res: Response): Promi
   res.json(projects.map(p => ({ ...p, icon: CAT_ICON[p.category] ?? '🤝' })));
 });
 
-// GET /projects/:id — project detail with members
+// GET /projects/:id — project detail with members and discussion
 router.get('/:id', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const project = await prisma.project.findUnique({
     where: { id: req.params.id },
@@ -81,6 +81,16 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response): Promis
           user: { select: { id: true, displayName: true, profilePhoto: true, role: true } },
         },
         orderBy: { joinedAt: 'asc' },
+      },
+      thread: {
+        include: {
+          posts: {
+            where: { isDeleted: false },
+            orderBy: { createdAt: 'asc' },
+            take: 50,
+            include: { author: { select: { id: true, displayName: true, profilePhoto: true } } },
+          },
+        },
       },
     },
   });

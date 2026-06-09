@@ -58,11 +58,12 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
 
 // GET /associations — directory
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { country, tradition, category } = req.query;
+  const { country, tradition, category, name } = req.query;
   const where: Record<string, unknown> = {};
   if (country) where.country = country;
   if (tradition) where.tradition = tradition;
   if (category) where.category = category;
+  if (name) where.name = { contains: name as string, mode: 'insensitive' };
   const assocs = await prisma.association.findMany({
     where, take: 50, orderBy: { name: 'asc' },
     select: { id: true, name: true, country: true, city: true, tradition: true, category: true, description: true, isVerified: true, _count: { select: { members: { where: { isActive: true } } } } },
