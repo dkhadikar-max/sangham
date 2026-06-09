@@ -78,21 +78,42 @@ router.get('/nearby', async (req: AuthRequest, res: Response): Promise<void> => 
 
 // GET /events — general listing
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { tradition, type, q } = req.query;
+  const { tradition, type, q, mode } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
   const where: Record<string, unknown> = { isPublished: true, startsAt: { gte: new Date() } };
   if (tradition) where.traditionTag = tradition;
   if (type) where.eventType = type;
   if (q) where.title = { contains: q as string, mode: 'insensitive' };
+  if (mode === 'online')  { where.onlineUrl = { not: null }; where.locationName = null; }
+  if (mode === 'offline') { where.locationName = { not: null }; where.onlineUrl = null; }
+  if (mode === 'hybrid')  { where.onlineUrl = { not: null }; where.locationName = { not: null }; }
   const [events, total] = await Promise.all([
     prisma.event.findMany({
       where, orderBy: { startsAt: 'asc' }, take: limit, skip,
-      include: { organiser: { select: { id: true, displayName: true } }, _count: { select: { rsvps: true } } },
+      include: {
+        organiser: { select: { id: true, displayName: true } },
+        association: { select: { id: true, name: true } },
+        _count: { select: { rsvps: true } },
+      },
     }),
     prisma.event.count({ where }),
   ]);
   const params = parsePagination(req.query as Record<string, unknown>);
   res.json(paginatedResponse(events, total, params));
+});
+
+// GET /events/:id — full detail
+router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
+  const event = await prisma.event.findUnique({
+    where: { id: req.params.id },
+    include: {
+      organiser: { select: { id: true, displayName: true, profilePhoto: true, role: true, isVerifiedClergy: true, isVerifiedTeacher: true } },
+      association: { select: { id: true, name: true } },
+      _count: { select: { rsvps: true } },
+    },
+  });
+  if (!event) throw new AppError('Event not found', 404);
+  res.json(event);
 });
 
 // POST /events/:id/rsvp
