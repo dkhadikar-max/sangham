@@ -192,11 +192,13 @@
     <div class="login-title">Sangham Admin</div>
     <div class="login-sub">Sign in with your Sangham account</div>
 
-    <label>Email</label>
-    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
-    <label>Password</label>
-    <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <form onsubmit="event.preventDefault();doLogin()">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      <button type="submit" class="btn-login">Sign In</button>
+    </form>
     <div class="login-error" id="login-error"></div>
 
     <div class="bootstrap-toggle" onclick="toggleBootstrap()">⚙ First time? Promote account to Super Admin</div>
@@ -382,7 +384,17 @@
       const me = await fetch(API + '/admin/me', {
         headers: { Authorization: 'Bearer ' + adminToken }
       }).then(r => r.json());
-      if (me.error) { errEl.textContent = me.error; adminToken = null; return; }
+      if (me.error) {
+        const msg = me.error === 'Admin access required'
+          ? 'Your account does not have admin access yet. Use the ⚙ Bootstrap section below to promote it first, then sign in again.'
+          : me.error;
+        errEl.textContent = msg;
+        if (me.error === 'Admin access required') {
+          document.getElementById('bootstrap-form').style.display = 'block';
+          document.getElementById('bs-email').value = email;
+        }
+        adminToken = null; return;
+      }
       sessionStorage.setItem('admin_token', adminToken);
       initApp(me);
     } catch(e) {

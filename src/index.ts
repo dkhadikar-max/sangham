@@ -67,7 +67,7 @@ app.use(helmet({
     directives: {
       defaultSrc:    ["'self'"],
       // Inline script block + onclick handlers + Socket.IO CDN
-      scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io'],
+      scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io', 'https://static.cloudflareinsights.com'],
       scriptSrcAttr: ["'unsafe-inline'"],
       // Inline <style> blocks + Google Fonts CSS
       styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
