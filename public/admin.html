@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sangham Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0f172a;
+      --surface:  #1e293b;
+      --surface2: #273549;
+      --border:   #334155;
+      --text:     #f1f5f9;
+      --muted:    #94a3b8;
+      --accent:   #f59e0b;
+      --danger:   #ef4444;
+      --success:  #22c55e;
+      --warn:     #f97316;
+      --info:     #3b82f6;
+    }
+    body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; min-height: 100vh; }
+
+    /* ── LOGIN ─────────────────────────────────────────────────── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2.5rem; width: 100%; max-width: 380px;
+    }
+    .login-logo { font-size: 2rem; text-align: center; margin-bottom: 0.5rem; }
+    .login-title { text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+    .login-sub { text-align: center; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+    .login-card label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .login-card input {
+      width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); border-radius: 8px;
+      font-size: 0.9rem; margin-bottom: 1rem; font-family: inherit;
+    }
+    .login-card input:focus { outline: none; border-color: var(--accent); }
+    .btn-login {
+      width: 100%; padding: 0.7rem; background: var(--accent); color: #000;
+      border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+    .btn-login:hover { opacity: 0.9; }
+    .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.75rem; text-align: center; }
+
+    /* ── BOOTSTRAP SECTION ─────────────────────────────────────── */
+    .bootstrap-toggle {
+      text-align: center; margin-top: 1.5rem; font-size: 0.76rem; color: var(--muted);
+      cursor: pointer; text-decoration: underline;
+    }
+    #bootstrap-form { margin-top: 1.2rem; border-top: 1px solid var(--border); padding-top: 1.2rem; display: none; }
+    #bootstrap-form input { margin-bottom: 0.75rem; }
+    .btn-bootstrap {
+      width: 100%; padding: 0.65rem; background: var(--info); color: white;
+      border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+
+    /* ── APP LAYOUT ────────────────────────────────────────────── */
+    #app { display: none; min-height: 100vh; flex-direction: column; }
+    #app.visible { display: flex; }
+    .app-topbar {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem; height: 52px; display: flex; align-items: center;
+      justify-content: space-between; flex-shrink: 0;
+    }
+    .app-topbar-brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1rem; }
+    .app-topbar-brand span.badge { background: var(--accent); color: #000; border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; }
+    .app-topbar-user { display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; color: var(--muted); }
+    .btn-logout { background: none; border: 1px solid var(--border); color: var(--muted); padding: 0.3rem 0.75rem; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.8rem; }
+    .btn-logout:hover { color: var(--text); border-color: var(--text); }
+
+    .app-body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── SIDEBAR ───────────────────────────────────────────────── */
+    #sidebar {
+      width: 200px; flex-shrink: 0; background: var(--surface);
+      border-right: 1px solid var(--border); padding: 1rem 0; overflow-y: auto;
+    }
+    .nav-section { padding: 0.5rem 1rem 0.3rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 1.2rem; font-size: 0.85rem; color: var(--muted);
+      cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+    .nav-badge { margin-left: auto; background: var(--danger); color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.65rem; font-weight: 700; }
+
+    /* ── MAIN CONTENT ──────────────────────────────────────────── */
+    #main { flex: 1; overflow-y: auto; padding: 1.5rem; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* ── STATS GRID ────────────────────────────────────────────── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1rem; }
+    .stat-card .s-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .stat-card .s-value { font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .stat-card.warn .s-value { color: var(--warn); }
+    .stat-card.danger .s-value { color: var(--danger); }
+    .stat-card.success .s-value { color: var(--success); }
+
+    /* ── TOOLBAR ───────────────────────────────────────────────── */
+    .toolbar { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+    .toolbar input[type=search], .toolbar input[type=text] {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      padding: 0.5rem 0.8rem; border-radius: 7px; font-size: 0.85rem;
+      font-family: inherit; width: 240px;
+    }
+    .toolbar input:focus { outline: none; border-color: var(--accent); }
+    .toolbar select {
+      background: var(--surface); border: 1px solid var(--border); color: var(--text);
+      padding: 0.5rem 0.7rem; border-radius: 7px; font-size: 0.85rem; font-family: inherit;
+    }
+    .toolbar .ml-auto { margin-left: auto; }
+
+    /* ── TABLE ─────────────────────────────────────────────────── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 0.7rem 1rem; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface2); }
+    td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    .empty-row td { text-align: center; padding: 2.5rem; color: var(--muted); }
+
+    /* ── BADGES / PILLS ────────────────────────────────────────── */
+    .pill { display: inline-block; padding: 0.18rem 0.6rem; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+    .pill-super { background: rgba(245,158,11,0.15); color: var(--accent); }
+    .pill-mod   { background: rgba(59,130,246,0.15); color: var(--info); }
+    .pill-user  { background: rgba(148,163,184,0.12); color: var(--muted); }
+    .pill-banned { background: rgba(239,68,68,0.15); color: var(--danger); }
+    .pill-verified { background: rgba(34,197,94,0.12); color: var(--success); }
+
+    /* ── BUTTONS ───────────────────────────────────────────────── */
+    .btn { padding: 0.35rem 0.85rem; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-size: 0.8rem; font-weight: 600; }
+    .btn-sm { padding: 0.25rem 0.6rem; font-size: 0.75rem; }
+    .btn-danger  { background: var(--danger); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-info    { background: var(--info); color: white; }
+    .btn-warn    { background: var(--warn); color: white; }
+    .btn-ghost   { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-accent  { background: var(--accent); color: #000; }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── MODERATION CARD ───────────────────────────────────────── */
+    .mod-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
+    .mod-content { font-size: 0.85rem; color: var(--text); margin: 0.5rem 0; background: var(--surface2); padding: 0.7rem; border-radius: 7px; line-height: 1.6; }
+    .mod-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .mod-actions { display: flex; gap: 0.5rem; }
+
+    /* ── TOAST ─────────────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.75rem 1.2rem; border-radius: 8px; font-size: 0.85rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: none;
+      max-width: 320px;
+    }
+    #toast.success { border-color: var(--success); color: var(--success); }
+    #toast.error   { border-color: var(--danger); color: var(--danger); }
+
+    /* ── SPINNER ───────────────────────────────────────────────── */
+    .spinner {
+      width: 24px; height: 24px; border: 2px solid var(--border);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin: 2rem auto; display: block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ROLE SELECT DROPDOWN ──────────────────────────────────── */
+    .role-select { background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 0.2rem 0.4rem; font-size: 0.78rem; font-family: inherit; }
+
+    /* ── PAGINATION ────────────────────────────────────────────── */
+    .pagination { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.82rem; color: var(--muted); }
+    .pagination button { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.3rem 0.7rem; border-radius: 5px; cursor: pointer; }
+    .pagination button:disabled { opacity: 0.4; cursor: default; }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🙏</div>
+    <div class="login-title">Sangham Admin</div>
+    <div class="login-sub">Sign in with your Sangham account</div>
+
+    <label>Email</label>
+    <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+    <label>Password</label>
+    <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error"></div>
+
+    <div class="bootstrap-toggle" onclick="toggleBootstrap()">⚙ First time? Promote account to Super Admin</div>
+    <div id="bootstrap-form">
+      <label>Bootstrap Secret (from Railway env)</label>
+      <input type="password" id="bs-secret" placeholder="BOOTSTRAP_SECRET value">
+      <label>Email to promote</label>
+      <input type="email" id="bs-email" placeholder="your@email.com">
+      <button class="btn-bootstrap" onclick="doBootstrap()">Promote to Super Admin</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN APP ─────────────────────────────────────────────────────────── -->
+<div id="app">
+  <div class="app-topbar">
+    <div class="app-topbar-brand">
+      <span>🙏 Sangham</span>
+      <span class="badge">ADMIN</span>
+    </div>
+    <div class="app-topbar-user">
+      <span id="topbar-name">–</span>
+      <span id="topbar-role" class="pill pill-super"></span>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</div>
+
+      <div class="nav-section">Management</div>
+      <div class="nav-item" onclick="showPage('users')">👤 Users</div>
+      <div class="nav-item" onclick="showPage('communities')">🏛️ Communities</div>
+
+      <div class="nav-section">Moderation</div>
+      <div class="nav-item" id="nav-mod" onclick="showPage('moderation')">🚩 Reports <span class="nav-badge" id="mod-badge" style="display:none;"></span></div>
+
+      <div class="nav-section">Tools</div>
+      <div class="nav-item" onclick="showPage('tools')">🔧 Tools</div>
+    </nav>
+
+    <!-- Main -->
+    <main id="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">Dashboard</div>
+        <div class="stats-grid" id="stats-grid"><div class="spinner"></div></div>
+        <div style="font-size:0.78rem;color:var(--muted)" id="stats-updated"></div>
+      </div>
+
+      <!-- USERS -->
+      <div class="page" id="page-users">
+        <div class="page-title">Users</div>
+        <div class="toolbar">
+          <input type="search" id="user-search" placeholder="Search by name…" oninput="debounceUsers()">
+          <select id="user-role-filter" onchange="loadUsers()">
+            <option value="">All roles</option>
+            <option value="PRACTITIONER">Practitioner</option>
+            <option value="BHIKKHU">Bhikkhu</option>
+            <option value="BHIKKHUNI">Bhikkhuni</option>
+            <option value="SCHOLAR">Scholar</option>
+            <option value="MODERATOR">Moderator</option>
+            <option value="SUPER_ADMIN">Super Admin</option>
+            <option value="ASSOCIATION_ADMIN">Association Admin</option>
+          </select>
+          <span id="user-total" style="font-size:0.8rem;color:var(--muted);margin-left:auto;"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Email</th><th>Role</th><th>Country</th>
+              <th>Posts</th><th>Joined</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button id="users-prev" onclick="usersPage(-1)">← Prev</button>
+          <span id="users-page-info">–</span>
+          <button id="users-next" onclick="usersPage(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- COMMUNITIES -->
+      <div class="page" id="page-communities">
+        <div class="page-title">Communities</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Category</th><th>Location</th>
+              <th>Members</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="comm-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODERATION -->
+      <div class="page" id="page-moderation">
+        <div class="page-title">Moderation Queue</div>
+        <div id="mod-list"></div>
+      </div>
+
+      <!-- TOOLS -->
+      <div class="page" id="page-tools">
+        <div class="page-title">Tools</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;max-width:500px;">
+
+          <div class="table-wrap" style="padding:1.2rem;">
+            <div style="font-weight:600;margin-bottom:0.5rem;">Seed Buddhist Library</div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">
+              Populate the library with core Theravāda texts from SuttaCentral. One-time operation.
+            </div>
+            <button class="btn btn-accent" onclick="doSeedLibrary()" id="seed-btn">Run Seed</button>
+            <div id="seed-result" style="margin-top:0.75rem;font-size:0.82rem;color:var(--muted);"></div>
+          </div>
+
+          <div class="table-wrap" style="padding:1.2rem;">
+            <div style="font-weight:600;margin-bottom:0.5rem;">API Health</div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">
+              Check backend health status.
+            </div>
+            <button class="btn btn-ghost" onclick="checkHealth()">Check Health</button>
+            <div id="health-result" style="margin-top:0.75rem;font-size:0.82rem;color:var(--success);"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const API = '/api/v1';
+  let adminToken = sessionStorage.getItem('admin_token');
+  let usersPageNum = 1;
+  let usersTimer = null;
+
+  // ── HELPERS ──────────────────────────────────────────────────────────────
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function toast(msg, type) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = type || '';
+    el.style.display = 'block';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.style.display = 'none', 3500);
+  }
+
+  async function api(method, path, body) {
+    const res = await fetch(API + path, {
+      method,
+      headers: { 'Content-Type': 'application/json', ...(adminToken ? { Authorization: 'Bearer ' + adminToken } : {}) },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || data.message || 'Request failed');
+    return data;
+  }
+
+  // ── AUTH ─────────────────────────────────────────────────────────────────
+  async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    errEl.textContent = '';
+    if (!email || !password) { errEl.textContent = 'Enter email and password'; return; }
+    try {
+      const data = await api('POST', '/auth/login', { email, password });
+      adminToken = data.token || data.accessToken;
+      if (!adminToken) throw new Error('No token in response');
+      // Verify admin role
+      const me = await fetch(API + '/admin/me', {
+        headers: { Authorization: 'Bearer ' + adminToken }
+      }).then(r => r.json());
+      if (me.error) { errEl.textContent = me.error; adminToken = null; return; }
+      sessionStorage.setItem('admin_token', adminToken);
+      initApp(me);
+    } catch(e) {
+      errEl.textContent = e.message;
+    }
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('admin_token');
+    adminToken = null;
+    document.getElementById('app').classList.remove('visible');
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+
+  function toggleBootstrap() {
+    const f = document.getElementById('bootstrap-form');
+    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+  }
+
+  async function doBootstrap() {
+    const secret = document.getElementById('bs-secret').value.trim();
+    const email  = document.getElementById('bs-email').value.trim();
+    if (!secret || !email) { toast('Enter secret and email', 'error'); return; }
+    try {
+      const res = await api('POST', '/admin/bootstrap', { secret, email });
+      toast(res.message, 'success');
+      document.getElementById('bootstrap-form').style.display = 'none';
+    } catch(e) {
+      toast(e.message, 'error');
+    }
+  }
+
+  function initApp(me) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    document.getElementById('topbar-name').textContent = me.displayName || me.email;
+    const roleEl = document.getElementById('topbar-role');
+    roleEl.textContent = me.role;
+    roleEl.className = 'pill ' + (me.role === 'SUPER_ADMIN' ? 'pill-super' : 'pill-mod');
+    loadDashboard();
+  }
+
+  // ── PAGE NAVIGATION ──────────────────────────────────────────────────────
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelector(`.nav-item[onclick="showPage('${name}')"]`).classList.add('active');
+    if (name === 'users')       loadUsers();
+    if (name === 'communities') loadCommunities();
+    if (name === 'moderation')  loadModeration();
+  }
+
+  // ── DASHBOARD ────────────────────────────────────────────────────────────
+  async function loadDashboard() {
+    const grid = document.getElementById('stats-grid');
+    try {
+      const s = await api('GET', '/admin/stats');
+      grid.innerHTML = `
+        <div class="stat-card"><div class="s-label">Total Users</div><div class="s-value">${s.users}</div></div>
+        <div class="stat-card success"><div class="s-label">Active Users</div><div class="s-value">${s.activeUsers}</div></div>
+        <div class="stat-card"><div class="s-label">Posts</div><div class="s-value">${s.posts}</div></div>
+        <div class="stat-card"><div class="s-label">Communities</div><div class="s-value">${s.associations}</div></div>
+        <div class="stat-card"><div class="s-label">Events</div><div class="s-value">${s.events}</div></div>
+        <div class="stat-card"><div class="s-label">Live Sessions</div><div class="s-value">${s.sessions}</div></div>
+        <div class="stat-card ${s.openReports > 0 ? 'danger' : ''}">
+          <div class="s-label">Open Reports</div>
+          <div class="s-value">${s.openReports}</div>
+        </div>
+      `;
+      if (s.openReports > 0) {
+        document.getElementById('mod-badge').textContent = s.openReports;
+        document.getElementById('mod-badge').style.display = '';
+      }
+      document.getElementById('stats-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+    } catch(e) {
+      grid.innerHTML = `<div style="color:var(--danger);padding:1rem;">${e.message}</div>`;
+    }
+  }
+
+  // ── USERS ────────────────────────────────────────────────────────────────
+  function debounceUsers() {
+    clearTimeout(usersTimer);
+    usersTimer = setTimeout(() => { usersPageNum = 1; loadUsers(); }, 400);
+  }
+
+  function usersPage(dir) {
+    usersPageNum = Math.max(1, usersPageNum + dir);
+    loadUsers();
+  }
+
+  async function loadUsers() {
+    const tbody = document.getElementById('users-tbody');
+    tbody.innerHTML = '<tr><td colspan="7"><div class="spinner" style="margin:1rem auto;"></div></td></tr>';
+    const q    = document.getElementById('user-search').value.trim();
+    const role = document.getElementById('user-role-filter').value;
+    const limit = 50;
+    try {
+      let qs = `?page=${usersPageNum}&limit=${limit}`;
+      if (q)    qs += '&q=' + encodeURIComponent(q);
+      if (role) qs += '&role=' + role;
+      const data = await api('GET', '/admin/users' + qs);
+      const users = data.data || [];
+      const total = data.total || 0;
+      document.getElementById('user-total').textContent = total + ' users';
+      document.getElementById('users-page-info').textContent = `Page ${usersPageNum} of ${Math.ceil(total/limit) || 1}`;
+      document.getElementById('users-prev').disabled = usersPageNum <= 1;
+      document.getElementById('users-next').disabled = usersPageNum >= Math.ceil(total/limit);
+
+      if (!users.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No users found</td></tr>';
+        return;
+      }
+      tbody.innerHTML = users.map(u => {
+        const rolePill = u.role === 'SUPER_ADMIN' ? 'pill-super' : u.role === 'MODERATOR' ? 'pill-mod' : 'pill-user';
+        const joined = new Date(u.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' });
+        return `<tr id="urow-${u.id}">
+          <td>
+            <div style="font-weight:600;">${esc(u.displayName)}</div>
+            ${u.isVerifiedClergy ? '<span class="pill pill-verified" style="font-size:0.65rem;">Bhikkhu</span>' : ''}
+            ${!u.isActive ? '<span class="pill pill-banned" style="font-size:0.65rem;">Banned</span>' : ''}
+          </td>
+          <td style="color:var(--muted);font-size:0.8rem;">${esc(u.email || '–')}</td>
+          <td>
+            <select class="role-select" onchange="changeRole('${u.id}',this.value)" ${u.role === 'SUPER_ADMIN' ? '' : ''}>
+              ${['PRACTITIONER','BHIKKHU','BHIKKHUNI','SCHOLAR','ASSOCIATION_ADMIN','MODERATOR','SUPER_ADMIN'].map(r =>
+                `<option value="${r}" ${r === u.role ? 'selected' : ''}>${r}</option>`
+              ).join('')}
+            </select>
+          </td>
+          <td style="color:var(--muted);">${u.country || '–'}</td>
+          <td>${u._count?.posts || 0}</td>
+          <td style="color:var(--muted);font-size:0.78rem;">${joined}</td>
+          <td>
+            <button class="btn btn-sm ${u.isActive ? 'btn-danger' : 'btn-success'}" onclick="banUser('${u.id}',${u.isActive})">
+              ${u.isActive ? 'Ban' : 'Unban'}
+            </button>
+          </td>
+        </tr>`;
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="7" style="color:var(--danger);">${e.message}</td></tr>`;
+    }
+  }
+
+  async function changeRole(userId, role) {
+    try {
+      await api('PUT', `/admin/users/${userId}/role`, { role });
+      toast('Role updated to ' + role, 'success');
+    } catch(e) {
+      toast(e.message, 'error');
+      loadUsers();
+    }
+  }
+
+  async function banUser(userId, isActive) {
+    try {
+      await api('PUT', `/admin/users/${userId}/ban`, { ban: isActive });
+      toast(isActive ? 'User banned' : 'User unbanned', 'success');
+      loadUsers();
+    } catch(e) {
+      toast(e.message, 'error');
+    }
+  }
+
+  // ── COMMUNITIES ──────────────────────────────────────────────────────────
+  async function loadCommunities() {
+    const tbody = document.getElementById('comm-tbody');
+    tbody.innerHTML = '<tr><td colspan="6"><div class="spinner" style="margin:1rem auto;"></div></td></tr>';
+    try {
+      const comms = await api('GET', '/admin/associations');
+      const list = Array.isArray(comms) ? comms : (comms.data || []);
+      if (!list.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No communities found</td></tr>';
+        return;
+      }
+      const catLabel = {
+        TEMPLE:'Vihara/Temple', NGO:'Service/NGO', STUDY_GROUP:'Learning Circle',
+        AMBEDKARITE_SANGHA:'Ambedkarite', UNIVERSITY_CLUB:'Student Group',
+        NATIONAL_FEDERATION:'Federation', INTERNATIONAL_BODY:'International',
+      };
+      tbody.innerHTML = list.map(c => {
+        const created = new Date(c.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' });
+        return `<tr>
+          <td style="font-weight:600;">${esc(c.name)}</td>
+          <td style="color:var(--muted);font-size:0.8rem;">${catLabel[c.category] || c.category}</td>
+          <td style="color:var(--muted);">${[c.city, c.country].filter(Boolean).join(', ') || '–'}</td>
+          <td>${c._count?.members || 0}</td>
+          <td>
+            ${c.isVerified
+              ? '<span class="pill pill-verified">✓ Verified</span>'
+              : '<span class="pill pill-user">Unverified</span>'}
+          </td>
+          <td>
+            <button class="btn btn-sm ${c.isVerified ? 'btn-ghost' : 'btn-success'}" onclick="verifyComm('${c.id}',${!c.isVerified},this)">
+              ${c.isVerified ? 'Remove verify' : 'Verify'}
+            </button>
+          </td>
+        </tr>`;
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="6" style="color:var(--danger);">${e.message}</td></tr>`;
+    }
+  }
+
+  async function verifyComm(id, verify, btn) {
+    btn.disabled = true;
+    try {
+      await api('PUT', `/admin/associations/${id}/verify`, { verify });
+      toast(verify ? 'Community verified' : 'Verification removed', 'success');
+      loadCommunities();
+    } catch(e) {
+      toast(e.message, 'error');
+      btn.disabled = false;
+    }
+  }
+
+  // ── MODERATION ───────────────────────────────────────────────────────────
+  async function loadModeration() {
+    const el = document.getElementById('mod-list');
+    el.innerHTML = '<div class="spinner"></div>';
+    try {
+      const reports = await api('GET', '/admin/moderation/queue');
+      const list = Array.isArray(reports) ? reports : [];
+      document.getElementById('mod-badge').textContent = list.length || '';
+      document.getElementById('mod-badge').style.display = list.length ? '' : 'none';
+      if (!list.length) {
+        el.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">✓ No open reports — queue is clear</div>';
+        return;
+      }
+      el.innerHTML = list.map(r => {
+        const created = new Date(r.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short' });
+        return `<div class="mod-card" id="mod-${r.id}">
+          <div class="mod-meta">Report #${r.id.slice(-8)} · ${created} · Reason: ${esc(r.reason || 'Not specified')}</div>
+          ${r.post ? `<div class="mod-content">${esc(r.post.content || '').slice(0, 300)}</div>` : '<div class="mod-content" style="color:var(--muted);">[Post deleted or unavailable]</div>'}
+          <div class="mod-actions">
+            <button class="btn btn-sm btn-danger" onclick="modAction('${r.id}','remove')">Remove Post</button>
+            <button class="btn btn-sm btn-warn"   onclick="modAction('${r.id}','warn')">Warn Author</button>
+            <button class="btn btn-sm btn-ghost"  onclick="modAction('${r.id}','dismiss')">Dismiss</button>
+          </div>
+        </div>`;
+      }).join('');
+    } catch(e) {
+      el.innerHTML = `<div style="color:var(--danger);padding:1rem;">${e.message}</div>`;
+    }
+  }
+
+  async function modAction(reportId, action) {
+    try {
+      await api('PUT', `/admin/content/${reportId}/action`, { action });
+      toast(`Action '${action}' applied`, 'success');
+      const card = document.getElementById('mod-' + reportId);
+      if (card) card.remove();
+      const remaining = document.querySelectorAll('.mod-card').length;
+      document.getElementById('mod-badge').textContent = remaining || '';
+      document.getElementById('mod-badge').style.display = remaining ? '' : 'none';
+      if (!remaining) {
+        document.getElementById('mod-list').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">✓ No open reports — queue is clear</div>';
+      }
+    } catch(e) {
+      toast(e.message, 'error');
+    }
+  }
+
+  // ── TOOLS ────────────────────────────────────────────────────────────────
+  async function doSeedLibrary() {
+    const btn = document.getElementById('seed-btn');
+    const res = document.getElementById('seed-result');
+    btn.disabled = true;
+    res.textContent = 'Seeding…';
+    try {
+      const data = await api('POST', '/admin/seed-library');
+      res.style.color = 'var(--success)';
+      res.textContent = data.message || 'Done';
+    } catch(e) {
+      res.style.color = 'var(--danger)';
+      res.textContent = e.message;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function checkHealth() {
+    const res = document.getElementById('health-result');
+    try {
+      const data = await fetch('/health').then(r => r.json());
+      res.style.color = 'var(--success)';
+      res.textContent = `✓ ${data.service} v${data.version} — ${data.status}`;
+    } catch(e) {
+      res.style.color = 'var(--danger)';
+      res.textContent = 'Unreachable';
+    }
+  }
+
+  // ── INIT ─────────────────────────────────────────────────────────────────
+  (async function() {
+    if (!adminToken) return;
+    try {
+      const me = await fetch(API + '/admin/me', {
+        headers: { Authorization: 'Bearer ' + adminToken }
+      }).then(r => r.json());
+      if (me.error || !me.id) { sessionStorage.removeItem('admin_token'); return; }
+      initApp(me);
+    } catch(_) { sessionStorage.removeItem('admin_token'); }
+  })();
+</script>
+</body>
+</html>

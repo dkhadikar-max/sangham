@@ -126,6 +126,14 @@ app.use(`${API}/teachers`,      teacherRoutes);
 app.use(`${API}/dhamma-daan`,   dhammaDaanRoutes);
 app.use(`${API}/uploads`,       uploadRoutes);
 
+// ── Admin panel (separate route, before SPA fallback) ──────────────────────
+app.get('/admin', (_req, res) => {
+  const adminFile = path.join(__dirname, '..', 'public', 'admin.html');
+  res.sendFile(adminFile, (err) => {
+    if (err) res.status(404).json({ error: 'Admin panel not found' });
+  });
+});
+
 // ── SPA fallback — serve index.html for all non-API routes ─────────────────
 app.get('*', (_req, res) => {
   const indexFile = path.join(__dirname, '..', 'public', 'index.html');
