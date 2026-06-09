@@ -12,16 +12,16 @@ const PROJECT_INCLUDE = {
 } as const;
 
 const CAT_ICON: Record<string, string> = {
-  TRANSLATION:        '📜',
-  EDUCATION:          '📚',
-  VOLUNTEER:          '🤝',
-  RESEARCH:           '🔬',
-  TECHNOLOGY:         '💻',
-  ENVIRONMENT:        '🌱',
+  TRANSLATION:        '\u{1F4DC}',
+  EDUCATION:          '\u{1F4DA}',
+  VOLUNTEER:          '\u{1F91D}',
+  RESEARCH:           '\u{1F52C}',
+  TECHNOLOGY:         '\u{1F4BB}',
+  ENVIRONMENT:        '\u{1F331}',
   SOCIAL_IMPACT:      '✊',
-  COMMUNITY_BUILDING: '🏘️',
-  ARTS_CULTURE:       '🎨',
-  HEALTHCARE:         '🏥',
+  COMMUNITY_BUILDING: '\u{1F3D8}',
+  ARTS_CULTURE:       '\u{1F3A8}',
+  HEALTHCARE:         '\u{1F3E5}',
 };
 
 // GET /projects — browse open/active projects
