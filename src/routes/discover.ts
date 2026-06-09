@@ -7,7 +7,7 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { parsePagination, paginatedResponse } from '../utils/pagination';
-import { Tradition, ProfessionalTag } from '@prisma/client';
+import { Tradition, ProfessionalTag, IntentCategory } from '@prisma/client';
 import { AppError } from '../middleware/errorHandler';
 
 const router = Router();
@@ -52,7 +52,7 @@ function approxDistanceLabel(userGridLat: number, userGridLng: number,
  * Query params: tradition, tag, language, role, city, state, country, q (name search)
  */
 router.get('/people', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  const { tradition, tag, language, role, city, state, country, q, isVerifiedTeacher } = req.query;
+  const { tradition, tag, language, role, city, state, country, q, isVerifiedTeacher, seekingIntent } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
 
   // Only surface users who opted into discovery.
@@ -66,11 +66,12 @@ router.get('/people', authenticate, async (req: AuthRequest, res: Response): Pro
     ],
   };
 
-  if (tradition)         where.traditions       = { has: tradition as Tradition };
-  if (language)          where.languages        = { has: language as string };
-  if (role)              where.role             = role;
-  if (q)                 where.displayName      = { contains: q as string, mode: 'insensitive' };
-  if (isVerifiedTeacher) where.isVerifiedTeacher = true;
+  if (tradition)         where.traditions        = { has: tradition as Tradition };
+  if (language)          where.languages         = { has: language as string };
+  if (role)              where.role              = role;
+  if (q)                 where.displayName       = { contains: q as string, mode: 'insensitive' };
+  if (isVerifiedTeacher) where.isVerifiedTeacher  = true;
+  if (seekingIntent)     where.intents           = { some: { category: seekingIntent as IntentCategory, status: 'OPEN' } };
   if (city)       where.location   = { ...(where.location as object || {}), city: { contains: city as string, mode: 'insensitive' } };
   if (state)      where.location   = { ...(where.location as object || {}), state: { contains: state as string, mode: 'insensitive' } };
   if (country)    where.location   = { ...(where.location as object || {}), country };

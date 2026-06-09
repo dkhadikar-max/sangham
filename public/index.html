@@ -722,8 +722,6 @@ round:var(--error-600)}
         <div class="comm-tabs" id="discoverTabs" style="border-bottom:1px solid var(--border-subtle)">
           <button class="comm-tab-btn active" onclick="switchDiscoverTab('people',this)">People</button>
           <button class="comm-tab-btn" onclick="switchDiscoverTab('events',this)">Events</button>
-          <button class="comm-tab-btn" onclick="switchDiscoverTab('intents',this)">Connect</button>
-          <button class="comm-tab-btn" onclick="switchDiscoverTab('teachers',this)">Teachers</button>
         </div>
         <div id="discover-tab-people" class="comm-tab-panel active">
           <div class="search-bar" style="margin:var(--space-3) var(--space-4) var(--space-2)">
@@ -731,31 +729,25 @@ round:var(--error-600)}
             <input type="text" id="discoverSearch" placeholder="Search practitioners..." oninput="debounceDiscover()">
           </div>
           <div class="chip-scroll" id="discoverCategories"></div>
+          <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center">
+            <span style="font-size:var(--text-xs);color:var(--text-tertiary);flex-shrink:0">Seeking:</span>
+            <div class="chip-scroll" id="intentFilters" style="display:flex;gap:var(--space-2);flex:1;min-width:0">
+              <button class="chip active" onclick="filterDiscoverIntent(null,this)">Anyone</button>
+              <button class="chip" onclick="filterDiscoverIntent('MEDITATION_PARTNER',this)">Meditation Partner</button>
+              <button class="chip" onclick="filterDiscoverIntent('STUDY_GROUP',this)">Study Group</button>
+              <button class="chip" onclick="filterDiscoverIntent('BHIKKHU_GUIDANCE',this)">Bhikkhu Guidance</button>
+              <button class="chip" onclick="filterDiscoverIntent('MENTORSHIP',this)">Mentorship</button>
+              <button class="chip" onclick="filterDiscoverIntent('DHARMA_DISCUSSION',this)">Dharma Discussion</button>
+              <button class="chip" onclick="filterDiscoverIntent('SKILL_SHARE',this)">Skill Share</button>
+              <button class="chip" onclick="filterDiscoverIntent('SEEKING_VOLUNTEERS',this)">Volunteers</button>
+              <button class="chip" onclick="filterDiscoverIntent('EVENT_COLLABORATORS',this)">Events</button>
+            </div>
+          </div>
+          <div style="padding:0 var(--space-4) var(--space-2)">
+            <button class="chip" id="teacher-filter-chip" onclick="filterDiscoverTeachers(this)">🎓 Verified Teachers</button>
+            <button class="btn btn-ghost btn-sm" id="post-intent-btn" style="display:none;float:right;margin-top:-2px" onclick="openCreateIntent()">+ Post Intent</button>
+          </div>
           <div id="discoverPeople"></div>
-        </div>
-        <div id="discover-tab-intents" class="comm-tab-panel">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) var(--space-4) var(--space-2)">
-            <div style="font-size:var(--text-xs);color:var(--text-tertiary)">What are practitioners looking for?</div>
-            <button class="btn btn-primary btn-sm" id="post-intent-btn" onclick="openCreateIntent()" style="display:none">+ Post Intent</button>
-          </div>
-          <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);overflow-x:auto;scrollbar-width:none" id="intentCategoryFilters">
-            <button class="chip active" onclick="filterIntents(null,this)">All</button>
-            <button class="chip" onclick="filterIntents('MEDITATION_PARTNER',this)">Meditation Partner</button>
-            <button class="chip" onclick="filterIntents('STUDY_GROUP',this)">Study Group</button>
-            <button class="chip" onclick="filterIntents('BHIKKHU_GUIDANCE',this)">Bhikkhu Guidance</button>
-            <button class="chip" onclick="filterIntents('MENTORSHIP',this)">Mentorship</button>
-            <button class="chip" onclick="filterIntents('DHARMA_DISCUSSION',this)">Dharma Discussion</button>
-            <button class="chip" onclick="filterIntents('SEEKING_VOLUNTEERS',this)">Volunteers</button>
-            <button class="chip" onclick="filterIntents('SKILL_SHARE',this)">Skill Share</button>
-          </div>
-          <div id="discoverIntents" style="padding:0 var(--space-4) var(--space-4)"></div>
-        </div>
-
-        <div id="discover-tab-teachers" class="comm-tab-panel">
-          <div style="padding:var(--space-3) var(--space-4) var(--space-2)">
-            <p style="font-size:var(--text-xs);color:var(--text-tertiary)">Verified teachers and clergy of the Sangham community.</p>
-          </div>
-          <div id="discoverTeachers" style="padding:0 var(--space-4) var(--space-4)"></div>
         </div>
 
         <div id="discover-tab-events" class="comm-tab-panel">
@@ -1715,13 +1707,15 @@ showToast(err.message, 'error');
 // ============================================================
 let discoverCategories = [];
 
-let _discoverEventsLoaded   = false;
-let _discoverIntentsLoaded  = false;
-let _discoverTeachersLoaded = false;
+let _discoverEventsLoaded = false;
+let _discoverIntentFilter = null;
+let _discoverTeacherFilter = false;
 
 async function loadDiscover() {
   const catContainer = document.getElementById('discoverCategories');
   const pplContainer = document.getElementById('discoverPeople');
+  const postIntentBtn = document.getElementById('post-intent-btn');
+  if (postIntentBtn && state.user) postIntentBtn.style.display = '';
 
   if (!discoverCategories.length) {
     try {
@@ -1740,10 +1734,8 @@ function switchDiscoverTab(tab, btn) {
   document.querySelectorAll('#tab-discover .comm-tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('discover-tab-' + tab)?.classList.add('active');
-  if (tab === 'people')   loadDiscover();
-  if (tab === 'events'   && !_discoverEventsLoaded)   loadDiscoverEvents();
-  if (tab === 'intents'  && !_discoverIntentsLoaded)  loadDiscoverIntents(null);
-  if (tab === 'teachers' && !_discoverTeachersLoaded) loadDiscoverTeachers();
+  if (tab === 'people') loadDiscover();
+  if (tab === 'events' && !_discoverEventsLoaded) loadDiscoverEvents();
 }
 
 async function loadDiscoverEvents(type) {
@@ -1815,7 +1807,13 @@ async function fetchDiscoverPeople(params) {
   const ppl = document.getElementById('discoverPeople');
   ppl.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
-    const qs = new URLSearchParams({ limit: 20, ...params }).toString();
+    const merged = {
+      limit: 20,
+      ...params,
+      ...(_discoverIntentFilter  ? { seekingIntent: _discoverIntentFilter }  : {}),
+      ...(_discoverTeacherFilter ? { isVerifiedTeacher: true }               : {}),
+    };
+    const qs = new URLSearchParams(merged).toString();
     const data = await api('GET', `/discover/people?${qs}`);
     const people = data.data || data;
     if (!people.length) {
@@ -1826,6 +1824,28 @@ async function fetchDiscoverPeople(params) {
   } catch(err) {
     ppl.innerHTML = renderEmptyState('discover');
   }
+}
+
+function filterDiscoverIntent(category, chip) {
+  document.querySelectorAll('#intentFilters .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  // Clear teacher filter when switching intent
+  _discoverTeacherFilter = false;
+  const teacherChip = document.getElementById('teacher-filter-chip');
+  if (teacherChip) teacherChip.classList.remove('active');
+  _discoverIntentFilter = category;
+  fetchDiscoverPeople(state.discoverFilter || {});
+}
+
+function filterDiscoverTeachers(chip) {
+  _discoverTeacherFilter = !_discoverTeacherFilter;
+  chip.classList.toggle('active', _discoverTeacherFilter);
+  // Clear intent filter when toggling teachers
+  if (_discoverTeacherFilter) {
+    _discoverIntentFilter = null;
+    document.querySelectorAll('#intentFilters .chip').forEach((c, i) => c.classList.toggle('active', i === 0));
+  }
+  fetchDiscoverPeople(state.discoverFilter || {});
 }
 
 function filterDiscover(filter, chip) {
