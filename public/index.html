@@ -575,6 +575,25 @@ round:var(--error-600)}
     .toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:transform var(--duration-fast) var(--ease-out);box-shadow:0 1px 3px rgba(0,0,0,.2)}
     .toggle-switch input:checked + .toggle-slider{background:var(--saffron-500)}
     .toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px)}
+    .intent-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-3);transition:all var(--duration-fast) var(--ease-out)}
+    .intent-card:hover{border-color:var(--saffron-300);box-shadow:var(--shadow-1)}
+    .intent-category-badge{display:inline-block;background:var(--saffron-50);color:var(--saffron-700);font-size:var(--text-2xs);font-weight:var(--weight-semibold);padding:2px var(--space-2);border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)}
+    .intent-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);line-height:1.4}
+    .intent-meta{font-size:var(--text-xs);color:var(--text-tertiary);display:flex;gap:var(--space-3);align-items:center}
+    .intent-author-row{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-3)}
+    .teacher-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-3);display:flex;gap:var(--space-3)}
+    .teacher-card-body{flex:1;min-width:0}
+    .teacher-name-row{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)}
+    .teacher-name{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .teacher-traditions{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-2)}
+    .teacher-bio{font-size:var(--text-sm);color:var(--text-secondary);line-height:1.5;margin:var(--space-2) 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .daan-tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-2);margin-bottom:var(--space-2)}
+    .daan-tier-btn{padding:var(--space-3);border:1.5px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-sunken);font-family:var(--font-body);font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-secondary);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .daan-tier-btn:hover{border-color:var(--saffron-400);color:var(--saffron-700);background:var(--saffron-50)}
+    .daan-tier-btn.active{background:var(--saffron-500);border-color:var(--saffron-500);color:white;box-shadow:0 2px 8px rgba(212,168,67,.4)}
+    .teacher-apply-section{margin-top:var(--space-4);padding:var(--space-4);background:var(--surface-secondary);border-radius:var(--radius-xl)}
+    .dhamma-daan-home-btn{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);background:linear-gradient(135deg,var(--saffron-50),var(--saffron-100));border:1px solid var(--saffron-200);border-radius:var(--radius-xl);cursor:pointer;text-align:left;width:100%;font-family:var(--font-body);margin-bottom:var(--space-3)}
+    .dhamma-daan-home-btn:hover{background:linear-gradient(135deg,var(--saffron-100),var(--saffron-200));border-color:var(--saffron-300)}
 
     /* Text reader panel */
     .text-reader{padding:var(--space-4)}
@@ -703,6 +722,8 @@ round:var(--error-600)}
         <div class="comm-tabs" id="discoverTabs" style="border-bottom:1px solid var(--border-subtle)">
           <button class="comm-tab-btn active" onclick="switchDiscoverTab('people',this)">People</button>
           <button class="comm-tab-btn" onclick="switchDiscoverTab('events',this)">Events</button>
+          <button class="comm-tab-btn" onclick="switchDiscoverTab('intents',this)">Connect</button>
+          <button class="comm-tab-btn" onclick="switchDiscoverTab('teachers',this)">Teachers</button>
         </div>
         <div id="discover-tab-people" class="comm-tab-panel active">
           <div class="search-bar" style="margin:var(--space-3) var(--space-4) var(--space-2)">
@@ -712,6 +733,31 @@ round:var(--error-600)}
           <div class="chip-scroll" id="discoverCategories"></div>
           <div id="discoverPeople"></div>
         </div>
+        <div id="discover-tab-intents" class="comm-tab-panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) var(--space-4) var(--space-2)">
+            <div style="font-size:var(--text-xs);color:var(--text-tertiary)">What are practitioners looking for?</div>
+            <button class="btn btn-primary btn-sm" id="post-intent-btn" onclick="openCreateIntent()" style="display:none">+ Post Intent</button>
+          </div>
+          <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);overflow-x:auto;scrollbar-width:none" id="intentCategoryFilters">
+            <button class="chip active" onclick="filterIntents(null,this)">All</button>
+            <button class="chip" onclick="filterIntents('MEDITATION_PARTNER',this)">Meditation Partner</button>
+            <button class="chip" onclick="filterIntents('STUDY_GROUP',this)">Study Group</button>
+            <button class="chip" onclick="filterIntents('BHIKKHU_GUIDANCE',this)">Bhikkhu Guidance</button>
+            <button class="chip" onclick="filterIntents('MENTORSHIP',this)">Mentorship</button>
+            <button class="chip" onclick="filterIntents('DHARMA_DISCUSSION',this)">Dharma Discussion</button>
+            <button class="chip" onclick="filterIntents('SEEKING_VOLUNTEERS',this)">Volunteers</button>
+            <button class="chip" onclick="filterIntents('SKILL_SHARE',this)">Skill Share</button>
+          </div>
+          <div id="discoverIntents" style="padding:0 var(--space-4) var(--space-4)"></div>
+        </div>
+
+        <div id="discover-tab-teachers" class="comm-tab-panel">
+          <div style="padding:var(--space-3) var(--space-4) var(--space-2)">
+            <p style="font-size:var(--text-xs);color:var(--text-tertiary)">Verified teachers and clergy of the Sangham community.</p>
+          </div>
+          <div id="discoverTeachers" style="padding:0 var(--space-4) var(--space-4)"></div>
+        </div>
+
         <div id="discover-tab-events" class="comm-tab-panel">
           <div style="padding:var(--space-3) var(--space-4) var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap" id="eventTypeFilters">
             <button class="chip active" onclick="filterDiscoverEvents(null,this)">All</button>
@@ -775,6 +821,9 @@ round:var(--error-600)}
           <div id="learnCircles"></div>
         </div>
         <div id="learn-tab-sessions" class="comm-tab-panel" style="padding:var(--space-4)">
+          <div id="host-session-row" style="display:none;margin-bottom:var(--space-3)">
+            <button class="btn btn-primary" style="width:100%" onclick="openCreateSession()">+ Host a Session</button>
+          </div>
           <div id="learnSessions"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
         </div>
         <div id="learn-tab-library" class="comm-tab-panel" style="padding:var(--space-2) 0 0">
@@ -998,6 +1047,151 @@ round:var(--error-600)}
         <div class="input-group"><label>City (optional)</label><input id="cc-city" class="input" placeholder="Mumbai"></div>
         <div class="input-group"><label>Description (optional)</label><textarea id="cc-desc" class="input" rows="3" style="resize:vertical" placeholder="What is this community about?"></textarea></div>
         <div class="input-group"><label>Website URL (optional)</label><input id="cc-website" class="input" type="url" placeholder="https://…"></div>
+      </div>
+    </div>
+
+    <!-- PANEL: CREATE INTENT -->
+    <div id="panel-create-intent" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-create-intent')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Post an Intent</div>
+        <button class="btn btn-primary btn-sm" id="submit-intent-btn" onclick="submitCreateIntent()">Post</button>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4)">Intents let you express what you're looking for. Up to 3 open intents at a time.</p>
+        <div class="input-group"><label>Title *</label><input id="intent-title" class="input" placeholder="e.g. Looking for a Theravada meditation partner in Mumbai"></div>
+        <div class="input-group"><label>Category *</label>
+          <select id="intent-category" class="create-form-select">
+            <option value="">Select category…</option>
+            <option value="MEDITATION_PARTNER">Meditation Partner</option>
+            <option value="STUDY_GROUP">Study Group</option>
+            <option value="LOCAL_SANGHA">Local Sangha</option>
+            <option value="SEEKING_VOLUNTEERS">Seeking Volunteers</option>
+            <option value="SEEKING_TRANSLATORS">Seeking Translators</option>
+            <option value="BUDDHIST_FOUNDERS">Buddhist Founders</option>
+            <option value="BHIKKHU_GUIDANCE">Bhikkhu Guidance</option>
+            <option value="EVENT_COLLABORATORS">Event Collaborators</option>
+            <option value="DHARMA_DISCUSSION">Dharma Discussion</option>
+            <option value="LANGUAGE_EXCHANGE">Language Exchange</option>
+            <option value="MENTORSHIP">Mentorship</option>
+            <option value="SKILL_SHARE">Skill Share</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Description (optional)</label><textarea id="intent-desc" class="input" rows="3" style="resize:vertical" placeholder="Tell practitioners more about what you're looking for…"></textarea></div>
+        <div class="input-group"><label>Scope</label>
+          <select id="intent-scope" class="create-form-select">
+            <option value="CITY">City</option>
+            <option value="STATE">State</option>
+            <option value="COUNTRY">Country</option>
+            <option value="GLOBAL">Global</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL: DHAMMA DAAN -->
+    <div id="panel-dhamma-daan" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-dhamma-daan')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Dhamma Daan 🙏</div>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div class="daan-header-text">
+          <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--space-4)">Your contribution sustains the Digital Sangha. 50% goes to platform operations; 50% to the Dhamma Daan Fund — supporting translation, education, and community service. Contribution amount never affects ranking or visibility.</p>
+        </div>
+        <div class="input-group"><label>Select Amount</label>
+          <div class="daan-tier-grid" id="daanTierGrid">
+            <button class="daan-tier-btn" data-amount="49"    onclick="selectDaanTier(49,this)">₹49</button>
+            <button class="daan-tier-btn active" data-amount="108" onclick="selectDaanTier(108,this)">₹108</button>
+            <button class="daan-tier-btn" data-amount="501"   onclick="selectDaanTier(501,this)">₹501</button>
+            <button class="daan-tier-btn" data-amount="5000"  onclick="selectDaanTier(5000,this)">₹5,000</button>
+            <button class="daan-tier-btn" data-amount="50000" onclick="selectDaanTier(50000,this)">₹50,000</button>
+          </div>
+        </div>
+        <div class="input-group" style="margin-top:var(--space-2)">
+          <label>Or enter custom amount (₹)</label>
+          <input id="daan-custom" class="input" type="number" min="49" placeholder="e.g. 251">
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Donate ₹108</button>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Secure payment via Razorpay. No data shared beyond what is required.</p>
+      </div>
+    </div>
+
+    <!-- PANEL: CREATE SESSION -->
+    <div id="panel-create-session" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-create-session')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Host a Session</div>
+        <button class="btn btn-primary btn-sm" id="submit-session-btn" onclick="submitCreateSession()">Schedule</button>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div class="input-group"><label>Title *</label><input id="sess-title" class="input" placeholder="e.g. Sunday Sutta Reading"></div>
+        <div class="input-group"><label>Session Type *</label>
+          <select id="sess-type" class="create-form-select">
+            <option value="">Select type…</option>
+            <option value="DHARMA_TALK">Dharma Talk</option>
+            <option value="GUIDED_MEDITATION">Guided Meditation</option>
+            <option value="SUTTA_STUDY">Sutta Study</option>
+            <option value="QA">Q&amp;A</option>
+            <option value="CEREMONY">Ceremony</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Scheduled At *</label><input id="sess-start" class="input" type="datetime-local"></div>
+        <div class="input-group"><label>Tradition (optional)</label>
+          <select id="sess-tradition" class="create-form-select">
+            <option value="">Any</option>
+            <option value="THERAVADA">Theravada</option>
+            <option value="MAHAYANA">Mahayana</option>
+            <option value="VAJRAYANA">Vajrayana</option>
+            <option value="NAVAYANA">Navayana</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Language</label>
+          <select id="sess-lang" class="create-form-select">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="mr">Marathi</option>
+            <option value="pa">Punjabi</option>
+            <option value="ta">Tamil</option>
+            <option value="si">Sinhala</option>
+            <option value="th">Thai</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Description (optional)</label><textarea id="sess-desc" class="input" rows="3" style="resize:vertical"></textarea></div>
+        <div class="input-group"><label>Max Viewers (0 = unlimited)</label><input id="sess-max" class="input" type="number" min="0" value="0"></div>
+      </div>
+    </div>
+
+    <!-- PANEL: TEACHER APPLICATION -->
+    <div id="panel-teacher-apply" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-teacher-apply')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Apply for Teacher Badge</div>
+        <button class="btn btn-primary btn-sm" id="teacher-apply-submit-btn" onclick="submitTeacherApplication()">Submit Application</button>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div style="background:var(--saffron-50);border:1px solid var(--saffron-200);border-radius:var(--radius-lg);padding:var(--space-3);margin-bottom:var(--space-4)">
+          <div style="font-size:var(--text-sm);color:var(--saffron-800);font-weight:var(--weight-semibold);margin-bottom:var(--space-1)">🎓 Verified Teacher Badge</div>
+          <div style="font-size:var(--text-xs);color:var(--saffron-700)">Verified teachers appear in the Teachers directory and can host public sessions. Applications are reviewed by our team within 7 days.</div>
+        </div>
+        <div class="input-group"><label>Teaching Credentials *</label>
+          <textarea id="ta-credentials" class="input" rows="3" style="resize:vertical" placeholder="e.g. Ordained in the Ajahn Chah lineage, 10-day Vipassana facilitator, ordained Ambedkarite Dhamma Teacher…"></textarea>
+        </div>
+        <div class="input-group"><label>Lineage / Tradition</label>
+          <input id="ta-lineage" class="input" placeholder="e.g. Soto Zen, Ajahn Chah lineage, Navayana Buddhist">
+        </div>
+        <div class="input-group"><label>Personal Statement</label>
+          <textarea id="ta-statement" class="input" rows="5" style="resize:vertical" placeholder="Describe your teaching practice, what topics you teach, and your motivation for joining Sangham as a verified teacher…"></textarea>
+        </div>
       </div>
     </div>
 
@@ -1521,7 +1715,9 @@ showToast(err.message, 'error');
 // ============================================================
 let discoverCategories = [];
 
-let _discoverEventsLoaded = false;
+let _discoverEventsLoaded   = false;
+let _discoverIntentsLoaded  = false;
+let _discoverTeachersLoaded = false;
 
 async function loadDiscover() {
   const catContainer = document.getElementById('discoverCategories');
@@ -1544,8 +1740,10 @@ function switchDiscoverTab(tab, btn) {
   document.querySelectorAll('#tab-discover .comm-tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('discover-tab-' + tab)?.classList.add('active');
-  if (tab === 'people') loadDiscover();
-  if (tab === 'events' && !_discoverEventsLoaded) loadDiscoverEvents();
+  if (tab === 'people')   loadDiscover();
+  if (tab === 'events'   && !_discoverEventsLoaded)   loadDiscoverEvents();
+  if (tab === 'intents'  && !_discoverIntentsLoaded)  loadDiscoverIntents(null);
+  if (tab === 'teachers' && !_discoverTeachersLoaded) loadDiscoverTeachers();
 }
 
 async function loadDiscoverEvents(type) {
@@ -2277,6 +2475,10 @@ function renderProfileView(user, isOwn) {
       </div>
     </div>
     ${actions}
+    ${isOwn ? `<div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4)">
+      ${!user.isVerifiedTeacher ? `<button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openTeacherApply()">🎓 Apply for Teacher Badge</button>` : ''}
+      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openDhammaDaan()">🪔 Support Sangham (Dhamma Daan)</button>
+    </div>` : ''}
     ${traditions || tags ? `<div class="profile-traditions">${traditions}${tags}</div>` : ''}
     <div id="profile-contributions-container"></div>
     <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Posts</h2>
@@ -3084,6 +3286,8 @@ async function loadLearnSessions() {
   const el = document.getElementById('learnSessions');
   if (!el) return;
   el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  const hostRow = document.getElementById('host-session-row');
+  if (hostRow && state.user && SESSION_HOST_ROLES.has(state.user.role)) hostRow.style.display = '';
   try {
     const sessions = await api('GET', '/sessions');
     if (!sessions.length) {
@@ -3621,6 +3825,314 @@ async function loadCommunityContributions(assocId) {
       <div style="padding:0 var(--space-4)">${items}</div>`;
   } catch(err) {
     el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">Unable to load contributors.</p>';
+  }
+}
+
+// ============================================================
+//  SPRINT 9: INTENTS + TEACHERS DISCOVERY
+// ============================================================
+const INTENT_LABELS = {
+  MEDITATION_PARTNER: 'Meditation Partner',
+  STUDY_GROUP:        'Study Group',
+  LOCAL_SANGHA:       'Local Sangha',
+  SEEKING_VOLUNTEERS: 'Volunteers',
+  SEEKING_TRANSLATORS:'Translators',
+  BUDDHIST_FOUNDERS:  'Founders',
+  BHIKKHU_GUIDANCE:   'Bhikkhu Guidance',
+  EVENT_COLLABORATORS:'Event Collaborators',
+  DHARMA_DISCUSSION:  'Dharma Discussion',
+  LANGUAGE_EXCHANGE:  'Language Exchange',
+  MENTORSHIP:         'Mentorship',
+  SKILL_SHARE:        'Skill Share',
+};
+
+async function loadDiscoverIntents(category) {
+  const el = document.getElementById('discoverIntents');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  const postBtn = document.getElementById('post-intent-btn');
+  if (postBtn && state.user) postBtn.style.display = '';
+  try {
+    const qs = category ? `?category=${category}` : '';
+    const data = await api('GET', `/intents${qs}`);
+    const intents = data.data || data || [];
+    if (!intents.length) {
+      el.innerHTML = '<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">🤝</div><div class="empty-state-title">No intents yet</div><div class="empty-state-body">Be the first to post an intent</div></div>';
+      _discoverIntentsLoaded = !category;
+      return;
+    }
+    el.innerHTML = intents.map(i => renderIntentCard(i)).join('');
+    _discoverIntentsLoaded = !category;
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">Unable to load intents.</p>';
+  }
+}
+
+function renderIntentCard(intent) {
+  const label = INTENT_LABELS[intent.category] || intent.category.replace(/_/g,' ');
+  const author = intent.user || intent.author || {};
+  const scopeLabel = intent.scope === 'GLOBAL' ? '🌍 Global' : intent.scope === 'COUNTRY' ? '🏳️ Nationwide' : intent.scope === 'STATE' ? '🗺️ State' : '📍 City';
+  return `<div class="intent-card">
+    <span class="intent-category-badge">${escHtml(label)}</span>
+    <div class="intent-title">${escHtml(intent.title)}</div>
+    ${intent.description ? `<div class="intent-meta" style="margin-bottom:var(--space-2);color:var(--text-secondary);font-size:var(--text-xs)">${escHtml(intent.description)}</div>` : ''}
+    <div class="intent-meta">
+      <span>${scopeLabel}</span>
+      <span>·</span>
+      <span>${timeAgo(intent.createdAt)}</span>
+      ${author.displayName ? `<span>·</span><span style="cursor:pointer;color:var(--saffron-700)" onclick="openProfile('${author.id}')">${escHtml(author.displayName)}</span>` : ''}
+    </div>
+  </div>`;
+}
+
+function filterIntents(category, chip) {
+  document.querySelectorAll('#intentCategoryFilters .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  _discoverIntentsLoaded = false;
+  loadDiscoverIntents(category);
+}
+
+function openCreateIntent() {
+  if (!state.user) { showToast('Sign in to post an intent', 'info'); return; }
+  openPanel('panel-create-intent');
+}
+
+async function submitCreateIntent() {
+  const category = document.getElementById('intent-category')?.value;
+  const title    = document.getElementById('intent-title')?.value.trim();
+  const desc     = document.getElementById('intent-desc')?.value.trim();
+  const scope    = document.getElementById('intent-scope')?.value || 'CITY';
+
+  if (!category) { showToast('Category is required', 'error'); return; }
+  if (!title)    { showToast('Title is required', 'error'); return; }
+
+  const btn = document.getElementById('submit-intent-btn');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  try {
+    await api('POST', '/intents', { category, title, description: desc || undefined, scope });
+    showToast('Intent posted!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    closePanel('panel-create-intent');
+    _discoverIntentsLoaded = false;
+    loadDiscoverIntents(null);
+    document.querySelectorAll('#intentCategoryFilters .chip').forEach((c,i) => {
+      c.classList.toggle('active', i === 0);
+    });
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Post';
+  }
+}
+
+async function loadDiscoverTeachers() {
+  const el = document.getElementById('discoverTeachers');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const data = await api('GET', '/discover/people?isVerifiedTeacher=true&limit=30');
+    const teachers = data.data || data || [];
+    if (!teachers.length) {
+      el.innerHTML = '<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">🎓</div><div class="empty-state-title">No verified teachers yet</div></div>';
+      _discoverTeachersLoaded = true;
+      return;
+    }
+    el.innerHTML = teachers.map(t => renderTeacherCard(t)).join('');
+    _discoverTeachersLoaded = true;
+  } catch(err) {
+    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">Unable to load teachers.</p>';
+  }
+}
+
+function renderTeacherCard(t) {
+  const tradBadges = (t.traditions || []).map(tr => `<span class="chip" style="font-size:var(--text-2xs);padding:2px var(--space-2)">${TRAD_LABELS[tr] || tr}</span>`).join('');
+  const followerCount = t._count?.followers ?? 0;
+  const isMe = state.user?.id === t.id;
+  return `<div class="teacher-card" onclick="openProfile('${t.id}')">
+    <div class="avatar avatar-lg" style="background:var(--surface-secondary);flex-shrink:0;overflow:hidden">
+      ${t.profilePhoto ? `<img src="${escHtml(t.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" loading="lazy">` : `<span style="font-size:var(--text-lg)">${(t.displayName||'?')[0].toUpperCase()}</span>`}
+    </div>
+    <div class="teacher-card-body">
+      <div class="teacher-name-row">
+        <span class="teacher-name">${escHtml(t.displayName || 'Unknown')}</span>
+        <span class="verified-badge" title="Verified Teacher" style="font-size:var(--text-xs)">🎓</span>
+        ${t.isVerifiedClergy ? `<span class="verified-badge" title="Verified Clergy" style="font-size:var(--text-xs)">☸️</span>` : ''}
+      </div>
+      ${t.bio ? `<div class="teacher-bio">${escHtml(t.bio)}</div>` : ''}
+      <div class="teacher-traditions">${tradBadges}</div>
+      <div style="display:flex;gap:var(--space-3);margin-top:var(--space-2);align-items:center;flex-wrap:wrap">
+        ${followerCount ? `<span style="font-size:var(--text-xs);color:var(--text-tertiary)">${followerCount} followers</span>` : ''}
+        ${!isMe ? `<button class="btn btn-ghost btn-sm" style="font-size:var(--text-xs);padding:var(--space-1) var(--space-3)" onclick="event.stopPropagation();followUser('${t.id}',this)">Follow</button>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+//  SPRINT 9: TEACHER APPLICATION (from own profile)
+// ============================================================
+function openTeacherApply() {
+  if (!state.user) { showToast('Sign in to apply', 'info'); return; }
+  openPanel('panel-teacher-apply');
+}
+
+async function submitTeacherApplication() {
+  const credentials = document.getElementById('ta-credentials')?.value.trim();
+  const lineage     = document.getElementById('ta-lineage')?.value.trim();
+  const statement   = document.getElementById('ta-statement')?.value.trim();
+
+  if (!credentials) { showToast('Credentials are required', 'error'); return; }
+
+  const fullCredentials = statement ? `${credentials}\n\nPersonal Statement:\n${statement}` : credentials;
+
+  const btn = document.getElementById('teacher-apply-submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  try {
+    await api('POST', '/teachers/apply', {
+      credentials: fullCredentials,
+      ...(lineage ? { lineage } : {}),
+    });
+    showToast('Application submitted! We\'ll review within 7 days.', 'success');
+    closePanel('panel-teacher-apply');
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Submit Application';
+  }
+}
+
+// ============================================================
+//  SPRINT 10: DHAMMA DAAN (RAZORPAY)
+// ============================================================
+let _daanAmount = 108;
+
+function openDhammaDaan() {
+  if (!state.user) { showToast('Sign in to donate', 'info'); return; }
+  openPanel('panel-dhamma-daan');
+  _daanAmount = 108;
+  document.querySelectorAll('.daan-tier-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.amount) === 108);
+  });
+  const custom = document.getElementById('daan-custom');
+  if (custom) custom.value = '';
+}
+
+function selectDaanTier(amount, btn) {
+  _daanAmount = amount;
+  document.querySelectorAll('.daan-tier-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const custom = document.getElementById('daan-custom');
+  if (custom && btn) custom.value = '';
+  const payBtn = document.getElementById('daan-pay-btn');
+  if (payBtn) payBtn.textContent = 'Donate ₹' + amount.toLocaleString('en-IN');
+}
+
+async function submitDhammaDaan() {
+  const customEl = document.getElementById('daan-custom');
+  const customVal = customEl ? parseInt(customEl.value) : 0;
+  const amount = customVal > 0 ? customVal : _daanAmount;
+  if (!amount || amount < 1) { showToast('Please select or enter an amount', 'error'); return; }
+
+  const btn = document.getElementById('daan-pay-btn');
+  btn.disabled = true; btn.textContent = 'Processing…';
+  try {
+    const order = await api('POST', '/dhamma-daan/orders', { amountPaise: amount * 100 });
+    if (!order.orderId) throw new Error('Could not create payment order');
+
+    if (typeof Razorpay === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('Could not load payment SDK'));
+        document.head.appendChild(s);
+      });
+    }
+
+    const rzp = new Razorpay({
+      key: order.keyId,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Sangham',
+      description: 'Dhamma Daan — Supporting Buddhist communities',
+      order_id: order.orderId,
+      prefill: { name: state.user.displayName || '', email: state.user.email || '' },
+      theme: { color: '#D4A843' },
+      handler: async (response) => {
+        try {
+          await api('POST', '/dhamma-daan/verify', {
+            razorpay_order_id:   response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature:  response.razorpay_signature,
+          });
+          showToast('Thank you! Your Dhamma Daan has been received. 🙏', 'success');
+          closePanel('panel-dhamma-daan');
+        } catch(e) {
+          showToast('Payment verification failed. Contact support.', 'error');
+        }
+      },
+    });
+    rzp.open();
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Donate ₹' + amount;
+  }
+}
+
+// ============================================================
+//  SPRINT 10: SESSION CREATION
+// ============================================================
+const SESSION_HOST_ROLES = new Set(['BHIKKHU','BHIKKHUNI','SCHOLAR','ASSOCIATION_ADMIN','TRUSTED','MODERATOR','SUPER_ADMIN']);
+
+function openCreateSession() {
+  if (!state.user) { showToast('Sign in to host a session', 'info'); return; }
+  if (!SESSION_HOST_ROLES.has(state.user.role)) {
+    showToast('Only verified teachers, clergy, scholars or admins can host sessions', 'info');
+    return;
+  }
+  const now = new Date();
+  now.setHours(now.getHours() + 1, 0, 0, 0);
+  const defaultStart = now.toISOString().slice(0, 16);
+  const sessStart = document.getElementById('sess-start');
+  if (sessStart && !sessStart.value) sessStart.value = defaultStart;
+  openPanel('panel-create-session');
+}
+
+async function submitCreateSession() {
+  const title       = document.getElementById('sess-title')?.value.trim();
+  const sessionType = document.getElementById('sess-type')?.value;
+  const startVal    = document.getElementById('sess-start')?.value;
+  const tradition   = document.getElementById('sess-tradition')?.value;
+  const language    = document.getElementById('sess-lang')?.value || 'en';
+  const desc        = document.getElementById('sess-desc')?.value.trim();
+  const maxViewers  = parseInt(document.getElementById('sess-max')?.value) || 0;
+
+  if (!title)       { showToast('Title is required', 'error'); return; }
+  if (!sessionType) { showToast('Session type is required', 'error'); return; }
+  if (!startVal)    { showToast('Scheduled time is required', 'error'); return; }
+
+  const btn = document.getElementById('submit-session-btn');
+  btn.disabled = true; btn.textContent = 'Scheduling…';
+  try {
+    await api('POST', '/sessions', {
+      title,
+      sessionType,
+      scheduledAt: new Date(startVal).toISOString(),
+      language,
+      maxViewers,
+      ...(tradition ? { tradition }               : {}),
+      ...(desc      ? { description: desc }       : {}),
+    });
+    showToast('Session scheduled!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    closePanel('panel-create-session');
+    _learnTabLoaded.sessions = false;
+    loadLearnSessions();
+  } catch(err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Schedule';
   }
 }
 

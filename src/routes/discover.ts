@@ -52,7 +52,7 @@ function approxDistanceLabel(userGridLat: number, userGridLng: number,
  * Query params: tradition, tag, language, role, city, state, country, q (name search)
  */
 router.get('/people', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  const { tradition, tag, language, role, city, state, country, q } = req.query;
+  const { tradition, tag, language, role, city, state, country, q, isVerifiedTeacher } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
 
   // Only surface users who opted into discovery.
@@ -66,10 +66,11 @@ router.get('/people', authenticate, async (req: AuthRequest, res: Response): Pro
     ],
   };
 
-  if (tradition)  where.traditions = { has: tradition as Tradition };
-  if (language)   where.languages  = { has: language as string };
-  if (role)       where.role       = role;
-  if (q)          where.displayName = { contains: q as string, mode: 'insensitive' };
+  if (tradition)         where.traditions       = { has: tradition as Tradition };
+  if (language)          where.languages        = { has: language as string };
+  if (role)              where.role             = role;
+  if (q)                 where.displayName      = { contains: q as string, mode: 'insensitive' };
+  if (isVerifiedTeacher) where.isVerifiedTeacher = true;
   if (city)       where.location   = { ...(where.location as object || {}), city: { contains: city as string, mode: 'insensitive' } };
   if (state)      where.location   = { ...(where.location as object || {}), state: { contains: state as string, mode: 'insensitive' } };
   if (country)    where.location   = { ...(where.location as object || {}), country };
