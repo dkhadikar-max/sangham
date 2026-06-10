@@ -213,12 +213,14 @@ round:var(--error-600)}
     .daily-verse-actions button:hover{background:rgba(255,255,255,0.25);transform:translateY(-1px)}
 
     /* Community Pulse */
-    .community-pulse{margin:0 var(--space-4) var(--space-4);background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--space-4);box-shadow:var(--shadow-2)}
-    .pulse-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;font-size:var(--text-sm);color:var(--text-secondary)}
-    .pulse-item:first-child{padding-top:0}
-    .pulse-item:last-child{padding-bottom:0}
-    .pulse-icon{font-size:var(--text-lg);width:32px;text-align:center}
+    .community-pulse{margin:0 var(--space-4) var(--space-4);background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:var(--space-2);box-shadow:var(--shadow-2)}
+    .pulse-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);font-size:var(--text-sm);color:var(--text-secondary);min-height:44px;cursor:pointer;border-radius:var(--radius-md);transition:background var(--duration-fast) var(--ease-out);border:none;background:none;width:100%;text-align:left;font-family:var(--font-body)}
+    .pulse-item+.pulse-item{border-top:1px solid var(--border-subtle)}
+    .pulse-item:hover,.pulse-item:focus-visible{background:var(--surface-sunken);outline:none}
+    .pulse-icon{font-size:var(--text-lg);width:28px;text-align:center;flex-shrink:0}
+    .pulse-text{flex:1}
     .pulse-count{font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .pulse-chevron{width:16px;height:16px;stroke:var(--text-tertiary);fill:none;stroke-width:2;flex-shrink:0;margin-left:auto}
 
     /* Post Card */
     .post-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);margin:0 var(--space-4) var(--space-4);overflow:hidden;transition:all var(--duration-fast) var(--ease-out);animation:fadeInScale var(--duration-normal) var(--ease-out)}
@@ -960,11 +962,7 @@ round:var(--error-600)}
           <div class="presence-item"><div class="avatar avatar-md avatar-online" style="background:var(--saffron-100)">+12</div><span class="presence-name">More</span></div>
         </div>
         <div id="home-daily-verse"></div>
-        <div class="community-pulse" id="communityPulse">
-          <div class="pulse-item"><span class="pulse-icon">📝</span><span><span class="pulse-count">3</span> new reflections today</span></div>
-          <div class="pulse-item"><span class="pulse-icon">📅</span><span><span class="pulse-count">2</span> events this week</span></div>
-          <div class="pulse-item"><span class="pulse-icon">🙏</span><span><span class="pulse-count">1</span> new practitioner</span></div>
-        </div>
+        <div class="community-pulse" id="communityPulse" style="display:none"></div>
         <div id="home-upcoming-events"></div>
         <h2 class="section-title" data-i18n="home.your_feed">Your Feed</h2>
 <div id="home-feed"></div>
@@ -1609,6 +1607,7 @@ currentPartnerId: null,
   theme: 'light',
 };
 let socket = null;
+let _pulseState = { reflections: -1, events: -1 };
 
 // ============================================================
 //  PERSISTENCE
@@ -2018,20 +2017,56 @@ function closeBottomSheet() {
 // ============================================================
 //  HOME TAB
 // ============================================================
+function _updatePulseUI() {
+  const pulse = document.getElementById('communityPulse');
+  if (!pulse) return;
+  const items = [];
+  if (_pulseState.reflections > 0) {
+    const c = _pulseState.reflections;
+    items.push(`<button class="pulse-item" onclick="document.getElementById('home-feed')?.scrollIntoView({behavior:'smooth'})" aria-label="${c} new reflection${c!==1?'s':''} today">
+      <span class="pulse-icon">📝</span>
+      <span class="pulse-text"><span class="pulse-count">${c}</span> new reflection${c!==1?'s':''} today</span>
+      <svg class="pulse-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`);
+  }
+  if (_pulseState.events > 0) {
+    const c = _pulseState.events;
+    items.push(`<button class="pulse-item" onclick="switchTab('discover');setTimeout(()=>document.querySelector('#discoverTabs .comm-tab-btn:nth-child(2)')?.click(),200)" aria-label="${c} upcoming event${c!==1?'s':''}">
+      <span class="pulse-icon">📅</span>
+      <span class="pulse-text"><span class="pulse-count">${c}</span> upcoming event${c!==1?'s':''}</span>
+      <svg class="pulse-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`);
+  }
+  if (items.length) {
+    pulse.innerHTML = items.join('');
+    pulse.style.display = '';
+  } else if (_pulseState.reflections !== -1 && _pulseState.events !== -1) {
+    pulse.style.display = 'none';
+  }
+}
+
 async function loadHome() {
+  _pulseState = { reflections: -1, events: -1 };
+  const pulse = document.getElementById('communityPulse');
+  if (pulse) pulse.style.display = 'none';
   loadDailyVerse();
   loadHomeUpcomingEvents();
   const container = document.getElementById('home-feed');
   container.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
     const data = await api('GET', '/users/me/feed?limit=20');
-const posts = data.data || data;
+    const posts = data.data || data;
+    const today = new Date().toISOString().slice(0, 10);
+    _pulseState.reflections = posts.filter(p => p.createdAt?.slice(0, 10) === today).length;
+    _updatePulseUI();
     if (!posts.length) {
       container.innerHTML = renderEmptyState('feed');
       return;
     }
     container.innerHTML = posts.map((post, i) => renderPostCard(post, false, i * 0.05)).join('');
   } catch (err) {
+    _pulseState.reflections = 0;
+    _updatePulseUI();
     container.innerHTML = renderEmptyState('feed-error', err.message);
   }
 }
@@ -4075,6 +4110,10 @@ async function loadHomeUpcomingEvents() {
   try {
     const data = await api('GET', '/events?limit=6');
     const events = data.data || data || [];
+    const now = new Date();
+    const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    _pulseState.events = events.filter(e => { const d = new Date(e.startsAt); return d >= now && d <= nextWeek; }).length;
+    _updatePulseUI();
     if (!events.length) return;
     container.innerHTML = `
       <div class="home-events-strip">
@@ -4091,7 +4130,7 @@ async function loadHomeUpcomingEvents() {
             </div>`).join('')}
         </div>
       </div>`;
-  } catch(e) { /* non-critical, fail silently */ }
+  } catch(e) { _pulseState.events = 0; _updatePulseUI(); }
 }
 
 async function loadCommunityModules(assocId) {
