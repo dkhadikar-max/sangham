@@ -36,7 +36,7 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
   const passwordHash = await bcrypt.hash(password, 12);
   const user = await prisma.user.create({
     data: { email, phone, displayName, country, passwordHash } as any,
-    select: { id: true, displayName: true, role: true, createdAt: true },
+    select: { id: true, displayName: true, role: true, preferredLanguage: true, createdAt: true },
   });
 
   // Create default privacy settings so user appears in Discover immediately
@@ -78,7 +78,7 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
   res.json({
     token: signToken(user.id),
     refreshToken: signRefreshToken(user.id),
-    user: { id: user.id, displayName: user.displayName, role: user.role },
+    user: { id: user.id, displayName: user.displayName, role: user.role, preferredLanguage: user.preferredLanguage || 'en' },
   });
 });
 

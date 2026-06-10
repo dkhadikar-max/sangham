@@ -15,6 +15,7 @@ const updateProfileSchema = z.object({
   city: z.string().optional(),
   traditions: z.array(z.nativeEnum(Tradition)).optional(),
   languages: z.array(z.string()).optional(),
+  preferredLanguage: z.enum(['en', 'hi', 'mr', 'ne', 'si', 'th', 'ta', 'te', 'kn', 'bn', 'gu', 'pa', 'ja', 'ko', 'zh']).optional(),
   templeAffiliation: z.string().optional(),
   profilePhoto: z.string().url().optional(),
   coverImage: z.string().url().optional(),
@@ -100,7 +101,7 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
       id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
       country: true, city: true, traditions: true, role: true,
       isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
-      languages: true, templeAffiliation: true, createdAt: true,
+      languages: true, preferredLanguage: true, templeAffiliation: true, createdAt: true,
       tags: { select: { tag: true } },
       _count: { select: { followers: true, following: true, posts: true } },
     },
@@ -134,7 +135,7 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response): Promise
   const updated = await prisma.user.update({
     where: { id: req.user!.id },
     data: parsed.data,
-    select: { id: true, displayName: true, bio: true, country: true, traditions: true },
+    select: { id: true, displayName: true, bio: true, country: true, traditions: true, preferredLanguage: true },
   });
   res.json(updated);
 });

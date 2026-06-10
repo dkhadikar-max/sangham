@@ -122,6 +122,7 @@ model User {
   role              UserRole   @default(PRACTITIONER)
   isVerifiedClergy  Boolean    @default(false) @map("is_verified_clergy")
   languages         String[]   // ISO 639-1 codes
+  preferredLanguage String     @default("en") @map("preferred_language")
   templeAffiliation String?    @map("temple_affiliation")
   passwordHash      String?    @map("password_hash")
   isActive          Boolean    @default(true) @map("is_active")
