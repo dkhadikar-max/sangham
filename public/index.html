@@ -384,7 +384,7 @@ round:var(--error-600)}
     .nav-create:active{transform:translateX(-50%) scale(0.95)}
     .nav-create svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none}
     /* ── Desktop sidebar ─────────────────────────────────────────────────── */
-    .desktop-sidebar{display:none;flex-direction:column;width:220px;min-width:220px;flex-shrink:0;border-right:1px solid var(--border-default);padding:var(--space-5) var(--space-3);border-radius:var(--radius-2xl) 0 0 var(--radius-2xl);overflow:hidden}
+    .desktop-sidebar{display:none;flex-direction:column;width:240px;min-width:240px;flex-shrink:0;border-right:1px solid var(--border-default);padding:var(--space-5) var(--space-3);overflow:hidden;transition:width 0.25s var(--ease-out),min-width 0.25s var(--ease-out),padding 0.25s var(--ease-out)}
     .ds-brand{display:flex;align-items:center;gap:var(--space-2);padding:0 var(--space-2) var(--space-4);margin-bottom:var(--space-2);border-bottom:1px solid var(--border-default)}
     .ds-nav{flex:1;display:flex;flex-direction:column;gap:2px}
     .ds-nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-secondary);border:none;background:none;cursor:pointer;width:100%;text-align:left;font-family:var(--font-body);transition:background var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
@@ -395,15 +395,32 @@ round:var(--error-600)}
     .ds-footer{margin-top:auto;padding-top:var(--space-4);border-top:1px solid var(--border-default)}
     .ds-user{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);cursor:pointer;transition:background var(--duration-fast) var(--ease-out);margin-bottom:var(--space-2)}
     .ds-user:hover{background:var(--surface-sunken)}
-    .ds-user-name{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+    .ds-user-name{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;max-width:200px;transition:opacity 0.2s var(--ease-out),max-width 0.25s var(--ease-out)}
     .ds-create-btn{width:100%;padding:var(--space-3) var(--space-4);background:linear-gradient(135deg,var(--saffron-500),var(--saffron-600));color:white;border:none;border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:var(--weight-semibold);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:var(--space-2);transition:opacity var(--duration-fast) var(--ease-out)}
     .ds-create-btn:hover{opacity:0.88}
     /* ── Desktop main column wrapper — fills remaining space on both mobile and desktop */
     .desktop-main-col{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden}
     /* ── Desktop layout ≥ 1024px ─────────────────────────────────────────── */
     @media(min-width:1024px){
-      .app-shell{flex-direction:row;max-width:1100px;height:92vh;border-radius:var(--radius-2xl);box-shadow:var(--shadow-5)}
+      #view-app{align-items:stretch}
+      .app-shell{flex-direction:row;max-width:100%;width:100%;height:100dvh;border-radius:0;box-shadow:none}
       .desktop-sidebar{display:flex}
+      /* Collapsed sidebar */
+      .desktop-sidebar.collapsed{width:68px;min-width:68px;padding:var(--space-4) var(--space-2)}
+      .ds-label{overflow:hidden;white-space:nowrap;transition:opacity 0.2s var(--ease-out),max-width 0.25s var(--ease-out);max-width:200px}
+      .desktop-sidebar.collapsed .ds-label{opacity:0;max-width:0}
+      .desktop-sidebar.collapsed .ds-user-name{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;transition:opacity 0.2s var(--ease-out),max-width 0.25s var(--ease-out)}
+      .desktop-sidebar.collapsed .ds-nav-item{justify-content:center}
+      .desktop-sidebar.collapsed .ds-create-btn{padding:var(--space-3);justify-content:center}
+      .desktop-sidebar.collapsed .ds-user{justify-content:center}
+      /* Tooltips when collapsed */
+      .desktop-sidebar.collapsed .ds-nav-item{position:relative}
+      .desktop-sidebar.collapsed .ds-nav-item:hover::after{content:attr(data-tooltip);position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:#1C1917;color:#FAFAF9;padding:4px 10px;border-radius:var(--radius-md);font-size:var(--text-xs);white-space:nowrap;z-index:200;pointer-events:none;font-family:var(--font-body)}
+      /* Toggle button */
+      .ds-toggle-btn{margin-left:auto;width:28px;height:28px;border-radius:var(--radius-md);background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-tertiary);transition:background var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out);flex-shrink:0}
+      .ds-toggle-btn:hover{background:var(--surface-sunken);color:var(--text-primary)}
+      .ds-toggle-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;transition:transform 0.25s var(--ease-out)}
+      .desktop-sidebar.collapsed .ds-toggle-btn svg{transform:scaleX(-1)}
       .bottom-nav{display:none!important}
       .nav-create{display:none!important}
       .tab-panel{padding-bottom:var(--space-6)}
@@ -872,37 +889,40 @@ round:var(--error-600)}
   <div class="app-shell">
     <aside class="desktop-sidebar" id="desktopSidebar">
       <div class="ds-brand">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--saffron-600)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-        <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--saffron-600);letter-spacing:var(--tracking-tight)">Sangham</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--saffron-600)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="ds-label" style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--saffron-600);letter-spacing:var(--tracking-tight)">Sangham</span>
+        <button class="ds-toggle-btn" onclick="toggleSidebar()" title="Toggle navigation" aria-label="Toggle navigation">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
       </div>
       <nav class="ds-nav">
-        <button class="ds-nav-item active" id="ds-nav-home" onclick="switchTab('home')">
+        <button class="ds-nav-item active" id="ds-nav-home" onclick="switchTab('home')" data-tooltip="Home">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span data-i18n="nav.home">Home</span>
+          <span class="ds-label" data-i18n="nav.home">Home</span>
         </button>
-        <button class="ds-nav-item" id="ds-nav-discover" onclick="switchTab('discover')">
+        <button class="ds-nav-item" id="ds-nav-discover" onclick="switchTab('discover')" data-tooltip="Discover">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <span data-i18n="nav.discover">Discover</span>
+          <span class="ds-label" data-i18n="nav.discover">Discover</span>
         </button>
-        <button class="ds-nav-item" id="ds-nav-communities" onclick="switchTab('communities')">
+        <button class="ds-nav-item" id="ds-nav-communities" onclick="switchTab('communities')" data-tooltip="Sanghas">
           <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span data-i18n="communities.title">Sanghas</span>
+          <span class="ds-label" data-i18n="communities.title">Sanghas</span>
         </button>
-        <button class="ds-nav-item" id="ds-nav-learn" onclick="switchTab('learn')">
+        <button class="ds-nav-item" id="ds-nav-learn" onclick="switchTab('learn')" data-tooltip="Educate">
           <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          <span data-i18n="nav.learn">Educate</span>
+          <span class="ds-label" data-i18n="nav.learn">Educate</span>
         </button>
-        <button class="ds-nav-item" id="ds-nav-chat" onclick="switchTab('chat')">
+        <button class="ds-nav-item" id="ds-nav-chat" onclick="switchTab('chat')" data-tooltip="Messages">
           <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span data-i18n="nav.chat">Messages</span>
+          <span class="ds-label" data-i18n="nav.chat">Messages</span>
           <span class="nav-badge" id="dsChatBadge" style="display:none;position:static;margin-left:auto"></span>
         </button>
       </nav>
       <div class="ds-footer">
         <div class="ds-user" id="dsSidebarUser" onclick="openOwnProfile()"></div>
         <button class="ds-create-btn" onclick="openCreatePost()">
-          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Share Reflection
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span class="ds-label">Share Reflection</span>
         </button>
       </div>
     </aside>
@@ -1785,6 +1805,20 @@ function initApp() {
   initSocket();
   loadChatUnreadCount();
   initTheme();
+  initSidebar();
+}
+
+function initSidebar() {
+  const collapsed = localStorage.getItem('sangham_sidebar_collapsed') === 'true';
+  const sidebar = document.getElementById('desktopSidebar');
+  if (sidebar && collapsed) sidebar.classList.add('collapsed');
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('desktopSidebar');
+  if (!sidebar) return;
+  const isCollapsed = sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sangham_sidebar_collapsed', isCollapsed);
 }
 
 // ============================================================
