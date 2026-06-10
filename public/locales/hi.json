@@ -20,7 +20,8 @@
     "passkey": "पासकी से साइन इन करें",
     "or": "या इससे जारी रखें",
     "join": "संघम से जुड़ें",
-    "begin_journey": "जागृति की अपनी यात्रा शुरू करें।"
+    "begin_journey": "जागृति की अपनी यात्रा शुरू करें।",
+    "identifier_ph": "ईमेल या फ़ोन नंबर दर्ज करें"
   },
   "onboarding": {
     "choose_language": "अपनी भाषा चुनें",
@@ -65,7 +66,16 @@
     "no_people_title": "कोई साधक नहीं मिला",
     "no_people_text": "अपने फ़िल्टर या खोज शब्द बदलकर देखें।",
     "clear_filters": "फ़िल्टर साफ़ करें",
-    "browse_all": "सब देखें"
+    "browse_all": "सब देखें",
+    "search_default": "लोग, समुदाय और कार्यक्रम खोजें",
+    "search_no_results": "\"{q}\" के लिए कोई परिणाम नहीं",
+    "search_error": "खोज नहीं हो सकी। पुनः प्रयास करें।",
+    "no_events_error": "कार्यक्रम लोड नहीं हो सके।",
+    "no_intents": "अभी तक कोई इरादा नहीं",
+    "no_intents_text": "पहला इरादा पोस्ट करने वाले बनें",
+    "intents_error": "इरादे लोड नहीं हो सके।",
+    "no_teachers": "अभी तक कोई सत्यापित शिक्षक नहीं",
+    "teachers_error": "शिक्षक लोड नहीं हो सके।"
   },
   "communities": {
     "title": "संघ",
@@ -84,7 +94,19 @@
     "sessions": "सत्र",
     "library": "पुस्तकालय",
     "search": "पाठ्यक्रम, ग्रंथ, संसाधन खोजें…",
-    "host_session": "+ सत्र आयोजित करें"
+    "host_session": "+ सत्र आयोजित करें",
+    "no_texts": "कोई पाठ नहीं मिला",
+    "no_texts_text": "अलग खोज आज़माएं या संग्रह देखें।",
+    "browse_collections": "संग्रह देखें",
+    "no_courses": "अभी तक कोई पाठ्यक्रम नहीं",
+    "no_courses_text": "समुदायों द्वारा बनाए गए पाठ्यक्रम यहाँ दिखेंगे।",
+    "no_resources": "अभी तक कोई संसाधन नहीं",
+    "no_resources_text": "समुदाय के वीडियो, लेख और मार्गदर्शिकाएं यहाँ दिखेंगी।",
+    "no_circles": "अभी तक कोई अध्ययन मंडल नहीं",
+    "no_circles_text": "समुदाय में शामिल हों और अध्ययन मंडल खोजें।",
+    "no_sessions": "कोई आगामी सत्र नहीं",
+    "no_sessions_text": "निर्धारित होने पर लाइव सत्र यहाँ दिखेंगे।",
+    "sessions_error": "सत्र लोड नहीं हो सके।"
   },
   "events": {
     "going": "जा रहे हैं",
@@ -96,7 +118,8 @@
     "gatherings": "सभाएं",
     "diksha": "दीक्षा",
     "ambedkar_jayanti": "आंबेडकर जयंती",
-    "no_events": "कोई आगामी कार्यक्रम नहीं"
+    "no_events": "कोई आगामी कार्यक्रम नहीं",
+    "load_error": "कार्यक्रम लोड नहीं हो सके।"
   },
   "profile": {
     "my_profile": "मेरी प्रोफ़ाइल",
@@ -105,7 +128,8 @@
     "apply_teacher": "🎓 शिक्षक बैज के लिए आवेदन करें",
     "support": "🪔 संघम का समर्थन करें",
     "language_label": "ऐप भाषा",
-    "change_language": "भाषा बदलें"
+    "change_language": "भाषा बदलें",
+    "no_posts": "अभी तक कोई पोस्ट नहीं।"
   },
   "common": {
     "save": "सहेजें",
@@ -126,7 +150,8 @@
     "your_feed": "आपकी फ़ीड",
     "section_communities": "समुदाय",
     "join": "जुड़ें",
-    "leave": "छोड़ें"
+    "leave": "छोड़ें",
+    "try_again": "पुनः प्रयास करें"
   },
   "toast": {
     "sign_in_rsvp": "RSVP के लिए साइन इन करें",
@@ -145,6 +170,60 @@
     "mr": "मराठी"
   },
   "home": {
-    "your_feed": "आपकी फ़ीड"
+    "your_feed": "आपकी फ़ीड",
+    "empty_title": "सभागृह शांत है",
+    "empty_text": "अपनी साधना साझा करने वाले पहले बनें।",
+    "error_title": "लोड नहीं हो सका",
+    "error_text": "कुछ गलत हुआ। कृपया पुनः प्रयास करें।",
+    "share_reflection": "विचार साझा करें",
+    "first_reflection": "पहला विचार साझा करने वाले बनें।",
+    "start_conversation": "बातचीत शुरू करें",
+    "start_conversation_text": "एक मित्रवत संदेश भेजकर शुरुआत करें।"
+  },
+  "roles": {
+    "unknown": "अज्ञात",
+    "practitioner": "साधक",
+    "community": "समुदाय",
+    "facilitated_by": "द्वारा संचालित"
+  },
+  "community": {
+    "no_events": "कोई आगामी कार्यक्रम नहीं।",
+    "no_members": "अभी तक कोई सदस्य नहीं।",
+    "no_content": "अभी तक कोई शिक्षण सामग्री नहीं। पहला पाठ्यक्रम या संसाधन जोड़ें।",
+    "content_error": "शिक्षण सामग्री लोड नहीं हो सकी।",
+    "no_projects": "अभी तक कोई सक्रिय परियोजना नहीं।",
+    "projects_error": "परियोजनाएं लोड नहीं हो सकीं।",
+    "no_circles": "अभी तक कोई अध्ययन मंडल नहीं।",
+    "circles_error": "अध्ययन मंडल लोड नहीं हो सके।",
+    "no_contributions": "अभी तक कोई योगदान स्कोर नहीं।",
+    "contributions_error": "योगदानकर्ता लोड नहीं हो सके।"
+  },
+  "forms": {
+    "post_ph": "एक विचार, शिक्षा या प्रश्न साझा करें…",
+    "comment_ph": "एक विचार जोड़ें…",
+    "message_ph": "संदेश भेजें…",
+    "search_ph": "लोग, समुदाय, कार्यक्रम खोजें…",
+    "community_name_ph": "जैसे: मुंबई धम्म संघ",
+    "community_city_ph": "जैसे: मुंबई",
+    "community_desc_ph": "यह समुदाय किस बारे में है?",
+    "community_url_ph": "https://…",
+    "intent_title_ph": "जैसे: ध्यान साथी की तलाश",
+    "intent_desc_ph": "बताएं कि आप क्या खोज रहे हैं…",
+    "session_title_ph": "जैसे: रविवार सुत्त पाठ",
+    "teacher_credentials_ph": "जैसे: अजान चाह परंपरा में दीक्षित…",
+    "teacher_lineage_ph": "जैसे: सोतो ज़ेन, नवयान बौद्ध",
+    "teacher_statement_ph": "अपनी शिक्षण प्रथा और प्रेरणा बताएं…",
+    "event_title_ph": "जैसे: साप्ताहिक धम्म वार्ता",
+    "event_url_ph": "https://meet.google.com/…",
+    "event_location_ph": "जैसे: आंबेडकर भवन, मुंबई",
+    "course_title_ph": "जैसे: धम्म का परिचय",
+    "course_desc_ph": "छात्र क्या सीखेंगे?",
+    "resource_title_ph": "जैसे: चार आर्य सत्य — व्याख्यान",
+    "circle_topic_ph": "जैसे: धम्मपद का सामूहिक अध्ययन",
+    "circle_desc_ph": "मंडल किस पर ध्यान केंद्रित करेगा?",
+    "circle_sched_ph": "जैसे: हर रविवार सुबह 10 बजे IST",
+    "project_title_ph": "जैसे: पालि कैनन अनुवाद परियोजना",
+    "project_purpose_ph": "इस परियोजना का मुख्य लक्ष्य क्या है?",
+    "project_skills_ph": "जैसे: पालि, अनुवाद, शोध"
   }
 }

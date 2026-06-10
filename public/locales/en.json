@@ -20,7 +20,8 @@
     "passkey": "Sign in with Passkey",
     "or": "or continue with",
     "join": "Join Sangham",
-    "begin_journey": "Begin your journey of awakening."
+    "begin_journey": "Begin your journey of awakening.",
+    "identifier_ph": "Enter email or phone number"
   },
   "onboarding": {
     "choose_language": "Choose Your Language",
@@ -38,7 +39,7 @@
     "country_placeholder": "Select country",
     "languages_label": "Languages you speak",
     "what_seeking": "What Are You Seeking?",
-    "what_seeking_sub": "We’ll post these as open intentions so the right people can find you.",
+    "what_seeking_sub": "We'll post these as open intentions so the right people can find you.",
     "skip": "Skip",
     "next": "Next →",
     "back": "← Back",
@@ -65,7 +66,16 @@
     "no_people_title": "No practitioners found",
     "no_people_text": "Try adjusting your filters or search terms.",
     "clear_filters": "Clear Filters",
-    "browse_all": "Browse All"
+    "browse_all": "Browse All",
+    "search_default": "Search across people, communities and events",
+    "search_no_results": "No results for \"{q}\"",
+    "search_error": "Unable to search. Try again.",
+    "no_events_error": "Unable to load events.",
+    "no_intents": "No intents yet",
+    "no_intents_text": "Be the first to post an intent",
+    "intents_error": "Unable to load intents.",
+    "no_teachers": "No verified teachers yet",
+    "teachers_error": "Unable to load teachers."
   },
   "communities": {
     "title": "Sanghas",
@@ -84,7 +94,19 @@
     "sessions": "Sessions",
     "library": "Library",
     "search": "Search courses, texts, resources…",
-    "host_session": "+ Host a Session"
+    "host_session": "+ Host a Session",
+    "no_texts": "No texts found",
+    "no_texts_text": "Try a different search or browse collections.",
+    "browse_collections": "Browse Collections",
+    "no_courses": "No courses yet",
+    "no_courses_text": "Courses created by communities will appear here.",
+    "no_resources": "No resources yet",
+    "no_resources_text": "Community-shared videos, articles, and guides appear here.",
+    "no_circles": "No study circles yet",
+    "no_circles_text": "Join a community to find or start a study circle.",
+    "no_sessions": "No upcoming sessions",
+    "no_sessions_text": "Live teaching sessions appear here when scheduled.",
+    "sessions_error": "Unable to load sessions."
   },
   "events": {
     "going": "Going",
@@ -96,16 +118,18 @@
     "gatherings": "Gatherings",
     "diksha": "Diksha",
     "ambedkar_jayanti": "Ambedkar Jayanti",
-    "no_events": "No upcoming events"
+    "no_events": "No upcoming events",
+    "load_error": "Unable to load events."
   },
   "profile": {
     "my_profile": "My Profile",
     "profile": "Profile",
     "edit_profile": "Edit Profile",
     "apply_teacher": "🎓 Apply for Teacher Badge",
-    "support": "🤔 Support Sangham (Dhamma Daan)",
+    "support": "🙏 Support Sangham (Dhamma Daan)",
     "language_label": "App Language",
-    "change_language": "Change Language"
+    "change_language": "Change Language",
+    "no_posts": "No posts yet."
   },
   "common": {
     "save": "Save",
@@ -126,11 +150,12 @@
     "your_feed": "Your Feed",
     "section_communities": "Communities",
     "join": "Join",
-    "leave": "Leave"
+    "leave": "Leave",
+    "try_again": "Try Again"
   },
   "toast": {
     "sign_in_rsvp": "Sign in to RSVP",
-    "going": "You’re going!",
+    "going": "You're going!",
     "maybe": "Marked as maybe",
     "settings_saved": "Settings saved",
     "profile_updated": "Profile updated",
@@ -145,6 +170,60 @@
     "mr": "मराठी"
   },
   "home": {
-    "your_feed": "Your Feed"
+    "your_feed": "Your Feed",
+    "empty_title": "The hall is quiet",
+    "empty_text": "Be the first to share your practice.",
+    "error_title": "Unable to load",
+    "error_text": "Something went wrong. Please try again.",
+    "share_reflection": "Share a Reflection",
+    "first_reflection": "Be the first to share a reflection.",
+    "start_conversation": "Start the conversation",
+    "start_conversation_text": "Send a kind message to begin."
+  },
+  "roles": {
+    "unknown": "Unknown",
+    "practitioner": "Practitioner",
+    "community": "Community",
+    "facilitated_by": "Facilitated by"
+  },
+  "community": {
+    "no_events": "No upcoming events.",
+    "no_members": "No members yet.",
+    "no_content": "No learning content yet. Be the first to add a course or resource.",
+    "content_error": "Unable to load learning content.",
+    "no_projects": "No active projects yet.",
+    "projects_error": "Unable to load projects.",
+    "no_circles": "No study circles yet.",
+    "circles_error": "Unable to load study circles.",
+    "no_contributions": "No contribution scores recorded yet.",
+    "contributions_error": "Unable to load contributors."
+  },
+  "forms": {
+    "post_ph": "Share a reflection, teaching, or question…",
+    "comment_ph": "Add a reflection…",
+    "message_ph": "Send a message…",
+    "search_ph": "Search people, communities, events…",
+    "community_name_ph": "e.g. Mumbai Dhamma Sangha",
+    "community_city_ph": "e.g. Mumbai",
+    "community_desc_ph": "What is this community about?",
+    "community_url_ph": "https://…",
+    "intent_title_ph": "e.g. Looking for a meditation partner",
+    "intent_desc_ph": "Tell practitioners what you're looking for…",
+    "session_title_ph": "e.g. Sunday Sutta Reading",
+    "teacher_credentials_ph": "e.g. Ordained in the Ajahn Chah lineage…",
+    "teacher_lineage_ph": "e.g. Soto Zen, Navayana Buddhist",
+    "teacher_statement_ph": "Describe your teaching practice and motivation…",
+    "event_title_ph": "e.g. Weekly Dhamma Talk",
+    "event_url_ph": "https://meet.google.com/…",
+    "event_location_ph": "e.g. Ambedkar Bhavan, Mumbai",
+    "course_title_ph": "e.g. Introduction to the Dhamma",
+    "course_desc_ph": "What will students learn?",
+    "resource_title_ph": "e.g. The Four Noble Truths — Lecture",
+    "circle_topic_ph": "e.g. Reading the Dhammapada together",
+    "circle_desc_ph": "What will the circle focus on?",
+    "circle_sched_ph": "e.g. Every Sunday 10 AM IST",
+    "project_title_ph": "e.g. Pali Canon Translation Project",
+    "project_purpose_ph": "What is the core goal of this project?",
+    "project_skills_ph": "e.g. Pali, Translation, Research"
   }
 }

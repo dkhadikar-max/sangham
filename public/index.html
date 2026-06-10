@@ -698,7 +698,7 @@ round:var(--error-600)}
       </div>
       <div class="input-group">
         <label data-i18n="auth.email_phone">Email or Phone</label>
-        <input type="text" id="identifier" class="input" placeholder="Enter email or phone number" required>
+        <input type="text" id="identifier" class="input" placeholder="Enter email or phone number" data-i18n-ph="auth.identifier_ph" required>
       </div>
       <div class="input-group">
         <label data-i18n="auth.password">Password</label>
@@ -1086,7 +1086,7 @@ round:var(--error-600)}
             </div>
           </div>
         </div>
-<textarea id="postContent" placeholder="Share a reflection, teaching, or question with the community..."></textarea>
+<textarea id="postContent" placeholder="Share a reflection, teaching, or question…" data-i18n-ph="forms.post_ph"></textarea>
         <div class="create-post-type-row" id="postTypeRow"></div>
         <div class="post-media-actions">
           <button class="media-action-btn" title="Add photo" aria-label="Add photo">
@@ -1131,7 +1131,7 @@ round:var(--error-600)}
         <div id="panel-post-comments" class="post-comments"></div>
       </div>
       <div class="comment-input-bar">
-        <input type="text" id="commentInput" placeholder="Add a reflection..." onkeydown="if(event.key==='Enter')submitComment()">
+        <input type="text" id="commentInput" placeholder="Add a reflection…" data-i18n-ph="forms.comment_ph" onkeydown="if(event.key==='Enter')submitComment()">
         <button class="chat-send-btn" onclick="submitComment()" aria-label="Send comment">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -1155,7 +1155,7 @@ round:var(--error-600)}
       </div>
       <div class="messages-area" id="messages-area"></div>
       <div class="chat-input-bar">
-        <textarea id="chatInput" rows="1" placeholder="Send a message..." oninput="autoResizeTextarea(this)" onkeydown="chatKeyDown(event)"></textarea>
+        <textarea id="chatInput" rows="1" placeholder="Send a message…" data-i18n-ph="forms.message_ph" oninput="autoResizeTextarea(this)" onkeydown="chatKeyDown(event)"></textarea>
         <button class="chat-send-btn" id="chatSendBtn" onclick="sendMessage()" aria-label="Send message">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -1216,7 +1216,7 @@ round:var(--error-600)}
         <button class="btn btn-primary btn-sm" id="create-community-submit-btn" onclick="submitCreateCommunity()">Create</button>
       </div>
       <div class="panel-content" style="padding:var(--space-4)">
-        <div class="input-group"><label>Name *</label><input id="cc-name" class="input" placeholder="e.g. Mumbai Dhamma Sangha"></div>
+        <div class="input-group"><label>Name *</label><input id="cc-name" class="input" placeholder="e.g. Mumbai Dhamma Sangha" data-i18n-ph="forms.community_name_ph"></div>
         <div class="input-group"><label>Tradition *</label>
           <select id="cc-tradition" class="create-form-select">
             <option value="">Select tradition…</option>
@@ -1241,9 +1241,9 @@ round:var(--error-600)}
           </select>
         </div>
         <div class="input-group"><label>Country Code * (2 letters, e.g. IN)</label><input id="cc-country" class="input" maxlength="2" placeholder="IN" style="text-transform:uppercase"></div>
-        <div class="input-group"><label>City (optional)</label><input id="cc-city" class="input" placeholder="Mumbai"></div>
-        <div class="input-group"><label>Description (optional)</label><textarea id="cc-desc" class="input" rows="3" style="resize:vertical" placeholder="What is this community about?"></textarea></div>
-        <div class="input-group"><label>Website URL (optional)</label><input id="cc-website" class="input" type="url" placeholder="https://…"></div>
+        <div class="input-group"><label>City (optional)</label><input id="cc-city" class="input" placeholder="Mumbai" data-i18n-ph="forms.community_city_ph"></div>
+        <div class="input-group"><label>Description (optional)</label><textarea id="cc-desc" class="input" rows="3" style="resize:vertical" placeholder="What is this community about?" data-i18n-ph="forms.community_desc_ph"></textarea></div>
+        <div class="input-group"><label>Website URL (optional)</label><input id="cc-website" class="input" type="url" placeholder="https://…" data-i18n-ph="forms.community_url_ph"></div>
       </div>
     </div>
 
@@ -1258,7 +1258,7 @@ round:var(--error-600)}
       </div>
       <div class="panel-content" style="padding:var(--space-4)">
         <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4)">Intents let you express what you're looking for. Up to 3 open intents at a time.</p>
-        <div class="input-group"><label>Title *</label><input id="intent-title" class="input" placeholder="e.g. Looking for a Theravada meditation partner in Mumbai"></div>
+        <div class="input-group"><label>Title *</label><input id="intent-title" class="input" placeholder="e.g. Looking for a meditation partner" data-i18n-ph="forms.intent_title_ph"></div>
         <div class="input-group"><label>Category *</label>
           <select id="intent-category" class="create-form-select">
             <option value="">Select category…</option>
@@ -1276,7 +1276,7 @@ round:var(--error-600)}
             <option value="SKILL_SHARE">Skill Share</option>
           </select>
         </div>
-        <div class="input-group"><label>Description (optional)</label><textarea id="intent-desc" class="input" rows="3" style="resize:vertical" placeholder="Tell practitioners more about what you're looking for…"></textarea></div>
+        <div class="input-group"><label>Description (optional)</label><textarea id="intent-desc" class="input" rows="3" style="resize:vertical" placeholder="Tell practitioners what you're looking for…" data-i18n-ph="forms.intent_desc_ph"></textarea></div>
         <div class="input-group"><label>Scope</label>
           <select id="intent-scope" class="create-form-select">
             <option value="CITY">City</option>
@@ -1328,7 +1328,7 @@ round:var(--error-600)}
         <button class="btn btn-primary btn-sm" id="submit-session-btn" onclick="submitCreateSession()">Schedule</button>
       </div>
       <div class="panel-content" style="padding:var(--space-4)">
-        <div class="input-group"><label>Title *</label><input id="sess-title" class="input" placeholder="e.g. Sunday Sutta Reading"></div>
+        <div class="input-group"><label>Title *</label><input id="sess-title" class="input" placeholder="e.g. Sunday Sutta Reading" data-i18n-ph="forms.session_title_ph"></div>
         <div class="input-group"><label>Session Type *</label>
           <select id="sess-type" class="create-form-select">
             <option value="">Select type…</option>
@@ -1387,12 +1387,12 @@ round:var(--error-600)}
         </button>
         <div class="search-bar" style="flex:1;margin:0">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="search" id="globalSearchInput" class="input" placeholder="Search people, communities, events..." oninput="debounceGlobalSearch()" autocomplete="off" style="border:none;background:transparent;box-shadow:none;padding-left:0">
+          <input type="search" id="globalSearchInput" class="input" placeholder="Search people, communities, events…" data-i18n-ph="forms.search_ph" oninput="debounceGlobalSearch()" autocomplete="off" style="border:none;background:transparent;box-shadow:none;padding-left:0">
         </div>
       </div>
       <div class="panel-content" style="padding:var(--space-4)">
         <div id="globalSearchResults">
-          <div class="gs-empty">Search across people, communities and events</div>
+          <div class="gs-empty" data-i18n="discover.search_default">Search across people, communities and events</div>
         </div>
       </div>
     </div>
@@ -1411,13 +1411,13 @@ round:var(--error-600)}
           <div style="font-size:var(--text-xs);color:var(--saffron-700)">Verified teachers appear in the Teachers directory and can host public sessions. Applications are reviewed by our team within 7 days.</div>
         </div>
         <div class="input-group"><label>Teaching Credentials *</label>
-          <textarea id="ta-credentials" class="input" rows="3" style="resize:vertical" placeholder="e.g. Ordained in the Ajahn Chah lineage, 10-day Vipassana facilitator, ordained Ambedkarite Dhamma Teacher…"></textarea>
+          <textarea id="ta-credentials" class="input" rows="3" style="resize:vertical" placeholder="e.g. Ordained in the Ajahn Chah lineage…" data-i18n-ph="forms.teacher_credentials_ph"></textarea>
         </div>
         <div class="input-group"><label>Lineage / Tradition</label>
-          <input id="ta-lineage" class="input" placeholder="e.g. Soto Zen, Ajahn Chah lineage, Navayana Buddhist">
+          <input id="ta-lineage" class="input" placeholder="e.g. Soto Zen, Navayana Buddhist" data-i18n-ph="forms.teacher_lineage_ph">
         </div>
         <div class="input-group"><label>Personal Statement</label>
-          <textarea id="ta-statement" class="input" rows="5" style="resize:vertical" placeholder="Describe your teaching practice, what topics you teach, and your motivation for joining Sangham as a verified teacher…"></textarea>
+          <textarea id="ta-statement" class="input" rows="5" style="resize:vertical" placeholder="Describe your teaching practice and motivation…" data-i18n-ph="forms.teacher_statement_ph"></textarea>
         </div>
       </div>
     </div>
@@ -1437,17 +1437,20 @@ const WS_URL   = 'https://sangham.online';
 // ============================================================
 const LOCALE_EN = {
   nav:{ home:'Home', discover:'Discover', communities:'Communities', learn:'Educate', chat:'Messages' },
-  auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with', join:'Join Sangham', begin_journey:'Begin your journey of awakening.' },
+  auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with', join:'Join Sangham', begin_journey:'Begin your journey of awakening.', identifier_ph:'Enter email or phone number' },
   onboarding:{ choose_language:'Choose Your Language', choose_language_sub:"Select the language you'd like to use Sangham in.", continue:'Continue', your_path:'Your Path', your_path_sub:'Which Buddhist tradition are you part of? Select all that apply.', tradition_label:'Tradition', i_am_a:'I am a…', where_are_you:'Where Are You?', where_sub:'Helps nearby practitioners find you. You can change visibility in Settings.', city:'City', city_placeholder:'e.g. Nagpur', country:'Country', country_placeholder:'Select country', languages_label:'Languages you speak', what_seeking:'What Are You Seeking?', what_seeking_sub:"We'll post these as open intentions so the right people can find you.", skip:'Skip', next:'Next →', back:'← Back', finish:'Finish', setting_up:'Setting up…', step_of:'Step {n} of 3' },
-  discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All' },
+  discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All', search_default:'Search across people, communities and events', search_no_results:'No results for "{q}"', search_error:'Unable to search. Try again.', no_events_error:'Unable to load events.', no_intents:'No intents yet', no_intents_text:'Be the first to post an intent', intents_error:'Unable to load intents.', no_teachers:'No verified teachers yet', teachers_error:'Unable to load teachers.' },
   communities:{ title:'Sanghas', new_sangha:'+ New Sangha', your_communities:'Your Communities', search:'Search communities…', members:'members', join:'Join', joined:'Joined', leave:'Leave' },
-  learn:{ courses:'Courses', resources:'Resources', circles:'Circles', sessions:'Sessions', library:'Library', search:'Search courses, texts, resources…', host_session:'+ Host a Session' },
-  events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events' },
-  profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Support Sangham (Dhamma Daan)', language_label:'App Language', change_language:'Change Language' },
-  common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave' },
+  learn:{ courses:'Courses', resources:'Resources', circles:'Circles', sessions:'Sessions', library:'Library', search:'Search courses, texts, resources…', host_session:'+ Host a Session', no_texts:'No texts found', no_texts_text:'Try a different search or browse collections.', browse_collections:'Browse Collections', no_courses:'No courses yet', no_courses_text:'Courses created by communities will appear here.', no_resources:'No resources yet', no_resources_text:'Community-shared videos, articles, and guides appear here.', no_circles:'No study circles yet', no_circles_text:'Join a community to find or start a study circle.', no_sessions:'No upcoming sessions', no_sessions_text:'Live teaching sessions appear here when scheduled.', sessions_error:'Unable to load sessions.' },
+  events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events', load_error:'Unable to load events.' },
+  profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Support Sangham (Dhamma Daan)', language_label:'App Language', change_language:'Change Language', no_posts:'No posts yet.' },
+  common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave', try_again:'Try Again' },
   toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only Bhikkhus, Scholars and trusted members can host sessions.', copied:'Copied!' },
   language:{ en:'English', hi:'हिन्दी', mr:'मराठी' },
-  home:{ your_feed:'Your Feed' },
+  home:{ your_feed:'Your Feed', empty_title:'The hall is quiet', empty_text:'Be the first to share your practice.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Reflection', first_reflection:'Be the first to share a reflection.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.' },
+  roles:{ unknown:'Unknown', practitioner:'Practitioner', community:'Community', facilitated_by:'Facilitated by' },
+  community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.' },
+  forms:{ post_ph:'Share a reflection, teaching, or question…', comment_ph:'Add a reflection…', message_ph:'Send a message…', search_ph:'Search people, communities, events…', community_name_ph:'e.g. Mumbai Dhamma Sangha', community_city_ph:'e.g. Mumbai', community_desc_ph:'What is this community about?', community_url_ph:'https://…', intent_title_ph:'e.g. Looking for a meditation partner', intent_desc_ph:"Tell practitioners what you're looking for…", session_title_ph:'e.g. Sunday Sutta Reading', teacher_credentials_ph:'e.g. Ordained in the Ajahn Chah lineage…', teacher_lineage_ph:'e.g. Soto Zen, Navayana Buddhist', teacher_statement_ph:'Describe your teaching practice and motivation…', event_title_ph:'e.g. Weekly Dhamma Talk', event_url_ph:'https://meet.google.com/…', event_location_ph:'e.g. Ambedkar Bhavan, Mumbai', course_title_ph:'e.g. Introduction to the Dhamma', course_desc_ph:'What will students learn?', resource_title_ph:'e.g. The Four Noble Truths — Lecture', circle_topic_ph:'e.g. Reading the Dhammapada together', circle_desc_ph:'What will the circle focus on?', circle_sched_ph:'e.g. Every Sunday 10 AM IST', project_title_ph:'e.g. Pali Canon Translation Project', project_purpose_ph:'What is the core goal of this project?', project_skills_ph:'e.g. Pali, Translation, Research' },
 };
 
 const _localeCache = { en: LOCALE_EN };
@@ -1982,7 +1985,7 @@ function renderPostCard(post, full, delay = 0) {
       <div class="post-header">
         <div class="avatar avatar-md ${author.isVerifiedClergy ? 'avatar-verified' : ''}">${avatar}</div>
         <div style="flex:1">
-          <div class="post-author-name">${author.displayName||'Unknown'} ${clergyBadge}</div>
+          <div class="post-author-name">${author.displayName||t('roles.unknown')} ${clergyBadge}</div>
           <div class="post-meta">
             <span>${ago}</span>
             <span class="post-meta-dot"></span>
@@ -2021,11 +2024,11 @@ async function toggleLike(postId, btn) {
 // ============================================================
 function renderEmptyState(type, message) {
   const states = {
-    'feed': { icon: '🪷', title: 'The hall is quiet', text: 'Be the first to share your practice with the community.', actions: '<button class="btn btn-primary" onclick="openCreatePost()">Share a Reflection</button><button class="btn btn-ghost" onclick="switchTab(\'discover\')">Discover People</button>' },
-    'feed-error': { icon: '⚠️', title: 'Unable to load', text: message || 'Something went wrong. Please try again.', actions: '<button class="btn btn-primary" onclick="loadHome()">Try Again</button>' },
-    'discover': { icon: '🔍', title: 'No practitioners found', text: 'Try adjusting your filters or search terms.', actions: '<button class="btn btn-primary" onclick="clearDiscoverFilters()">Clear Filters</button><button class="btn btn-ghost" onclick="fetchDiscoverPeople({})">Browse All</button>' },
-    'learn': { icon: '📖', title: 'No texts found', text: 'Try a different search or browse collections.', actions: '<button class="btn btn-primary" onclick="clearLearnSearch()">Browse Collections</button>' },
-    'chat': { icon: '💬', title: 'No messages yet', text: 'Start a conversation with a practitioner.', actions: '<button class="btn btn-primary" onclick="switchTab(\'discover\')">Discover People</button><button class="btn btn-ghost" onclick="showToast(\'Group chat coming soon\', \'info\')">Start a Group</button>' }
+    'feed': { icon: '🪷', title: t('home.empty_title'), text: t('home.empty_text'), actions: `<button class="btn btn-primary" onclick="openCreatePost()">${t('home.share_reflection')}</button><button class="btn btn-ghost" onclick="switchTab('discover')">${t('discover.people')}</button>` },
+    'feed-error': { icon: '⚠️', title: t('home.error_title'), text: message || t('home.error_text'), actions: `<button class="btn btn-primary" onclick="loadHome()">${t('common.try_again')}</button>` },
+    'discover': { icon: '🔍', title: t('discover.no_people_title'), text: t('discover.no_people_text'), actions: `<button class="btn btn-primary" onclick="clearDiscoverFilters()">${t('discover.clear_filters')}</button><button class="btn btn-ghost" onclick="fetchDiscoverPeople({})">${t('discover.browse_all')}</button>` },
+    'learn': { icon: '📖', title: t('learn.no_texts'), text: t('learn.no_texts_text'), actions: `<button class="btn btn-primary" onclick="clearLearnSearch()">${t('learn.browse_collections')}</button>` },
+    'chat': { icon: '💬', title: t('home.empty_title'), text: t('home.start_conversation_text'), actions: `<button class="btn btn-primary" onclick="switchTab('discover')">${t('discover.people')}</button><button class="btn btn-ghost" onclick="showToast('Group chat coming soon', 'info')">Start a Group</button>` }
   };
   const s = states[type] || states['feed'];
   return `<div class="empty-state"><div class="empty-state-icon">${s.icon}</div><div class="empty-state-title">${s.title}</div><div class="empty-state-text">${s.text}</div><div class="empty-state-actions">${s.actions}</div></div>`;
@@ -2054,11 +2057,11 @@ async function openPostDetail(postId) {
 function renderComments(comments) {
   const el = document.getElementById('panel-post-comments');
   if (!comments.length) {
-    el.innerHTML = '<div style="padding:0 var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">Be the first to share a reflection.</div>';
+    el.innerHTML = `<div style="padding:0 var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${t('home.first_reflection')}</div>`;
     return;
   }
   el.innerHTML = comments.map(c => {
-    const name = c.author?.displayName || 'Practitioner';
+    const name = c.author?.displayName || t('roles.practitioner');
     const initials = name.charAt(0).toUpperCase();
     return `<div class="comment-item"><div class="avatar avatar-sm" style="width:28px;height:28px;font-size:var(--text-xs)">${initials}</div><div class="comment-body"><div class="comment-author">${escHtml(name)}</div><div class="comment-text">${escHtml(c.content)}</div></div></div>`;
   }).join('');
@@ -2176,14 +2179,14 @@ async function loadDiscoverEvents() {
     const data = await api('GET', `/events?${new URLSearchParams(params)}`);
     const events = data.data || data || [];
     if (!events.length) {
-      el.innerHTML = '<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">📅</div><div class="empty-state-title">No upcoming events</div></div>';
+      el.innerHTML = `<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">📅</div><div class="empty-state-title">${t('events.no_events')}</div></div>`;
       return;
     }
     events.forEach(ev => _eventCache.set(ev.id, ev));
     el.innerHTML = events.map(ev => renderEventCard(ev)).join('');
     _discoverEventsLoaded = !_discoverEventType && !_discoverEventMode && !q;
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">Unable to load events.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">${t('events.load_error')}</p>`;
   }
 }
 
@@ -2437,7 +2440,7 @@ async function runGlobalSearch() {
   const q = (document.getElementById('globalSearchInput')?.value || '').trim();
   const el = document.getElementById('globalSearchResults');
   if (!q) {
-    el.innerHTML = '<div class="gs-empty">Search across people, communities and events</div>';
+    el.innerHTML = `<div class="gs-empty">${t('discover.search_default')}</div>`;
     return;
   }
   el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
@@ -2452,7 +2455,7 @@ async function runGlobalSearch() {
     const events = eventsRes.status === 'fulfilled' ? (eventsRes.value.data || eventsRes.value || []) : [];
 
     if (!people.length && !comms.length && !events.length) {
-      el.innerHTML = `<div class="gs-empty">No results for "${escHtml(q)}"</div>`;
+      el.innerHTML = `<div class="gs-empty">${t('discover.search_no_results').replace('{q}', escHtml(q))}</div>`;
       return;
     }
     el.innerHTML = [
@@ -2473,7 +2476,7 @@ async function runGlobalSearch() {
         </div>`),
     ].filter(Boolean).join('');
   } catch(err) {
-    el.innerHTML = '<div class="gs-empty">Unable to search. Try again.</div>';
+    el.innerHTML = `<div class="gs-empty">${t('discover.search_error')}</div>`;
   }
 }
 
@@ -2570,7 +2573,7 @@ async function loadLearnCourses(q) {
     const data = await api('GET', `/courses?${qs}`);
     const courses = data.data || data || [];
     if (!courses.length) {
-      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-title">No courses yet</div><div class="empty-state-text">Courses created by communities will appear here.</div></div>';
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-title">${t('learn.no_courses')}</div><div class="empty-state-text">${t('learn.no_courses_text')}</div></div>`;
       return;
     }
     el.innerHTML = courses.map(c => renderCourseCard(c)).join('');
@@ -2588,7 +2591,7 @@ async function loadLearnResources(q) {
     const data = await api('GET', `/resources?${qs}`);
     const resources = data.data || data || [];
     if (!resources.length) {
-      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">No resources yet</div><div class="empty-state-text">Community-shared videos, articles, and guides appear here.</div></div>';
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">${t('learn.no_resources')}</div><div class="empty-state-text">${t('learn.no_resources_text')}</div></div>`;
       return;
     }
     el.innerHTML = resources.map(r => renderResourceCard(r)).join('');
@@ -2605,7 +2608,7 @@ async function loadLearnCircles(q) {
     const data = await api('GET', `/study-circles?limit=20`);
     const circles = data.data || data || [];
     if (!circles.length) {
-      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔵</div><div class="empty-state-title">No study circles yet</div><div class="empty-state-text">Join a community to find or start a study circle.</div></div>';
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔵</div><div class="empty-state-title">${t('learn.no_circles')}</div><div class="empty-state-text">${t('learn.no_circles_text')}</div></div>`;
       return;
     }
     el.innerHTML = circles.map(c => renderCircleCard(c)).join('');
@@ -2803,7 +2806,7 @@ async function openThread(partnerId, partnerName) {
 function renderMessages(messages) {
   const area = document.getElementById('messages-area');
   if (!messages.length) {
-    area.innerHTML = `<div class="empty-state" style="margin-top:var(--space-8)"><div class="empty-state-icon">🙏</div><div class="empty-state-title">Start the conversation</div><div class="empty-state-text">Send a kind message to begin.</div></div>`;
+    area.innerHTML = `<div class="empty-state" style="margin-top:var(--space-8)"><div class="empty-state-icon">🙏</div><div class="empty-state-title">${t('home.start_conversation')}</div><div class="empty-state-text">${t('home.start_conversation_text')}</div></div>`;
     return;
   }
 
@@ -3344,9 +3347,9 @@ function renderCommunityDetail(a, membership) {
         <h2 class="section-title" style="margin:0">Upcoming Events</h2>
         ${membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY' ? `<button class="btn btn-ghost btn-sm" onclick="openCreateEvent('${a.id}')">+ Event</button>` : ''}
       </div>
-      ${events || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No upcoming events.</p>'}
+      ${events || `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_events')}</p>`}
       <h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2>
-      ${members ? `<div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No members yet.</p>'}
+      ${members ? `<div class="comm-member-list" style="margin:0;padding:0">${members}</div>` : `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_members')}</p>`}
       ${membership?.memberRole === 'PRESIDENT' ? `<div id="comm-module-settings"><div class="spinner" style="width:20px;height:20px;margin:var(--space-4) auto"></div></div>` : ''}
     </div>
 
@@ -3413,11 +3416,11 @@ async function loadCommunityLearning(assocId) {
       html += resources.map(r => renderResourceCard(r)).join('');
     }
     if (!courses.length && !resources.length) {
-      html += '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No learning content yet. Be the first to add a course or resource.</p>';
+      html += `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_content')}</p>`;
     }
     el.innerHTML = html;
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load learning content.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.content_error')}</p>`;
   }
 }
 
@@ -3432,12 +3435,12 @@ async function loadCommunityProjects(assocId) {
       html += `<div class="create-btn-row"><button class="btn btn-primary btn-sm" onclick="openCreateForm('project','${assocId}')">+ New Project</button></div>`;
     }
     if (!projects.length) {
-      el.innerHTML = html + '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No active projects yet.</p>';
+      el.innerHTML = html + `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_projects')}</p>`;
       return;
     }
     el.innerHTML = html + projects.map(p => renderCommProjectCard(p)).join('');
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load projects.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.projects_error')}</p>`;
   }
 }
 
@@ -3452,18 +3455,18 @@ async function loadCommunityCircles(assocId) {
       html += `<div class="create-btn-row"><button class="btn btn-primary btn-sm" onclick="openCreateForm('circle','${assocId}')">+ New Circle</button></div>`;
     }
     if (!circles.length) {
-      el.innerHTML = html + '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No study circles yet.</p>';
+      el.innerHTML = html + `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_circles')}</p>`;
       return;
     }
     el.innerHTML = html + circles.map(c => renderCircleCard(c)).join('');
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">Unable to load study circles.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.circles_error')}</p>`;
   }
 }
 
 function renderCourseCard(c) {
   const lessonCount = c._count?.lessons ?? 0;
-  const instructor  = c.instructor?.displayName || 'Community';
+  const instructor  = c.instructor?.displayName || t('roles.community');
   const statusClass = 'course-status-' + (c.status || 'DRAFT');
   return `<div class="course-card" onclick="openCourse('${c.id}')">
     <div style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -3514,7 +3517,7 @@ function renderCircleCard(c) {
   return `<div class="circle-card" onclick="openCircle('${c.id}')">
     <div class="circle-topic">${escHtml(c.topic)}</div>
     <div class="circle-meta">
-      Facilitated by ${escHtml(c.facilitator?.displayName || 'Unknown')} · ${memberCount} members
+      ${t('roles.facilitated_by')} ${escHtml(c.facilitator?.displayName || t('roles.unknown'))} · ${memberCount} members
       ${c.scheduleDescription ? ' · ' + escHtml(c.scheduleDescription) : ''}
     </div>
     <span class="circle-status ${statusClass}">${c.status||'OPEN'}</span>
@@ -3657,7 +3660,7 @@ async function loadCircleRelated(assocId) {
     el.innerHTML = courses.map(c =>
       `<div class="course-card" onclick="openCourse('${c.id}')">
         <div class="course-title">${escHtml(c.title)}</div>
-        <div class="course-meta">${escHtml(c.instructor?.displayName||'Community')} · ${c._count?.lessons||0} lessons</div>
+        <div class="course-meta">${escHtml(c.instructor?.displayName||t('roles.community'))} · ${c._count?.lessons||0} lessons</div>
       </div>`).join('') +
       `<div class="related-cta-row"><button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(2)')?.click(),300)">All Courses</button></div>`;
   } catch(e) { el.innerHTML = ''; }
@@ -3668,14 +3671,14 @@ function renderCircleDetail(c) {
     const u = m.user || {};
     const initials = (u.displayName||'?').charAt(0).toUpperCase();
     const av = u.profilePhoto ? `<img src="${escHtml(u.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
-    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||'Unknown')}</div></div>`;
+    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||t('roles.unknown'))}</div></div>`;
   }).join('');
   const posts = (c.thread?.posts || []).map(p => renderDiscussionPost(p)).join('');
 
   return `
     <div style="padding:var(--space-4)">
       <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-2)">
-        Facilitated by ${escHtml(c.facilitator?.displayName||'Unknown')}
+        ${t('roles.facilitated_by')} ${escHtml(c.facilitator?.displayName||t('roles.unknown'))}
         ${c.scheduleDescription ? ' · '+escHtml(c.scheduleDescription) : ''}
       </div>
       ${c.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(c.description)}</div>` : ''}
@@ -3780,7 +3783,7 @@ function renderProjectDetail(p) {
     const u = m.user || {};
     const initials = (u.displayName||'?').charAt(0).toUpperCase();
     const av = u.profilePhoto ? `<img src="${escHtml(u.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
-    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||'Unknown')}</div><span class="comm-member-role">${m.role||'CONTRIBUTOR'}</span></div>`;
+    return `<div class="comm-member-item" onclick="openProfile('${u.id}')"><div class="avatar avatar-sm">${av}</div><div>${escHtml(u.displayName||t('roles.unknown'))}</div><span class="comm-member-role">${m.role||'CONTRIBUTOR'}</span></div>`;
   }).join('');
   const skills = (p.skillsNeeded || []).map(s => `<span class="profile-tradition-tag">${escHtml(s)}</span>`).join('');
   const posts  = (p.thread?.posts || []).map(post => renderDiscussionPost(post)).join('');
@@ -3915,14 +3918,14 @@ async function loadLearnSessions() {
   try {
     const sessions = await api('GET', '/sessions');
     if (!sessions.length) {
-      el.innerHTML = '<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">🎙️</div><div class="empty-state-title">No upcoming sessions</div><div class="empty-state-text">Live teaching sessions appear here when scheduled.</div></div>';
+      el.innerHTML = `<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">🎙️</div><div class="empty-state-title">${t('learn.no_sessions')}</div><div class="empty-state-text">${t('learn.no_sessions_text')}</div></div>`;
       _learnTabLoaded.sessions = true;
       return;
     }
     el.innerHTML = sessions.map(s => renderSessionCard(s)).join('');
     _learnTabLoaded.sessions = true;
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">Unable to load sessions.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">${t('learn.sessions_error')}</p>`;
   }
 }
 
@@ -4111,12 +4114,12 @@ function openCreateEvent(assocId) {
 
 function renderCreateEventForm() {
   const types = ['RETREAT','CEREMONY','TALK','SEMINAR','PROTEST_MARCH','COMMUNITY_GATHERING','DHAMMA_DIKSHA','CONVERSION_CEREMONY','AMBEDKAR_JAYANTI'];
-  const typeOptions = types.map(t => `<option value="${t}">${t.replace(/_/g,' ')}</option>`).join('');
+  const typeOptions = types.map(ty => `<option value="${ty}">${ty.replace(/_/g,' ')}</option>`).join('');
   const now = new Date();
   now.setHours(now.getHours() + 1, 0, 0, 0);
   const defaultStart = now.toISOString().slice(0, 16);
   return `
-    <div class="input-group"><label>Title *</label><input id="ev-title" class="input" placeholder="e.g. Weekly Dhamma Talk"></div>
+    <div class="input-group"><label>Title *</label><input id="ev-title" class="input" placeholder="${t('forms.event_title_ph')}" data-i18n-ph="forms.event_title_ph"></div>
     <div class="input-group"><label>Event Type *</label>
       <select id="ev-type" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
     </div>
@@ -4134,8 +4137,8 @@ function renderCreateEventForm() {
         <option value="America/Los_Angeles">Los Angeles (PT)</option>
       </select>
     </div>
-    <div class="input-group"><label>Online Link (optional)</label><input id="ev-url" class="input" type="url" placeholder="https://meet.google.com/…"></div>
-    <div class="input-group"><label>Location Name (optional)</label><input id="ev-location" class="input" placeholder="e.g. Ambedkar Bhavan, Mumbai"></div>
+    <div class="input-group"><label>Online Link (optional)</label><input id="ev-url" class="input" type="url" placeholder="${t('forms.event_url_ph')}" data-i18n-ph="forms.event_url_ph"></div>
+    <div class="input-group"><label>Location Name (optional)</label><input id="ev-location" class="input" placeholder="${t('forms.event_location_ph')}" data-i18n-ph="forms.event_location_ph"></div>
     <div class="input-group"><label>Description (optional)</label><textarea id="ev-desc" class="input" rows="3" style="resize:vertical"></textarea></div>
     <div class="input-group"><label>Capacity (0 = unlimited)</label><input id="ev-capacity" class="input" type="number" min="0" value="0"></div>`;
 }
@@ -4209,8 +4212,8 @@ function _dispatchCreateSubmit() {
 
 function renderCreateCourseForm() {
   return `
-    <div class="input-group"><label>Course Title *</label><input id="cf-title" class="input" placeholder="e.g. Introduction to the Dhamma"></div>
-    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="What will students learn?"></textarea></div>
+    <div class="input-group"><label>Course Title *</label><input id="cf-title" class="input" placeholder="${t('forms.course_title_ph')}" data-i18n-ph="forms.course_title_ph"></div>
+    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="${t('forms.course_desc_ph')}" data-i18n-ph="forms.course_desc_ph"></textarea></div>
     <div class="input-group"><label>Language</label>
       <select id="cf-lang" class="create-form-select">
         <option value="en">English</option>
@@ -4230,13 +4233,13 @@ function renderCreateCourseForm() {
 
 function renderCreateResourceForm() {
   const types = ['YOUTUBE_VIDEO','YOUTUBE_PLAYLIST','PDF','ARTICLE','RESEARCH_PAPER','WORKSHOP_RECORDING','GUIDE','BOOK_SUMMARY'];
-  const typeOptions = types.map(t => `<option value="${t}">${t.replace(/_/g,' ')}</option>`).join('');
+  const typeOptions = types.map(ty => `<option value="${ty}">${ty.replace(/_/g,' ')}</option>`).join('');
   return `
     <div class="input-group"><label>Resource Type *</label>
       <select id="cf-rtype" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
     </div>
-    <div class="input-group"><label>Title *</label><input id="cf-title" class="input" placeholder="e.g. The Four Noble Truths — Lecture"></div>
-    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="https://…"></div>
+    <div class="input-group"><label>Title *</label><input id="cf-title" class="input" placeholder="${t('forms.resource_title_ph')}" data-i18n-ph="forms.resource_title_ph"></div>
+    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="${t('forms.event_url_ph')}" data-i18n-ph="forms.event_url_ph"></div>
     <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="2" style="resize:vertical"></textarea></div>
     <div class="input-group"><label>Creator / Author</label><input id="cf-creator" class="input" placeholder="Bhante Gunaratana"></div>
     <div class="input-group"><label>Thumbnail URL (optional)</label><input id="cf-thumb" class="input" type="url" placeholder="https://img.youtube.com/…"></div>
@@ -4251,22 +4254,22 @@ function renderCreateResourceForm() {
 
 function renderCreateCircleForm() {
   return `
-    <div class="input-group"><label>Topic *</label><input id="cf-topic" class="input" placeholder="e.g. Reading the Dhammapada together"></div>
-    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="What will the circle focus on?"></textarea></div>
-    <div class="input-group"><label>Schedule (optional)</label><input id="cf-sched" class="input" placeholder="e.g. Every Sunday 10 AM IST"></div>`;
+    <div class="input-group"><label>Topic *</label><input id="cf-topic" class="input" placeholder="${t('forms.circle_topic_ph')}" data-i18n-ph="forms.circle_topic_ph"></div>
+    <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical" placeholder="${t('forms.circle_desc_ph')}" data-i18n-ph="forms.circle_desc_ph"></textarea></div>
+    <div class="input-group"><label>Schedule (optional)</label><input id="cf-sched" class="input" placeholder="${t('forms.circle_sched_ph')}" data-i18n-ph="forms.circle_sched_ph"></div>`;
 }
 
 function renderCreateProjectForm() {
   const cats = ['TRANSLATION','EDUCATION','VOLUNTEER','RESEARCH','TECHNOLOGY','ENVIRONMENT','SOCIAL_IMPACT','COMMUNITY_BUILDING','ARTS_CULTURE','HEALTHCARE'];
   const catOptions = cats.map(c => `<option value="${c}">${c.replace(/_/g,' ')}</option>`).join('');
   return `
-    <div class="input-group"><label>Project Title *</label><input id="cf-title" class="input" placeholder="e.g. Pali Canon Translation Project"></div>
-    <div class="input-group"><label>Purpose *</label><textarea id="cf-purpose" class="input" rows="2" style="resize:vertical" placeholder="What is the core goal of this project?"></textarea></div>
+    <div class="input-group"><label>Project Title *</label><input id="cf-title" class="input" placeholder="${t('forms.project_title_ph')}" data-i18n-ph="forms.project_title_ph"></div>
+    <div class="input-group"><label>Purpose *</label><textarea id="cf-purpose" class="input" rows="2" style="resize:vertical" placeholder="${t('forms.project_purpose_ph')}" data-i18n-ph="forms.project_purpose_ph"></textarea></div>
     <div class="input-group"><label>Category *</label>
       <select id="cf-category" class="create-form-select"><option value="">Select category…</option>${catOptions}</select>
     </div>
     <div class="input-group"><label>Description (optional)</label><textarea id="cf-desc" class="input" rows="3" style="resize:vertical"></textarea></div>
-    <div class="input-group"><label>Skills Needed (comma-separated)</label><input id="cf-skills" class="input" placeholder="e.g. Pali, Translation, Research"></div>
+    <div class="input-group"><label>Skills Needed (comma-separated)</label><input id="cf-skills" class="input" placeholder="${t('forms.project_skills_ph')}" data-i18n-ph="forms.project_skills_ph"></div>
     <div class="input-group"><label>Collaborators Needed (optional)</label><input id="cf-participants" class="input" type="number" min="0" placeholder="10"></div>
     <div class="input-group"><label>Deadline (optional)</label><input id="cf-deadline" class="input" type="date"></div>`;
 }
@@ -4414,7 +4417,7 @@ async function loadCommunityContributions(assocId) {
   try {
     const scores = await api('GET', `/contributions?associationId=${assocId}`);
     if (!scores || !scores.length) {
-      el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">No contribution scores recorded yet. Scores are earned by hosting events, creating courses, sharing resources, and more.</p>';
+      el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">${t('community.no_contributions')}</p>`;
       return;
     }
     const items = scores.map((s, i) => {
@@ -4448,7 +4451,7 @@ async function loadCommunityContributions(assocId) {
       </div>
       <div style="padding:0 var(--space-4)">${items}</div>`;
   } catch(err) {
-    el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">Unable to load contributors.</p>';
+    el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">${t('community.contributions_error')}</p>`;
   }
 }
 
