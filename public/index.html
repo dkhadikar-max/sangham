@@ -1754,9 +1754,9 @@ async function setLanguage(lang) {
     }
   }
   document.documentElement.lang = _lang;
-  localStorage.setItem('sangham_lang', _lang);
   applyTranslations();
   if (state?.token) {
+    if (state.user) { state.user.preferredLanguage = _lang; saveSession(); }
     api('PUT', '/users/me', { preferredLanguage: _lang }).catch(() => {});
   }
 }
@@ -1938,7 +1938,7 @@ async function handleAuth(event) {
       state.token = data.token;
       state.user  = data.user;
       saveSession();
-      await setLanguage(data.user.preferredLanguage || localStorage.getItem('sangham_lang') || 'en');
+      await setLanguage(data.user.preferredLanguage || 'en');
       initApp();
     } else {
       const isEmail = identifier.includes('@');
@@ -5338,7 +5338,7 @@ document.addEventListener('touchend', (e) => {
 (async function boot() {
   loadSession();
   initTheme();
-  await setLanguage(localStorage.getItem('sangham_lang') || state.user?.preferredLanguage || 'en');
+  await setLanguage((state.token && state.user?.preferredLanguage) ? state.user.preferredLanguage : 'en');
   if (state.token && state.user) {
     initApp();
   }
