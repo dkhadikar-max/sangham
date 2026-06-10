@@ -883,6 +883,13 @@ enum ResourceType {
   BOOK_SUMMARY
 }
 
+enum CourseOwnerType {
+  INDIVIDUAL
+  COMMUNITY
+  ORGANIZATION
+  SANGHAM
+}
+
 enum CourseStatus {
   DRAFT
   PUBLISHED
@@ -937,22 +944,25 @@ model Resource {
 }
 
 model Course {
-  id             String       @id @default(uuid())
-  associationId  String       @map("association_id")
-  title          String       @db.VarChar(200)
-  description    String?      @db.Text
-  instructorId   String?      @map("instructor_id")
-  language       String       @default("en")
-  status         CourseStatus @default(DRAFT)
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
+  id             String          @id @default(uuid())
+  ownerType      CourseOwnerType @default(COMMUNITY) @map("owner_type")
+  ownerId        String          @map("owner_id")
+  associationId  String?         @map("association_id")
+  title          String          @db.VarChar(200)
+  description    String?         @db.Text
+  instructorId   String?         @map("instructor_id")
+  language       String          @default("en")
+  status         CourseStatus    @default(DRAFT)
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
 
-  association    Association  @relation(fields: [associationId], references: [id], onDelete: Cascade)
-  instructor     User?        @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
+  association    Association?    @relation(fields: [associationId], references: [id], onDelete: Cascade)
+  instructor     User?           @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
   lessons        CourseLesson[]
   thread         DiscussionThread?
 
   @@index([associationId])
+  @@index([ownerType, ownerId])
   @@map("courses")
 }
 
