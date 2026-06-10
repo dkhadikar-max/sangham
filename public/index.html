@@ -383,6 +383,32 @@ round:var(--error-600)}
     .nav-create:hover{transform:translateX(-50%) scale(1.08);box-shadow:0 6px 20px rgba(212,168,67,0.6)}
     .nav-create:active{transform:translateX(-50%) scale(0.95)}
     .nav-create svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none}
+    /* ── Desktop sidebar ─────────────────────────────────────────────────── */
+    .desktop-sidebar{display:none;flex-direction:column;width:220px;min-width:220px;flex-shrink:0;border-right:1px solid var(--border-default);padding:var(--space-5) var(--space-3);border-radius:var(--radius-2xl) 0 0 var(--radius-2xl);overflow:hidden}
+    .ds-brand{display:flex;align-items:center;gap:var(--space-2);padding:0 var(--space-2) var(--space-4);margin-bottom:var(--space-2);border-bottom:1px solid var(--border-default)}
+    .ds-nav{flex:1;display:flex;flex-direction:column;gap:2px}
+    .ds-nav-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-secondary);border:none;background:none;cursor:pointer;width:100%;text-align:left;font-family:var(--font-body);transition:background var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
+    .ds-nav-item:hover{background:var(--surface-sunken);color:var(--text-primary)}
+    .ds-nav-item.active{color:var(--saffron-600);font-weight:var(--weight-semibold)}
+    .ds-nav-item svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0}
+    .ds-nav-item.active svg{stroke-width:2;fill:var(--saffron-100)}
+    .ds-footer{margin-top:auto;padding-top:var(--space-4);border-top:1px solid var(--border-default)}
+    .ds-user{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);cursor:pointer;transition:background var(--duration-fast) var(--ease-out);margin-bottom:var(--space-2)}
+    .ds-user:hover{background:var(--surface-sunken)}
+    .ds-user-name{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+    .ds-create-btn{width:100%;padding:var(--space-3) var(--space-4);background:linear-gradient(135deg,var(--saffron-500),var(--saffron-600));color:white;border:none;border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:var(--weight-semibold);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:var(--space-2);transition:opacity var(--duration-fast) var(--ease-out)}
+    .ds-create-btn:hover{opacity:0.88}
+    /* ── Desktop main column wrapper (display:contents on mobile = transparent) */
+    .desktop-main-col{display:contents}
+    /* ── Desktop layout ≥ 1024px ─────────────────────────────────────────── */
+    @media(min-width:1024px){
+      .app-shell{flex-direction:row;max-width:1100px;height:92vh;border-radius:var(--radius-2xl);box-shadow:var(--shadow-5)}
+      .desktop-sidebar{display:flex}
+      .desktop-main-col{display:flex;flex-direction:column;flex:1;min-width:0;overflow:hidden}
+      .bottom-nav{display:none!important}
+      .nav-create{display:none!important}
+      .tab-panel{padding-bottom:var(--space-6)}
+    }
 
     /* Create Post Panel */
     #panel-create{z-index:50}
@@ -845,12 +871,52 @@ round:var(--error-600)}
 <!-- VIEW: APP -->
 <div id="view-app" class="view">
   <div class="app-shell">
+    <aside class="desktop-sidebar" id="desktopSidebar">
+      <div class="ds-brand">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--saffron-600)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--saffron-600);letter-spacing:var(--tracking-tight)">Sangham</span>
+      </div>
+      <nav class="ds-nav">
+        <button class="ds-nav-item active" id="ds-nav-home" onclick="switchTab('home')">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span data-i18n="nav.home">Home</span>
+        </button>
+        <button class="ds-nav-item" id="ds-nav-discover" onclick="switchTab('discover')">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span data-i18n="nav.discover">Discover</span>
+        </button>
+        <button class="ds-nav-item" id="ds-nav-communities" onclick="switchTab('communities')">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span data-i18n="communities.title">Sanghas</span>
+        </button>
+        <button class="ds-nav-item" id="ds-nav-learn" onclick="switchTab('learn')">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span data-i18n="nav.learn">Educate</span>
+        </button>
+        <button class="ds-nav-item" id="ds-nav-chat" onclick="switchTab('chat')">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="nav.chat">Messages</span>
+          <span class="nav-badge" id="dsChatBadge" style="display:none;position:static;margin-left:auto"></span>
+        </button>
+      </nav>
+      <div class="ds-footer">
+        <div class="ds-user" id="dsSidebarUser" onclick="openOwnProfile()"></div>
+        <button class="ds-create-btn" onclick="openCreatePost()">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Share Reflection
+        </button>
+      </div>
+    </aside>
+    <div class="desktop-main-col">
     <header class="app-header">
       <div class="app-header-brand">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
         Sangham
       </div>
       <div class="header-actions">
+        <button class="header-icon" onclick="openCreatePost()" title="Share reflection" aria-label="Share reflection">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
         <button class="header-icon" id="headerAvatar" onclick="openOwnProfile()" title="Profile" aria-label="Profile">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
@@ -1038,6 +1104,7 @@ round:var(--error-600)}
         <div id="chatThreads"></div>
       </div>
     </main>
+    </div><!-- /.desktop-main-col -->
 
     <nav class="bottom-nav">
       <button class="nav-item active" onclick="switchTab('home')" id="nav-home" aria-label="Home">
@@ -1052,7 +1119,6 @@ round:var(--error-600)}
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span data-i18n="communities.title">Sanghas</span>
       </button>
-      <div class="nav-spacer"></div>
       <button class="nav-item" onclick="switchTab('learn')" id="nav-learn" aria-label="Learn">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span data-i18n="nav.learn">Educate</span>
@@ -1063,10 +1129,6 @@ round:var(--error-600)}
         <span class="nav-badge" id="chatBadge" style="display:none"></span>
       </button>
     </nav>
-
-    <button class="nav-create" onclick="openCreatePost()" title="Create post" aria-label="Create post">
-      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
 
     <div class="bottom-sheet-scrim" id="bottomSheetScrim" onclick="closeBottomSheet()"></div>
 
@@ -1839,10 +1901,17 @@ function updateHeaderAvatar() {
   const el = document.getElementById('headerAvatar');
   if (!state.user) return;
   const initials = (state.user.displayName || 'U').charAt(0).toUpperCase();
-  if (state.user.profilePhoto) {
-    el.innerHTML = `<img src="${state.user.profilePhoto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="">`;
-  } else {
-    el.innerHTML = `<span style="font-weight:var(--weight-semibold);color:var(--saffron-600);font-size:var(--text-sm);">${initials}</span>`;
+  const avatarHtml = state.user.profilePhoto
+    ? `<img src="${state.user.profilePhoto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="">`
+    : `<span style="font-weight:var(--weight-semibold);color:var(--saffron-600);font-size:var(--text-sm);">${initials}</span>`;
+  el.innerHTML = avatarHtml;
+
+  const sidebar = document.getElementById('dsSidebarUser');
+  if (sidebar) {
+    const sidebarAvatar = state.user.profilePhoto
+      ? `<img src="${state.user.profilePhoto}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0" alt="">`
+      : `<div style="width:32px;height:32px;border-radius:50%;background:var(--saffron-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:var(--weight-semibold);color:var(--saffron-700);font-size:var(--text-sm)">${initials}</div>`;
+    sidebar.innerHTML = `${sidebarAvatar}<span class="ds-user-name">${state.user.displayName || ''}</span>`;
   }
 }
 
@@ -1869,8 +1938,9 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-panel').forEach(p => {
     p.classList.remove('active');
     p.style.opacity = '0';
-});
-document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.ds-nav-item').forEach(n => n.classList.remove('active'));
 
   const targetPanel = document.getElementById('tab-' + tab);
   targetPanel.classList.add('active');
@@ -1878,6 +1948,8 @@ document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')
   targetPanel.style.opacity = '1';
 
   document.getElementById('nav-' + tab).classList.add('active');
+  const dsNav = document.getElementById('ds-nav-' + tab);
+  if (dsNav) dsNav.classList.add('active');
   state.currentTab = tab;
 
   if (navigator.vibrate) navigator.vibrate(10);
@@ -2764,13 +2836,17 @@ async function loadChatUnreadCount() {
     const threads = await api('GET', '/messages/threads');
     const total   = threads.reduce((sum, t) => sum + (Number(t.unreadCount)||0), 0);
     const badge   = document.getElementById('chatBadge');
+    const dsBadge = document.getElementById('dsChatBadge');
     if (total > 0) {
-      badge.textContent = total > 99 ? '99+' : total;
+      const label = total > 99 ? '99+' : total;
+      badge.textContent = label;
       badge.style.display = 'flex';
+      if (dsBadge) { dsBadge.textContent = label; dsBadge.style.display = 'flex'; }
     } else {
       badge.style.display = 'none';
-}
-} catch(e) {}
+      if (dsBadge) dsBadge.style.display = 'none';
+    }
+  } catch(e) {}
 }
 
 // ============================================================
