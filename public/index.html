@@ -222,26 +222,50 @@ round:var(--error-600)}
     .pulse-count{font-weight:var(--weight-semibold);color:var(--text-primary)}
     .pulse-chevron{width:16px;height:16px;stroke:var(--text-tertiary);fill:none;stroke-width:2;flex-shrink:0;margin-left:auto}
 
-    /* Post Card */
-    .post-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);margin:0 var(--space-4) var(--space-4);overflow:hidden;transition:all var(--duration-fast) var(--ease-out);animation:fadeInScale var(--duration-normal) var(--ease-out)}
-    .post-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-3)}
-    .post-header{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-4) var(--space-2)}
+    /* Feed container */
+    #home-feed{border-top:1px solid var(--border-default)}
+
+    /* Post Card — Instagram/Facebook style */
+    .post-card{background:var(--surface-elevated);border:none;border-bottom:1px solid var(--border-default);border-radius:0;margin:0 0 1px;overflow:hidden;animation:fadeInUp var(--duration-normal) var(--ease-out) both}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .post-header{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4)}
     .post-author-name{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);display:flex;align-items:center;gap:var(--space-1)}
-    .post-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1);display:flex;align-items:center;gap:var(--space-2)}
+    .post-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:1px;display:flex;align-items:center;gap:var(--space-2)}
     .post-meta-dot{width:3px;height:3px;background:var(--text-tertiary);border-radius:50%}
-    .post-content{padding:var(--space-2) var(--space-4) var(--space-3);font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-secondary)}
-    .post-tradition-tags{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-3)}
+    .post-content{padding:var(--space-1) var(--space-4) var(--space-3);font-size:var(--text-sm);line-height:var(--leading-relaxed);color:var(--text-secondary)}
+    .post-tradition-tags{display:flex;gap:var(--space-2);flex-wrap:wrap;padding:0 var(--space-4) var(--space-2)}
     .post-tradition-tag{display:inline-flex;align-items:center;background:var(--saffron-50);color:var(--saffron-700);font-size:var(--text-2xs);font-weight:var(--weight-semibold);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);letter-spacing:var(--tracking-wide);text-transform:uppercase;border:1px solid var(--saffron-200)}
-    .post-media{margin:0 var(--space-4) var(--space-3);border-radius:var(--radius-md);overflow:hidden}
-    .post-media img{width:100%;height:auto;display:block;transition:transform var(--duration-slow) var(--ease-out)}
-    .post-media:hover img{transform:scale(1.02)}
+    .post-media{width:100%;background:var(--surface-sunken);overflow:hidden}
+    .post-media img{width:100%;height:auto;display:block;max-height:560px;object-fit:cover}
+    /* Instagram-style action bar */
+    .ig-actions{display:flex;align-items:center;padding:var(--space-2) var(--space-3) var(--space-1)}
+    .ig-action-left{display:flex;align-items:center;gap:var(--space-1);flex:1}
+    .ig-action-btn{background:none;border:none;cursor:pointer;padding:var(--space-2);display:flex;align-items:center;gap:var(--space-1);color:var(--text-secondary);font-family:var(--font-body);font-size:var(--text-xs);font-weight:var(--weight-medium);border-radius:var(--radius-md);transition:all var(--duration-fast)}
+    .ig-action-btn:hover{color:var(--text-primary);background:var(--surface-overlay)}
+    .ig-action-btn:active{transform:scale(0.9)}
+    .ig-action-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0}
+    .ig-action-btn.liked svg{fill:#e53935;stroke:#e53935;animation:heartBurst 0.35s var(--ease-spring)}
+    .ig-action-btn .ig-count{font-size:var(--text-xs);font-weight:var(--weight-semibold);margin-left:2px}
+    .ig-bookmark{background:none;border:none;cursor:pointer;padding:var(--space-2);display:flex;align-items:center;color:var(--text-secondary);border-radius:var(--radius-md);transition:all var(--duration-fast)}
+    .ig-bookmark:hover{color:var(--text-primary);background:var(--surface-overlay)}
+    .ig-bookmark svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+    .ig-likes{padding:2px var(--space-4) 0;font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .ig-caption{padding:var(--space-1) var(--space-4);font-size:var(--text-sm);color:var(--text-secondary);line-height:var(--leading-relaxed)}
+    .ig-caption strong{color:var(--text-primary);font-weight:var(--weight-semibold);margin-right:var(--space-1);cursor:pointer}
+    .ig-caption strong:hover{text-decoration:underline}
+    .ig-comments-link{padding:2px var(--space-4) 0;font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer;background:none;border:none;font-family:var(--font-body);display:block;text-align:left}
+    .ig-comments-link:hover{color:var(--text-secondary)}
+    .ig-timestamp{padding:var(--space-1) var(--space-4) var(--space-3);font-size:var(--text-2xs);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wide)}
+    .ig-more-btn{background:none;border:none;cursor:pointer;padding:var(--space-2);color:var(--text-tertiary);display:flex;align-items:center;border-radius:var(--radius-md);transition:color var(--duration-fast)}
+    .ig-more-btn:hover{color:var(--text-secondary)}
+    /* Legacy post-action-btn kept for post-detail panel */
     .post-actions{display:flex;gap:0;border-top:1px solid var(--border-default);padding:var(--space-1) 0}
-    .post-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-3) var(--space-2);font-size:var(--text-xs);color:var(--text-tertiary);cursor:pointer;background:none;border:none;font-family:var(--font-body);font-weight:var(--weight-medium);transition:all var(--duration-fast) var(--ease-out);position:relative}
+    .post-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-3) var(--space-2);font-size:var(--text-xs);color:var(--text-tertiary);cursor:pointer;background:none;border:none;font-family:var(--font-body);font-weight:var(--weight-medium);transition:all var(--duration-fast) var(--ease-out)}
     .post-action-btn:hover{background:var(--surface-overlay);color:var(--text-secondary)}
     .post-action-btn:active{transform:scale(0.95)}
-    .post-action-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;transition:all var(--duration-fast) var(--ease-out)}
-    .post-action-btn.liked{color:var(--saffron-600)}
-    .post-action-btn.liked svg{fill:var(--saffron-100);stroke:var(--saffron-600);animation:heartBurst 0.4s var(--ease-spring)}
+    .post-action-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+    .post-action-btn.liked{color:#e53935}
+    .post-action-btn.liked svg{fill:#ffe0e0;stroke:#e53935;animation:heartBurst 0.4s var(--ease-spring)}
     .post-action-btn .count{font-weight:var(--weight-semibold)}
 
     /* Person Card */
@@ -697,6 +721,58 @@ round:var(--error-600)}
     .onboard-purpose-cat-label{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2);padding-left:var(--space-1)}
     /* Smaller chips for language grid */
     .onboard-chips-sm .onboard-chip{font-size:var(--text-xs);padding:var(--space-1) var(--space-3)}
+    /* ── Profile Quick Panel ─────────────────────────────────── */
+    .pq-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:49;opacity:0;transition:opacity var(--duration-normal) var(--ease-out);pointer-events:none}
+    .pq-overlay.open{opacity:1;pointer-events:auto}
+    .pq-panel{position:absolute;bottom:0;left:0;right:0;background:var(--surface-primary);border-radius:var(--radius-2xl) var(--radius-2xl) 0 0;z-index:50;transform:translateY(105%);transition:transform var(--duration-normal) var(--ease-out);max-height:88%;overflow-y:auto;display:flex;flex-direction:column;box-shadow:var(--shadow-4)}
+    .pq-panel.open{transform:translateY(0)}
+    @media(min-width:1024px){
+      .pq-panel{left:auto;right:0;top:0;bottom:0;width:300px;border-radius:0;transform:translateX(105%);max-height:none;border-left:1px solid var(--border-default)}
+      .pq-panel.open{transform:translateX(0)}
+    }
+    .pq-handle{width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:var(--space-3) auto var(--space-1);display:block;flex-shrink:0}
+    @media(min-width:1024px){.pq-handle{display:none}}
+    .pq-header{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);flex-shrink:0}
+    .pq-avatar-wrap{width:44px;height:44px;border-radius:50%;background:var(--saffron-100);color:var(--saffron-700);display:flex;align-items:center;justify-content:center;font-weight:var(--weight-bold);font-size:var(--text-base);overflow:hidden;flex-shrink:0}
+    .pq-avatar-wrap img{width:100%;height:100%;object-fit:cover}
+    .pq-hname{font-weight:var(--weight-semibold);color:var(--text-primary);font-size:var(--text-sm);line-height:1.3}
+    .pq-hsub{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:1px}
+    .pq-close{margin-left:auto;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);background:var(--surface-sunken);border:none;cursor:pointer;color:var(--text-tertiary);flex-shrink:0;transition:background var(--duration-fast) var(--ease-out)}
+    .pq-close:hover{background:var(--surface-overlay);color:var(--text-primary)}
+    .pq-nav{padding:var(--space-2) var(--space-2) var(--space-6)}
+    .pq-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:var(--font-body);font-size:var(--text-sm);color:var(--text-primary);transition:background var(--duration-fast) var(--ease-out);min-height:44px}
+    .pq-item:hover,.pq-item:focus-visible{background:var(--surface-sunken);outline:none}
+    .pq-icon{width:34px;height:34px;border-radius:var(--radius-md);background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .pq-label{flex:1}
+    .pq-chevron{width:15px;height:15px;stroke:var(--text-tertiary);fill:none;stroke-width:2;flex-shrink:0}
+    .pq-divider{height:1px;background:var(--border-default);margin:var(--space-1) var(--space-3)}
+    .pq-item.pq-danger{color:#ef4444}
+    .pq-item.pq-danger:hover{background:rgba(239,68,68,0.06)}
+    /* Sidebar user card chevron */
+    .ds-user-chevron{width:13px;height:13px;stroke:var(--text-tertiary);fill:none;stroke-width:2;flex-shrink:0;transition:opacity 0.2s var(--ease-out)}
+    .desktop-sidebar.collapsed .ds-user-chevron{opacity:0}
+    /* ── Compact Daily Verse ─────────────────────────────────── */
+    .dvc{margin:0 var(--space-4) var(--space-3);background:linear-gradient(135deg,var(--saffron-700) 0%,var(--saffron-500) 100%);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);color:white;position:relative;overflow:hidden}
+    .dvc::after{content:'☸';position:absolute;right:-4px;bottom:-12px;font-size:4rem;opacity:0.08;pointer-events:none;line-height:1}
+    .dvc-inner{display:flex;align-items:flex-start;gap:var(--space-3)}
+    .dvc-icon{font-size:1.15rem;flex-shrink:0;opacity:0.85;margin-top:2px}
+    .dvc-body{flex:1;min-width:0}
+    .dvc-label{font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:var(--tracking-wider);opacity:0.65;margin-bottom:2px}
+    .dvc-preview{font-family:var(--font-display);font-size:var(--text-sm);font-style:italic;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .dvc-full{font-family:var(--font-display);font-size:var(--text-sm);font-style:italic;line-height:1.6;display:none;margin-top:var(--space-1)}
+    .dvc-source{font-size:var(--text-2xs);opacity:0.55;margin-top:3px}
+    .dvc-actions{display:flex;align-items:center;gap:var(--space-2);margin-top:var(--space-2)}
+    .dvc-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.18);color:white;padding:2px var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;transition:background .12s;font-family:var(--font-body);line-height:1.6}
+    .dvc-btn:hover{background:rgba(255,255,255,0.28)}
+    .dvc-dismiss{position:absolute;top:var(--space-2);right:var(--space-2);width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.12);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;opacity:0.65;transition:opacity .12s;line-height:1}
+    .dvc-dismiss:hover{opacity:1}
+    /* Verse fallback */
+    .verse-fallback{margin:0 var(--space-4) var(--space-3);background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)}
+    .verse-fallback-icon{font-size:1.4rem;flex-shrink:0}
+    .verse-fallback-body{flex:1;min-width:0}
+    .verse-fallback-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .verse-fallback-sub{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:1px}
+    .verse-fallback-btn{font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-semibold);background:none;border:none;cursor:pointer;font-family:var(--font-body);white-space:nowrap;flex-shrink:0;padding:0}
     /* Text reader panel */
     .text-reader{padding:var(--space-4)}
     .text-reader-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3)}
@@ -954,7 +1030,7 @@ round:var(--error-600)}
         </button>
       </nav>
       <div class="ds-footer">
-        <div class="ds-user" id="dsSidebarUser" onclick="openOwnProfile()"></div>
+        <div class="ds-user" id="dsSidebarUser" onclick="openProfileQuickPanel()" title="Profile menu"></div>
         <button class="ds-create-btn" onclick="openCreatePost()">
           <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;flex-shrink:0"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           <span class="ds-label">Share Reflection</span>
@@ -971,7 +1047,7 @@ round:var(--error-600)}
         <button class="header-icon" onclick="openCreatePost()" title="Share reflection" aria-label="Share reflection">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <button class="header-icon" id="headerAvatar" onclick="openOwnProfile()" title="Profile" aria-label="Profile">
+        <button class="header-icon" id="headerAvatar" onclick="openProfileQuickPanel()" title="Profile" aria-label="Profile">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
 <button class="header-icon" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark mode">
@@ -1534,6 +1610,67 @@ round:var(--error-600)}
       </div>
     </div>
 
+    <!-- Profile Quick Panel (bottom sheet mobile / right drawer desktop) -->
+    <div class="pq-overlay" id="pqOverlay" onclick="closeProfileQuickPanel()"></div>
+    <div class="pq-panel" id="pqPanel" role="dialog" aria-modal="true" aria-label="Profile menu">
+      <span class="pq-handle"></span>
+      <div class="pq-header">
+        <div class="pq-avatar-wrap" id="pqAvatarWrap"></div>
+        <div style="flex:1;min-width:0">
+          <div class="pq-hname" id="pqName"></div>
+          <div class="pq-hsub" id="pqSub"></div>
+        </div>
+        <button class="pq-close" onclick="closeProfileQuickPanel()" aria-label="Close">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="pq-nav">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
+          <div class="pq-icon">👤</div><span class="pq-label">View Profile</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id);setTimeout(()=>document.getElementById('profile-edit-btn')?.click(),350)">
+          <div class="pq-icon">✏️</div><span class="pq-label">Edit Profile</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="pq-divider"></div>
+        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('communities')">
+          <div class="pq-icon">🏘️</div><span class="pq-label">My Communities</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn')">
+          <div class="pq-icon">📚</div><span class="pq-label">My Courses</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
+          <div class="pq-icon">⭐</div><span class="pq-label">My Contributions</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();showToast('Saved resources — coming soon','info')">
+          <div class="pq-icon">🔖</div><span class="pq-label">Saved Resources</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="pq-divider"></div>
+        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
+          <div class="pq-icon">🌐</div><span class="pq-label">Language & Preferences</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();openVerifStatus()">
+          <div class="pq-icon">✅</div><span class="pq-label">Verification Status</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="pq-item" onclick="closeProfileQuickPanel();showToast('Settings — coming soon','info')">
+          <div class="pq-icon">⚙️</div><span class="pq-label">Settings</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="pq-divider"></div>
+        <button class="pq-item pq-danger" onclick="closeProfileQuickPanel();logout()">
+          <div class="pq-icon">🚪</div><span class="pq-label">Logout</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </nav>
+    </div>
+
   </div>
 </div>
 
@@ -2076,8 +2213,38 @@ function updateHeaderAvatar() {
     const sidebarAvatar = state.user.profilePhoto
       ? `<img src="${state.user.profilePhoto}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0" alt="">`
       : `<div style="width:32px;height:32px;border-radius:50%;background:var(--saffron-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:var(--weight-semibold);color:var(--saffron-700);font-size:var(--text-sm)">${initials}</div>`;
-    sidebar.innerHTML = `${sidebarAvatar}<span class="ds-user-name">${state.user.displayName || ''}</span>`;
+    sidebar.innerHTML = `${sidebarAvatar}<span class="ds-user-name">${state.user.displayName || ''}</span><svg class="ds-user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:12px;height:12px;flex-shrink:0;opacity:0.4;margin-left:auto"><polyline points="9 18 15 12 9 6"/></svg>`;
   }
+}
+
+function openProfileQuickPanel() {
+  if (!state.user) return;
+  const panel = document.getElementById('pqPanel');
+  const overlay = document.getElementById('pqOverlay');
+  const nameEl = document.getElementById('pqName');
+  const subEl = document.getElementById('pqSub');
+  const avatarWrap = document.getElementById('pqAvatarWrap');
+  if (nameEl) nameEl.textContent = state.user.displayName || '';
+  if (subEl) subEl.textContent = state.user.email || '';
+  const initials = (state.user.displayName || 'U').charAt(0).toUpperCase();
+  if (avatarWrap) {
+    avatarWrap.innerHTML = state.user.profilePhoto
+      ? `<img src="${state.user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`
+      : `<span style="font-weight:var(--weight-semibold);color:var(--saffron-600);font-size:var(--text-lg)">${initials}</span>`;
+  }
+  panel?.classList.add('open');
+  overlay?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfileQuickPanel() {
+  document.getElementById('pqPanel')?.classList.remove('open');
+  document.getElementById('pqOverlay')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openVerifStatus() {
+  showToast('Verification status — coming soon', 'info');
 }
 
 function populateCreatePostUI() {
@@ -2205,73 +2372,144 @@ async function loadHome() {
 
 async function loadDailyVerse() {
   const container = document.getElementById('home-daily-verse');
+  if (!container) return;
+  const dismissed = localStorage.getItem('sangham_verse_dismissed');
+  if (dismissed && (Date.now() - parseInt(dismissed)) < 86400000) {
+    container.innerHTML = _verseFallbackHtml();
+    return;
+  }
   try {
     const verse = await api('GET', '/library/daily-verse');
-    if (!verse || !verse.content) return;
+    if (!verse || !verse.content) { container.innerHTML = ''; return; }
     _currentVerseTextId = verse.textId || null;
+    const text = verse.content;
+    const preview = text.length > 90 ? text.slice(0, 90).trimEnd() + '…' : text;
+    const hasTrunc = text.length > 90;
     container.innerHTML = `
-      <div class="daily-verse">
-        <div class="daily-verse-label">✦ Daily Verse</div>
-        <div class="daily-verse-text">"${verse.content}"</div>
-        <div class="daily-verse-attr">${verse.text?.title || ''} ${verse.segmentKey ? '· '+verse.segmentKey : ''}</div>
-        <div class="daily-verse-actions">
-          <button onclick="bookmarkVerse()">🔖 Bookmark</button>
-          <button onclick="shareVerse()">↗️ Share</button>
+      <div class="dvc" id="dvcCard">
+        <button class="dvc-dismiss" onclick="dismissVerse()" aria-label="Dismiss">✕</button>
+        <div class="dvc-inner">
+          <div class="dvc-icon">☸</div>
+          <div class="dvc-body">
+            <div class="dvc-label">Daily Wisdom</div>
+            <div class="dvc-preview" id="dvcPreview">${escHtml(preview)}</div>
+            ${hasTrunc ? `<div class="dvc-full" id="dvcFull">${escHtml(text)}</div>` : ''}
+            <div class="dvc-source">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + escHtml(verse.segmentKey) : ''}</div>
+            <div class="dvc-actions">
+              ${hasTrunc ? `<button class="dvc-btn" id="dvcReadMore" onclick="toggleVerseExpand()">Read More</button>` : ''}
+              <button class="dvc-btn" onclick="bookmarkVerse()">🔖 Save</button>
+            </div>
+          </div>
         </div>
       </div>`;
   } catch(e) { container.innerHTML = ''; }
+}
+
+function toggleVerseExpand() {
+  const preview = document.getElementById('dvcPreview');
+  const full = document.getElementById('dvcFull');
+  const btn = document.getElementById('dvcReadMore');
+  if (!full) return;
+  const expanded = full.style.display === 'block';
+  full.style.display = expanded ? 'none' : 'block';
+  if (preview) preview.style.display = expanded ? '-webkit-box' : 'none';
+  if (btn) btn.textContent = expanded ? 'Read More' : 'Show Less';
+}
+
+function dismissVerse() {
+  localStorage.setItem('sangham_verse_dismissed', Date.now().toString());
+  const container = document.getElementById('home-daily-verse');
+  if (container) container.innerHTML = _verseFallbackHtml();
+}
+
+function _verseFallbackHtml() {
+  return `<div class="verse-fallback">
+    <div class="verse-fallback-icon">🌿</div>
+    <div class="verse-fallback-body">
+      <div class="verse-fallback-title">Daily Wisdom</div>
+      <div class="verse-fallback-sub">Dismissed for today.</div>
+    </div>
+    <button class="verse-fallback-btn" onclick="localStorage.removeItem('sangham_verse_dismissed');loadDailyVerse()">Restore</button>
+  </div>`;
 }
 
 function renderPostCard(post, full, delay = 0) {
   const author   = post.author || {};
   const initials = (author.displayName || '?').charAt(0).toUpperCase();
   const avatar   = author.profilePhoto
-    ? `<img src="${author.profilePhoto}" alt="${author.displayName || ''}">`
+    ? `<img src="${author.profilePhoto}" alt="${escHtml(author.displayName || '')}">`
     : initials;
   const clergyBadge = author.isVerifiedClergy
     ? '<span class="badge-verified badge-verified-teacher" title="Verified teacher"></span>' : '';
   const tTags = (post.traditionTags || []).map(t =>
-    `<span class="post-tradition-tag">${t}</span>`).join(' ');
+    `<span class="post-tradition-tag">${escHtml(t)}</span>`).join('');
   const likeCount = post._count?.likes ?? 0;
   const cmtCount  = post._count?.comments ?? 0;
   const isLiked   = state.likedPosts.has(post.id);
   const ago       = timeAgo(post.createdAt);
+  const hasMedia  = (post.mediaUrls||[]).length > 0;
 
-  const actions = full ? '' : `
-    <div class="post-actions">
-      <button class="post-action-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',this)" id="like-btn-${post.id}" aria-label="Like">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        <span class="count">${likeCount}</span>
-      </button>
-      <button class="post-action-btn" onclick="openPostDetail('${post.id}')" aria-label="Comments">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span class="count">${cmtCount}</span>
-      </button>
-<button class="post-action-btn" onclick="startDMFromPost('${author.id}','${author.displayName||''}')" aria-label="Message">
-        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        <span>Message</span>
-      </button>
-    </div>`;
-
-  return `
-    <div class="post-card" id="post-card-${post.id}" style="animation-delay: ${delay}s">
-      <div class="post-header">
-        <div class="avatar avatar-md ${author.isVerifiedClergy ? 'avatar-verified' : ''}">${avatar}</div>
-        <div style="flex:1">
-          <div class="post-author-name">${author.displayName||t('roles.unknown')} ${clergyBadge}</div>
-          <div class="post-meta">
-            <span>${ago}</span>
-            <span class="post-meta-dot"></span>
-            <span>${author.role && author.role!=='PRACTITIONER' ? fmtRole(author.role) : 'Practitioner'}</span>
+  // Full view (post detail panel) keeps original layout
+  if (full) {
+    return `
+      <div class="post-card" id="post-card-${post.id}">
+        <div class="post-header">
+          <div class="avatar avatar-md ${author.isVerifiedClergy ? 'avatar-verified' : ''}" style="cursor:pointer" onclick="openProfile('${author.id}')">${avatar}</div>
+          <div style="flex:1;cursor:pointer" onclick="openProfile('${author.id}')">
+            <div class="post-author-name">${escHtml(author.displayName||t('roles.unknown'))} ${clergyBadge}</div>
+            <div class="post-meta"><span>${ago}</span><span class="post-meta-dot"></span><span>${author.role && author.role!=='PRACTITIONER' ? fmtRole(author.role) : 'Practitioner'}</span></div>
           </div>
         </div>
+        ${tTags ? `<div class="post-tradition-tags">${tTags}</div>` : ''}
+        <div class="post-content">${escHtml(post.content || '')}</div>
+        ${hasMedia ? `<div class="post-media">${post.mediaUrls.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')}</div>` : ''}
+      </div>`;
+  }
+
+  // Feed view — Instagram/Facebook style
+  const mediaHtml = hasMedia
+    ? `<div class="post-media">${post.mediaUrls.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')}</div>`
+    : '';
+
+  return `
+    <div class="post-card" id="post-card-${post.id}" style="animation-delay:${delay}s">
+      <div class="post-header">
+        <div class="avatar avatar-md ${author.isVerifiedClergy ? 'avatar-verified' : ''}" style="cursor:pointer;flex-shrink:0" onclick="openProfile('${author.id}')">${avatar}</div>
+        <div style="flex:1;cursor:pointer;min-width:0" onclick="openProfile('${author.id}')">
+          <div class="post-author-name">${escHtml(author.displayName||t('roles.unknown'))} ${clergyBadge}</div>
+          <div class="post-meta">
+            <span>${author.role && author.role!=='PRACTITIONER' ? fmtRole(author.role) : 'Practitioner'}</span>
+            ${author.city ? `<span class="post-meta-dot"></span><span>${escHtml(author.city)}</span>` : ''}
+          </div>
+        </div>
+        <button class="ig-more-btn" onclick="showToast('Options — coming soon','info')" aria-label="More">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        </button>
       </div>
-      <div class="post-content">
-        ${tTags ? '<div class="post-tradition-tags">'+tTags+'</div>' : ''}
-        <div>${escHtml(post.content || '')}</div>
-        ${(post.mediaUrls||[]).length ? `<div class="post-media">${post.mediaUrls.map(u=>`<img src="${u}" alt="" loading="lazy">`).join('')}</div>` : ''}
+      ${tTags ? `<div class="post-tradition-tags">${tTags}</div>` : ''}
+      ${hasMedia ? mediaHtml : `<div class="post-content">${escHtml(post.content || '')}</div>`}
+      <div class="ig-actions">
+        <div class="ig-action-left">
+          <button class="ig-action-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',this)" id="like-btn-${post.id}" aria-label="Like">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${likeCount > 0 ? `<span class="ig-count">${likeCount}</span>` : ''}
+          </button>
+          <button class="ig-action-btn" onclick="openPostDetail('${post.id}')" aria-label="Comment">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            ${cmtCount > 0 ? `<span class="ig-count">${cmtCount}</span>` : ''}
+          </button>
+          <button class="ig-action-btn" onclick="startDMFromPost('${author.id}','${author.displayName||''}')" aria-label="Send">
+            <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <button class="ig-bookmark" onclick="showToast('Saved — coming soon','info')" aria-label="Save post">
+          <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
       </div>
-      ${actions}
+      ${likeCount > 0 ? `<div class="ig-likes">${likeCount.toLocaleString()} ${likeCount===1?'like':'likes'}</div>` : ''}
+      ${hasMedia ? `<div class="ig-caption"><strong onclick="openProfile('${author.id}')">${escHtml(author.displayName||'')}</strong>${escHtml(post.content||'')}</div>` : ''}
+      ${cmtCount > 0 ? `<button class="ig-comments-link" onclick="openPostDetail('${post.id}')">View ${cmtCount > 1 ? 'all '+cmtCount+' comments' : '1 comment'}</button>` : ''}
+      <div class="ig-timestamp">${ago}</div>
     </div>`;
 }
 
@@ -2286,9 +2524,35 @@ async function toggleLike(postId, btn) {
       state.likedPosts.delete(postId);
       btn.classList.remove('liked');
     }
-    const countEl = btn.querySelector('.count');
-    const cur = parseInt(countEl.textContent) || 0;
-    countEl.textContent = data.liked ? cur + 1 : Math.max(0, cur - 1);
+    // Support both .count (detail panel) and .ig-count (feed)
+    let countEl = btn.querySelector('.ig-count') || btn.querySelector('.count');
+    const cur = countEl ? (parseInt(countEl.textContent) || 0) : 0;
+    const newCount = data.liked ? cur + 1 : Math.max(0, cur - 1);
+    if (countEl) {
+      countEl.textContent = newCount;
+    } else if (data.liked && newCount > 0) {
+      // Insert count element if it didn't exist
+      const span = document.createElement('span');
+      span.className = 'ig-count';
+      span.textContent = newCount;
+      btn.appendChild(span);
+    }
+    // Update ig-likes line in the same post-card
+    const card = document.getElementById('post-card-' + postId);
+    if (card) {
+      let likesEl = card.querySelector('.ig-likes');
+      if (newCount > 0) {
+        if (!likesEl) {
+          likesEl = document.createElement('div');
+          likesEl.className = 'ig-likes';
+          const actionsEl = card.querySelector('.ig-actions');
+          if (actionsEl) actionsEl.after(likesEl);
+        }
+        likesEl.textContent = newCount.toLocaleString() + (newCount === 1 ? ' like' : ' likes');
+      } else if (likesEl) {
+        likesEl.remove();
+      }
+    }
   } catch(err) { showToast(err.message, 'error'); }
 }
 
