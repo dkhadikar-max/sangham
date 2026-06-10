@@ -18,7 +18,9 @@
     "new_here": "New to Sangham?",
     "have_account": "Already have an account?",
     "passkey": "Sign in with Passkey",
-    "or": "or continue with"
+    "or": "or continue with",
+    "join": "Join Sangham",
+    "begin_journey": "Begin your journey of awakening."
   },
   "onboarding": {
     "choose_language": "Choose Your Language",

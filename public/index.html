@@ -693,22 +693,22 @@ round:var(--error-600)}
     <div class="divider" data-i18n="auth.or">or continue with</div>
     <form id="authForm" onsubmit="handleAuth(event)">
       <div class="input-group" id="nameGroup" style="display:none">
-        <label>Full Name</label>
-        <input type="text" id="displayName" class="input" placeholder="e.g. Ananda">
+        <label data-i18n="auth.full_name">Full Name</label>
+        <input type="text" id="displayName" class="input" placeholder="e.g. Ananda" data-i18n-ph="auth.full_name_placeholder">
       </div>
       <div class="input-group">
-        <label>Email or Phone</label>
+        <label data-i18n="auth.email_phone">Email or Phone</label>
         <input type="text" id="identifier" class="input" placeholder="Enter email or phone number" required>
       </div>
       <div class="input-group">
-        <label>Password</label>
+        <label data-i18n="auth.password">Password</label>
         <input type="password" id="password" class="input" placeholder="••••••••" required>
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:var(--space-2)" id="authBtn"><span id="authBtnText">Sign In</span></button>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:var(--space-2)" id="authBtn"><span id="authBtnText" data-i18n="auth.sign_in">Sign In</span></button>
     </form>
     <div class="auth-switch">
-      <span id="authSwitchText">New to Sangham?</span>
-      <a onclick="toggleAuthMode()" id="authSwitchLink">Create an account</a>
+      <span id="authSwitchText" data-i18n="auth.new_here">New to Sangham?</span>
+      <a onclick="toggleAuthMode()" id="authSwitchLink" data-i18n="auth.create_account">Create Account</a>
     </div>
   </div>
 </div>
@@ -718,7 +718,7 @@ round:var(--error-600)}
   <div class="onboard-shell">
     <div class="onboard-header">
       <div class="logo" style="cursor:pointer" onclick="skipOnboarding()"><div class="logo-symbol"></div> Sangham</div>
-      <button class="btn btn-ghost btn-sm" onclick="skipOnboarding()">Skip</button>
+      <button class="btn btn-ghost btn-sm" onclick="skipOnboarding()" data-i18n="onboarding.skip">Skip</button>
     </div>
     <div class="onboard-progress" id="ob-progress" style="display:none">
       <div class="onboard-dot active" id="ob-dot-1"></div>
@@ -750,9 +750,9 @@ round:var(--error-600)}
     <!-- Step 1: Tradition & Tags -->
     <div id="ob-step-1" class="onboard-step">
       <div class="onboard-emoji">☸️</div>
-      <h2 class="onboard-title">Your Path</h2>
-      <p class="onboard-sub">Which Buddhist tradition are you part of?<br>Select all that apply.</p>
-      <div class="onboard-label">Tradition</div>
+      <h2 class="onboard-title" data-i18n="onboarding.your_path">Your Path</h2>
+      <p class="onboard-sub" data-i18n="onboarding.your_path_sub">Which Buddhist tradition are you part of? Select all that apply.</p>
+      <div class="onboard-label" data-i18n="onboarding.tradition_label">Tradition</div>
       <div class="onboard-chips">
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.traditions,'THERAVADA',this)">Theravada</button>
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.traditions,'MAHAYANA',this)">Mahayana / Zen</button>
@@ -761,7 +761,7 @@ round:var(--error-600)}
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.traditions,'MULTIPLE',this)">Multiple traditions</button>
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.traditions,'OTHER',this)">Other / Secular</button>
       </div>
-      <div class="onboard-label">I am a…</div>
+      <div class="onboard-label" data-i18n="onboarding.i_am_a">I am a…</div>
       <div class="onboard-chips">
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.tags,'MEDITATOR',this)">Meditator</button>
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.tags,'STUDENT',this)">Student</button>
@@ -779,14 +779,14 @@ round:var(--error-600)}
     <!-- Step 2: Location & Languages -->
     <div id="ob-step-2" class="onboard-step">
       <div class="onboard-emoji">📍</div>
-      <h2 class="onboard-title">Where Are You?</h2>
-      <p class="onboard-sub">Helps nearby practitioners find you.<br>You can change visibility in Settings.</p>
-      <div class="input-group"><label>City</label>
-        <input id="ob-city" class="input" placeholder="e.g. Nagpur">
+      <h2 class="onboard-title" data-i18n="onboarding.where_are_you">Where Are You?</h2>
+      <p class="onboard-sub" data-i18n="onboarding.where_sub">Helps nearby practitioners find you. You can change visibility in Settings.</p>
+      <div class="input-group"><label data-i18n="onboarding.city">City</label>
+        <input id="ob-city" class="input" placeholder="e.g. Nagpur" data-i18n-ph="onboarding.city_placeholder">
       </div>
-      <div class="input-group"><label>Country</label>
+      <div class="input-group"><label data-i18n="onboarding.country">Country</label>
         <select id="ob-country" class="input">
-          <option value="">Select country</option>
+          <option value="" data-i18n="onboarding.country_placeholder">Select country</option>
           <option value="IN">India</option>
           <option value="LK">Sri Lanka</option>
           <option value="TH">Thailand</option>
@@ -801,7 +801,7 @@ round:var(--error-600)}
           <option value="CA">Canada</option>
         </select>
       </div>
-      <div class="onboard-label">Languages you speak</div>
+      <div class="onboard-label" data-i18n="onboarding.languages_label">Languages you speak</div>
       <div class="onboard-chips">
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.languages,'English',this)">English</button>
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.languages,'Hindi',this)">Hindi</button>
@@ -819,8 +819,8 @@ round:var(--error-600)}
     <!-- Step 3: Seeking -->
     <div id="ob-step-3" class="onboard-step">
       <div class="onboard-emoji">🤝</div>
-      <h2 class="onboard-title">What Are You Seeking?</h2>
-      <p class="onboard-sub">We'll post these as open intentions so the right people can find you. You can edit or remove them anytime.</p>
+      <h2 class="onboard-title" data-i18n="onboarding.what_seeking">What Are You Seeking?</h2>
+      <p class="onboard-sub" data-i18n="onboarding.what_seeking_sub">We'll post these as open intentions so the right people can find you. You can edit or remove them anytime.</p>
       <div class="onboard-chips">
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.intents,'MEDITATION_PARTNER',this)">Meditation Partner</button>
         <button class="onboard-chip" onclick="toggleOnboardChip(_ob.intents,'STUDY_GROUP',this)">Study Group</button>
@@ -902,7 +902,7 @@ round:var(--error-600)}
           <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center">
             <span style="font-size:var(--text-xs);color:var(--text-tertiary);flex-shrink:0" data-i18n="discover.seeking">Seeking:</span>
             <div class="chip-scroll" id="intentFilters" style="display:flex;gap:var(--space-2);flex:1;min-width:0">
-              <button class="chip active" onclick="filterDiscoverIntent(null,this)">Anyone</button>
+              <button class="chip active" onclick="filterDiscoverIntent(null,this)" data-i18n="discover.anyone">Anyone</button>
               <button class="chip" onclick="filterDiscoverIntent('MEDITATION_PARTNER',this)">Meditation Partner</button>
               <button class="chip" onclick="filterDiscoverIntent('STUDY_GROUP',this)">Study Group</button>
               <button class="chip" onclick="filterDiscoverIntent('BHIKKHU_GUIDANCE',this)">Bhikkhu Guidance</button>
@@ -914,13 +914,13 @@ round:var(--error-600)}
             </div>
           </div>
           <div style="padding:0 var(--space-4) var(--space-2)">
-            <button class="chip" id="teacher-filter-chip" onclick="filterDiscoverTeachers(this)">🎓 Verified Teachers</button>
-            <button class="btn btn-ghost btn-sm" id="post-intent-btn" style="display:none;float:right;margin-top:-2px" onclick="openCreateIntent()">+ Post Intent</button>
+            <button class="chip" id="teacher-filter-chip" onclick="filterDiscoverTeachers(this)" data-i18n="discover.verified_teachers">🎓 Verified Teachers</button>
+            <button class="btn btn-ghost btn-sm" id="post-intent-btn" style="display:none;float:right;margin-top:-2px" onclick="openCreateIntent()" data-i18n="discover.post_intent">+ Post Intent</button>
           </div>
           <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2);align-items:center">
             <span style="font-size:var(--text-xs);color:var(--text-tertiary);flex-shrink:0" data-i18n="discover.language_filter">Language:</span>
             <div class="chip-scroll" id="discoverLangFilters" style="gap:var(--space-2)">
-              <button class="chip active" onclick="filterDiscoverLang(null,this)">Any</button>
+              <button class="chip active" onclick="filterDiscoverLang(null,this)" data-i18n="discover.any">Any</button>
               <button class="chip" onclick="filterDiscoverLang('English',this)">English</button>
               <button class="chip" onclick="filterDiscoverLang('Hindi',this)">Hindi</button>
               <button class="chip" onclick="filterDiscoverLang('Marathi',this)">Marathi</button>
@@ -938,19 +938,19 @@ round:var(--error-600)}
             <input type="text" id="discoverEventSearch" placeholder="Search events..." data-i18n-ph="discover.search_events" oninput="debounceEventSearch()">
           </div>
           <div class="chip-scroll" style="padding:0 var(--space-4) var(--space-2)" id="eventTypeFilters">
-            <button class="chip active" onclick="filterDiscoverEventType(null,this)">All Types</button>
-            <button class="chip" onclick="filterDiscoverEventType('RETREAT',this)">Retreats</button>
-            <button class="chip" onclick="filterDiscoverEventType('TALK',this)">Talks</button>
-            <button class="chip" onclick="filterDiscoverEventType('SEMINAR',this)">Seminars</button>
-            <button class="chip" onclick="filterDiscoverEventType('COMMUNITY_GATHERING',this)">Gatherings</button>
-            <button class="chip" onclick="filterDiscoverEventType('DHAMMA_DIKSHA',this)">Diksha</button>
-            <button class="chip" onclick="filterDiscoverEventType('AMBEDKAR_JAYANTI',this)">Ambedkar Jayanti</button>
+            <button class="chip active" onclick="filterDiscoverEventType(null,this)" data-i18n="events.all_types">All Types</button>
+            <button class="chip" onclick="filterDiscoverEventType('RETREAT',this)" data-i18n="events.retreats">Retreats</button>
+            <button class="chip" onclick="filterDiscoverEventType('TALK',this)" data-i18n="events.talks">Talks</button>
+            <button class="chip" onclick="filterDiscoverEventType('SEMINAR',this)" data-i18n="events.seminars">Seminars</button>
+            <button class="chip" onclick="filterDiscoverEventType('COMMUNITY_GATHERING',this)" data-i18n="events.gatherings">Gatherings</button>
+            <button class="chip" onclick="filterDiscoverEventType('DHAMMA_DIKSHA',this)" data-i18n="events.diksha">Diksha</button>
+            <button class="chip" onclick="filterDiscoverEventType('AMBEDKAR_JAYANTI',this)" data-i18n="events.ambedkar_jayanti">Ambedkar Jayanti</button>
           </div>
           <div style="padding:0 var(--space-4) var(--space-2);display:flex;gap:var(--space-2)" id="eventModeFilters">
-            <button class="chip active" onclick="filterDiscoverEventMode(null,this)">Any</button>
-            <button class="chip" onclick="filterDiscoverEventMode('online',this)">Online</button>
-            <button class="chip" onclick="filterDiscoverEventMode('offline',this)">In-Person</button>
-            <button class="chip" onclick="filterDiscoverEventMode('hybrid',this)">Hybrid</button>
+            <button class="chip active" onclick="filterDiscoverEventMode(null,this)" data-i18n="discover.any">Any</button>
+            <button class="chip" onclick="filterDiscoverEventMode('online',this)" data-i18n="discover.online">Online</button>
+            <button class="chip" onclick="filterDiscoverEventMode('offline',this)" data-i18n="discover.in_person">In-Person</button>
+            <button class="chip" onclick="filterDiscoverEventMode('hybrid',this)" data-i18n="discover.hybrid">Hybrid</button>
           </div>
           <div id="discoverEvents" style="padding:0 var(--space-4) var(--space-4)"></div>
         </div>
@@ -1428,7 +1428,7 @@ const WS_URL   = 'https://sangham.online';
 // ============================================================
 const LOCALE_EN = {
   nav:{ home:'Home', discover:'Discover', communities:'Communities', learn:'Educate', chat:'Messages' },
-  auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with' },
+  auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with', join:'Join Sangham', begin_journey:'Begin your journey of awakening.' },
   onboarding:{ choose_language:'Choose Your Language', choose_language_sub:"Select the language you'd like to use Sangham in.", continue:'Continue', your_path:'Your Path', your_path_sub:'Which Buddhist tradition are you part of? Select all that apply.', tradition_label:'Tradition', i_am_a:'I am a…', where_are_you:'Where Are You?', where_sub:'Helps nearby practitioners find you. You can change visibility in Settings.', city:'City', city_placeholder:'e.g. Nagpur', country:'Country', country_placeholder:'Select country', languages_label:'Languages you speak', what_seeking:'What Are You Seeking?', what_seeking_sub:"We'll post these as open intentions so the right people can find you.", skip:'Skip', next:'Next →', back:'← Back', finish:'Finish', setting_up:'Setting up…', step_of:'Step {n} of 3' },
   discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All' },
   communities:{ title:'Sanghas', new_sangha:'+ New Sangha', your_communities:'Your Communities', search:'Search communities…', members:'members', join:'Join', joined:'Joined', leave:'Leave' },
@@ -1492,7 +1492,7 @@ async function setLanguage(lang) {
   document.documentElement.lang = _lang;
   localStorage.setItem('sangham_lang', _lang);
   applyTranslations();
-  if (window.state?.token) {
+  if (state?.token) {
     api('PUT', '/users/me', { preferredLanguage: _lang }).catch(() => {});
   }
 }
@@ -1525,11 +1525,11 @@ function saveSession() {
   localStorage.setItem('sangham_theme', state.theme);
 }
 function loadSession() {
-  const t = localStorage.getItem('sangham_token');
+  const token = localStorage.getItem('sangham_token');
   const u = localStorage.getItem('sangham_user');
   const theme = localStorage.getItem('sangham_theme') || 'light';
-  if (t && u) {
-    state.token = t;
+  if (token && u) {
+    state.token = token;
     try { state.user = JSON.parse(u); } catch(e) {}
   }
   state.theme = theme;
@@ -1547,10 +1547,9 @@ function toggleTheme() {
 }
 
 function initTheme() {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (!localStorage.getItem('sangham_theme')) {
-    state.theme = prefersDark ? 'dark' : 'light';
-document.documentElement.setAttribute('data-theme', state.theme);
+    state.theme = 'light';
+    document.documentElement.setAttribute('data-theme', 'light');
   }
 }
 
@@ -1619,21 +1618,21 @@ function toggleAuthMode() {
   hideAuthError();
 
   if (isLoginMode) {
-    title.innerText    = 'Welcome Back';
-    subtitle.innerText = 'Continue your journey with Sangham.';
+    title.innerText    = t('auth.welcome_back');
+    subtitle.innerText = t('auth.continue_journey');
     nameGroup.style.display = 'none';
     nameInput.removeAttribute('required');
-    btn.innerText      = 'Sign In';
-    switchText.innerText = 'New to Sangham?';
-    switchLink.innerText = 'Create an account';
+    btn.innerText      = t('auth.sign_in');
+    switchText.innerText = t('auth.new_here');
+    switchLink.innerText = t('auth.create_account');
   } else {
-    title.innerText    = 'Join Sangham';
-    subtitle.innerText = 'Begin your journey of awakening.';
+    title.innerText    = t('auth.join');
+    subtitle.innerText = t('auth.begin_journey');
     nameGroup.style.display = 'block';
     nameInput.setAttribute('required', 'true');
-    btn.innerText      = 'Create Account';
-    switchText.innerText = 'Already have an account?';
-    switchLink.innerText = 'Sign In';
+    btn.innerText      = t('auth.create_account');
+    switchText.innerText = t('auth.have_account');
+    switchLink.innerText = t('auth.sign_in');
   }
 }
 
