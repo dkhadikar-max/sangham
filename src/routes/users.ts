@@ -3,7 +3,7 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
-import { UserRole, Tradition, ProfessionalTag } from '@prisma/client';
+import { UserRole, Tradition, ProfessionalTag, ProfessionType } from '@prisma/client';
 import { z } from 'zod';
 
 const router = Router();
@@ -21,6 +21,10 @@ const updateProfileSchema = z.object({
   coverImage: z.string().url().optional(),
   // Self-assignable roles only — MODERATOR/SUPER_ADMIN granted by admins
   role: z.enum(['PRACTITIONER', 'BHIKKHU', 'BHIKKHUNI', 'SCHOLAR']).optional(),
+  professionType:   z.nativeEnum(ProfessionType).optional().nullable(),
+  customProfession: z.string().max(100).optional().nullable(),
+  interestTags:     z.array(z.string()).optional(),
+  intentTags:       z.array(z.string()).optional(),
 });
 
 // GET /users/me/followers — people who follow me, annotated with isFollowingBack
@@ -135,7 +139,7 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response): Promise
   const updated = await prisma.user.update({
     where: { id: req.user!.id },
     data: parsed.data,
-    select: { id: true, displayName: true, bio: true, country: true, traditions: true, preferredLanguage: true },
+    select: { id: true, displayName: true, bio: true, country: true, traditions: true, preferredLanguage: true, professionType: true, customProfession: true, interestTags: true, intentTags: true },
   });
   res.json(updated);
 });

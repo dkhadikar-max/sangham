@@ -155,6 +155,10 @@ model User {
   isVerifiedTeacher Boolean   @default(false) @map("is_verified_teacher")
   isContributor     Boolean   @default(false) @map("is_contributor")
   contributorSince  DateTime? @map("contributor_since")
+  professionType    ProfessionType? @map("profession_type")
+  customProfession  String?         @map("custom_profession") @db.VarChar(100)
+  interestTags      String[]        @default([]) @map("interest_tags")
+  intentTags        String[]        @default([]) @map("intent_tags")
 
   daanContributions  DhammaDaanContribution[]
   projectsOwned        Project[]          @relation("ProjectOwner")
@@ -583,6 +587,25 @@ model UserLocation {
 }
 
 // ── Priority 5 + 6: Professional & Interest Tags ──────────────────────
+
+enum ProfessionType {
+  STUDENT
+  TEACHER
+  RESEARCHER
+  DOCTOR
+  ENGINEER
+  LAWYER
+  BUSINESS_OWNER
+  ENTREPRENEUR
+  ARTIST
+  WRITER
+  ACTIVIST
+  CIVIL_SERVANT
+  EMPLOYEE
+  MONK_NUN
+  VOLUNTEER
+  OTHER
+}
 
 enum ProfessionalTag {
   ENTREPRENEUR
