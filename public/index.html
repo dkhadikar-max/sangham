@@ -1627,46 +1627,46 @@ round:var(--error-600)}
       </div>
       <nav class="pq-nav">
         <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
-          <div class="pq-icon">👤</div><span class="pq-label">View Profile</span>
+          <div class="pq-icon">👤</div><span class="pq-label" data-i18n="profile_menu.view_profile">View Profile</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id);setTimeout(()=>document.getElementById('profile-edit-btn')?.click(),350)">
-          <div class="pq-icon">✏️</div><span class="pq-label">Edit Profile</span>
+          <div class="pq-icon">✏️</div><span class="pq-label" data-i18n="profile_menu.edit_profile">Edit Profile</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="pq-divider"></div>
         <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('communities')">
-          <div class="pq-icon">🏘️</div><span class="pq-label">My Communities</span>
+          <div class="pq-icon">🏘️</div><span class="pq-label" data-i18n="profile_menu.my_communities">My Communities</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn')">
-          <div class="pq-icon">📚</div><span class="pq-label">My Courses</span>
+          <div class="pq-icon">📚</div><span class="pq-label" data-i18n="profile_menu.my_courses">My Courses</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
-          <div class="pq-icon">⭐</div><span class="pq-label">My Contributions</span>
+          <div class="pq-icon">⭐</div><span class="pq-label" data-i18n="profile_menu.my_contributions">My Contributions</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();showToast('Saved resources — coming soon','info')">
-          <div class="pq-icon">🔖</div><span class="pq-label">Saved Resources</span>
+        <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
+          <div class="pq-icon">🔖</div><span class="pq-label" data-i18n="profile_menu.saved_resources">Saved Resources</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="pq-divider"></div>
         <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
-          <div class="pq-icon">🌐</div><span class="pq-label">Language & Preferences</span>
+          <div class="pq-icon">🌐</div><span class="pq-label" data-i18n="profile_menu.language_prefs">Language & Preferences</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="pq-item" onclick="closeProfileQuickPanel();openVerifStatus()">
-          <div class="pq-icon">✅</div><span class="pq-label">Verification Status</span>
+          <div class="pq-icon">✅</div><span class="pq-label" data-i18n="profile_menu.verification">Verification Status</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();showToast('Settings — coming soon','info')">
-          <div class="pq-icon">⚙️</div><span class="pq-label">Settings</span>
+        <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
+          <div class="pq-icon">⚙️</div><span class="pq-label" data-i18n="profile_menu.settings">Settings</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="pq-divider"></div>
         <button class="pq-item pq-danger" onclick="closeProfileQuickPanel();logout()">
-          <div class="pq-icon">🚪</div><span class="pq-label">Logout</span>
+          <div class="pq-icon">🚪</div><span class="pq-label" data-i18n="profile_menu.logout">Logout</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </nav>
@@ -1692,14 +1692,16 @@ const LOCALE_EN = {
   discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All', search_default:'Search across people, communities and events', search_no_results:'No results for "{q}"', search_error:'Unable to search. Try again.', no_events_error:'Unable to load events.', no_intents:'No intents yet', no_intents_text:'Be the first to post an intent', intents_error:'Unable to load intents.', no_teachers:'No verified teachers yet', teachers_error:'Unable to load teachers.' },
   communities:{ title:'Sanghas', new_sangha:'+ New Sangha', your_communities:'Your Communities', search:'Search communities…', members:'members', join:'Join', joined:'Joined', leave:'Leave' },
   learn:{ courses:'Courses', resources:'Resources', circles:'Circles', sessions:'Sessions', library:'Library', search:'Search courses, texts, resources…', host_session:'+ Host a Session', no_texts:'No texts found', no_texts_text:'Try a different search or browse collections.', browse_collections:'Browse Collections', no_courses:'No courses yet', no_courses_text:'Courses created by communities will appear here.', no_resources:'No resources yet', no_resources_text:'Community-shared videos, articles, and guides appear here.', no_circles:'No study circles yet', no_circles_text:'Join a community to find or start a study circle.', no_sessions:'No upcoming sessions', no_sessions_text:'Live teaching sessions appear here when scheduled.', sessions_error:'Unable to load sessions.' },
-  events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events', load_error:'Unable to load events.' },
+  events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events', load_error:'Unable to load events.', organised_by:'Organised by', spots_taken:'spots taken', going_count:'going', add_event:'+ Event', loading:'Loading event…' },
   profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Support Sangham (Dhamma Daan)', language_label:'App Language', change_language:'Change Language', no_posts:'No posts yet.' },
-  common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave', try_again:'Try Again' },
-  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only Bhikkhus, Scholars and trusted members can host sessions.', copied:'Copied!' },
+  common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave', try_again:'Try Again', creating:'Creating…', posting:'Posting…', submitting:'Submitting…', processing:'Processing…', scheduling:'Scheduling…', adding:'Adding…', coming_soon:'Coming soon', lessons:'Lessons', no_lessons:'No lessons yet.', lesson_one:'lesson', lesson_many:'lessons', all_courses:'All Courses', no_related_courses:'No related courses yet.', no_related_content:'No related learning content yet.', course:'Course', study_circle:'Study Circle', project:'Project' },
+  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only Bhikkhus, Scholars and trusted members can host sessions.', copied:'Copied!', reflection_added:'Reflection added', posted_to_sangham:'Posted to Sangham', write_something_first:'Write something first', left_circle:'Left study circle', joined_circle:'Joined study circle!', left_project:'Left project', joined_project:'Joined project!', left_community:'Left community', joined_community:'Joined community!', community_created:'Sangha created!', event_created:'Event created!', course_created:'Course created!', resource_added:'Resource added!', circle_created:'Study circle created!', project_created:'Project created!', verse_bookmarked:'Verse bookmarked', text_bookmarked:'Text bookmarked', verse_copied:'Verse copied to clipboard', application_submitted:"Application submitted! We'll review within 7 days.", dhamma_daan_received:'Thank you! Your Dhamma Daan has been received. 🙏', passkey_coming_soon:'Passkey authentication coming soon', sign_in_bookmark:'Sign in to bookmark', group_chat_coming_soon:'Group chat coming soon', session_scheduled:'Session scheduled!' },
   language:{ en:'English', hi:'हिन्दी', mr:'मराठी' },
-  home:{ your_feed:'Your Feed', empty_title:'The hall is quiet', empty_text:'Be the first to share your practice.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Reflection', first_reflection:'Be the first to share a reflection.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.' },
+  home:{ your_feed:'Your Feed', empty_title:'The hall is quiet', empty_text:'Be the first to share your practice.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Reflection', first_reflection:'Be the first to share a reflection.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.', daily_wisdom:'Daily Wisdom', read_more:'Read More', show_less:'Show Less', save_verse:'Save', verse_dismissed:'Dismissed for today.', verse_restore:'Restore' },
+  feed:{ like:'Like', reply:'Reply', message:'Message', save:'Save', reply_one:'reply', reply_many:'replies', join_discussion:'Join the discussion', write_reply:'Write a reply…' },
+  profile_menu:{ view_profile:'View Profile', edit_profile:'Edit Profile', my_communities:'My Communities', my_courses:'My Courses', my_contributions:'My Contributions', saved_resources:'Saved Resources', language_prefs:'Language & Preferences', verification:'Verification Status', settings:'Settings', logout:'Logout' },
   roles:{ unknown:'Unknown', practitioner:'Practitioner', community:'Community', facilitated_by:'Facilitated by' },
-  community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.' },
+  community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.', members:'members', collaborators:'collaborators', tab_overview:'Overview', tab_learning:'Learning', tab_projects:'Projects', tab_circles:'Circles', tab_contributors:'Contributors', upcoming_events:'Upcoming Events', study_circles:'Study Circles', active_projects:'Active Projects', join_circle:'Join Circle', leave_circle:'Leave Circle', join_project:'Join Project', leave_project:'Leave Project', browse_circles:'Browse Circles', browse_projects:'Browse Projects' },
   forms:{ post_ph:'Share a reflection, teaching, or question…', comment_ph:'Add a reflection…', message_ph:'Send a message…', search_ph:'Search people, communities, events…', community_name_ph:'e.g. Mumbai Dhamma Sangha', community_city_ph:'e.g. Mumbai', community_desc_ph:'What is this community about?', community_url_ph:'https://…', intent_title_ph:'e.g. Looking for a meditation partner', intent_desc_ph:"Tell practitioners what you're looking for…", session_title_ph:'e.g. Sunday Sutta Reading', teacher_credentials_ph:'e.g. Ordained in the Ajahn Chah lineage…', teacher_lineage_ph:'e.g. Soto Zen, Navayana Buddhist', teacher_statement_ph:'Describe your teaching practice and motivation…', event_title_ph:'e.g. Weekly Dhamma Talk', event_url_ph:'https://meet.google.com/…', event_location_ph:'e.g. Ambedkar Bhavan, Mumbai', course_title_ph:'e.g. Introduction to the Dhamma', course_desc_ph:'What will students learn?', resource_title_ph:'e.g. The Four Noble Truths — Lecture', circle_topic_ph:'e.g. Reading the Dhammapada together', circle_desc_ph:'What will the circle focus on?', circle_sched_ph:'e.g. Every Sunday 10 AM IST', project_title_ph:'e.g. Pali Canon Translation Project', project_purpose_ph:'What is the core goal of this project?', project_skills_ph:'e.g. Pali, Translation, Research' },
 };
 
@@ -1912,7 +1914,7 @@ function hideAuthError() {
 }
 
 async function handlePasskey() {
-  showToast('Passkey authentication coming soon', 'info');
+  showToast(t('toast.passkey_coming_soon'), 'info');
 }
 
 async function handleAuth(event) {
@@ -2245,7 +2247,7 @@ function closeProfileQuickPanel() {
 }
 
 function openVerifStatus() {
-  showToast('Verification status — coming soon', 'info');
+  showToast(t('common.coming_soon'), 'info');
 }
 
 function populateCreatePostUI() {
@@ -2392,13 +2394,13 @@ async function loadDailyVerse() {
         <div class="dvc-inner">
           <div class="dvc-icon">☸</div>
           <div class="dvc-body">
-            <div class="dvc-label">Daily Wisdom</div>
+            <div class="dvc-label">${t('home.daily_wisdom')}</div>
             <div class="dvc-preview" id="dvcPreview">${escHtml(preview)}</div>
             ${hasTrunc ? `<div class="dvc-full" id="dvcFull">${escHtml(text)}</div>` : ''}
             <div class="dvc-source">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + escHtml(verse.segmentKey) : ''}</div>
             <div class="dvc-actions">
-              ${hasTrunc ? `<button class="dvc-btn" id="dvcReadMore" onclick="toggleVerseExpand()">Read More</button>` : ''}
-              <button class="dvc-btn" onclick="bookmarkVerse()">🔖 Save</button>
+              ${hasTrunc ? `<button class="dvc-btn" id="dvcReadMore" onclick="toggleVerseExpand()">${t('home.read_more')}</button>` : ''}
+              <button class="dvc-btn" onclick="bookmarkVerse()">🔖 ${t('home.save_verse')}</button>
             </div>
           </div>
         </div>
@@ -2414,7 +2416,7 @@ function toggleVerseExpand() {
   const expanded = full.style.display === 'block';
   full.style.display = expanded ? 'none' : 'block';
   if (preview) preview.style.display = expanded ? '-webkit-box' : 'none';
-  if (btn) btn.textContent = expanded ? 'Read More' : 'Show Less';
+  if (btn) btn.textContent = expanded ? t('home.read_more') : t('home.show_less');
 }
 
 function dismissVerse() {
@@ -2427,10 +2429,10 @@ function _verseFallbackHtml() {
   return `<div class="verse-fallback">
     <div class="verse-fallback-icon">🌿</div>
     <div class="verse-fallback-body">
-      <div class="verse-fallback-title">Daily Wisdom</div>
-      <div class="verse-fallback-sub">Dismissed for today.</div>
+      <div class="verse-fallback-title">${t('home.daily_wisdom')}</div>
+      <div class="verse-fallback-sub">${t('home.verse_dismissed')}</div>
     </div>
-    <button class="verse-fallback-btn" onclick="localStorage.removeItem('sangham_verse_dismissed');loadDailyVerse()">Restore</button>
+    <button class="verse-fallback-btn" onclick="localStorage.removeItem('sangham_verse_dismissed');loadDailyVerse()">${t('home.verse_restore')}</button>
   </div>`;
 }
 
@@ -2490,7 +2492,7 @@ function renderPostCard(post, full, delay = 0) {
             <span>${ago}</span>
           </div>
         </div>
-        <button class="post-more-btn" onclick="showToast('Options — coming soon','info')" aria-label="More options">
+        <button class="post-more-btn" onclick="showToast(t('common.coming_soon'),'info')" aria-label="More options">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
         </button>
       </div>
@@ -2498,26 +2500,26 @@ function renderPostCard(post, full, delay = 0) {
       <div class="post-content">${escHtml(post.content || '')}</div>
       ${mediaHtml}
       <div class="disc-actions">
-        <button class="disc-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',this)" id="like-btn-${post.id}" aria-label="Like">
+        <button class="disc-btn ${isLiked?'liked':''}" onclick="toggleLike('${post.id}',this)" id="like-btn-${post.id}" aria-label="${t('feed.like')}">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span>Like</span>${likeCount > 0 ? `<span class="disc-count">${likeCount}</span>` : ''}
+          <span>${t('feed.like')}</span>${likeCount > 0 ? `<span class="disc-count">${likeCount}</span>` : ''}
         </button>
         <div class="disc-btn-divider"></div>
-        <button class="disc-btn" onclick="openPostDetail('${post.id}')" aria-label="Reply">
+        <button class="disc-btn" onclick="openPostDetail('${post.id}')" aria-label="${t('feed.reply')}">
           <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span>Reply</span>${cmtCount > 0 ? `<span class="disc-count">${cmtCount}</span>` : ''}
+          <span>${t('feed.reply')}</span>${cmtCount > 0 ? `<span class="disc-count">${cmtCount}</span>` : ''}
         </button>
         <div class="disc-btn-divider"></div>
-        <button class="disc-btn" onclick="startDMFromPost('${author.id}','${author.displayName||''}')" aria-label="Message">
+        <button class="disc-btn" onclick="startDMFromPost('${author.id}','${author.displayName||''}')" aria-label="${t('feed.message')}">
           <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          <span>Message</span>
+          <span>${t('feed.message')}</span>
         </button>
-        <button class="disc-save" onclick="showToast('Saved — coming soon','info')" aria-label="Save">
+        <button class="disc-save" onclick="showToast(t('common.coming_soon'),'info')" aria-label="${t('feed.save')}">
           <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         </button>
       </div>
-      ${cmtCount > 0 ? `<button class="disc-thread-link" onclick="openPostDetail('${post.id}')"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>${cmtCount} ${cmtCount===1?'reply':'replies'} — Join the discussion</button>` : ''}
-      ${state.user ? `<div class="disc-reply-bar"><div class="avatar avatar-sm" style="flex-shrink:0">${myAvatar}</div><button class="disc-reply-prompt" onclick="openPostDetail('${post.id}')">Write a reply…</button></div>` : ''}
+      ${cmtCount > 0 ? `<button class="disc-thread-link" onclick="openPostDetail('${post.id}')"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>${cmtCount} ${cmtCount===1?t('feed.reply_one'):t('feed.reply_many')} — ${t('feed.join_discussion')}</button>` : ''}
+      ${state.user ? `<div class="disc-reply-bar"><div class="avatar avatar-sm" style="flex-shrink:0">${myAvatar}</div><button class="disc-reply-prompt" onclick="openPostDetail('${post.id}')">${t('feed.write_reply')}</button></div>` : ''}
     </div>`;
 }
 
@@ -2560,7 +2562,7 @@ function renderEmptyState(type, message) {
     'feed-error': { icon: '⚠️', title: t('home.error_title'), text: message || t('home.error_text'), actions: `<button class="btn btn-primary" onclick="loadHome()">${t('common.try_again')}</button>` },
     'discover': { icon: '🔍', title: t('discover.no_people_title'), text: t('discover.no_people_text'), actions: `<button class="btn btn-primary" onclick="clearDiscoverFilters()">${t('discover.clear_filters')}</button><button class="btn btn-ghost" onclick="fetchDiscoverPeople({})">${t('discover.browse_all')}</button>` },
     'learn': { icon: '📖', title: t('learn.no_texts'), text: t('learn.no_texts_text'), actions: `<button class="btn btn-primary" onclick="clearLearnSearch()">${t('learn.browse_collections')}</button>` },
-    'chat': { icon: '💬', title: t('home.empty_title'), text: t('home.start_conversation_text'), actions: `<button class="btn btn-primary" onclick="switchTab('discover')">${t('discover.people')}</button><button class="btn btn-ghost" onclick="showToast('Group chat coming soon', 'info')">Start a Group</button>` }
+    'chat': { icon: '💬', title: t('home.empty_title'), text: t('home.start_conversation_text'), actions: `<button class="btn btn-primary" onclick="switchTab('discover')">${t('discover.people')}</button><button class="btn btn-ghost" onclick="showToast(t('toast.group_chat_coming_soon'), 'info')">Start a Group</button>` }
   };
   const s = states[type] || states['feed'];
   return `<div class="empty-state"><div class="empty-state-icon">${s.icon}</div><div class="empty-state-title">${s.title}</div><div class="empty-state-text">${s.text}</div><div class="empty-state-actions">${s.actions}</div></div>`;
@@ -2610,7 +2612,7 @@ async function submitComment() {
     const initials = (state.user?.displayName || 'U').charAt(0).toUpperCase();
     el.insertAdjacentHTML('beforeend', `<div class="comment-item"><div class="avatar avatar-sm" style="width:28px;height:28px;font-size:var(--text-xs)">${initials}</div><div class="comment-body"><div class="comment-author">${escHtml(state.user?.displayName||'')}</div><div class="comment-text">${escHtml(content)}</div></div></div>`);
     el.scrollTop = el.scrollHeight;
-    showToast('Reflection added', 'success');
+    showToast(t('toast.reflection_added'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
   } catch(err) { showToast(err.message, 'error'); }
 }
@@ -2638,14 +2640,14 @@ async function submitPost() {
   const tradition   = document.getElementById('postTradition').value;
   const btn         = document.getElementById('submitPostBtn');
 
-  if (!content) { showToast('Write something first', 'error'); return; }
+  if (!content) { showToast(t('toast.write_something_first'), 'error'); return; }
   btn.disabled = true;
   btn.textContent = '...';
 
   try {
     const body = { content, postType: selectedPostType, traditionTags: tradition ? [tradition] : [] };
     await api('POST', '/posts', body);
-    showToast('Posted to Sangham', 'success');
+    showToast(t('toast.posted_to_sangham'), 'success');
     closeBottomSheet();
     if (state.currentTab === 'home') loadHome();
     if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
@@ -2653,7 +2655,7 @@ async function submitPost() {
 showToast(err.message, 'error');
 } finally {
     btn.disabled = false;
-    btn.textContent = 'Post';
+    btn.textContent = t('common.post');
   }
 }
 
@@ -2746,10 +2748,10 @@ function debounceEventSearch() {
 function renderEventCard(ev) {
   const typeLabel = (ev.eventType || '').replace(/_/g, ' ');
   const rsvpCount = ev._count?.rsvps ?? 0;
-  const cap = ev.capacity > 0 ? `${rsvpCount}/${ev.capacity} going` : (rsvpCount ? `${rsvpCount} going` : '');
-  const modeBadge = ev.onlineUrl && ev.locationName ? '🔗 Hybrid'
-    : ev.onlineUrl ? '🔗 Online'
-    : ev.locationName ? '📍 In-Person' : '';
+  const cap = ev.capacity > 0 ? `${rsvpCount}/${ev.capacity} ${t('events.spots_taken')}` : (rsvpCount ? `${rsvpCount} ${t('events.going_count')}` : '');
+  const modeBadge = ev.onlineUrl && ev.locationName ? `🔗 ${t('discover.hybrid')}`
+    : ev.onlineUrl ? `🔗 ${t('discover.online')}`
+    : ev.locationName ? `📍 ${t('discover.in_person')}` : '';
   const community = ev.association?.name ? escHtml(ev.association.name) : '';
   return `<div class="event-card" onclick="openEventDetail('${ev.id}')">
     <div style="display:flex;gap:var(--space-2);align-items:center;margin-bottom:var(--space-1)">
@@ -2761,18 +2763,18 @@ function renderEventCard(ev) {
       <span>📅 ${timeAgo(ev.startsAt)}</span>
       ${ev.locationName ? `<span>📍 ${escHtml(ev.locationName)}</span>` : ''}
       ${community ? `<span>🏛 ${community}</span>` : ''}
-      ${ev.organiser ? `<span>By ${escHtml(ev.organiser.displayName)}</span>` : ''}
+      ${ev.organiser ? `<span>${t('events.organised_by')} ${escHtml(ev.organiser.displayName)}</span>` : ''}
       ${cap ? `<span>${cap}</span>` : ''}
     </div>
     ${state.user ? `<div class="event-card-actions">
-      <button class="event-rsvp-btn" onclick="event.stopPropagation();rsvpEvent('${ev.id}','GOING',this)">Going</button>
-      <button class="event-rsvp-btn" onclick="event.stopPropagation();rsvpEvent('${ev.id}','MAYBE',this)">Maybe</button>
+      <button class="event-rsvp-btn" onclick="event.stopPropagation();rsvpEvent('${ev.id}','GOING',this)">${t('events.going')}</button>
+      <button class="event-rsvp-btn" onclick="event.stopPropagation();rsvpEvent('${ev.id}','MAYBE',this)">${t('events.maybe')}</button>
     </div>` : ''}
   </div>`;
 }
 
 async function rsvpEvent(eventId, status, btn) {
-  if (!state.user) { showToast('Sign in to RSVP', 'info'); return; }
+  if (!state.user) { showToast(t('toast.sign_in_rsvp'), 'info'); return; }
   try {
     await api('POST', `/events/${eventId}/rsvp`, { status });
     btn.closest('.event-card-actions')?.querySelectorAll('.event-rsvp-btn').forEach(b => b.classList.remove('going'));
@@ -2784,13 +2786,13 @@ async function rsvpEvent(eventId, status, btn) {
 
 function openEventDetail(eventId) {
   const ev = _eventCache.get(eventId);
-  if (!ev) { showToast('Loading event…', 'info'); return; }
+  if (!ev) { showToast(t('events.loading'), 'info'); return; }
   document.getElementById('ev-detail-title').textContent = ev.title || 'Event';
   const body = document.getElementById('ev-detail-body');
   const typeLabel = (ev.eventType || '').replace(/_/g, ' ');
-  const modeBadge = ev.onlineUrl && ev.locationName ? '🔗 Hybrid' : ev.onlineUrl ? '🔗 Online' : ev.locationName ? '📍 In-Person' : '';
+  const modeBadge = ev.onlineUrl && ev.locationName ? `🔗 ${t('discover.hybrid')}` : ev.onlineUrl ? `🔗 ${t('discover.online')}` : ev.locationName ? `📍 ${t('discover.in_person')}` : '';
   const rsvpCount = ev._count?.rsvps ?? 0;
-  const cap = ev.capacity > 0 ? `${rsvpCount} / ${ev.capacity} spots taken` : (rsvpCount ? `${rsvpCount} going` : '');
+  const cap = ev.capacity > 0 ? `${rsvpCount} / ${ev.capacity} ${t('events.spots_taken')}` : (rsvpCount ? `${rsvpCount} ${t('events.going_count')}` : '');
   const startDate = ev.startsAt ? new Date(ev.startsAt).toLocaleString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '';
   const endDate   = ev.endsAt   ? new Date(ev.endsAt).toLocaleString('en-IN', { hour:'2-digit', minute:'2-digit' }) : '';
   body.innerHTML = `
@@ -2804,13 +2806,13 @@ function openEventDetail(eventId) {
       ${ev.locationName ? `<div>📍 ${escHtml(ev.locationName)}</div>` : ''}
       ${ev.onlineUrl ? `<div>🔗 <a href="${escHtml(ev.onlineUrl)}" target="_blank" rel="noopener" style="color:var(--saffron-600)">${escHtml(ev.onlineUrl)}</a></div>` : ''}
       ${ev.association?.name ? `<div>🏛 ${escHtml(ev.association.name)}</div>` : ''}
-      ${ev.organiser?.displayName ? `<div>👤 Organised by ${escHtml(ev.organiser.displayName)}</div>` : ''}
+      ${ev.organiser?.displayName ? `<div>👤 ${t('events.organised_by')} ${escHtml(ev.organiser.displayName)}</div>` : ''}
       ${cap ? `<div>🎟 ${cap}</div>` : ''}
     </div>
     ${ev.description ? `<p style="font-size:var(--text-sm);color:var(--text-primary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(ev.description)}</p>` : ''}
     ${state.user ? `<div style="display:flex;gap:var(--space-2)">
-      <button class="btn btn-primary" style="flex:1" onclick="rsvpEvent('${ev.id}','GOING',this)">Going</button>
-      <button class="btn btn-ghost" style="flex:1" onclick="rsvpEvent('${ev.id}','MAYBE',this)">Maybe</button>
+      <button class="btn btn-primary" style="flex:1" onclick="rsvpEvent('${ev.id}','GOING',this)">${t('events.going')}</button>
+      <button class="btn btn-ghost" style="flex:1" onclick="rsvpEvent('${ev.id}','MAYBE',this)">${t('events.maybe')}</button>
     </div>` : ''}
   `;
   openPanel('panel-event-detail');
@@ -3049,8 +3051,8 @@ function renderPersonCard(p, delay = 0, distance) {
       ${tags ? `<div style="font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px">${escHtml(tags)}</div>` : ''}
     </div>
     ${!isMe ? `<div class="person-actions">
-      <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openChat('${p.id}')">Msg</button>
-      <button class="btn btn-sm ${connected ? 'connected' : 'btn-primary'}" onclick="event.stopPropagation();followUser('${p.id}', this)">${connected ? 'Connected' : 'Connect'}</button>
+      <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openChat('${p.id}')">${t('common.message')}</button>
+      <button class="btn btn-sm ${connected ? 'connected' : 'btn-primary'}" onclick="event.stopPropagation();followUser('${p.id}', this)">${connected ? t('common.connected') : t('common.connect')}</button>
     </div>` : ''}
   </div>`;
 }
@@ -3060,13 +3062,13 @@ async function followUser(userId, btn) {
     if (isConnected) {
       await api('DELETE', `/users/${userId}/follow`);
       state.followedUsers.delete(userId);
-      btn.textContent = 'Connect';
+      btn.textContent = t('common.connect');
       btn.classList.remove('connected');
       btn.classList.add('btn-primary');
     } else {
       await api('POST', `/users/${userId}/follow`);
       state.followedUsers.add(userId);
-      btn.textContent = 'Connected';
+      btn.textContent = t('common.connected');
       btn.classList.add('connected');
       btn.classList.remove('btn-primary');
       if (navigator.vibrate) navigator.vibrate(15);
@@ -3254,10 +3256,10 @@ async function openTextDetail(textId) {
 }
 
 function bookmarkCurrentText() {
-  if (!state.token) { showToast('Sign in to bookmark', 'info'); return; }
+  if (!state.token) { showToast(t('toast.sign_in_bookmark'), 'info'); return; }
   if (!_currentTextId) return;
   api('POST', `/library/texts/${_currentTextId}/bookmarks`)
-    .then(() => { showToast('Text bookmarked', 'success'); if (navigator.vibrate) navigator.vibrate(15); })
+    .then(() => { showToast(t('toast.text_bookmarked'), 'success'); if (navigator.vibrate) navigator.vibrate(15); })
     .catch(err => showToast(err.message, 'error'));
 }
 // ============================================================
@@ -3541,10 +3543,10 @@ function fmtRole(role) {
 let _currentVerseTextId = null;
 
 function bookmarkVerse() {
-  if (!state.token) { showToast('Sign in to bookmark', 'info'); return; }
-  if (!_currentVerseTextId) { showToast('Nothing to bookmark', 'info'); return; }
+  if (!state.token) { showToast(t('toast.sign_in_bookmark'), 'info'); return; }
+  if (!_currentVerseTextId) { showToast(t('toast.sign_in_bookmark'), 'info'); return; }
   api('POST', `/library/texts/${_currentVerseTextId}/bookmarks`)
-    .then(() => { showToast('Verse bookmarked', 'success'); if (navigator.vibrate) navigator.vibrate(15); })
+    .then(() => { showToast(t('toast.verse_bookmarked'), 'success'); if (navigator.vibrate) navigator.vibrate(15); })
     .catch(err => showToast(err.message, 'error'));
 }
 
@@ -3555,7 +3557,7 @@ function shareVerse() {
   if (navigator.share) {
     navigator.share({ title: 'Daily Verse — Sangham', text }).catch(() => {});
   } else {
-    navigator.clipboard?.writeText(text).then(() => showToast('Verse copied to clipboard', 'success'));
+    navigator.clipboard?.writeText(text).then(() => showToast(t('toast.verse_copied'), 'success'));
   }
 }
 
@@ -3671,7 +3673,7 @@ function toggleEditProfile() {
   const btn = document.getElementById('profile-edit-btn');
   const content = document.getElementById('profile-panel-content');
   if (profileEditMode) {
-    btn.textContent = 'Cancel';
+    btn.textContent = t('common.cancel');
     const u = state.user;
     const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
     const TRAD_LABELS = { THERAVADA:'Theravada', MAHAYANA:'Mahayana', VAJRAYANA:'Vajrayana', NAVAYANA:'Navayana / Ambedkarite', MULTIPLE:'Multiple', OTHER:'Other' };
@@ -3694,7 +3696,7 @@ function toggleEditProfile() {
         </div>
       </div>`;
   } else {
-    btn.textContent = 'Edit';
+    btn.textContent = t('common.edit');
     openProfile(profilePanelUserId);
   }
 }
@@ -3716,7 +3718,7 @@ async function saveProfile() {
     state.user = { ...state.user, ...updated };
     saveSession();
     updateHeaderAvatar();
-    showToast('Profile updated', 'success');
+    showToast(t('toast.profile_updated'), 'success');
     profileEditMode = false;
     document.getElementById('profile-edit-btn').textContent = 'Edit';
     openProfile(profilePanelUserId);
@@ -3762,7 +3764,7 @@ function renderCommunityCard(a, delay = 0) {
         <div class="comm-card-name">${escHtml(a.name)} ${verified}</div>
         <div class="comm-card-meta">
           <span>${escHtml(a.city || a.country || '')}</span>
-          <span>${memberCount} members</span>
+          <span>${memberCount} ${t('community.members')}</span>
         </div>
       </div>
       <span class="comm-badge">${cat}</span>
@@ -3864,24 +3866,24 @@ function renderCommunityDetail(a, membership) {
         <span>${(a.tradition||'').replace('_',' ')}</span>
         <span>${(a.category||'').replace(/_/g,' ')}</span>
         <span>${a.city || ''}${a.country ? ', '+a.country : ''}</span>
-        <span>${memberCount} members</span>
+        <span>${memberCount} ${t('community.members')}</span>
         ${a.website ? `<a href="${escHtml(a.website)}" target="_blank" rel="noopener" style="color:var(--saffron-600)">${escHtml(a.website)}</a>` : ''}
       </div>
       ${a.description ? `<div class="comm-detail-desc">${escHtml(a.description)}</div>` : ''}
     </div>
 
     <div class="comm-tabs">
-      <button class="comm-tab-btn active" onclick="switchCommTab('overview',this)">Overview</button>
-      <button class="comm-tab-btn" onclick="switchCommTab('learning',this)">Learning</button>
-      <button class="comm-tab-btn" onclick="switchCommTab('projects',this)">Projects</button>
-      <button class="comm-tab-btn" onclick="switchCommTab('circles',this)">Circles</button>
-      <button class="comm-tab-btn" onclick="switchCommTab('contributions',this)">Contributors</button>
+      <button class="comm-tab-btn active" onclick="switchCommTab('overview',this)">${t('community.tab_overview')}</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('learning',this)">${t('community.tab_learning')}</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('projects',this)">${t('community.tab_projects')}</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('circles',this)">${t('community.tab_circles')}</button>
+      <button class="comm-tab-btn" onclick="switchCommTab('contributions',this)">${t('community.tab_contributors')}</button>
     </div>
 
     <div id="comm-tab-overview" class="comm-tab-panel active">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
-        <h2 class="section-title" style="margin:0">Upcoming Events</h2>
-        ${membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY' ? `<button class="btn btn-ghost btn-sm" onclick="openCreateEvent('${a.id}')">+ Event</button>` : ''}
+        <h2 class="section-title" style="margin:0">${t('community.upcoming_events')}</h2>
+        ${membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY' ? `<button class="btn btn-ghost btn-sm" onclick="openCreateEvent('${a.id}')">${t('events.add_event')}</button>` : ''}
       </div>
       ${events || `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('community.no_events')}</p>`}
       <h2 class="section-title" style="margin:var(--space-4) 0 var(--space-3)">Members</h2>
@@ -4040,7 +4042,7 @@ function renderCommProjectCard(p) {
       <div class="comm-icon">${p.icon || '🤝'}</div>
       <div class="comm-card-info">
         <div class="comm-card-name">${escHtml(p.title)}</div>
-        <div class="comm-card-meta"><span>${memberCount} collaborators</span><span>${p.status||'OPEN'}</span></div>
+        <div class="comm-card-meta"><span>${memberCount} ${t('community.collaborators')}</span><span>${p.status||'OPEN'}</span></div>
       </div>
     </div>
     ${p.purpose ? `<div class="comm-card-desc">${escHtml(p.purpose)}</div>` : ''}
@@ -4068,7 +4070,7 @@ async function openCourse(courseId) {
   communityState.subView = 'course';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
-  document.getElementById('community-panel-title').textContent = 'Course';
+  document.getElementById('community-panel-title').textContent = t('common.course');
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   setCommunityBack('back'); // Bug 2: back goes to community, not close
@@ -4095,19 +4097,19 @@ async function loadCourseRelated(assocId) {
     const projects = projectsRes.data || projectsRes || [];
     let html = '';
     if (circles.length) {
-      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">Study Circles</div>`;
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">${t('community.study_circles')}</div>`;
       html += circles.map(c => `<div class="circle-card" style="margin-bottom:var(--space-2)" onclick="openCircle('${c.id}')"><div class="circle-topic">${escHtml(c.topic)}</div><div class="circle-meta">${c._count?.members||0} members</div></div>`).join('');
     }
     if (projects.length) {
-      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin:var(--space-3) 0 var(--space-2)">Active Projects</div>`;
-      html += projects.map(p => `<div class="comm-card" style="margin-bottom:var(--space-2)" onclick="openProjectDetail('${p.id}')"><div class="comm-card-name">${escHtml(p.title)}</div><div class="comm-card-meta"><span>${p._count?.members||0} collaborators</span></div></div>`).join('');
+      html += `<div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin:var(--space-3) 0 var(--space-2)">${t('community.active_projects')}</div>`;
+      html += projects.map(p => `<div class="comm-card" style="margin-bottom:var(--space-2)" onclick="openProjectDetail('${p.id}')"><div class="comm-card-name">${escHtml(p.title)}</div><div class="comm-card-meta"><span>${p._count?.members||0} ${t('community.collaborators')}</span></div></div>`).join('');
     }
     if (!circles.length && !projects.length) {
       html = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No related circles or projects yet.</p>';
     }
     html += `<div class="related-cta-row">
-      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(4)')?.click(),300)">Browse Circles</button>
-      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(3)')?.click(),300)">Browse Projects</button>
+      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(4)')?.click(),300)">${t('community.browse_circles')}</button>
+      <button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(3)')?.click(),300)">${t('community.browse_projects')}</button>
     </div>`;
     el.innerHTML = html;
   } catch(e) {
@@ -4136,7 +4138,7 @@ function renderCourseDetail(course) {
     <div style="padding:var(--space-4)">
       ${course.instructor ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-2)">Instructor: ${escHtml(course.instructor.displayName)}</div>` : ''}
       ${course.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(course.description)}</div>` : ''}
-      ${lessons ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">Lessons</h2><div class="comm-member-list" style="padding:0;margin:0">${lessons}</div>` : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No lessons yet.</p>'}
+      ${lessons ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">${t('common.lessons')}</h2><div class="comm-member-list" style="padding:0;margin:0">${lessons}</div>` : `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('common.no_lessons')}</p>`}
       <div class="discussion-section">
         <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
         <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Start the conversation.</p>'}</div>
@@ -4164,7 +4166,7 @@ async function openCircle(circleId) {
   communityState.subView = 'circle';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
-  document.getElementById('community-panel-title').textContent = 'Study Circle';
+  document.getElementById('community-panel-title').textContent = t('common.study_circle');
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   setCommunityBack('back'); // Bug 2
@@ -4175,7 +4177,7 @@ async function openCircle(circleId) {
     document.getElementById('community-panel-title').textContent = circle.topic;
     if (state.user && circle.facilitatorId !== state.user?.id) {
       joinBtn.style.display = '';
-      joinBtn.textContent   = currentCircleMember ? 'Leave Circle' : 'Join Circle';
+      joinBtn.textContent   = currentCircleMember ? t('community.leave_circle') : t('community.join_circle');
       joinBtn.className     = currentCircleMember ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
       joinBtn.onclick       = () => toggleCircleMembership();
     }
@@ -4192,13 +4194,13 @@ async function loadCircleRelated(assocId) {
   try {
     const data = await api('GET', `/courses?associationId=${assocId}&status=PUBLISHED&limit=3`);
     const courses = data.data || data || [];
-    if (!courses.length) { el.innerHTML = '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No related courses yet.</p>'; return; }
+    if (!courses.length) { el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('common.no_related_courses')}</p>`; return; }
     el.innerHTML = courses.map(c =>
       `<div class="course-card" onclick="openCourse('${c.id}')">
         <div class="course-title">${escHtml(c.title)}</div>
         <div class="course-meta">${escHtml(c.instructor?.displayName||t('roles.community'))} · ${c._count?.lessons||0} lessons</div>
       </div>`).join('') +
-      `<div class="related-cta-row"><button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(2)')?.click(),300)">All Courses</button></div>`;
+      `<div class="related-cta-row"><button class="btn btn-ghost btn-sm" onclick="goBackToCommunity();setTimeout(()=>document.querySelector('.comm-tab-btn:nth-child(2)')?.click(),300)">${t('common.all_courses')}</button></div>`;
   } catch(e) { el.innerHTML = ''; }
 }
 
@@ -4240,15 +4242,15 @@ async function toggleCircleMembership() {
     if (currentCircleMember) {
       await api('DELETE', `/study-circles/${currentCircleId}/leave`);
       currentCircleMember = false;
-      btn.textContent = 'Join Circle';
+      btn.textContent = t('community.join_circle');
       btn.className   = 'btn btn-primary btn-sm';
-      showToast('Left study circle', 'success');
+      showToast(t('toast.left_circle'), 'success');
     } else {
       await api('POST', `/study-circles/${currentCircleId}/join`);
       currentCircleMember = true;
-      btn.textContent = 'Leave Circle';
+      btn.textContent = t('community.leave_circle');
       btn.className   = 'btn btn-ghost btn-sm';
-      showToast('Joined study circle!', 'success');
+      showToast(t('toast.joined_circle'), 'success');
       if (navigator.vibrate) navigator.vibrate(15);
     }
   } catch(err) {
@@ -4263,7 +4265,7 @@ async function openProjectDetail(projectId) {
   communityState.subView = 'project';
   const content = document.getElementById('community-panel-content');
   const joinBtn  = document.getElementById('community-join-btn');
-  document.getElementById('community-panel-title').textContent = 'Project';
+  document.getElementById('community-panel-title').textContent = t('common.project');
   joinBtn.style.display = 'none';
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   setCommunityBack('back'); // Bug 2
@@ -4356,16 +4358,16 @@ async function toggleProjectMembership(projectId, isMember) {
   try {
     if (isMember) {
       await api('DELETE', `/projects/${projectId}/leave`);
-      btn.textContent = 'Join Project';
+      btn.textContent = t('community.join_project');
       btn.className   = 'btn btn-primary btn-sm';
       btn.onclick     = () => toggleProjectMembership(projectId, false);
-      showToast('Left project', 'success');
+      showToast(t('toast.left_project'), 'success');
     } else {
       await api('POST', `/projects/${projectId}/join`);
-      btn.textContent = 'Leave Project';
+      btn.textContent = t('community.leave_project');
       btn.className   = 'btn btn-ghost btn-sm';
       btn.onclick     = () => toggleProjectMembership(projectId, true);
-      showToast('Joined project!', 'success');
+      showToast(t('toast.joined_project'), 'success');
       if (navigator.vibrate) navigator.vibrate(15);
     }
   } catch(err) {
@@ -4426,13 +4428,13 @@ async function toggleCommunityMembership() {
       communityState.isMember = false;
       btn.textContent = 'Join';
       btn.className   = 'btn btn-primary btn-sm';
-      showToast('Left community', 'success');
+      showToast(t('toast.left_community'), 'success');
     } else {
       await api('POST', `/associations/${currentId}/join`);
       communityState.isMember = true;
       btn.textContent = 'Leave';
       btn.className   = 'btn btn-ghost btn-sm';
-      showToast('Joined community!', 'success');
+      showToast(t('toast.joined_community'), 'success');
       if (navigator.vibrate) navigator.vibrate(15);
     }
   } catch(err) {
@@ -4487,7 +4489,7 @@ function renderSessionCard(s) {
         ${isLive ? ` · ${attendees} watching` : ` · ${timeAgo(s.scheduledAt)}`}
         ${s.language ? ` · ${s.language.toUpperCase()}` : ''}
       </div>
-      ${isLive ? `<button class="btn btn-primary btn-sm" style="margin-top:var(--space-2)" onclick="event.stopPropagation();showToast('Live streaming coming soon','info')">Watch Live</button>` : ''}
+      ${isLive ? `<button class="btn btn-primary btn-sm" style="margin-top:var(--space-2)" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">Watch Live</button>` : ''}
     </div>
   </div>`;
 }
@@ -4557,7 +4559,7 @@ function renderModuleToggle(name, desc, field, enabled, assocId) {
 async function toggleModule(assocId, field, value) {
   try {
     await api('PUT', `/associations/${assocId}/modules`, { [field]: value });
-    showToast('Settings saved', 'success');
+    showToast(t('toast.settings_saved'), 'success');
   } catch(err) {
     showToast(err.message, 'error');
     // Revert toggle on failure
@@ -4608,7 +4610,7 @@ async function submitCreateCommunity() {
   if (!country || country.length !== 2) { showToast('Valid 2-letter country code required', 'error'); return; }
 
   const btn = document.getElementById('create-community-submit-btn');
-  btn.disabled = true; btn.textContent = 'Creating…';
+  btn.disabled = true; btn.textContent = t('common.creating');
   try {
     const body = { name, tradition, category, country,
       ...(city    ? { city }                  : {}),
@@ -4616,7 +4618,7 @@ async function submitCreateCommunity() {
       ...(website ? { website }               : {}),
     };
     const assoc = await api('POST', '/associations', body);
-    showToast('Sangha created!', 'success');
+    showToast(t('toast.community_created'), 'success');
     if (navigator.vibrate) navigator.vibrate([15, 50, 15]);
     closePanel('panel-create-community');
     // Update state: user is now ASSOCIATION_ADMIN
@@ -4701,7 +4703,7 @@ async function submitCreateEvent(assocId) {
   const startsAt = new Date(startVal).toISOString();
   const endsAt   = endVal ? new Date(endVal).toISOString() : undefined;
 
-  _lockCreateBtn('Creating…');
+  _lockCreateBtn(t('common.creating'));
   try {
     const body = { title, eventType: evType, startsAt, timezone: tz, associationId: assocId, capacity,
       ...(endsAt   ? { endsAt }               : {}),
@@ -4710,7 +4712,7 @@ async function submitCreateEvent(assocId) {
       ...(desc     ? { description: desc }     : {}),
     };
     await api('POST', '/events', body);
-    showToast('Event created!', 'success');
+    showToast(t('toast.event_created'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'overview');
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
@@ -4819,10 +4821,10 @@ async function submitCreateCourse(assocId) {
   const desc  = document.getElementById('cf-desc')?.value.trim();
   const lang  = document.getElementById('cf-lang')?.value || 'en';
   if (!title) { showToast('Course title is required', 'error'); return; }
-  _lockCreateBtn('Creating…');
+  _lockCreateBtn(t('common.creating'));
   try {
     await api('POST', '/courses', { title, description: desc || undefined, language: lang, associationId: assocId });
-    showToast('Course created!', 'success');
+    showToast(t('toast.course_created'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'learning');
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
@@ -4840,7 +4842,7 @@ async function submitCreateResource(assocId) {
   if (!type)  { showToast('Resource type is required', 'error'); return; }
   if (!title) { showToast('Title is required', 'error'); return; }
   if (!url)   { showToast('URL is required', 'error'); return; }
-  _lockCreateBtn('Adding…');
+  _lockCreateBtn(t('common.adding'));
   try {
     const body = { type, title, url, language: lang, associationId: assocId,
       ...(desc    ? { description: desc } : {}),
@@ -4849,7 +4851,7 @@ async function submitCreateResource(assocId) {
       ...(durMins ? { durationSecs: Number(durMins) * 60 } : {}),
     };
     await api('POST', '/resources', body);
-    showToast('Resource added!', 'success');
+    showToast(t('toast.resource_added'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'learning');
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
@@ -4860,13 +4862,13 @@ async function submitCreateCircle(assocId) {
   const desc  = document.getElementById('cf-desc')?.value.trim();
   const sched = document.getElementById('cf-sched')?.value.trim();
   if (!topic) { showToast('Topic is required', 'error'); return; }
-  _lockCreateBtn('Creating…');
+  _lockCreateBtn(t('common.creating'));
   try {
     await api('POST', '/study-circles', { associationId: assocId, topic,
       ...(desc  ? { description: desc }             : {}),
       ...(sched ? { scheduleDescription: sched }    : {}),
     });
-    showToast('Study circle created!', 'success');
+    showToast(t('toast.circle_created'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'circles');
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
@@ -4883,7 +4885,7 @@ async function submitCreateProject(assocId) {
   if (!title)    { showToast('Project title is required', 'error'); return; }
   if (!purpose)  { showToast('Purpose is required', 'error'); return; }
   if (!category) { showToast('Category is required', 'error'); return; }
-  _lockCreateBtn('Creating…');
+  _lockCreateBtn(t('common.creating'));
   try {
     const skillsNeeded = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
     await api('POST', '/projects', { title, purpose, category, associationId: assocId,
@@ -4892,7 +4894,7 @@ async function submitCreateProject(assocId) {
       ...(participants ? { participantsNeeded: Number(participants) } : {}),
       ...(deadline     ? { deadline }                             : {}),
     });
-    showToast('Project created!', 'success');
+    showToast(t('toast.project_created'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'projects');
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
@@ -5074,10 +5076,10 @@ async function submitCreateIntent() {
   if (!title)    { showToast('Title is required', 'error'); return; }
 
   const btn = document.getElementById('submit-intent-btn');
-  btn.disabled = true; btn.textContent = 'Posting…';
+  btn.disabled = true; btn.textContent = t('common.posting');
   try {
     await api('POST', '/intents', { category, title, description: desc || undefined, scope });
-    showToast('Intent posted!', 'success');
+    showToast(t('toast.intent_posted'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     closePanel('panel-create-intent');
     _discoverIntentsLoaded = false;
@@ -5088,7 +5090,7 @@ async function submitCreateIntent() {
   } catch(err) {
     showToast(err.message, 'error');
   } finally {
-    btn.disabled = false; btn.textContent = 'Post';
+    btn.disabled = false; btn.textContent = t('common.post');
   }
 }
 
@@ -5153,13 +5155,13 @@ async function submitTeacherApplication() {
   const fullCredentials = statement ? `${credentials}\n\nPersonal Statement:\n${statement}` : credentials;
 
   const btn = document.getElementById('teacher-apply-submit-btn');
-  btn.disabled = true; btn.textContent = 'Submitting…';
+  btn.disabled = true; btn.textContent = t('common.submitting');
   try {
     await api('POST', '/teachers/apply', {
       credentials: fullCredentials,
       ...(lineage ? { lineage } : {}),
     });
-    showToast('Application submitted! We\'ll review within 7 days.', 'success');
+    showToast(t('toast.application_submitted'), 'success');
     closePanel('panel-teacher-apply');
   } catch(err) {
     showToast(err.message, 'error');
@@ -5201,7 +5203,7 @@ async function submitDhammaDaan() {
   if (!amount || amount < 1) { showToast('Please select or enter an amount', 'error'); return; }
 
   const btn = document.getElementById('daan-pay-btn');
-  btn.disabled = true; btn.textContent = 'Processing…';
+  btn.disabled = true; btn.textContent = t('common.processing');
   try {
     const order = await api('POST', '/dhamma-daan/orders', { amountPaise: amount * 100 });
     if (!order.orderId) throw new Error('Could not create payment order');
@@ -5232,7 +5234,7 @@ async function submitDhammaDaan() {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature:  response.razorpay_signature,
           });
-          showToast('Thank you! Your Dhamma Daan has been received. 🙏', 'success');
+          showToast(t('toast.dhamma_daan_received'), 'success');
           closePanel('panel-dhamma-daan');
         } catch(e) {
           showToast('Payment verification failed. Contact support.', 'error');
@@ -5280,7 +5282,7 @@ async function submitCreateSession() {
   if (!startVal)    { showToast('Scheduled time is required', 'error'); return; }
 
   const btn = document.getElementById('submit-session-btn');
-  btn.disabled = true; btn.textContent = 'Scheduling…';
+  btn.disabled = true; btn.textContent = t('common.scheduling');
   try {
     await api('POST', '/sessions', {
       title,
@@ -5291,7 +5293,7 @@ async function submitCreateSession() {
       ...(tradition ? { tradition }               : {}),
       ...(desc      ? { description: desc }       : {}),
     });
-    showToast('Session scheduled!', 'success');
+    showToast(t('toast.session_scheduled'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     closePanel('panel-create-session');
     _learnTabLoaded.sessions = false;
