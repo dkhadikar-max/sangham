@@ -398,13 +398,12 @@ round:var(--error-600)}
     .ds-user-name{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
     .ds-create-btn{width:100%;padding:var(--space-3) var(--space-4);background:linear-gradient(135deg,var(--saffron-500),var(--saffron-600));color:white;border:none;border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:var(--weight-semibold);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;justify-content:center;gap:var(--space-2);transition:opacity var(--duration-fast) var(--ease-out)}
     .ds-create-btn:hover{opacity:0.88}
-    /* ── Desktop main column wrapper (display:contents on mobile = transparent) */
-    .desktop-main-col{display:contents}
+    /* ── Desktop main column wrapper — fills remaining space on both mobile and desktop */
+    .desktop-main-col{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;overflow:hidden}
     /* ── Desktop layout ≥ 1024px ─────────────────────────────────────────── */
     @media(min-width:1024px){
       .app-shell{flex-direction:row;max-width:1100px;height:92vh;border-radius:var(--radius-2xl);box-shadow:var(--shadow-5)}
       .desktop-sidebar{display:flex}
-      .desktop-main-col{display:flex;flex-direction:column;flex:1;min-width:0;overflow:hidden}
       .bottom-nav{display:none!important}
       .nav-create{display:none!important}
       .tab-panel{padding-bottom:var(--space-6)}
