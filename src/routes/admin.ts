@@ -1,5 +1,6 @@
 import { Router, Response } from 'express';
 import { prisma } from '../config/database';
+import { Prisma } from '@prisma/client';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { UserRole } from '@prisma/client';
 import { seedBuddhistTexts } from '../scripts/seedLibrary';
@@ -49,27 +50,74 @@ router.get('/stats', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_re
   res.json({ users, activeUsers, posts, sessions, events, associations: assocs, openReports: reports, contributors, pendingClergy });
 });
 
-// GET /admin/users
+// GET /admin/users — raw SQL to avoid Prisma findMany visibility issues
 router.get('/users', authenticate, requireRole(...adminRoles), async (req: AuthRequest, res: Response): Promise<void> => {
   const { q, role, page = '1', limit = '50' } = req.query;
-  const skip = (Number(page) - 1) * Number(limit);
-  const where: Record<string, unknown> = {};
-  if (q) where.displayName = { contains: q as string, mode: 'insensitive' };
-  if (role) where.role = role as UserRole;
-  const [users, total] = await Promise.all([
-    prisma.user.findMany({
-      where, skip, take: Number(limit),
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true, email: true, phone: true, displayName: true, role: true,
-        isActive: true, isVerifiedClergy: true, isVerifiedTeacher: true,
-        country: true, createdAt: true,
-        _count: { select: { posts: true, followers: true } },
-      },
-    }),
-    prisma.user.count({ where }),
+  const pageNum  = Math.max(1, Number(page)  || 1);
+  const limitNum = Math.max(1, Math.min(200, Number(limit) || 50));
+  const skip     = (pageNum - 1) * limitNum;
+
+  // Build WHERE fragments safely with Prisma.sql
+  const conditions: Prisma.Sql[] = [];
+  if (q)    conditions.push(Prisma.sql`u.display_name ILIKE ${'%' + (q as string) + '%'}`);
+  if (role) conditions.push(Prisma.sql`u.role = ${role as string}`);
+  const where = conditions.length
+    ? Prisma.sql`WHERE ${Prisma.join(conditions, ' AND ')}`
+    : Prisma.empty;
+
+  type UserRow = {
+    id: string; email: string | null; phone: string | null;
+    displayName: string; role: string;
+    isActive: boolean; isVerifiedClergy: boolean; isVerifiedTeacher: boolean;
+    country: string | null; createdAt: Date;
+    postsCount: bigint; followersCount: bigint;
+  };
+
+  const [rows, countResult] = await Promise.all([
+    prisma.$queryRaw<UserRow[]>`
+      SELECT
+        u.id,
+        u.email,
+        u.phone,
+        u.display_name        AS "displayName",
+        u.role::text,
+        u.is_active           AS "isActive",
+        u.is_verified_clergy  AS "isVerifiedClergy",
+        u.is_verified_teacher AS "isVerifiedTeacher",
+        u.country,
+        u.created_at          AS "createdAt",
+        (SELECT COUNT(*) FROM posts p WHERE p.author_id = u.id AND p.is_deleted = false)::int AS "postsCount",
+        (SELECT COUNT(*) FROM follows f WHERE f.followed_id = u.id)::int                      AS "followersCount"
+      FROM users u
+      ${where}
+      ORDER BY u.created_at DESC
+      LIMIT ${limitNum} OFFSET ${skip}
+    `,
+    prisma.$queryRaw<{ total: bigint }[]>`SELECT COUNT(*) AS total FROM users u ${where}`,
   ]);
-  res.json({ data: users, total });
+
+  const users = rows.map(u => ({
+    id:                u.id,
+    email:             u.email,
+    phone:             u.phone,
+    displayName:       u.displayName,
+    role:              u.role,
+    isActive:          u.isActive,
+    isVerifiedClergy:  u.isVerifiedClergy,
+    isVerifiedTeacher: u.isVerifiedTeacher,
+    country:           u.country,
+    createdAt:         u.createdAt,
+    _count: { posts: Number(u.postsCount), followers: Number(u.followersCount) },
+  }));
+
+  res.json({ data: users, total: Number(countResult[0]?.total ?? 0) });
+});
+
+// DELETE /admin/users/test-cleanup — remove all users except the requesting admin
+router.delete('/users/test-cleanup', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
+  const adminId = req.user!.id;
+  const result = await prisma.$executeRaw`DELETE FROM users WHERE id != ${adminId}`;
+  res.json({ deleted: result, message: `Deleted ${result} test user(s). Your admin account was preserved.` });
 });
 
 // PUT /admin/users/:id/role
