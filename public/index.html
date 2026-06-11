@@ -526,6 +526,12 @@ round:var(--error-600)}
 
     /* ── Profile Panel ─────────────────────────── */
     .profile-cover{width:100%;height:120px;background:linear-gradient(135deg,var(--saffron-200) 0%,var(--saffron-400) 100%);position:relative;flex-shrink:0}
+    .profile-cover.trad-theravada{background:linear-gradient(135deg,#fef3c7 0%,#f59e0b 100%)}
+    .profile-cover.trad-navayana{background:linear-gradient(135deg,#dbeafe 0%,#1d4ed8 100%)}
+    .profile-cover.trad-mahayana{background:linear-gradient(135deg,#ede9fe 0%,#7c3aed 100%)}
+    .profile-cover.trad-vajrayana{background:linear-gradient(135deg,#fce7f3 0%,#be123c 100%)}
+    .profile-cover.trad-multiple{background:linear-gradient(135deg,#f0fdf4 0%,#16a34a 60%,#f59e0b 100%)}
+    .profile-cover.trad-other{background:linear-gradient(135deg,#f1f5f9 0%,#475569 100%)}
     .profile-cover img{width:100%;height:100%;object-fit:cover}
     .profile-avatar-wrap{position:absolute;bottom:-36px;left:var(--space-4);width:72px;height:72px;border-radius:50%;border:3px solid var(--surface-elevated);background:var(--saffron-100);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:var(--text-2xl);font-weight:var(--weight-semibold);color:var(--saffron-700)}
     .profile-avatar-wrap img{width:100%;height:100%;object-fit:cover}
@@ -540,6 +546,7 @@ round:var(--error-600)}
     .profile-stat-value{font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary)}
     .profile-stat-label{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px}
     .profile-actions{display:flex;gap:var(--space-3);padding:var(--space-4)}
+    .link-btn{background:none;border:none;color:var(--saffron-600);cursor:pointer;font-size:inherit;padding:0;text-decoration:underline;text-decoration-style:dotted}
     .profile-edit-form .input-group{margin-bottom:var(--space-4)}
     .profile-edit-form label{display:block;font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-secondary);margin-bottom:var(--space-1)}
     .profile-traditions{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:var(--space-3) var(--space-4)}
@@ -1191,7 +1198,7 @@ round:var(--error-600)}
 <button class="header-icon" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark mode">
           <svg viewBox="0 0 24 24" id="themeIcon"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
-        <button class="header-icon" onclick="logout()" title="Sign out" aria-label="Sign out">
+        <button class="header-icon" onclick="logout()" title="Sign out" aria-label="Sign out" style="display:none">
           <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
 </div>
@@ -1847,6 +1854,10 @@ round:var(--error-600)}
           <div class="pq-icon">✅</div><span class="pq-label" data-i18n="profile_menu.verification">Verification Status</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
+        <button class="pq-item" onclick="toggleTheme()">
+          <div class="pq-icon" id="pqThemeIcon">🌙</div><span class="pq-label">Toggle Theme</span>
+          <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
         <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
           <div class="pq-icon">⚙️</div><span class="pq-label" data-i18n="profile_menu.settings">Settings</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2425,7 +2436,11 @@ function openProfileQuickPanel() {
   const subEl = document.getElementById('pqSub');
   const avatarWrap = document.getElementById('pqAvatarWrap');
   if (nameEl) nameEl.textContent = state.user.displayName || '';
-  if (subEl) subEl.textContent = state.user.email || '';
+  // Show tradition + city — never expose email in UI
+  const trad = (state.user.traditions || [])[0] || '';
+  const city = state.user.city || state.user.location?.city || '';
+  const subParts = [trad, city].filter(Boolean);
+  if (subEl) subEl.textContent = subParts.length ? subParts.join(' · ') : 'Practitioner';
   const initials = (state.user.displayName || 'U').charAt(0).toUpperCase();
   if (avatarWrap) {
     avatarWrap.innerHTML = state.user.profilePhoto
@@ -4223,40 +4238,68 @@ async function openProfile(userId) {
   }
 }
 
+function _tradCoverClass(traditions) {
+  const t = (traditions || [])[0] || '';
+  const map = { THERAVADA:'trad-theravada', NAVAYANA:'trad-navayana', MAHAYANA:'trad-mahayana', VAJRAYANA:'trad-vajrayana', MULTIPLE:'trad-multiple', OTHER:'trad-other' };
+  return map[t] || '';
+}
+
 function renderProfileView(user, isOwn) {
   const initials  = (user.displayName || '?').charAt(0).toUpperCase();
   const avatar    = user.profilePhoto ? `<img src="${escHtml(user.profilePhoto)}" alt="">` : initials;
-  const traditions = (user.traditions || []).map(t => `<span class="profile-tradition-tag">${escHtml(t)}</span>`).join('');
-  const tags       = (user.tags || []).map(t => `<span class="profile-tradition-tag">${escHtml(t.tag || t)}</span>`).join('');
+  const traditions = (user.traditions || []).map(tr => `<span class="profile-tradition-tag">${escHtml(tr)}</span>`).join('');
+  const tags       = (user.tags || []).map(tg => `<span class="profile-tradition-tag">${escHtml(tg.tag || tg)}</span>`).join('');
   const loc        = [user.city, user.country].filter(Boolean).join(', ');
   const roleBadge  = user.role && user.role !== 'PRACTITIONER' ? `<span class="profile-role-badge">${fmtRole(user.role)}</span>` : '';
   const verifiedBadge = (user.isVerifiedClergy || user.isVerifiedTeacher) ? '<span class="badge-verified badge-verified-teacher" title="Verified"></span>' : '';
-  const followed   = state.followedUsers.has(user.id);
+  const connected  = state.followedUsers.has(user.id);
+  const coverClass = _tradCoverClass(user.traditions);
+
+  // Spec-compliant stats: Communities · Connections · Skills (never posts/followers/following)
+  const communityCount  = user._count?.associations ?? 0;
+  const connectionCount = user._count?.followers    ?? 0;
+  const skillCount      = (user.tags || []).length;
 
   const actions = !isOwn ? `
     <div class="profile-actions">
-      <button class="btn btn-primary" style="flex:1" onclick="followUser('${user.id}',this)">${followed ? 'Following' : 'Follow'}</button>
+      <button class="btn ${connected?'btn-ghost':'btn-primary'}" style="flex:1" onclick="followUser('${user.id}',this)">${connected ? 'Connected' : 'Connect'}</button>
       <button class="btn btn-ghost" style="flex:1" onclick="startDM('${user.id}','${escHtml(user.displayName||'')}')">Message</button>
     </div>` : '';
 
+  // For own profile: show completeness prompts for missing fields
+  const missingBio   = isOwn && !user.bio;
+  const missingPhoto = isOwn && !user.profilePhoto;
+  const completenessHint = (missingBio || missingPhoto) ? `
+    <div style="margin:0 var(--space-4) var(--space-3);padding:var(--space-3);background:color-mix(in srgb,var(--saffron-500) 8%,transparent);border:1px solid var(--saffron-200);border-radius:var(--radius-lg);font-size:var(--text-xs);color:var(--text-secondary)">
+      <strong style="color:var(--saffron-700)">Complete your profile</strong>
+      <div style="margin-top:4px;display:flex;flex-direction:column;gap:3px">
+        ${missingPhoto ? `<span>📷 <button class="link-btn" onclick="toggleEditProfile()">Add a profile photo</button></span>` : ''}
+        ${missingBio   ? `<span>✍️ <button class="link-btn" onclick="toggleEditProfile()">Add a bio</button></span>` : ''}
+      </div>
+    </div>` : '';
+
+  const langs = (user.languages || []);
+
   return `
-    <div class="profile-cover">${user.coverImage ? `<img src="${escHtml(user.coverImage)}" alt="">` : ''}</div>
+    <div class="profile-cover ${coverClass}">${user.coverImage ? `<img src="${escHtml(user.coverImage)}" alt="">` : ''}</div>
     <div class="profile-avatar-wrap">${avatar}</div>
     <div class="profile-info">
       <div class="profile-name">${escHtml(user.displayName || 'Anonymous')} ${verifiedBadge} ${roleBadge}</div>
       ${user.bio ? `<div class="profile-bio">${escHtml(user.bio)}</div>` : ''}
       <div class="profile-meta">
         ${loc ? `<span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>${escHtml(loc)}</span>` : ''}
-        ${user.templeAffiliation ? `<span>${escHtml(user.templeAffiliation)}</span>` : ''}
-        <span>Joined ${timeAgo(user.createdAt)}</span>
+        ${user.templeAffiliation ? `<span>🏛 ${escHtml(user.templeAffiliation)}</span>` : ''}
+        ${langs.length ? `<span>🗣 ${langs.slice(0,3).join(', ')}</span>` : ''}
+        <span style="opacity:.6">Joined ${timeAgo(user.createdAt)}</span>
       </div>
       <div class="profile-stats">
-        <div class="profile-stat"><div class="profile-stat-value">${user._count?.posts ?? 0}</div><div class="profile-stat-label">Posts</div></div>
-        <div class="profile-stat"><div class="profile-stat-value">${user._count?.followers ?? 0}</div><div class="profile-stat-label">Followers</div></div>
-        <div class="profile-stat"><div class="profile-stat-value">${user._count?.following ?? 0}</div><div class="profile-stat-label">Following</div></div>
+        <div class="profile-stat"><div class="profile-stat-value">${communityCount}</div><div class="profile-stat-label">Communities</div></div>
+        <div class="profile-stat"><div class="profile-stat-value">${connectionCount}</div><div class="profile-stat-label">Connections</div></div>
+        <div class="profile-stat"><div class="profile-stat-value">${skillCount}</div><div class="profile-stat-label">Skills</div></div>
       </div>
     </div>
     ${actions}
+    ${completenessHint}
     ${isOwn ? `<div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4)">
       ${!user.isVerifiedTeacher ? `<button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openTeacherApply()">🎓 Apply for Teacher Badge</button>` : ''}
       <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openDhammaDaan()">🪔 Support Sangham (Dhamma Daan)</button>
@@ -4269,7 +4312,7 @@ function renderProfileView(user, isOwn) {
     </div>` : ''}
     ${traditions || tags ? `<div class="profile-traditions">${traditions}${tags}</div>` : ''}
     <div id="profile-contributions-container"></div>
-    <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Posts</h2>
+    <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Reflections</h2>
     <div id="profile-posts-container"></div>`;
 }
 
