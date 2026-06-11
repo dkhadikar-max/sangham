@@ -129,6 +129,7 @@ model User {
   createdAt         DateTime   @default(now()) @map("created_at")
   updatedAt         DateTime   @updatedAt @map("updated_at")
   lastActiveAt      DateTime?  @map("last_active_at")
+  publicKey         String?    @db.Text @map("public_key")  // E2E: SPKI P-256 public key, base64
 
   // Relations
   posts             Post[]
@@ -486,7 +487,8 @@ model Message {
   id           String   @id @default(uuid())
   senderId     String   @map("sender_id")
   recipientId  String   @map("recipient_id")
-  ciphertext   String   @db.Text // E2E encrypted — server stores ciphertext only
+  ciphertext   String   @db.Text // E2E: AES-GCM ciphertext, base64
+  iv           String?  @db.VarChar(24) @map("iv")          // E2E: AES-GCM IV, base64 (null = legacy plaintext)
   isRead       Boolean  @default(false) @map("is_read")
   createdAt    DateTime @default(now()) @map("created_at")
 

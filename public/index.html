@@ -2329,10 +2329,12 @@ async function handleAuth(event) {
   }
 }
 function logout() {
-state.token = null;
+  state.token = null;
   state.user  = null;
+  state.e2eReady = false;
   state.likedPosts.clear();
   state.followedUsers.clear();
+  _e2eKeyCache.clear();
   localStorage.removeItem('sangham_token');
   localStorage.removeItem('sangham_user');
   if (socket) { socket.disconnect(); socket = null; }
@@ -2348,6 +2350,7 @@ function initApp() {
   populateCreatePostUI();
   switchTab('home');
   initSocket();
+  void initE2EKeys();
   loadChatUnreadCount();
   loadNotificationCount();
   const bellBtn = document.getElementById('notifBellBtn');
@@ -4328,15 +4331,25 @@ async function loadChatThreads() {
       return;
     }
     emptyState.style.display = 'none';
-    el.innerHTML = threads.map((t, i) => {
+    // Decrypt encrypted previews in parallel before rendering
+    const items = await Promise.all(threads.map(async (t, i) => {
       const partner  = t.partner || {};
       const initials = (partner.displayName || '?').charAt(0).toUpperCase();
       const avatar   = partner.profilePhoto ? `<img src="${partner.profilePhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
-      const preview  = t.lastMessage ? escHtml(t.lastMessage.substring(0,60)) : 'No messages yet';
-      const time     = t.lastAt ? timeAgo(t.lastAt) : '';
-      const unread   = Number(t.unreadCount) || 0;
+      let preview = 'No messages yet';
+      if (t.lastMessage) {
+        if (t.lastIv && partner.id) {
+          const dec = await e2eDecrypt(t.lastMessage, t.lastIv, partner.id).catch(() => null);
+          preview = dec ? escHtml(dec.substring(0, 60)) : '🔒 Encrypted message';
+        } else {
+          preview = escHtml(t.lastMessage.substring(0, 60));
+        }
+      }
+      const time   = t.lastAt ? timeAgo(t.lastAt) : '';
+      const unread = Number(t.unreadCount) || 0;
       return `<div class="thread-item" onclick="openThread('${partner.id}','${escHtml(partner.displayName||'')}')" style="animation-delay: ${i * 0.05}s"><div class="avatar avatar-md">${avatar}</div><div class="thread-info"><div class="thread-name">${escHtml(partner.displayName||'Unknown')}</div><div class="thread-preview">${preview}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-1)"><div class="thread-time">${time}</div>${unread > 0 ? `<div class="thread-unread">${unread}</div>` : ''}</div></div>`;
-    }).join('');
+    }));
+    el.innerHTML = items.join('');
   } catch(err) {
     el.innerHTML = renderEmptyState('chat');
   }
@@ -4465,25 +4478,38 @@ async function openThread(partnerId, partnerName) {
   const roomId = dmRoomId(state.user.id, partnerId);
   if (socket) socket.emit('join_room', roomId);
 
+  // Preload shared key and show E2E lock indicator in header
+  _e2eGetSharedKey(partnerId).then(key => {
+    if (key && metaEl) metaEl.innerHTML = '<span style="color:var(--saffron-600)">🔒 End-to-end encrypted</span>';
+  }).catch(() => {});
+
   try {
     const messages = await api('GET', `/messages/threads/${partnerId}`);
-    renderMessages(messages);
+    await renderMessages(messages);
   } catch(err) {
     area.innerHTML = renderEmptyState('chat');
   }
 }
 
-function renderMessages(messages) {
+async function renderMessages(messages) {
   const area = document.getElementById('messages-area');
   if (!messages.length) {
     area.innerHTML = `<div class="empty-state" style="margin-top:var(--space-8)"><div class="empty-state-icon">🙏</div><div class="empty-state-title">${t('home.start_conversation')}</div><div class="empty-state-text">${t('home.start_conversation_text')}</div></div>`;
     return;
   }
 
+  // Decrypt all encrypted messages in parallel before rendering
+  const partnerId = state.currentPartnerId;
+  const decrypted = await Promise.all(messages.map(async m => {
+    let text = m.ciphertext || '';
+    if (m.iv && partnerId) text = await e2eDecrypt(m.ciphertext, m.iv, partnerId);
+    return { ...m, plaintext: text };
+  }));
+
   let lastDate = null;
-  area.innerHTML = messages.map(m => {
+  area.innerHTML = decrypted.map(m => {
     const isSent = m.senderId === state.user?.id;
-    const text = m.ciphertext || '';
+    const text = m.plaintext;
     const time = m.createdAt ? timeAgo(m.createdAt) : '';
     const date = m.createdAt ? new Date(m.createdAt).toLocaleDateString() : '';
 
@@ -4540,14 +4566,20 @@ async function sendMessage() {
   if (navigator.vibrate) navigator.vibrate(10);
 
   try {
-    await api('POST', '/messages', { recipientId: state.currentPartnerId, ciphertext: text });
+    const { ciphertext, iv } = await e2eEncrypt(text, state.currentPartnerId);
+    await api('POST', '/messages', {
+      recipientId: state.currentPartnerId,
+      ciphertext,
+      ...(iv ? { iv } : {}),
+    });
     const roomId = dmRoomId(state.user.id, state.currentPartnerId);
     if (socket) {
-      socket.emit('chat_message', { roomId, message: text }); // userId injected server-side from verified JWT
+      // userId injected server-side from verified JWT; iv forwarded for recipient decryption
+      socket.emit('chat_message', { roomId, message: ciphertext, ...(iv ? { iv } : {}) });
     }
   } catch(err) {
     showToast(err.message, 'error');
-} finally {
+  } finally {
     sendBtn.disabled = false;
   }
 }
@@ -4578,6 +4610,120 @@ function dmRoomId(uid1, uid2) {
 }
 
 // ============================================================
+//  E2E ENCRYPTION  (Web Crypto API — zero external libraries)
+// ============================================================
+// Architecture: ECDH P-256 key exchange → AES-256-GCM per message.
+// Private key lives only in IndexedDB on this device and is never sent
+// to the server. The server stores ciphertext + IV it cannot decrypt.
+// Legacy messages (iv === null) are displayed as-is without decryption.
+
+const _E2E_DB    = 'sangham_e2e';
+const _E2E_STORE = 'keys';
+
+function _e2eOpenDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(_E2E_DB, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore(_E2E_STORE);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror   = () => reject(req.error);
+  });
+}
+async function _e2eStoreKey(key) {
+  const db = await _e2eOpenDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(_E2E_STORE, 'readwrite');
+    tx.objectStore(_E2E_STORE).put(key, 'privateKey');
+    tx.oncomplete = resolve; tx.onerror = reject;
+  });
+}
+async function _e2eLoadKey() {
+  try {
+    const db = await _e2eOpenDB();
+    return new Promise((resolve, reject) => {
+      const tx  = db.transaction(_E2E_STORE, 'readonly');
+      const req = tx.objectStore(_E2E_STORE).get('privateKey');
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror   = reject;
+    });
+  } catch { return null; }
+}
+
+// Per-partner AES-GCM derived key cache (cleared on logout)
+const _e2eKeyCache = new Map();
+
+async function initE2EKeys() {
+  if (!state.token) return;
+  try {
+    let privateKey = await _e2eLoadKey();
+    if (!privateKey) {
+      const kp = await crypto.subtle.generateKey(
+        { name: 'ECDH', namedCurve: 'P-256' },
+        true,          // extractable needed to export the public key
+        ['deriveKey']
+      );
+      await _e2eStoreKey(kp.privateKey);
+      privateKey = kp.privateKey;
+      const spki   = await crypto.subtle.exportKey('spki', kp.publicKey);
+      const pubB64 = btoa(String.fromCharCode(...new Uint8Array(spki)));
+      await api('PUT', '/users/me/public-key', { publicKey: pubB64 }).catch(() => {});
+    }
+    state.e2eReady = true;
+  } catch(err) {
+    console.warn('[E2E] key init failed:', err);
+    state.e2eReady = false;
+  }
+}
+
+async function _e2eGetSharedKey(partnerId) {
+  if (!partnerId) return null;
+  if (_e2eKeyCache.has(partnerId)) return _e2eKeyCache.get(partnerId);
+  try {
+    const myPrivKey = await _e2eLoadKey();
+    if (!myPrivKey) return null;
+    const data = await api('GET', `/users/${partnerId}/public-key`);
+    if (!data.publicKey) return null;
+    const bytes      = Uint8Array.from(atob(data.publicKey), c => c.charCodeAt(0));
+    const partnerPub = await crypto.subtle.importKey(
+      'spki', bytes, { name: 'ECDH', namedCurve: 'P-256' }, false, []
+    );
+    const shared = await crypto.subtle.deriveKey(
+      { name: 'ECDH', public: partnerPub },
+      myPrivKey,
+      { name: 'AES-GCM', length: 256 },
+      false, ['encrypt', 'decrypt']
+    );
+    _e2eKeyCache.set(partnerId, shared);
+    return shared;
+  } catch { return null; }
+}
+
+async function e2eEncrypt(plaintext, partnerId) {
+  try {
+    const key = await _e2eGetSharedKey(partnerId);
+    if (!key) return { ciphertext: plaintext, iv: null }; // graceful fallback: send plaintext
+    const iv  = crypto.getRandomValues(new Uint8Array(12));
+    const buf = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv }, key, new TextEncoder().encode(plaintext)
+    );
+    return {
+      ciphertext: btoa(String.fromCharCode(...new Uint8Array(buf))),
+      iv: btoa(String.fromCharCode(...iv)),
+    };
+  } catch { return { ciphertext: plaintext, iv: null }; }
+}
+
+async function e2eDecrypt(ciphertextB64, ivB64, partnerId) {
+  try {
+    const key = await _e2eGetSharedKey(partnerId);
+    if (!key) return ciphertextB64;
+    const ct  = Uint8Array.from(atob(ciphertextB64), c => c.charCodeAt(0));
+    const iv  = Uint8Array.from(atob(ivB64),          c => c.charCodeAt(0));
+    const buf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+    return new TextDecoder().decode(buf);
+  } catch { return '[Unable to decrypt]'; }
+}
+
+// ============================================================
 //  SOCKET.IO
 // ============================================================
 function initSocket() {
@@ -4589,9 +4735,11 @@ function initSocket() {
       console.log('[Socket] connected:', socket.id);
     });
 
-    socket.on('chat_message', (data) => {
+    socket.on('chat_message', async (data) => {
       if (data.userId === state.currentPartnerId) {
-        appendMessage(data.message, false);
+        let text = data.message;
+        if (data.iv) text = await e2eDecrypt(data.message, data.iv, data.userId);
+        appendMessage(text, false);
         if (navigator.vibrate) navigator.vibrate(20);
       } else {
         const badge = document.getElementById('chatBadge');

@@ -149,6 +149,16 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   res.json(user);
 });
 
+// GET /users/:id/public-key — fetch E2E public key (auth required)
+router.get('/:id/public-key', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.params.id },
+    select: { id: true, publicKey: true },
+  });
+  if (!user) throw new AppError('User not found', 404);
+  res.json({ publicKey: user.publicKey ?? null });
+});
+
 // GET /users/:id/posts
 router.get('/:id/posts', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
@@ -177,6 +187,16 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response): Promise
     select: { id: true, displayName: true, bio: true, country: true, traditions: true, preferredLanguage: true, professionType: true, customProfession: true, interestTags: true, intentTags: true },
   });
   res.json(updated);
+});
+
+// PUT /users/me/public-key — store E2E ECDH public key
+router.put('/me/public-key', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { publicKey } = req.body;
+  if (!publicKey || typeof publicKey !== 'string' || publicKey.length > 300) {
+    res.status(400).json({ error: 'publicKey required (base64 SPKI, max 300 chars)' }); return;
+  }
+  await prisma.user.update({ where: { id: req.user!.id }, data: { publicKey } });
+  res.json({ ok: true });
 });
 
 // PUT /users/me/tags

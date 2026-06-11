@@ -25,8 +25,9 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
   if (perm === MessagingPermission.CONNECTIONS_ONLY && !connection)
     throw new AppError('This user only accepts messages from connections', 403);
 
+  const { iv } = req.body; // AES-GCM IV (base64); absent for legacy plaintext
   const message = await prisma.message.create({
-    data: { senderId: req.user!.id, recipientId, ciphertext },
+    data: { senderId: req.user!.id, recipientId, ciphertext, iv: iv || null },
     select: { id: true, senderId: true, recipientId: true, createdAt: true },
   });
   res.status(201).json(message);
@@ -36,18 +37,20 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
 router.get('/threads', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   // Get the latest message per thread partner
   const threads = await prisma.$queryRaw<Array<{
-    partnerId: string; lastMessage: string; lastAt: Date; unreadCount: bigint;
+    partnerId: string; lastMessage: string; lastIv: string | null; lastAt: Date; unreadCount: bigint;
   }>>`
     SELECT
       partner_id AS "partnerId",
       last_at AS "lastAt",
       last_message AS "lastMessage",
+      last_iv AS "lastIv",
       unread_count AS "unreadCount"
     FROM (
       SELECT
         CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END AS partner_id,
         created_at AS last_at,
         ciphertext AS last_message,
+        iv AS last_iv,
         COUNT(*) FILTER (WHERE recipient_id = ${req.user!.id} AND is_read = false)
           OVER (PARTITION BY CASE WHEN sender_id = ${req.user!.id} THEN recipient_id ELSE sender_id END)
           AS unread_count,
@@ -85,7 +88,7 @@ router.get('/threads/:partnerId', authenticate, async (req: AuthRequest, res: Re
     },
     orderBy: { createdAt: 'asc' },
     take: 100,
-    select: { id: true, senderId: true, recipientId: true, ciphertext: true, isRead: true, createdAt: true },
+    select: { id: true, senderId: true, recipientId: true, ciphertext: true, iv: true, isRead: true, createdAt: true },
   });
   // Mark as read
   await prisma.message.updateMany({

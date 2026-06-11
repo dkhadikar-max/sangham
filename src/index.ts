@@ -73,8 +73,8 @@ io.on('connection', (socket) => {
   const userId = socket.data.userId as string; // server-verified, never trust client claim
   socket.on('join_room',    (roomId: string) => socket.join(roomId));
   socket.on('leave_room',   (roomId: string) => socket.leave(roomId));
-  // Inject server-verified userId — client-supplied userId is ignored
-  socket.on('chat_message', (data: { roomId: string; message: string }) => {
+  // Inject server-verified userId — client-supplied userId is ignored; iv forwarded for E2E decryption
+  socket.on('chat_message', (data: { roomId: string; message: string; iv?: string }) => {
     socket.to(data.roomId).emit('chat_message', { ...data, userId });
   });
 });
