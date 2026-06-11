@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { UserRole, Tradition, ProfessionalTag, ProfessionType } from '@prisma/client';
 import { z } from 'zod';
+import { createNotification } from '../utils/notify';
 
 const router = Router();
 
@@ -162,7 +163,10 @@ router.put('/me/tags', authenticate, async (req: AuthRequest, res: Response): Pr
 // POST /users/:id/follow
 router.post('/:id/follow', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   if (req.params.id === req.user!.id) throw new AppError('Cannot follow yourself', 400);
-  const target = await prisma.user.findUnique({ where: { id: req.params.id } });
+  const [target, actor] = await Promise.all([
+    prisma.user.findUnique({ where: { id: req.params.id } }),
+    prisma.user.findUnique({ where: { id: req.user!.id }, select: { displayName: true } }),
+  ]);
   if (!target) throw new AppError('User not found', 404);
   await prisma.follow.upsert({
     where: { followerId_followedId: { followerId: req.user!.id, followedId: req.params.id } },
@@ -170,6 +174,11 @@ router.post('/:id/follow', authenticate, async (req: AuthRequest, res: Response)
     update: {},
   });
   res.json({ message: 'Followed successfully' });
+  void createNotification(
+    req.params.id, 'follow', 'New Connection',
+    `${actor?.displayName ?? 'Someone'} connected with you`,
+    { userId: req.user!.id }
+  );
 });
 
 // DELETE /users/:id/follow

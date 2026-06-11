@@ -456,6 +456,18 @@ round:var(--error-600)}
     .header-icon:active{transform:scale(0.95)}
     .header-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
     .header-icon .notification-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--error-500);border-radius:50%;border:2px solid var(--surface-elevated)}
+    .header-notif-badge{position:absolute;top:-3px;right:-3px;background:var(--error-500);color:white;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--surface-bg);line-height:1;pointer-events:none}
+    .notif-item{display:flex;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle);cursor:pointer;border-radius:var(--radius-md);transition:background var(--duration-fast)}
+    .notif-item:hover{background:var(--surface-sunken)}
+    .notif-item.unread{border-left:3px solid var(--saffron-500);padding-left:var(--space-2)}
+    .notif-icon{width:36px;height:36px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .notif-body{flex:1;min-width:0}
+    .notif-title{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--text-primary);margin-bottom:2px}
+    .notif-text{font-size:var(--text-xs);color:var(--text-secondary);line-height:1.4}
+    .notif-time{font-size:var(--text-2xs);color:var(--text-tertiary);flex-shrink:0;padding-top:2px;white-space:nowrap}
+    .notif-empty{text-align:center;padding:var(--space-10) var(--space-4);color:var(--text-tertiary)}
+    .notif-empty-icon{font-size:40px;margin-bottom:var(--space-3)}
+    .notif-empty-text{font-size:var(--text-sm)}
     .app-main{flex:1;overflow:hidden;position:relative}
     .tab-panel{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-height) + var(--space-4) + var(--safe-area-bottom));display:none;opacity:0;transition:opacity var(--duration-normal) var(--ease-out)}
     .tab-panel.active{display:block;opacity:1}
@@ -1267,6 +1279,10 @@ round:var(--error-600)}
         <button class="header-icon" onclick="openCreatePost()" title="Share reflection" aria-label="Share reflection">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
+        <button class="header-icon" id="notifBellBtn" onclick="openNotifications()" title="Notifications" aria-label="Notifications" style="display:none">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="header-notif-badge" id="notifBadge" style="display:none">0</span>
+        </button>
         <button class="header-icon" id="headerAvatar" onclick="openProfileQuickPanel()" title="Profile" aria-label="Profile">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </button>
@@ -1937,6 +1953,20 @@ round:var(--error-600)}
       </div>
     </div>
 
+    <!-- Notifications Panel -->
+    <div id="panel-notifications" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-notifications')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="panel-title">Notifications</span>
+        <button class="btn btn-ghost btn-sm" onclick="markAllNotificationsRead()">Mark all read</button>
+      </div>
+      <div class="panel-content" id="notif-list" style="padding:var(--space-4)">
+        <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+      </div>
+    </div>
+
     <!-- Profile Quick Panel (bottom sheet mobile / right drawer desktop) -->
     <div class="pq-overlay" id="pqOverlay" onclick="closeProfileQuickPanel()"></div>
     <div class="pq-panel" id="pqPanel" role="dialog" aria-modal="true" aria-label="Profile menu">
@@ -2315,6 +2345,9 @@ function initApp() {
   switchTab('home');
   initSocket();
   loadChatUnreadCount();
+  loadNotificationCount();
+  const bellBtn = document.getElementById('notifBellBtn');
+  if (bellBtn) bellBtn.style.display = '';
   initTheme();
   initSidebar();
   _updateLearnCreateButtons();
@@ -4289,6 +4322,89 @@ async function loadChatUnreadCount() {
       badge.style.display = 'none';
       if (dsBadge) dsBadge.style.display = 'none';
     }
+  } catch(e) {}
+}
+
+// ============================================================
+//  NOTIFICATIONS
+// ============================================================
+const NOTIF_ICONS = { follow:'🙏', comment:'💬', event_rsvp:'📅', project_join:'🤝' };
+
+async function loadNotificationCount() {
+  if (!state.token) return;
+  try {
+    const res = await api('GET', '/notifications?limit=1&unreadOnly=true');
+    const count = res.unreadCount || 0;
+    const badge = document.getElementById('notifBadge');
+    const bell  = document.getElementById('notifBellBtn');
+    if (!badge || !bell) return;
+    if (count > 0) {
+      badge.textContent = count > 99 ? '99+' : String(count);
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch(e) {}
+}
+
+function openNotifications() {
+  openPanel('panel-notifications');
+  loadNotifications();
+}
+
+async function loadNotifications() {
+  if (!state.token) return;
+  const el = document.getElementById('notif-list');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const res = await api('GET', '/notifications?limit=30');
+    const items = res.data || [];
+    if (!items.length) {
+      el.innerHTML = '<div class="notif-empty"><div class="notif-empty-icon">🔔</div><div class="notif-empty-text">No notifications yet</div></div>';
+      return;
+    }
+    el.innerHTML = items.map(n => {
+      const icon = NOTIF_ICONS[n.type] || '🔔';
+      const unreadClass = !n.isRead ? ' unread' : '';
+      const data = n.data || {};
+      let onclick = '';
+      if (n.type === 'follow' && data.userId)        onclick = `openProfile('${data.userId}')`;
+      else if (n.type === 'comment' && data.postId)  onclick = `openPostDetail('${data.postId}')`;
+      else if (n.type === 'event_rsvp' && data.eventId) onclick = `openEventDetail('${data.eventId}')`;
+      else if (n.type === 'project_join' && data.projectId) onclick = `openProjectDetail('${data.projectId}')`;
+      const onclickAttr = onclick ? `onclick="markNotificationRead('${n.id}');closePanel('panel-notifications');${onclick}"` : `onclick="markNotificationRead('${n.id}')"`;
+      return `<div class="notif-item${unreadClass}" ${onclickAttr}>
+        <div class="notif-icon">${icon}</div>
+        <div class="notif-body">
+          <div class="notif-title">${escHtml(n.title)}</div>
+          <div class="notif-text">${escHtml(n.body)}</div>
+        </div>
+        <div class="notif-time">${timeAgo(n.createdAt)}</div>
+      </div>`;
+    }).join('');
+    // Clear badge since panel is open
+    const badge = document.getElementById('notifBadge');
+    if (badge) badge.style.display = 'none';
+  } catch(e) {
+    el.innerHTML = '<div class="notif-empty"><div class="notif-empty-text">Could not load notifications</div></div>';
+  }
+}
+
+async function markNotificationRead(id) {
+  try {
+    await api('PUT', `/notifications/${id}/read`);
+    const el = document.querySelector(`.notif-item[onclick*="${id}"]`);
+    if (el) el.classList.remove('unread');
+  } catch(e) {}
+}
+
+async function markAllNotificationsRead() {
+  try {
+    await api('POST', '/notifications/read-all');
+    document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+    const badge = document.getElementById('notifBadge');
+    if (badge) badge.style.display = 'none';
   } catch(e) {}
 }
 

@@ -38,6 +38,7 @@ import resourceRoutes     from './routes/resources';
 import courseRoutes       from './routes/courses';
 import studyCircleRoutes  from './routes/studyCircles';
 import discussionRoutes   from './routes/discussions';
+import notificationRoutes from './routes/notifications';
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -134,6 +135,7 @@ app.use(`${API}/resources`,     resourceRoutes);
 app.use(`${API}/courses`,       courseRoutes);
 app.use(`${API}/study-circles`, studyCircleRoutes);
 app.use(`${API}/discussions`,   discussionRoutes);
+app.use(`${API}/notifications`, notificationRoutes);
 app.use(`${API}/uploads`,       uploadRoutes);
 
 // ── Admin panel (separate route, before SPA fallback) ──────────────────────

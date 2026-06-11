@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { ProjectStatus, ProjectCategory } from '@prisma/client';
+import { createNotification } from '../utils/notify';
 
 const router = Router();
 
@@ -186,6 +187,15 @@ router.post('/:id/join', authenticate, async (req: AuthRequest, res: Response): 
   });
 
   res.json({ message: 'Joined project' });
+  if (project.ownerId !== req.user!.id) {
+    prisma.user.findUnique({ where: { id: req.user!.id }, select: { displayName: true } })
+      .then(actor => createNotification(
+        project.ownerId, 'project_join', 'New Collaborator',
+        `${actor?.displayName ?? 'Someone'} joined your project "${project.title}"`,
+        { projectId: req.params.id }
+      ))
+      .catch(() => {});
+  }
 });
 
 // DELETE /projects/:id/leave

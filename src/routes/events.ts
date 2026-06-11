@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { EventType, RsvpStatus, Tradition } from '@prisma/client';
 import { z } from 'zod';
+import { createNotification } from '../utils/notify';
 
 const router = Router();
 
@@ -136,6 +137,15 @@ router.post('/:id/rsvp', authenticate, async (req: AuthRequest, res: Response): 
     update: { status },
   });
   res.json(rsvp);
+  if (status === RsvpStatus.GOING && event.organiserId !== req.user!.id) {
+    prisma.user.findUnique({ where: { id: req.user!.id }, select: { displayName: true } })
+      .then(actor => createNotification(
+        event.organiserId, 'event_rsvp', 'New Attendee',
+        `${actor?.displayName ?? 'Someone'} is going to "${event.title}"`,
+        { eventId: req.params.id }
+      ))
+      .catch(() => {});
+  }
 });
 
 export default router;

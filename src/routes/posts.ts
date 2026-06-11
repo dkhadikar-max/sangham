@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { PostType, Tradition } from '@prisma/client';
 import { z } from 'zod';
+import { createNotification } from '../utils/notify';
 
 const router = Router();
 
@@ -83,10 +84,19 @@ router.post('/:id/like', authenticate, async (req: AuthRequest, res: Response): 
 router.post('/:id/comment', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const { content, parentId } = req.body;
   if (!content || content.length > 500) throw new AppError('Comment must be 1–500 characters', 400);
-  const comment = await prisma.comment.create({
-    data: { postId: req.params.id, authorId: req.user!.id, content, parentId },
-  });
+  const [comment, post, actor] = await Promise.all([
+    prisma.comment.create({ data: { postId: req.params.id, authorId: req.user!.id, content, parentId } }),
+    prisma.post.findUnique({ where: { id: req.params.id }, select: { authorId: true } }),
+    prisma.user.findUnique({ where: { id: req.user!.id }, select: { displayName: true } }),
+  ]);
   res.status(201).json(comment);
+  if (post?.authorId && post.authorId !== req.user!.id) {
+    void createNotification(
+      post.authorId, 'comment', 'New Comment',
+      `${actor?.displayName ?? 'Someone'} commented on your reflection`,
+      { postId: req.params.id }
+    );
+  }
 });
 
 // POST /posts/:id/report
