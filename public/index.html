@@ -728,6 +728,34 @@ round:var(--error-600)}
     .daan-tier-btn{padding:var(--space-3);border:1.5px solid var(--border-default);border-radius:var(--radius-lg);background:var(--surface-sunken);font-family:var(--font-body);font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-secondary);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
     .daan-tier-btn:hover{border-color:var(--saffron-400);color:var(--saffron-700);background:var(--saffron-50)}
     .daan-tier-btn.active{background:var(--saffron-500);border-color:var(--saffron-500);color:white;box-shadow:0 2px 8px rgba(212,168,67,.4)}
+    /* Dhamma Daan panel tabs */
+    .daan-tabs{display:flex;border-bottom:1px solid var(--border-subtle);margin:-var(--space-4) -var(--space-4) var(--space-4)}
+    .daan-tab{flex:1;padding:var(--space-3) var(--space-2);font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-secondary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:var(--font-body);transition:all var(--duration-fast)}
+    .daan-tab.active{color:var(--saffron-600);border-bottom-color:var(--saffron-500)}
+    /* Split bar */
+    .daan-split{display:flex;border-radius:var(--radius-full);overflow:hidden;height:8px;margin:var(--space-3) 0}
+    .daan-split-ops{flex:1;background:var(--saffron-400)}
+    .daan-split-fund{flex:1;background:var(--saffron-600)}
+    .daan-split-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:4px;margin-bottom:var(--space-3)}
+    /* History */
+    .daan-history-item{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)}
+    .daan-history-amount{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .daan-history-date{font-size:var(--text-xs);color:var(--text-tertiary)}
+    .daan-history-split{font-size:10px;color:var(--text-tertiary);margin-top:1px}
+    /* Allocation list */
+    .daan-allocation-item{padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)}
+    .daan-allocation-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:2px}
+    .daan-allocation-meta{font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-semibold)}
+    .daan-allocation-desc{font-size:var(--text-xs);color:var(--text-secondary);margin-top:4px;line-height:1.5}
+    /* Contributor badge */
+    .contributor-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:var(--weight-semibold);color:var(--saffron-700);background:color-mix(in srgb,var(--saffron-500) 12%,transparent);border:1px solid var(--saffron-300);border-radius:var(--radius-full);padding:2px 7px;vertical-align:middle;margin-left:4px}
+    /* Trust gate */
+    .trust-gate{padding:var(--space-5);text-align:center}
+    .trust-gate-icon{font-size:2.5rem;margin-bottom:var(--space-3)}
+    .trust-gate-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2)}
+    .trust-gate-body{font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)}
+    .trust-gate-progress{background:var(--surface-sunken);border-radius:var(--radius-full);height:6px;overflow:hidden;margin:var(--space-2) 0 var(--space-1)}
+    .trust-gate-bar{height:100%;background:var(--saffron-500);border-radius:var(--radius-full);transition:width .5s}
     .teacher-apply-section{margin-top:var(--space-4);padding:var(--space-4);background:var(--surface-secondary);border-radius:var(--radius-xl)}
     .dhamma-daan-home-btn{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);background:linear-gradient(135deg,var(--saffron-50),var(--saffron-100));border:1px solid var(--saffron-200);border-radius:var(--radius-xl);cursor:pointer;text-align:left;width:100%;font-family:var(--font-body);margin-bottom:var(--space-3)}
     .dhamma-daan-home-btn:hover{background:linear-gradient(135deg,var(--saffron-100),var(--saffron-200));border-color:var(--saffron-300)}
@@ -1739,10 +1767,18 @@ round:var(--error-600)}
         </button>
         <div class="panel-title">Dhamma Daan 🙏</div>
       </div>
-      <div class="panel-content" style="padding:var(--space-4)">
-        <div class="daan-header-text">
-          <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--space-4)">Your contribution sustains the Digital Sangha. 50% goes to platform operations; 50% to the Dhamma Daan Fund — supporting translation, education, and community service. Contribution amount never affects ranking or visibility.</p>
+      <div style="border-bottom:1px solid var(--border-subtle)">
+        <div style="display:flex">
+          <button class="daan-tab active" id="daan-tab-give"    onclick="switchDaanTab('give')"   >Give</button>
+          <button class="daan-tab"        id="daan-tab-history" onclick="switchDaanTab('history')">My History</button>
+          <button class="daan-tab"        id="daan-tab-impact"  onclick="switchDaanTab('impact')" >Impact</button>
         </div>
+      </div>
+      <div id="daan-view-give" class="panel-content" style="padding:var(--space-4)">
+        <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--space-3)">Your contribution sustains the Digital Sangha. Contribution amount <strong>never</strong> affects ranking or visibility.</p>
+        <div class="daan-split"><div class="daan-split-ops"></div><div class="daan-split-fund"></div></div>
+        <div class="daan-split-labels"><span>50% Platform Operations</span><span>50% Dhamma Fund →</span></div>
+        <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-4)">Dhamma Fund supports: translation projects · community education · volunteer networks · digital preservation</div>
         <div class="input-group"><label>Select Amount</label>
           <div class="daan-tier-grid" id="daanTierGrid">
             <button class="daan-tier-btn" data-amount="49"    onclick="selectDaanTier(49,this)">₹49</button>
@@ -1753,11 +1789,17 @@ round:var(--error-600)}
           </div>
         </div>
         <div class="input-group" style="margin-top:var(--space-2)">
-          <label>Or enter custom amount (₹)</label>
-          <input id="daan-custom" class="input" type="number" min="49" placeholder="e.g. 251">
+          <label>Or enter custom amount (₹ 49 minimum)</label>
+          <input id="daan-custom" class="input" type="number" min="49" placeholder="e.g. 251" oninput="updateDaanBtnLabel()">
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Donate ₹108</button>
-        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Secure payment via Razorpay. No data shared beyond what is required.</p>
+        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Give ₹108</button>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Secure payment via Razorpay · No data shared beyond what is required</p>
+      </div>
+      <div id="daan-view-history" class="panel-content" style="padding:var(--space-4);display:none">
+        <div id="daan-history-content"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+      </div>
+      <div id="daan-view-impact" class="panel-content" style="padding:var(--space-4);display:none">
+        <div id="daan-impact-content"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
       </div>
     </div>
 
@@ -4545,6 +4587,7 @@ function renderProfileView(user, isOwn) {
   const loc        = [user.city, user.country].filter(Boolean).join(', ');
   const roleBadge  = user.role && user.role !== 'PRACTITIONER' ? `<span class="profile-role-badge">${fmtRole(user.role)}</span>` : '';
   const verifiedBadge = (user.isVerifiedClergy || user.isVerifiedTeacher) ? '<span class="badge-verified badge-verified-teacher" title="Verified"></span>' : '';
+  const contributorBadge = user.isContributor ? '<span class="contributor-badge">🙏 Contributor</span>' : '';
   const connected  = state.followedUsers.has(user.id);
   const coverClass = _tradCoverClass(user.traditions);
 
@@ -4577,7 +4620,7 @@ function renderProfileView(user, isOwn) {
     <div class="profile-cover ${coverClass}">${user.coverImage ? `<img src="${escHtml(user.coverImage)}" alt="">` : ''}</div>
     <div class="profile-avatar-wrap">${avatar}</div>
     <div class="profile-info">
-      <div class="profile-name">${escHtml(user.displayName || 'Anonymous')} ${verifiedBadge} ${roleBadge}</div>
+      <div class="profile-name">${escHtml(user.displayName || 'Anonymous')} ${verifiedBadge} ${roleBadge} ${contributorBadge}</div>
       ${user.bio ? `<div class="profile-bio">${escHtml(user.bio)}</div>` : ''}
       <div class="profile-meta">
         ${loc ? `<span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg>${escHtml(loc)}</span>` : ''}
@@ -5628,6 +5671,33 @@ async function loadMyCommunities() {
 
 function openCreateCommunity() {
   if (!state.user) { showToast('Sign in to create a community', 'info'); return; }
+
+  // Spec trust gate: account age > 14 days OR identity/community verified
+  const isVerified = state.user.isVerifiedClergy || state.user.isVerifiedTeacher;
+  const isMod = ['MODERATOR','SUPER_ADMIN'].includes(state.user.role);
+  if (!isVerified && !isMod) {
+    const ageMs   = Date.now() - new Date(state.user.createdAt).getTime();
+    const ageDays = Math.floor(ageMs / 86400000);
+    if (ageDays < 14) {
+      const daysLeft = 14 - ageDays;
+      const pct      = Math.min(100, Math.round(ageDays / 14 * 100));
+      // Show soft gate in the create panel
+      openPanel('panel-create-community');
+      const form = document.getElementById('panel-create-community')?.querySelector('.panel-content');
+      if (form) {
+        form.innerHTML = `<div class="trust-gate">
+          <div class="trust-gate-icon">🏛</div>
+          <div class="trust-gate-title">Almost Ready to Create a Community</div>
+          <div class="trust-gate-body">To prevent abandoned communities, new accounts need 14 days of activity before creating one. You can still join existing communities right now.<br><br>Your account is <strong>${ageDays} day${ageDays!==1?'s':''} old</strong> — ${daysLeft} day${daysLeft!==1?'s':''} to go.</div>
+          <div class="trust-gate-progress"><div class="trust-gate-bar" style="width:${pct}%"></div></div>
+          <div style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:right;margin-bottom:var(--space-4)">${ageDays}/14 days</div>
+          <button class="btn btn-primary" style="width:100%" onclick="switchTab('communities')">Explore Communities</button>
+          <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-3);text-align:center">Verification (identity or community) bypasses this wait.</p>
+        </div>`;
+      }
+      return;
+    }
+  }
   openPanel('panel-create-community');
 }
 
@@ -6558,6 +6628,18 @@ function openDhammaDaan() {
   });
   const custom = document.getElementById('daan-custom');
   if (custom) custom.value = '';
+  switchDaanTab('give');
+}
+
+function switchDaanTab(tab) {
+  ['give','history','impact'].forEach(id => {
+    const btn  = document.getElementById('daan-tab-'  + id);
+    const view = document.getElementById('daan-view-' + id);
+    if (btn)  btn.classList.toggle('active', id === tab);
+    if (view) view.style.display = id === tab ? '' : 'none';
+  });
+  if (tab === 'history') loadDaanHistory();
+  if (tab === 'impact')  loadDaanImpact();
 }
 
 function selectDaanTier(amount, btn) {
@@ -6567,14 +6649,111 @@ function selectDaanTier(amount, btn) {
   const custom = document.getElementById('daan-custom');
   if (custom && btn) custom.value = '';
   const payBtn = document.getElementById('daan-pay-btn');
-  if (payBtn) payBtn.textContent = 'Donate ₹' + amount.toLocaleString('en-IN');
+  if (payBtn) payBtn.textContent = 'Give ₹' + amount.toLocaleString('en-IN');
+}
+
+function updateDaanBtnLabel() {
+  const customEl = document.getElementById('daan-custom');
+  const customVal = customEl ? parseInt(customEl.value) : 0;
+  const payBtn = document.getElementById('daan-pay-btn');
+  if (!payBtn) return;
+  if (customVal >= 49) {
+    document.querySelectorAll('.daan-tier-btn').forEach(b => b.classList.remove('active'));
+    payBtn.textContent = 'Give ₹' + customVal.toLocaleString('en-IN');
+  } else {
+    payBtn.textContent = 'Give ₹' + _daanAmount.toLocaleString('en-IN');
+  }
+}
+
+async function loadDaanHistory() {
+  const el = document.getElementById('daan-history-content');
+  if (!el) return;
+  if (!state.user) { el.innerHTML = '<p style="color:var(--text-tertiary);text-align:center;padding:var(--space-6)">Sign in to view your history.</p>'; return; }
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const data = await api('GET', '/dhamma-daan/me');
+    const fmtRupees = p => '₹' + (p / 100).toLocaleString('en-IN');
+    if (!data.contributions?.length) {
+      el.innerHTML = `<div style="text-align:center;padding:var(--space-8) 0">
+        <div style="font-size:2rem;margin-bottom:var(--space-3)">🙏</div>
+        <div style="font-size:var(--text-sm);color:var(--text-secondary)">You haven't contributed yet.</div>
+        <button class="btn btn-primary" style="margin-top:var(--space-4)" onclick="switchDaanTab('give')">Make your first contribution</button>
+      </div>`;
+      return;
+    }
+    const totalRupees = fmtRupees(data.totalPaise || 0);
+    el.innerHTML = `
+      <div style="background:color-mix(in srgb,var(--saffron-500) 10%,transparent);border:1px solid var(--saffron-200);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-4);text-align:center">
+        <div style="font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--saffron-700)">${totalRupees}</div>
+        <div style="font-size:var(--text-xs);color:var(--text-secondary);margin-top:2px">Total contributed · ${data.contributions.length} donation${data.contributions.length!==1?'s':''}</div>
+        ${data.isContributor ? `<div style="margin-top:var(--space-2)"><span class="contributor-badge">🙏 Contributor</span></div>` : ''}
+      </div>
+      ${data.contributions.map(c => `
+        <div class="daan-history-item">
+          <div>
+            <div class="daan-history-amount">${fmtRupees(c.amountPaise)}</div>
+            <div class="daan-history-split">₹${(c.splitPlatformPaise/100).toFixed(0)} operations · ₹${(c.splitFundPaise/100).toFixed(0)} Dhamma Fund</div>
+          </div>
+          <div class="daan-history-date">${timeAgo(c.capturedAt)}</div>
+        </div>`).join('')}`;
+  } catch(err) {
+    el.innerHTML = `<p style="color:var(--text-tertiary);text-align:center;padding:var(--space-6)">${escHtml(err.message)}</p>`;
+  }
+}
+
+async function loadDaanImpact() {
+  const el = document.getElementById('daan-impact-content');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const [dash, allocs] = await Promise.all([
+      api('GET', '/dhamma-daan/dashboard'),
+      api('GET', '/dhamma-daan/allocations'),
+    ]);
+    const fmtRupees = p => {
+      if (p >= 10000000) return '₹' + (p/10000000).toFixed(1) + ' Cr';
+      if (p >= 100000)   return '₹' + (p/100000).toFixed(1) + ' L';
+      if (p >= 1000)     return '₹' + (p/1000).toFixed(1) + 'K';
+      return '₹' + (p/100).toFixed(0);
+    };
+    const CAT_LABEL = { OPERATIONS:'Operations', TRANSLATION:'Translation', EDUCATION:'Education', COMMUNITY_SERVICE:'Community Service', TECHNOLOGY:'Technology', EVENT_SUPPORT:'Event Support', RESEARCH:'Research', OTHER:'Other' };
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-4)">
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--space-3);text-align:center">
+          <div style="font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--saffron-700)">${dash.contributorCount||0}</div>
+          <div style="font-size:10px;color:var(--text-tertiary)">Contributors</div>
+        </div>
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--space-3);text-align:center">
+          <div style="font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--saffron-700)">${fmtRupees(dash.totalCollectedPaise||0)}</div>
+          <div style="font-size:10px;color:var(--text-tertiary)">Total Raised</div>
+        </div>
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--space-3);text-align:center">
+          <div style="font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--saffron-700)">${fmtRupees(dash.totalFundPaise||0)}</div>
+          <div style="font-size:10px;color:var(--text-tertiary)">Dhamma Fund</div>
+        </div>
+        <div style="background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:var(--space-3);text-align:center">
+          <div style="font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--saffron-700)">${fmtRupees(dash.fundBalancePaise||0)}</div>
+          <div style="font-size:10px;color:var(--text-tertiary)">Fund Balance</div>
+        </div>
+      </div>
+      <h3 style="font-size:var(--text-sm);font-weight:var(--weight-semibold);margin-bottom:var(--space-3)">Allocations</h3>
+      ${allocs.length ? allocs.map(a => `
+        <div class="daan-allocation-item">
+          <div class="daan-allocation-title">${escHtml(a.title)}</div>
+          <div class="daan-allocation-meta">${CAT_LABEL[a.category]||a.category} · ${fmtRupees(a.amountPaise)}</div>
+          ${a.description ? `<div class="daan-allocation-desc">${escHtml(a.description)}</div>` : ''}
+          ${a.beneficiary  ? `<div style="font-size:10px;color:var(--text-tertiary);margin-top:2px">Beneficiary: ${escHtml(a.beneficiary)}</div>` : ''}
+        </div>`).join('') : '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No allocations recorded yet.</p>'}`;
+  } catch(err) {
+    el.innerHTML = `<p style="color:var(--text-tertiary);text-align:center;padding:var(--space-6)">${escHtml(err.message)}</p>`;
+  }
 }
 
 async function submitDhammaDaan() {
   const customEl = document.getElementById('daan-custom');
   const customVal = customEl ? parseInt(customEl.value) : 0;
-  const amount = customVal > 0 ? customVal : _daanAmount;
-  if (!amount || amount < 1) { showToast('Please select or enter an amount', 'error'); return; }
+  const amount = (customVal >= 49) ? customVal : _daanAmount;
+  if (!amount || amount < 49) { showToast('Minimum contribution is ₹49', 'error'); return; }
 
   const btn = document.getElementById('daan-pay-btn');
   btn.disabled = true; btn.textContent = t('common.processing');
@@ -6608,8 +6787,10 @@ async function submitDhammaDaan() {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature:  response.razorpay_signature,
           });
+          if (state.user) state.user.isContributor = true;
           showToast(t('toast.dhamma_daan_received'), 'success');
-          closePanel('panel-dhamma-daan');
+          if (navigator.vibrate) navigator.vibrate([10,50,10,50,10]);
+          _showDaanThankYou(amount);
         } catch(e) {
           showToast('Payment verification failed. Contact support.', 'error');
         }
@@ -6619,8 +6800,34 @@ async function submitDhammaDaan() {
   } catch(err) {
     showToast(err.message, 'error');
   } finally {
-    btn.disabled = false; btn.textContent = 'Donate ₹' + amount;
+    btn.disabled = false;
+    btn.textContent = 'Give ₹' + amount.toLocaleString('en-IN');
   }
+}
+
+function _showDaanThankYou(amountRupees) {
+  const view = document.getElementById('daan-view-give');
+  if (!view) return;
+  const half = Math.floor(amountRupees / 2);
+  const fund = amountRupees - half;
+  view.innerHTML = `
+    <div style="text-align:center;padding:var(--space-6) 0">
+      <div style="font-size:3rem;margin-bottom:var(--space-3)">🙏</div>
+      <div style="font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-primary);margin-bottom:var(--space-2)">Thank you</div>
+      <div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--space-4)">Your contribution of <strong>₹${amountRupees.toLocaleString('en-IN')}</strong> has been received.</div>
+      <div class="daan-split" style="margin:var(--space-3) 0"></div>
+      <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-4)">
+        <span>₹${half.toLocaleString('en-IN')} → Platform operations</span>
+        <span>₹${fund.toLocaleString('en-IN')} → Dhamma Fund</span>
+      </div>
+      <span class="contributor-badge" style="font-size:var(--text-xs);padding:4px 12px">🙏 You are a Contributor</span>
+      <div style="margin-top:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2)">
+        <button class="btn btn-primary" onclick="switchDaanTab('impact')">See how funds are used</button>
+        <button class="btn btn-ghost" onclick="closePanel('panel-dhamma-daan')">Done</button>
+      </div>
+    </div>`;
+  // Refresh home impact widget
+  loadHomeDhammaDaanImpact();
 }
 
 // ============================================================
