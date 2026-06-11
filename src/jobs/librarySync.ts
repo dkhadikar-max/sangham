@@ -46,11 +46,10 @@ export async function syncSuttaCentral(): Promise<void> {
   let imported = 0;
   const dirs = fs.readdirSync(translationDir);
 
-  for (const authorDir of dirs.slice(0, 5)) { // limit in dev
+  for (const authorDir of dirs) {
     const authorPath = path.join(translationDir, authorDir);
     const files = fs.readdirSync(authorPath, { withFileTypes: true, recursive: true } as any)
-      .filter((f: any) => f.name?.endsWith('.json'))
-      .slice(0, 20); // limit in dev
+      .filter((f: any) => f.name?.endsWith('.json'));
 
     for (const file of files as any[]) {
       const filePath = path.join(authorPath, file.name);

@@ -10,7 +10,7 @@
     "test": "jest --forceExit",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node src/scripts/runSeed.ts",
     "studio": "prisma studio",
     "lint": "eslint src --ext .ts"
   },
