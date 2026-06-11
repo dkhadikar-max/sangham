@@ -77,14 +77,56 @@ router.get('/nearby', async (req: AuthRequest, res: Response): Promise<void> => 
   res.json(events);
 });
 
+// GET /events/mine — events I organise or have RSVP'd GOING (must be before /:id)
+router.get('/mine', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const userId = req.user!.id;
+  const [organised, rsvpd] = await Promise.all([
+    prisma.event.findMany({
+      where: { organiserId: userId, isPublished: true },
+      orderBy: { startsAt: 'desc' },
+      take: 20,
+      include: {
+        organiser: { select: { id: true, displayName: true } },
+        association: { select: { id: true, name: true } },
+        _count: { select: { rsvps: true } },
+      },
+    }),
+    prisma.eventRsvp.findMany({
+      where: { userId, status: RsvpStatus.GOING },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+      include: {
+        event: {
+          include: {
+            organiser: { select: { id: true, displayName: true } },
+            association: { select: { id: true, name: true } },
+            _count: { select: { rsvps: true } },
+          },
+        },
+      },
+    }),
+  ]);
+
+  // Merge, deduplicate by id, sort descending by startsAt
+  const seen = new Set<string>();
+  const all = [...organised, ...rsvpd.map(r => r.event)].filter(ev => {
+    if (seen.has(ev.id)) return false;
+    seen.add(ev.id);
+    return true;
+  }).sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime());
+
+  res.json(all);
+});
+
 // GET /events — general listing
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { tradition, type, q, mode } = req.query;
+  const { tradition, type, q, mode, organiserId } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
   const where: Record<string, unknown> = { isPublished: true, startsAt: { gte: new Date() } };
   if (tradition) where.traditionTag = tradition;
   if (type) where.eventType = type;
   if (q) where.title = { contains: q as string, mode: 'insensitive' };
+  if (organiserId) where.organiserId = organiserId as string;
   if (mode === 'online')  { where.onlineUrl = { not: null }; where.locationName = null; }
   if (mode === 'offline') { where.locationName = { not: null }; where.onlineUrl = null; }
   if (mode === 'hybrid')  { where.onlineUrl = { not: null }; where.locationName = { not: null }; }

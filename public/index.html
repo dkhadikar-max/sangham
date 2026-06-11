@@ -1402,9 +1402,12 @@ round:var(--error-600)}
         </div>
 
         <div id="discover-tab-events" class="comm-tab-panel">
-          <div class="search-bar" style="margin:var(--space-3) var(--space-4) var(--space-2)">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="discoverEventSearch" placeholder="Search events..." data-i18n-ph="discover.search_events" oninput="debounceEventSearch()">
+          <div style="padding:var(--space-3) var(--space-4) var(--space-2);display:flex;align-items:center;gap:var(--space-2)">
+            <div class="search-bar" style="flex:1">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="discoverEventSearch" placeholder="Search events..." data-i18n-ph="discover.search_events" oninput="debounceEventSearch()">
+            </div>
+            <button class="btn btn-primary btn-sm" id="createEventBtn" onclick="openCreateStandaloneEvent()" style="flex-shrink:0;white-space:nowrap;display:none">+ Create Event</button>
           </div>
           <div class="chip-scroll" style="padding:0 var(--space-4) var(--space-2)" id="eventTypeFilters">
             <button class="chip active" onclick="filterDiscoverEventType(null,this)" data-i18n="events.all_types">All Types</button>
@@ -1420,6 +1423,7 @@ round:var(--error-600)}
             <button class="chip" onclick="filterDiscoverEventMode('online',this)" data-i18n="discover.online">Online</button>
             <button class="chip" onclick="filterDiscoverEventMode('offline',this)" data-i18n="discover.in_person">In-Person</button>
             <button class="chip" onclick="filterDiscoverEventMode('hybrid',this)" data-i18n="discover.hybrid">Hybrid</button>
+            <button class="chip" id="mineEventChip" onclick="filterDiscoverEventMine(this)" style="display:none">My Events</button>
           </div>
           <div id="discoverEvents" style="padding:0 var(--space-4) var(--space-4)"></div>
         </div>
@@ -2348,6 +2352,10 @@ function initApp() {
   loadNotificationCount();
   const bellBtn = document.getElementById('notifBellBtn');
   if (bellBtn) bellBtn.style.display = '';
+  const createEventBtn = document.getElementById('createEventBtn');
+  if (createEventBtn) createEventBtn.style.display = '';
+  const mineEventChip = document.getElementById('mineEventChip');
+  if (mineEventChip) mineEventChip.style.display = '';
   initTheme();
   initSidebar();
   _updateLearnCreateButtons();
@@ -3350,6 +3358,7 @@ let discoverCategories = [];
 let _discoverEventsLoaded = false;
 let _discoverEventType = null;
 let _discoverEventMode = null;
+let _discoverEventMine = false;
 let _discoverEventSearchTimer = null;
 let _discoverIntentFilter = null;
 let _discoverTeacherFilter = false;
@@ -3389,20 +3398,25 @@ async function loadDiscoverEvents() {
   if (!el) return;
   el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
-    const q = document.getElementById('discoverEventSearch')?.value.trim();
-    const params = { limit: '20' };
-    if (_discoverEventType) params.type = _discoverEventType;
-    if (_discoverEventMode) params.mode = _discoverEventMode;
-    if (q) params.q = q;
-    const data = await api('GET', `/events?${new URLSearchParams(params)}`);
-    const events = data.data || data || [];
+    let events;
+    if (_discoverEventMine && state.token) {
+      events = await api('GET', '/events/mine');
+    } else {
+      const q = document.getElementById('discoverEventSearch')?.value.trim();
+      const params = { limit: '20' };
+      if (_discoverEventType) params.type = _discoverEventType;
+      if (_discoverEventMode) params.mode = _discoverEventMode;
+      if (q) params.q = q;
+      const data = await api('GET', `/events?${new URLSearchParams(params)}`);
+      events = data.data || data || [];
+    }
     if (!events.length) {
       el.innerHTML = `<div class="empty-state" style="padding:var(--space-8) 0"><div class="empty-state-icon">📅</div><div class="empty-state-title">${t('events.no_events')}</div></div>`;
       return;
     }
     events.forEach(ev => _eventCache.set(ev.id, ev));
     el.innerHTML = events.map(ev => renderEventCard(ev)).join('');
-    _discoverEventsLoaded = !_discoverEventType && !_discoverEventMode && !q;
+    _discoverEventsLoaded = !_discoverEventType && !_discoverEventMode && !_discoverEventMine;
   } catch(err) {
     el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">${t('events.load_error')}</p>`;
   }
@@ -3420,6 +3434,27 @@ function filterDiscoverEventMode(mode, chip) {
   document.querySelectorAll('#eventModeFilters .chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   _discoverEventMode = mode;
+  _discoverEventMine = false;
+  _discoverEventsLoaded = false;
+  loadDiscoverEvents();
+}
+
+function filterDiscoverEventMine(chip) {
+  if (!state.user) { showToast('Sign in to see your events', 'info'); return; }
+  const wasActive = chip.classList.contains('active');
+  document.querySelectorAll('#eventModeFilters .chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#eventTypeFilters .chip').forEach(c => c.classList.remove('active'));
+  if (!wasActive) {
+    chip.classList.add('active');
+    _discoverEventMine = true;
+    _discoverEventType = null;
+    _discoverEventMode = null;
+  } else {
+    // Toggle off — go back to All
+    _discoverEventMine = false;
+    document.querySelector('#eventTypeFilters .chip')?.classList.add('active');
+    document.querySelector('#eventModeFilters .chip')?.classList.add('active');
+  }
   _discoverEventsLoaded = false;
   loadDiscoverEvents();
 }
@@ -4691,6 +4726,7 @@ async function openProfile(userId) {
     if (isOwn) editBtn.style.display = '';
     content.innerHTML = renderProfileView(user, isOwn);
     loadProfilePosts(userId);
+    loadProfileEvents(userId);
     loadProfileProjects(userId);
     loadProfileContributions(userId);
   } catch(err) {
@@ -4716,9 +4752,10 @@ function renderProfileView(user, isOwn) {
   const connected  = state.followedUsers.has(user.id);
   const coverClass = _tradCoverClass(user.traditions);
 
-  // Spec-compliant stats: Communities · Projects · Connections (never posts/followers/following)
+  // Spec-compliant stats: Communities · Projects · Events · Connections (never posts/followers/following)
   const communityCount  = user._count?.associations       ?? 0;
   const projectCount    = user._count?.projectMemberships ?? 0;
+  const eventCount      = user._count?.events             ?? 0;
   const connectionCount = user._count?.followers          ?? 0;
 
   const actions = !isOwn ? `
@@ -4756,6 +4793,7 @@ function renderProfileView(user, isOwn) {
       <div class="profile-stats">
         <div class="profile-stat"><div class="profile-stat-value">${communityCount}</div><div class="profile-stat-label">Communities</div></div>
         <div class="profile-stat"><div class="profile-stat-value">${projectCount}</div><div class="profile-stat-label">Projects</div></div>
+        <div class="profile-stat"><div class="profile-stat-value">${eventCount}</div><div class="profile-stat-label">Events</div></div>
         <div class="profile-stat" style="cursor:pointer" onclick="openConnectionsList('${user.id}')"><div class="profile-stat-value">${connectionCount}</div><div class="profile-stat-label" style="color:var(--saffron-600)">Connections</div></div>
       </div>
     </div>
@@ -4775,6 +4813,7 @@ function renderProfileView(user, isOwn) {
     ${(user.intentTags||[]).length ? `<div class="profile-traditions" style="margin-top:0">${(user.intentTags||[]).map(i=>`<span class="profile-tradition-tag" style="background:color-mix(in srgb,var(--saffron-500) 10%,transparent);border-color:var(--saffron-300);color:var(--saffron-700)">🔍 ${escHtml(i.replace(/_/g,' '))}</span>`).join('')}</div>` : ''}
     ${(user.interestTags||[]).length ? `<div class="profile-traditions" style="margin-top:0">${(user.interestTags||[]).map(i=>`<span class="profile-tradition-tag">${escHtml(i)}</span>`).join('')}</div>` : ''}
     <div id="profile-contributions-container"></div>
+    <div id="profile-events-container"></div>
     <div id="profile-projects-container"></div>
     <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Reflections</h2>
     <div id="profile-posts-container"></div>`;
@@ -4826,6 +4865,40 @@ async function loadProfileProjects(userId) {
               <div class="project-list-title">${escHtml(p.title)}</div>
               <div class="project-list-meta">${escHtml(catLabel)} · <span style="color:var(--saffron-600);font-weight:var(--weight-semibold)">${role}</span></div>
               ${p.purpose ? `<div class="project-list-purpose">${escHtml(p.purpose)}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+  } catch { container.innerHTML = ''; }
+}
+
+async function loadProfileEvents(userId) {
+  const container = document.getElementById('profile-events-container');
+  if (!container) return;
+  try {
+    const isOwn = userId === state.user?.id;
+    let events;
+    if (isOwn && state.token) {
+      events = await api('GET', '/events/mine');
+    } else {
+      const data = await api('GET', `/events?organiserId=${encodeURIComponent(userId)}&limit=10`);
+      events = data.data || data || [];
+    }
+    if (!events?.length) { container.innerHTML = ''; return; }
+    const TYPE_ICON = { RETREAT:'🏕', CEREMONY:'🪔', TALK:'🎤', SEMINAR:'📖', PROTEST_MARCH:'✊', COMMUNITY_GATHERING:'🙏', DHAMMA_DIKSHA:'☸️', CONVERSION_CEREMONY:'🌼', AMBEDKAR_JAYANTI:'🌹' };
+    container.innerHTML = `
+      <h2 class="section-title" style="padding:var(--space-4) var(--space-4) var(--space-2)">Events</h2>
+      <div style="padding:0 var(--space-4) var(--space-4)">
+        ${events.slice(0, 6).map(ev => {
+          const icon = TYPE_ICON[ev.eventType] || '📅';
+          const typeLabel = (ev.eventType || '').replace(/_/g, ' ');
+          const when = ev.startsAt ? new Date(ev.startsAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
+          const isOrganiser = ev.organiserId === userId;
+          return `<div class="project-list-item" style="padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)" onclick="openEventDetail('${ev.id}')">
+            <div class="project-list-icon" style="font-size:1.5rem">${icon}</div>
+            <div class="project-list-body">
+              <div class="project-list-title">${escHtml(ev.title)}</div>
+              <div class="project-list-meta">${escHtml(typeLabel)} · ${when}${isOrganiser ? ' · <span style="color:var(--saffron-600);font-weight:var(--weight-semibold)">Organiser</span>' : ' · Going'}</div>
             </div>
           </div>`;
         }).join('')}
@@ -6074,6 +6147,59 @@ async function submitCreateEvent(assocId) {
     showToast(t('toast.event_created'), 'success');
     if (navigator.vibrate) navigator.vibrate(15);
     await _afterCreateNav(assocId, 'overview');
+  } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
+}
+
+function openCreateStandaloneEvent() {
+  if (!state.user) { showToast('Sign in to create events', 'info'); return; }
+  _activeCreateType    = 'standalone-event';
+  _activeCreateAssocId = null;
+  communityState.subView = 'create-event';
+  const content = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'New Event';
+  joinBtn.style.display = '';
+  joinBtn.textContent   = 'Create';
+  joinBtn.className     = 'btn btn-primary btn-sm';
+  joinBtn.disabled      = false;
+  joinBtn.onclick       = () => submitCreateStandaloneEvent();
+  setCommunityBack('back');
+  openPanel('panel-community');
+  content.innerHTML = `<div style="padding:var(--space-4)">${renderCreateEventForm()}</div>`;
+}
+
+async function submitCreateStandaloneEvent() {
+  const title    = document.getElementById('ev-title')?.value.trim();
+  const evType   = document.getElementById('ev-type')?.value;
+  const startVal = document.getElementById('ev-start')?.value;
+  const endVal   = document.getElementById('ev-end')?.value;
+  const tz       = document.getElementById('ev-tz')?.value || 'UTC';
+  const onlineUrl= document.getElementById('ev-url')?.value.trim();
+  const location = document.getElementById('ev-location')?.value.trim();
+  const desc     = document.getElementById('ev-desc')?.value.trim();
+  const capacity = parseInt(document.getElementById('ev-capacity')?.value) || 0;
+
+  if (!title)    { showToast('Title is required', 'error'); return; }
+  if (!evType)   { showToast('Event type is required', 'error'); return; }
+  if (!startVal) { showToast('Start time is required', 'error'); return; }
+
+  _lockCreateBtn(t('common.creating'));
+  try {
+    const event = await api('POST', '/events', {
+      title, eventType: evType, timezone: tz, capacity,
+      startsAt: new Date(startVal).toISOString(),
+      ...(endVal    ? { endsAt: new Date(endVal).toISOString() } : {}),
+      ...(onlineUrl ? { onlineUrl }              : {}),
+      ...(location  ? { locationName: location } : {}),
+      ...(desc      ? { description: desc }      : {}),
+    });
+    showToast(t('toast.event_created'), 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    _activeCreateType    = null;
+    _activeCreateAssocId = null;
+    _discoverEventsLoaded = false;
+    closePanel('panel-community');
+    openEventDetail(event.id);
   } catch(err) { showToast(err.message, 'error'); _unlockCreateBtn(); }
 }
 

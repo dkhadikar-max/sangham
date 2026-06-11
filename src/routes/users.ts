@@ -108,7 +108,7 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
       isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
       languages: true, preferredLanguage: true, templeAffiliation: true, createdAt: true,
       tags: { select: { tag: true } },
-      _count: { select: { followers: true, following: true, posts: true, associations: true, projectMemberships: true } },
+      _count: { select: { followers: true, following: true, posts: true, associations: true, projectMemberships: true, events: true } },
     },
   });
   if (!user) throw new AppError('User not found', 404);
