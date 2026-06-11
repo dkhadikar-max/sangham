@@ -1040,11 +1040,21 @@ round:var(--error-600)}
     @media(min-width:768px){.reader-attribution{padding:0 48px 60px}}
 
     /* ── Fixed progress footer ──────────────────────────────────── */
-    .reader-footer{flex-shrink:0;background:var(--rt-bg);border-top:1px solid var(--rt-border);transition:transform .3s ease}
-    .reader-footer.hidden{transform:translateY(100%)}
-    .reader-progress-track{height:3px;background:var(--rt-border);position:relative;overflow:hidden}
-    .reader-progress-fill{height:100%;background:var(--rt-progress);border-radius:0 2px 2px 0;transition:width .6s ease}
-    .reader-footer-info{display:flex;justify-content:space-between;align-items:center;padding:6px 16px;font-size:11px;color:var(--rt-muted)}
+    .reader-footer{flex-shrink:0;background:var(--rt-bg);border-top:1px solid var(--rt-border);transition:transform .3s ease,opacity .3s ease}
+    .reader-footer.hidden{transform:translateY(100%);opacity:0;pointer-events:none}
+    /* Progress track: 3px desktop / 2px mobile, clickable for jump */
+    .reader-progress-track{height:3px;background:var(--rt-border);position:relative;cursor:pointer;overflow:visible}
+    @media(max-width:767px){.reader-progress-track{height:2px}}
+    .reader-progress-track:hover{height:5px;transition:height .15s}
+    .reader-progress-fill{height:100%;background:linear-gradient(90deg,var(--rt-progress),color-mix(in srgb,var(--rt-progress) 75%,#fff));border-radius:0 2px 2px 0;transition:width .5s ease;position:relative}
+    /* Tooltip on progress track hover */
+    .reader-progress-tooltip{position:absolute;bottom:8px;transform:translateX(-50%);background:rgba(0,0,0,.8);color:#fff;padding:3px 8px;border-radius:5px;font-size:11px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10}
+    .reader-progress-track:hover .reader-progress-tooltip{opacity:1}
+    .reader-footer-info{display:flex;justify-content:space-between;align-items:center;padding:5px 16px;font-size:11px;color:var(--rt-muted)}
+    /* Focus mode: ultra-minimal 2px progress strip at very bottom */
+    .reader-focus-progress{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--rt-border);z-index:35;opacity:0;pointer-events:none;transition:opacity .3s}
+    .reader-panel.focus-mode .reader-focus-progress{opacity:1}
+    .reader-focus-progress-fill{height:100%;background:var(--rt-progress);transition:width .5s ease}
 
     /* ── Mobile controls bar ────────────────────────────────────── */
     .reader-controls-bar{display:flex;align-items:center;justify-content:space-around;padding:6px 8px;background:var(--rt-bg);border-top:1px solid var(--rt-border);flex-shrink:0}
@@ -1071,10 +1081,18 @@ round:var(--error-600)}
     .reader-toc-close:hover{background:var(--rt-surface)}
     .reader-toc-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
     .reader-toc-list{flex:1;overflow-y:auto;padding:8px 0}
-    .reader-toc-item{display:block;width:100%;text-align:left;padding:10px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--rt-muted);line-height:1.4;font-family:inherit;transition:all .15s;border-left:3px solid transparent}
+    .reader-toc-item{display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;padding:9px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--rt-muted);line-height:1.4;font-family:inherit;transition:all .15s;border-left:3px solid transparent}
     .reader-toc-item:hover{background:var(--rt-surface);color:var(--rt-text)}
-    .reader-toc-item.active{color:var(--rt-accent);border-left-color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 6%,transparent)}
-    .reader-toc-item-num{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--rt-accent);margin-bottom:2px}
+    .reader-toc-item.active{color:var(--rt-accent);border-left-color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 6%,transparent);font-weight:600}
+    .reader-toc-item.completed{color:color-mix(in srgb,var(--rt-muted) 70%,var(--rt-bg))}
+    .reader-toc-item.completed .toc-check{opacity:1}
+    .reader-toc-item-num{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--rt-accent);margin-bottom:2px;flex-shrink:0}
+    .toc-check{width:14px;height:14px;flex-shrink:0;margin-top:1px;opacity:0;transition:opacity .2s;color:var(--rt-accent)}
+    .toc-check svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:2.5}
+    .toc-text{flex:1;min-width:0}
+    /* Nesting indentation: 12px per level past 1 */
+    .reader-toc-item[data-level="2"]{padding-left:28px;font-size:12px}
+    .reader-toc-item[data-level="3"]{padding-left:40px;font-size:11px}
 
     /* ── Settings Drawer ────────────────────────────────────────── */
     .reader-settings-overlay{position:absolute;inset:0;z-index:50;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s}
@@ -1886,14 +1904,23 @@ round:var(--error-600)}
 
       <!-- Fixed progress + info footer -->
       <div class="reader-footer" id="reader-footer">
-        <div class="reader-progress-track">
+        <div class="reader-progress-track" id="reader-progress-track" onclick="readerProgressJump(event)" title="Click to jump">
           <div class="reader-progress-fill" id="reader-progress-fill" style="width:0%"></div>
+          <div class="reader-progress-tooltip" id="reader-progress-tooltip"></div>
         </div>
         <div class="reader-footer-info">
           <span id="reader-pct-label">Not started</span>
           <span id="reader-time-label"></span>
         </div>
       </div>
+
+      <!-- Focus mode: ultra-minimal progress strip -->
+      <div class="reader-focus-progress" id="reader-focus-progress">
+        <div class="reader-focus-progress-fill" id="reader-focus-progress-fill" style="width:0%"></div>
+      </div>
+
+      <!-- Tap-center zone (mobile): invisible overlay for toggling chrome -->
+      <div id="reader-tap-center" style="position:absolute;top:15%;left:20%;right:20%;bottom:15%;z-index:20;cursor:pointer" onclick="_readerTapCenter(event)" aria-hidden="true"></div>
 
       <!-- Mobile controls bar -->
       <div class="reader-controls-bar" id="reader-controls-bar">
@@ -4652,17 +4679,26 @@ function _sanitizeSegContent(raw) {
     .trim();
 }
 
-// ── Build TOC from chapterRef values ─────────────────────────
+// ── Build TOC from chapterRef values with level detection ─────
 function _buildTOC(segs) {
   const toc = [];
   const seen = new Set();
   segs.forEach((s,i) => {
     if (s.chapterRef && !seen.has(s.chapterRef)) {
       seen.add(s.chapterRef);
-      toc.push({label: s.chapterRef, segIndex: i, segKey: s.segmentKey});
+      toc.push({label: s.chapterRef, segIndex: i, segKey: s.segmentKey, level: _detectTOCLevel(s.chapterRef)});
     }
   });
   return toc;
+}
+
+function _detectTOCLevel(ref) {
+  // "1.2.3 Sub-subsection" → level 3; "1.2 Subsection" → level 2; else → level 1
+  const m = ref.match(/^(\d+)(\.(\d+))?(\.(\d+))?/);
+  if (!m) return 1;
+  if (m[5]) return 3;
+  if (m[3]) return 2;
+  return 1;
 }
 
 // ── Render segments into HTML with highlights ─────────────────
@@ -4735,13 +4771,29 @@ function _updateProgressDisplay(pct) {
   const fill = document.getElementById('reader-progress-fill');
   const label = document.getElementById('reader-pct-label');
   const timeEl = document.getElementById('reader-time-label');
+  const focusFill = document.getElementById('reader-focus-progress-fill');
   if (fill) fill.style.width = pct+'%';
+  if (focusFill) focusFill.style.width = pct+'%';
   if (label) label.textContent = pct > 0 ? pct+'% read' : 'Not started';
   // Time remaining
   if (timeEl && _lib.segTotal > 0) {
     const remainingSegs = Math.max(0, _lib.segTotal - Math.round(_lib.segTotal * pct/100));
     const mins = Math.ceil(remainingSegs * 30 / 200);
-    timeEl.textContent = mins > 0 ? `~${mins<60?mins+'min':Math.floor(mins/60)+'h'} left` : 'Complete';
+    timeEl.textContent = mins > 0 ? `~${mins<60?mins+'min':Math.floor(mins/60)+'h '+mins%60+'m'} left` : '✓ Complete';
+  }
+  // Progress tooltip default text
+  const tooltip = document.getElementById('reader-progress-tooltip');
+  if (tooltip) {
+    tooltip.style.left = pct+'%';
+    // Find section name at current position
+    const heads = document.querySelectorAll('.reader-chapter-head');
+    let secLabel = '';
+    const scroll = document.getElementById('reader-scroll');
+    if (scroll && heads.length) {
+      const scrollTop = scroll.scrollTop + 80;
+      for (const h of heads) { if (h.offsetTop <= scrollTop) secLabel = h.textContent; }
+    }
+    tooltip.textContent = (secLabel ? secLabel.slice(0,28)+'… · ' : '') + Math.round(pct)+'%';
   }
 }
 
@@ -4799,9 +4851,12 @@ function _renderReaderTOC() {
     return;
   }
   list.innerHTML = _lib.toc.map((tc,i)=>`
-    <button class="reader-toc-item" onclick="jumpToTOCSection(${i})" data-toc-idx="${i}">
-      <div class="reader-toc-item-num">§${i+1}</div>
-      ${escHtml(tc.label)}
+    <button class="reader-toc-item" onclick="jumpToTOCSection(${i})" data-toc-idx="${i}" data-level="${tc.level||1}">
+      <span class="toc-check" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span class="toc-text">
+        <span class="reader-toc-item-num">§${i+1}</span>
+        ${escHtml(tc.label)}
+      </span>
     </button>`).join('');
 }
 
@@ -4818,15 +4873,24 @@ function _renderMiniTOC() {
 function _updateActiveTOCItem() {
   if (!_lib.toc.length) return;
   const heads = document.querySelectorAll('.reader-chapter-head');
+  if (!heads.length) return;
   let activeIdx = 0;
   const scroll = document.getElementById('reader-scroll');
   if (!scroll) return;
   const scrollTop = scroll.scrollTop + 80;
-  heads.forEach((h,i)=>{
-    if (h.offsetTop <= scrollTop) activeIdx = i;
+  heads.forEach((h,i) => { if (h.offsetTop <= scrollTop) activeIdx = i; });
+
+  document.querySelectorAll('[data-toc-idx]').forEach(b => {
+    const idx = +b.dataset.tocIdx;
+    b.classList.toggle('active', idx === activeIdx);
+    // Completed = user has scrolled past this section heading
+    const head = heads[idx];
+    if (head) b.classList.toggle('completed', head.offsetTop < scrollTop - 40 && idx !== activeIdx);
   });
-  document.querySelectorAll('[data-toc-idx]').forEach(b=>b.classList.toggle('active',+b.dataset.tocIdx===activeIdx));
-  document.querySelectorAll('[data-mini-toc-idx]').forEach(b=>b.classList.toggle('active',+b.dataset.miniTocIdx===activeIdx));
+  document.querySelectorAll('[data-mini-toc-idx]').forEach(b => {
+    const idx = +b.dataset.miniTocIdx;
+    b.classList.toggle('active', idx === activeIdx);
+  });
   // Update header section label
   const secEl = document.getElementById('reader-header-section');
   if (secEl && _lib.toc[activeIdx]) secEl.textContent = _lib.toc[activeIdx].label;
@@ -5154,6 +5218,85 @@ function shareSelection() {
   const shareText = `"${text}"\n\n— ${title}`;
   if (navigator.share) navigator.share({text:shareText}).catch(()=>{});
   else navigator.clipboard?.writeText(shareText).then(()=>showToast('Copied to clipboard','success')).catch(()=>{});
+}
+
+// ── Progress bar: click to jump + mousemove tooltip ──────────
+function readerProgressJump(e) {
+  const track = document.getElementById('reader-progress-track');
+  const scroll = document.getElementById('reader-scroll');
+  if (!track || !scroll) return;
+  const rect = track.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  scroll.scrollTo({ top: ratio * (scroll.scrollHeight - scroll.clientHeight), behavior: 'smooth' });
+}
+
+// Mousemove on progress track: reposition tooltip to cursor
+(function() {
+  document.addEventListener('mousemove', function(e) {
+    const track = document.getElementById('reader-progress-track');
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    if (e.clientY < rect.top - 20 || e.clientY > rect.bottom + 20) return;
+    if (e.clientX < rect.left || e.clientX > rect.right) return;
+    const tooltip = document.getElementById('reader-progress-tooltip');
+    if (!tooltip) return;
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const pct = Math.round(ratio * 100);
+    // Find section at that scroll position
+    const scroll = document.getElementById('reader-scroll');
+    const heads = document.querySelectorAll('.reader-chapter-head');
+    let secLabel = '';
+    if (scroll && heads.length) {
+      const targetScroll = ratio * (scroll.scrollHeight - scroll.clientHeight);
+      for (const h of heads) { if (h.offsetTop <= targetScroll + 80) secLabel = h.textContent; }
+    }
+    tooltip.textContent = (secLabel ? secLabel.slice(0,24)+'… · ' : '') + pct+'%';
+    // Clamp tooltip position so it doesn't overflow track edges
+    const trackWidth = rect.width;
+    const tooltipHalf = 40; // approx half-width
+    const left = Math.max(tooltipHalf, Math.min(trackWidth - tooltipHalf, e.clientX - rect.left));
+    tooltip.style.left = left + 'px';
+  });
+})();
+
+// ── Tap center to toggle reader chrome (mobile) ───────────────
+let _readerChromeVisible = true;
+function _readerTapCenter(e) {
+  // Only act if the tap wasn't on an interactive element
+  if (e.target.closest('button,a,input,textarea,select,.reader-hl,.reader-ann-toolbar')) return;
+  // Only on small screens in normal mode (not focus mode)
+  if (window.innerWidth >= 1024) return;
+  const panel = document.getElementById('panel-text');
+  if (panel?.classList.contains('focus-mode')) {
+    toggleFocusMode(); // tap to exit focus mode
+    return;
+  }
+  _readerChromeVisible = !_readerChromeVisible;
+  const header = document.getElementById('reader-header');
+  const footer = document.getElementById('reader-footer');
+  const controls = document.getElementById('reader-controls-bar');
+  [header, footer, controls].forEach(el => {
+    if (el) el.classList.toggle('hidden', !_readerChromeVisible);
+  });
+}
+
+// ── Font size: update disabled state on min/max ───────────────
+function _updateFontButtons() {
+  const s = _rSettings();
+  const fs = s.fontSize || 17;
+  document.querySelectorAll('[onclick*="libFontStep(-"]').forEach(btn => {
+    btn.disabled = fs <= 12;
+    btn.style.opacity = fs <= 12 ? '0.35' : '';
+  });
+  document.querySelectorAll('[onclick*="libFontStep("]').forEach(btn => {
+    if (btn.getAttribute('onclick')?.includes('libFontStep(2)') || btn.getAttribute('onclick')?.includes('libFontStep(1)')) {
+      btn.disabled = fs >= 26;
+      btn.style.opacity = fs >= 26 ? '0.35' : '';
+    }
+  });
+  // Settings panel display
+  const fd = document.getElementById('rsetting-font-display');
+  if (fd) fd.textContent = fs + 'px';
 }
 
 function debounceLearn() {
