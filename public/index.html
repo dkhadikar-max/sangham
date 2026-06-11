@@ -193,13 +193,38 @@ round:var(--error-600)}
     .section-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);padding:var(--space-3) var(--space-4) var(--space-1)}
     .section-subtitle{font-size:var(--text-sm);color:var(--text-tertiary);padding:0 var(--space-4) var(--space-3)}
 
-    /* Presence Bar */
+    /* Presence Bar (kept for layout compat but hidden) */
     .presence-bar{display:flex;gap:var(--space-3);padding:var(--space-4);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
     .presence-bar::-webkit-scrollbar{display:none}
     .presence-item{display:flex;flex-direction:column;align-items:center;gap:var(--space-1);cursor:pointer;transition:transform var(--duration-fast) var(--ease-out)}
     .presence-item:hover{transform:translateY(-2px)}
     .presence-item:active{transform:scale(0.95)}
     .presence-name{font-size:var(--text-2xs);color:var(--text-tertiary);max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    /* Home suggestion sections */
+    .home-section{padding:var(--space-4) 0 0}
+    .home-section-hd{display:flex;align-items:center;justify-content:space-between;padding:0 var(--space-4) var(--space-3)}
+    .home-section-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .home-section-link{font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-medium);cursor:pointer;background:none;border:none;padding:0}
+    .home-section-link:hover{text-decoration:underline}
+    .suggest-scroll{display:flex;gap:var(--space-3);padding:0 var(--space-4) var(--space-4);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .suggest-scroll::-webkit-scrollbar{display:none}
+    /* Person suggestion chip */
+    .suggest-person{flex-shrink:0;width:120px;display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-2);background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .suggest-person:hover{border-color:var(--saffron-400);box-shadow:var(--shadow-2);transform:translateY(-1px)}
+    .suggest-person-name{font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--text-primary);text-align:center;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .suggest-person-meta{font-size:10px;color:var(--text-tertiary);text-align:center;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:-4px}
+    .suggest-person-btn{width:100%;padding:4px 0;font-size:10px;font-weight:var(--weight-semibold);background:var(--saffron-500);color:white;border:none;border-radius:var(--radius-md);cursor:pointer;transition:background var(--duration-fast)}
+    .suggest-person-btn:hover{background:var(--saffron-600)}
+    .suggest-person-btn.connected{background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border-default)}
+    /* Community suggestion chip */
+    .suggest-comm{flex-shrink:0;width:160px;display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3);background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .suggest-comm:hover{border-color:var(--saffron-400);box-shadow:var(--shadow-2);transform:translateY(-1px)}
+    .suggest-comm-icon{font-size:1.5rem;line-height:1}
+    .suggest-comm-name{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .suggest-comm-meta{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .suggest-comm-btn{padding:4px 8px;font-size:10px;font-weight:var(--weight-semibold);background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border-default);border-radius:var(--radius-md);cursor:pointer;align-self:flex-start;transition:all var(--duration-fast)}
+    .suggest-comm-btn:hover{background:var(--saffron-500);color:white;border-color:var(--saffron-500)}
 
     /* Daily Verse Card */
     .daily-verse{margin:var(--space-4);background:linear-gradient(135deg,var(--saffron-700) 0%,var(--saffron-500) 50%,var(--saffron-600) 100%);background-size:200% 200%;animation:gradientShift 20s ease infinite;border-radius:var(--radius-xl);padding:var(--space-6);color:white;position:relative;overflow:hidden;box-shadow:var(--shadow-4)}
@@ -1174,12 +1199,30 @@ round:var(--error-600)}
 <main class="app-main">
 <!-- HOME TAB -->
 <div id="tab-home" class="tab-panel active">
-        <div class="presence-bar hide-scrollbar" id="presenceBar" style="display:none"></div>
+        <!-- #2 People You May Connect With -->
+        <div class="home-section" id="home-connect-section" style="display:none">
+          <div class="home-section-hd">
+            <span class="home-section-title">People You May Connect With</span>
+            <button class="home-section-link" onclick="switchTab('discover')">See all</button>
+          </div>
+          <div class="suggest-scroll" id="home-connect-suggestions"></div>
+        </div>
+        <!-- #3 Communities Near You -->
+        <div class="home-section" id="home-community-section" style="display:none">
+          <div class="home-section-hd">
+            <span class="home-section-title">Communities Near You</span>
+            <button class="home-section-link" onclick="switchTab('communities')">See all</button>
+          </div>
+          <div class="suggest-scroll" id="home-community-suggestions"></div>
+        </div>
+        <!-- #5 Upcoming Events -->
+        <div id="home-upcoming-events"></div>
+        <!-- #7 Daily Wisdom -->
         <div id="home-daily-verse"></div>
         <div class="community-pulse" id="communityPulse" style="display:none"></div>
-        <div id="home-upcoming-events"></div>
-        <div id="home-feed-header" style="display:none;padding:0 var(--space-4) var(--space-2)">
-          <h2 class="section-title" data-i18n="home.your_feed" style="margin:0">Your Feed</h2>
+        <!-- #6 Community Updates -->
+        <div id="home-feed-header" style="display:none;padding:var(--space-4) var(--space-4) var(--space-2)">
+          <h2 class="section-title" style="margin:0">Community Updates</h2>
         </div>
         <div id="home-feed"></div>
       </div>
@@ -2505,6 +2548,10 @@ async function loadHome() {
   _pulseState = { reflections: -1, events: -1 };
   const pulse = document.getElementById('communityPulse');
   if (pulse) pulse.style.display = 'none';
+  if (state.token) {
+    loadHomePeopleSuggestions();
+    loadHomeCommunitySuggestions();
+  }
   loadDailyVerse();
   loadHomeUpcomingEvents();
   const container = document.getElementById('home-feed');
@@ -2530,6 +2577,95 @@ async function loadHome() {
     if (hdr2) hdr2.style.display = 'none';
     container.innerHTML = renderEmptyState('feed-error', err.message);
   }
+}
+
+const _trad_sym = { THERAVADA:'🌿', MAHAYANA:'☸', VAJRAYANA:'🔔', NAVAYANA:'💙', MULTIPLE:'🪷', OTHER:'✨' };
+
+async function loadHomePeopleSuggestions() {
+  const section = document.getElementById('home-connect-section');
+  const container = document.getElementById('home-connect-suggestions');
+  if (!section || !container) return;
+  try {
+    const data = await api('GET', '/discover/recommended');
+    const people = (data.data || data || []).slice(0, 8);
+    if (!people.length) return;
+    section.style.display = '';
+    container.innerHTML = people.map(p => {
+      const initials = (p.displayName || '?').charAt(0).toUpperCase();
+      const avatar   = p.profilePhoto
+        ? `<img src="${escHtml(p.profilePhoto)}" alt="${escHtml(p.displayName||'')}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
+        : `<div class="avatar avatar-md" style="width:44px;height:44px">${initials}</div>`;
+      const trad = (p.traditions||[]).slice(0,1).join('') || '';
+      const loc  = p.location?.city || p.city || '';
+      const connected = state.followedUsers.has(p.id);
+      return `<div class="suggest-person" onclick="openProfile('${p.id}')">
+        ${avatar}
+        <div class="suggest-person-name">${escHtml(p.displayName||'Anonymous')}</div>
+        ${trad||loc ? `<div class="suggest-person-meta">${escHtml(trad||loc)}</div>` : ''}
+        ${p.id !== state.user?.id ? `<button class="suggest-person-btn ${connected?'connected':''}" onclick="event.stopPropagation();_homeSuggestConnect('${p.id}',this)">${connected?'Connected':'Connect'}</button>` : ''}
+      </div>`;
+    }).join('');
+  } catch { /* silently skip — home still loads without suggestions */ }
+}
+
+async function _homeSuggestConnect(userId, btn) {
+  try {
+    const isConnected = state.followedUsers.has(userId);
+    if (isConnected) {
+      await api('DELETE', `/users/${userId}/follow`);
+      state.followedUsers.delete(userId);
+      btn.textContent = 'Connect';
+      btn.classList.remove('connected');
+    } else {
+      await api('POST', `/users/${userId}/follow`);
+      state.followedUsers.add(userId);
+      btn.textContent = 'Connected';
+      btn.classList.add('connected');
+    }
+  } catch(err) { showToast(err.message, 'error'); }
+}
+
+async function loadHomeCommunitySuggestions() {
+  const section = document.getElementById('home-community-section');
+  const container = document.getElementById('home-community-suggestions');
+  if (!section || !container) return;
+  try {
+    // Suggest communities in the user's country first, then global
+    const country = state.user?.country || state.user?.location?.country || '';
+    const qs = country ? `country=${encodeURIComponent(country)}&limit=8` : 'limit=8';
+    let data = await api('GET', `/associations?${qs}`);
+    let communities = (data.data || data || []);
+    // If no country results, fall back to all
+    if (!communities.length && country) {
+      data = await api('GET', '/associations?limit=8');
+      communities = (data.data || data || []);
+    }
+    // Filter out communities the user already joined
+    const myIds = new Set((state.user?.associations||[]).map(a => a.id));
+    const filtered = communities.filter(c => !myIds.has(c.id)).slice(0, 8);
+    if (!filtered.length) return;
+    section.style.display = '';
+    container.innerHTML = filtered.map(c => {
+      const sym = _trad_sym[c.tradition] || '🏛';
+      const members = c._count?.members ?? '';
+      const meta = [c.city||c.country, members ? members+' members' : ''].filter(Boolean).join(' · ');
+      return `<div class="suggest-comm" onclick="openCommunity('${c.id}')">
+        <div class="suggest-comm-icon">${sym}</div>
+        <div class="suggest-comm-name">${escHtml(c.name||'')}</div>
+        ${meta ? `<div class="suggest-comm-meta">${escHtml(meta)}</div>` : ''}
+        <button class="suggest-comm-btn" onclick="event.stopPropagation();joinCommunityFromHome('${c.id}',this)">Join</button>
+      </div>`;
+    }).join('');
+  } catch { /* silently skip */ }
+}
+
+async function joinCommunityFromHome(assocId, btn) {
+  try {
+    await api('POST', `/associations/${assocId}/join`);
+    btn.textContent = 'Joined';
+    btn.disabled = true;
+    showToast('Community joined!', 'success');
+  } catch(err) { showToast(err.message, 'error'); }
 }
 
 async function loadDailyVerse() {
