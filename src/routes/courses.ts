@@ -137,11 +137,17 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
     select: COURSE_SELECT,
   });
 
-  await prisma.contributionScore.upsert({
-    where: { userId: req.user!.id },
-    create: { userId: req.user!.id, coursesCreated: 1, totalScore: 2 },
-    update: { coursesCreated: { increment: 1 }, totalScore: { increment: 2 } },
-  });
+  await Promise.all([
+    prisma.contributionScore.upsert({
+      where: { userId: req.user!.id },
+      create: { userId: req.user!.id, coursesCreated: 1, totalScore: 2 },
+      update: { coursesCreated: { increment: 1 }, totalScore: { increment: 2 } },
+    }),
+    prisma.user.update({
+      where: { id: req.user!.id },
+      data: { isContributor: true, contributorSince: req.user!.contributorSince ?? new Date() },
+    }).catch(() => {}),
+  ]);
 
   res.status(201).json(course);
 });

@@ -14,10 +14,11 @@ const CIRCLE_SELECT = {
 
 // GET /study-circles?associationId=&status=
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { associationId, status, limit = '20', page = '1' } = req.query;
+  const { associationId, facilitatorId, status, limit = '20', page = '1' } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
   const where: Record<string, unknown> = {};
-  if (associationId) where.associationId = associationId as string;
+  if (associationId)  where.associationId  = associationId as string;
+  if (facilitatorId)  where.facilitatorId  = facilitatorId as string;
   if (status && Object.values(StudyCircleStatus).includes(status as StudyCircleStatus)) where.status = status;
 
   const [items, total] = await Promise.all([

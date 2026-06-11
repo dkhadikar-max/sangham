@@ -874,6 +874,28 @@ round:var(--error-600)}
 
     /* Learn tab */
     #learnTabs{margin-bottom:0;border-top:1px solid var(--border-subtle)}
+    .learn-create-row{display:flex;justify-content:flex-end;margin-bottom:var(--space-3)}
+    .learn-create-btn{border-radius:var(--radius-full);font-size:var(--text-xs);letter-spacing:var(--tracking-wide)}
+    /* Contributor dashboard */
+    .contrib-dash-section{margin-bottom:var(--space-6)}
+    .contrib-dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+    .contrib-dash-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-widest)}
+    .contrib-dash-add{font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-semibold);background:none;border:none;cursor:pointer;font-family:var(--font-body);padding:0}
+    .contrib-dash-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-4);margin-bottom:var(--space-2);display:flex;align-items:flex-start;gap:var(--space-3);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .contrib-dash-card:hover{background:var(--surface-sunken);transform:translateY(-1px)}
+    .contrib-dash-card-icon{font-size:1.4rem;flex-shrink:0;line-height:1;margin-top:2px}
+    .contrib-dash-card-body{flex:1;min-width:0}
+    .contrib-dash-card-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .contrib-dash-card-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px}
+    .contrib-dash-badge{font-size:9px;font-weight:var(--weight-bold);letter-spacing:.04em;padding:2px 7px;border-radius:99px;text-transform:uppercase;flex-shrink:0}
+    .contrib-badge-draft{background:var(--surface-sunken);color:var(--text-tertiary)}
+    .contrib-badge-published{background:color-mix(in srgb,var(--saffron-500) 15%,transparent);color:var(--saffron-700)}
+    .contrib-score-card{background:linear-gradient(135deg,var(--saffron-500),var(--saffron-600));border-radius:var(--radius-xl);padding:var(--space-4);color:white;margin-bottom:var(--space-5);display:flex;align-items:center;gap:var(--space-4)}
+    .contrib-score-num{font-size:2.5rem;font-weight:var(--weight-bold);line-height:1}
+    .contrib-score-label{font-size:var(--text-xs);opacity:.85}
+    .contrib-score-sub{font-size:var(--text-sm);opacity:.9;margin-top:2px}
+    .contrib-empty{padding:var(--space-5) 0;text-align:center;color:var(--text-tertiary);font-size:var(--text-sm)}
+    .contrib-empty-cta{margin-top:var(--space-3);font-size:var(--text-xs);color:var(--saffron-600);background:none;border:none;cursor:pointer;font-family:var(--font-body);font-weight:var(--weight-semibold);padding:0}
     [data-theme="dark"] .landing-nav{background:rgba(12,10,9,0.8)}
   </style>
 <!-- Toast Container -->
@@ -1284,12 +1306,21 @@ round:var(--error-600)}
           <button class="comm-tab-btn" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
         </div>
         <div id="learn-tab-courses" class="comm-tab-panel active" style="padding:var(--space-4)">
+          <div id="learn-create-courses" class="learn-create-row" style="display:none">
+            <button class="btn btn-primary btn-sm learn-create-btn" onclick="openCreateStandalone('course')">+ Create Course</button>
+          </div>
           <div id="learnCourses"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
         </div>
         <div id="learn-tab-resources" class="comm-tab-panel" style="padding:var(--space-4)">
+          <div id="learn-create-resources" class="learn-create-row" style="display:none">
+            <button class="btn btn-primary btn-sm learn-create-btn" onclick="openCreateStandalone('resource')">+ Upload Resource</button>
+          </div>
           <div id="learnResources"></div>
         </div>
         <div id="learn-tab-circles" class="comm-tab-panel" style="padding:var(--space-4)">
+          <div id="learn-create-circles" class="learn-create-row" style="display:none">
+            <button class="btn btn-ghost btn-sm learn-create-btn" onclick="openCreateStandalone('circle')">+ Start a Circle</button>
+          </div>
           <div id="learnCircles"></div>
         </div>
         <div id="learn-tab-sessions" class="comm-tab-panel" style="padding:var(--space-4)">
@@ -1697,6 +1728,34 @@ round:var(--error-600)}
       </div>
     </div>
 
+    <!-- PANEL: STANDALONE CREATE (Course / Resource) -->
+    <div id="panel-create-content" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-create-content')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title" id="create-content-title">Create</div>
+        <button class="btn btn-primary btn-sm" id="create-content-submit-btn" onclick="submitCreateStandalone()">Create</button>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <div id="create-content-form"></div>
+      </div>
+    </div>
+
+    <!-- PANEL: CONTRIBUTOR DASHBOARD -->
+    <div id="panel-contributor" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-contributor')" aria-label="Go back">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Contributor Dashboard</div>
+        <button class="btn btn-ghost btn-sm" onclick="openCreateStandalone('resource')">+ Upload</button>
+      </div>
+      <div class="panel-content" id="contributor-panel-content">
+        <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+      </div>
+    </div>
+
     <!-- Profile Quick Panel (bottom sheet mobile / right drawer desktop) -->
     <div class="pq-overlay" id="pqOverlay" onclick="closeProfileQuickPanel()"></div>
     <div class="pq-panel" id="pqPanel" role="dialog" aria-modal="true" aria-label="Profile menu">
@@ -1725,15 +1784,15 @@ round:var(--error-600)}
           <div class="pq-icon">🏘️</div><span class="pq-label" data-i18n="profile_menu.my_communities">My Communities</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn')">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openContributorDashboard()">
           <div class="pq-icon">📚</div><span class="pq-label" data-i18n="profile_menu.my_courses">My Courses</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openContributorDashboard()">
           <div class="pq-icon">⭐</div><span class="pq-label" data-i18n="profile_menu.my_contributions">My Contributions</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openContributorDashboard()">
           <div class="pq-icon">🔖</div><span class="pq-label" data-i18n="profile_menu.saved_resources">Saved Resources</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -1774,7 +1833,7 @@ const WS_URL   = 'https://sangham.online';
 const LOCALE_EN = {
   nav:{ home:'Home', discover:'Discover', communities:'Communities', learn:'Educate', chat:'Messages' },
   auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with', join:'Join Sangham', begin_journey:'Begin your journey of awakening.', identifier_ph:'Enter email or phone number' },
-  onboarding:{ choose_language:'Choose Your Language', choose_language_sub:"Select the language you'd like to use Sangham in.", continue:'Continue', your_path:'Your Path', your_path_sub:'Which Buddhist tradition are you part of? Select all that apply.', tradition_label:'Tradition', i_am_a:'I am a…', where_are_you:'Where Are You?', where_sub:'Helps nearby practitioners find you. You can change visibility in Settings.', city:'City', city_placeholder:'e.g. Nagpur', country:'Country', country_placeholder:'Select country', languages_label:'Languages you speak', what_seeking:'What Are You Seeking?', what_seeking_sub:"We'll post these as open intentions so the right people can find you.", skip:'Skip', next:'Next →', back:'← Back', finish:'Finish', setting_up:'Setting up…', step_of:'Step {n} of 3' },
+  onboarding:{ choose_language:'Choose Your Language', choose_language_sub:"Select the language you'd like to use Sangham in.", continue:'Continue', skip:'Skip', next:'Next →', back:'← Back', finish:'Finish', setting_up:'Setting up…', step_of:'Step {n} of 5', your_path:'Your Background', your_path_sub:'All traditions and backgrounds are welcome. Select what applies to you.', tradition_label:'Tradition (optional)', trad_theravada:'Theravada', trad_mahayana:'Mahayana / Zen', trad_vajrayana:'Vajrayana / Tibetan', trad_navayana:'Navayana / Ambedkarite', trad_multiple:'Multiple Traditions', trad_other:'Other / Secular', profession_label:'Your Profession', profession_search:'Select your profession…', profession_other_ph:'e.g. Yoga Instructor, NGO Director, CA', prof_student:'Student', prof_teacher:'Teacher', prof_researcher:'Researcher', prof_doctor:'Doctor', prof_engineer:'Engineer', prof_lawyer:'Lawyer', prof_business_owner:'Business Owner', prof_entrepreneur:'Entrepreneur', prof_artist:'Artist', prof_writer:'Writer', prof_activist:'Social Activist', prof_civil_servant:'Government Employee', prof_employee:'Private Sector Employee', prof_monk_nun:'Monk / Nun', prof_volunteer:'Volunteer', prof_other:'Other (write your own)', interests_label:'Your Interests', interests_sub:'Select topics that matter to you.', int_education:'Education', int_study:'Study', int_meditation:'Meditation', int_service:'Service', int_tech:'Technology', int_ai:'AI', int_entrepreneurship:'Entrepreneurship', int_social_change:'Social Change', int_leadership:'Leadership', int_language_learning:'Language Learning', int_translation:'Translation', int_writing:'Writing', int_art:'Art', int_research:'Research', int_volunteering:'Volunteering', where_are_you:'Where Are You?', where_sub:'Helps nearby people find you.', city:'City', city_placeholder:'e.g. Nagpur', country:'Country', country_placeholder:'Select country', spoken_lang_label:'Languages You Speak', purpose_title:'Why Are You Here?', purpose_sub:"We'll connect you with people, communities, and opportunities that match.", purpose_connections:'Connections', purpose_learning:'Learning', purpose_career:'Career & Growth', purpose_entrepreneurship:'Entrepreneurship & Technology', purpose_service:'Service & Impact', purpose_mindfulness:'Mindfulness & Practice', pur_meet_people:'Meet New People', pur_local_community:'Local Community', pur_discussion:'Discussion Groups', pur_networking:'Networking', pur_education:'Education', pur_courses:'Courses', pur_study_groups:'Study Groups', pur_research:'Research', pur_language_learning:'Language Learning', pur_skill_dev:'Skill Development', pur_career_guidance:'Career Guidance', pur_mentorship:'Mentorship', pur_leadership:'Leadership', pur_entrepreneurship:'Entrepreneurship', pur_startups:'Startups', pur_tech:'Technology', pur_ai:'AI', pur_projects:'Collaborative Projects', pur_volunteering:'Volunteering', pur_social_service:'Social Service', pur_ngo:'NGO Work', pur_community_dev:'Community Development', pur_meditation:'Meditation', pur_mindfulness:'Mindfulness', pur_buddhist_study:'Buddhist Study', pur_teacher_guidance:'Teacher Guidance' },
   discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All', search_default:'Search across people, communities and events', search_no_results:'No results for "{q}"', search_error:'Unable to search. Try again.', no_events_error:'Unable to load events.', no_intents:'No intents yet', no_intents_text:'Be the first to post an intent', intents_error:'Unable to load intents.', no_teachers:'No verified teachers yet', teachers_error:'Unable to load teachers.' },
   communities:{ title:'Sanghas', new_sangha:'+ New Sangha', your_communities:'Your Communities', search:'Search communities…', members:'members', join:'Join', joined:'Joined', leave:'Leave' },
   learn:{ courses:'Courses', resources:'Resources', circles:'Circles', sessions:'Sessions', library:'Library', search:'Search courses, texts, resources…', host_session:'+ Host a Session', no_texts:'No texts found', no_texts_text:'Try a different search or browse collections.', browse_collections:'Browse Collections', no_courses:'No courses yet', no_courses_text:'Courses created by communities will appear here.', no_resources:'No resources yet', no_resources_text:'Community-shared videos, articles, and guides appear here.', no_circles:'No study circles yet', no_circles_text:'Join a community to find or start a study circle.', no_sessions:'No upcoming sessions', no_sessions_text:'Live teaching sessions appear here when scheduled.', sessions_error:'Unable to load sessions.' },
@@ -1785,10 +1844,11 @@ const LOCALE_EN = {
   language:{ en:'English', hi:'हिन्दी', mr:'मराठी' },
   home:{ your_feed:'Your Feed', empty_title:'The hall is quiet', empty_text:'Be the first to share your practice.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Reflection', first_reflection:'Be the first to share a reflection.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.', daily_wisdom:'Daily Wisdom', read_more:'Read More', show_less:'Show Less', save_verse:'Save', verse_dismissed:'Dismissed for today.', verse_restore:'Restore' },
   feed:{ like:'Like', reply:'Reply', message:'Message', save:'Save', reply_one:'reply', reply_many:'replies', join_discussion:'Join the discussion', write_reply:'Write a reply…' },
-  profile_menu:{ view_profile:'View Profile', edit_profile:'Edit Profile', my_communities:'My Communities', my_courses:'My Courses', my_contributions:'My Contributions', saved_resources:'Saved Resources', language_prefs:'Language & Preferences', verification:'Verification Status', settings:'Settings', logout:'Logout' },
+  profile_menu:{ view_profile:'View Profile', edit_profile:'Edit Profile', my_communities:'My Communities', my_courses:'My Courses', my_contributions:'My Contributions', contributor_dashboard:'Contributor Dashboard', saved_resources:'Saved Resources', language_prefs:'Language & Preferences', verification:'Verification Status', settings:'Settings', logout:'Logout' },
+  contributor:{ dashboard_title:'Contributor Dashboard', your_courses:'Your Courses', your_resources:'Your Resources', your_circles:'Your Circles', no_courses:'No courses yet. Create your first course.', no_resources:'No resources yet. Share something useful.', no_circles:'No circles yet. Start a study group.', create_course:'+ Create Course', upload_resource:'+ Upload Resource', start_circle:'+ Start Circle', draft_badge:'Draft', published_badge:'Published', contribution_score:'Contribution Score', become_contributor:'Become a Contributor', contributor_intro:'Share courses, resources, and study circles with the Sangham community.', upload_first:'Upload a resource to get started — no application needed.', status_none:'Not a contributor yet', status_active:'Active Contributor' },
   roles:{ unknown:'Unknown', practitioner:'Practitioner', community:'Community', facilitated_by:'Facilitated by' },
   community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.', members:'members', collaborators:'collaborators', tab_overview:'Overview', tab_learning:'Learning', tab_projects:'Projects', tab_circles:'Circles', tab_contributors:'Contributors', upcoming_events:'Upcoming Events', study_circles:'Study Circles', active_projects:'Active Projects', join_circle:'Join Circle', leave_circle:'Leave Circle', join_project:'Join Project', leave_project:'Leave Project', browse_circles:'Browse Circles', browse_projects:'Browse Projects' },
-  forms:{ post_ph:'Share a reflection, teaching, or question…', comment_ph:'Add a reflection…', message_ph:'Send a message…', search_ph:'Search people, communities, events…', community_name_ph:'e.g. Mumbai Dhamma Sangha', community_city_ph:'e.g. Mumbai', community_desc_ph:'What is this community about?', community_url_ph:'https://…', intent_title_ph:'e.g. Looking for a meditation partner', intent_desc_ph:"Tell practitioners what you're looking for…", session_title_ph:'e.g. Sunday Sutta Reading', teacher_credentials_ph:'e.g. Ordained in the Ajahn Chah lineage…', teacher_lineage_ph:'e.g. Soto Zen, Navayana Buddhist', teacher_statement_ph:'Describe your teaching practice and motivation…', event_title_ph:'e.g. Weekly Dhamma Talk', event_url_ph:'https://meet.google.com/…', event_location_ph:'e.g. Ambedkar Bhavan, Mumbai', course_title_ph:'e.g. Introduction to the Dhamma', course_desc_ph:'What will students learn?', resource_title_ph:'e.g. The Four Noble Truths — Lecture', circle_topic_ph:'e.g. Reading the Dhammapada together', circle_desc_ph:'What will the circle focus on?', circle_sched_ph:'e.g. Every Sunday 10 AM IST', project_title_ph:'e.g. Pali Canon Translation Project', project_purpose_ph:'What is the core goal of this project?', project_skills_ph:'e.g. Pali, Translation, Research' },
+  forms:{ post_ph:'Share a reflection, teaching, or question…', comment_ph:'Add a reflection…', message_ph:'Send a message…', search_ph:'Search people, communities, events…', community_name_ph:'e.g. Mumbai Dhamma Sangha', community_city_ph:'e.g. Mumbai', community_desc_ph:'What is this community about?', community_url_ph:'https://…', intent_title_ph:'e.g. Looking for a meditation partner', intent_desc_ph:"Tell practitioners what you're looking for…", session_title_ph:'e.g. Sunday Sutta Reading', teacher_credentials_ph:'e.g. Ordained in the Ajahn Chah lineage…', teacher_lineage_ph:'e.g. Soto Zen, Navayana Buddhist', teacher_statement_ph:'Describe your teaching practice and motivation…', event_title_ph:'e.g. Weekly Dhamma Talk', event_url_ph:'https://meet.google.com/…', event_location_ph:'e.g. Ambedkar Bhavan, Mumbai', course_title_ph:'e.g. Introduction to the Dhamma', course_desc_ph:'What will students learn?', resource_title_ph:'e.g. The Four Noble Truths — Lecture', resource_url_ph:'https://youtube.com/watch?v=… or PDF link', circle_topic_ph:'e.g. Reading the Dhammapada together', circle_desc_ph:'What will the circle focus on?', circle_sched_ph:'e.g. Every Sunday 10 AM IST', project_title_ph:'e.g. Pali Canon Translation Project', project_purpose_ph:'What is the core goal of this project?', project_skills_ph:'e.g. Pali, Translation, Research' },
 };
 
 const _localeCache = { en: LOCALE_EN };
@@ -2064,6 +2124,7 @@ function initApp() {
   loadChatUnreadCount();
   initTheme();
   initSidebar();
+  _updateLearnCreateButtons();
 }
 
 function initSidebar() {
@@ -3193,7 +3254,7 @@ async function loadLearnCourses(q) {
     const data = await api('GET', `/courses?${qs}`);
     const courses = data.data || data || [];
     if (!courses.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-title">${t('learn.no_courses')}</div><div class="empty-state-text">${t('learn.no_courses_text')}</div></div>`;
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-title">${t('learn.no_courses')}</div><div class="empty-state-text">${t('learn.no_courses_text')}</div>${state.token?`<button class="btn btn-primary btn-sm" style="margin-top:var(--space-4)" onclick="openCreateStandalone('course')">+ Create the First Course</button>`:'<p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-3)">Sign in to create courses and resources.</p>'}</div>`;
       return;
     }
     el.innerHTML = courses.map(c => renderCourseCard(c)).join('');
@@ -3211,7 +3272,7 @@ async function loadLearnResources(q) {
     const data = await api('GET', `/resources?${qs}`);
     const resources = data.data || data || [];
     if (!resources.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">${t('learn.no_resources')}</div><div class="empty-state-text">${t('learn.no_resources_text')}</div></div>`;
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">${t('learn.no_resources')}</div><div class="empty-state-text">${t('learn.no_resources_text')}</div>${state.token?`<button class="btn btn-primary btn-sm" style="margin-top:var(--space-4)" onclick="openCreateStandalone('resource')">+ Share a Resource</button>`:'<p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-3)">Sign in to share resources.</p>'}</div>`;
       return;
     }
     el.innerHTML = resources.map(r => renderResourceCard(r)).join('');
@@ -3228,7 +3289,7 @@ async function loadLearnCircles(q) {
     const data = await api('GET', `/study-circles?limit=20`);
     const circles = data.data || data || [];
     if (!circles.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔵</div><div class="empty-state-title">${t('learn.no_circles')}</div><div class="empty-state-text">${t('learn.no_circles_text')}</div></div>`;
+      el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔵</div><div class="empty-state-title">${t('learn.no_circles')}</div><div class="empty-state-text">${t('learn.no_circles_text')}</div>${state.token?`<button class="btn btn-primary btn-sm" style="margin-top:var(--space-4)" onclick="openCreateStandalone('circle')">+ Start a Circle</button>`:'<p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-3)">Sign in to start study circles.</p>'}</div>`;
       return;
     }
     el.innerHTML = circles.map(c => renderCircleCard(c)).join('');
@@ -5161,7 +5222,7 @@ function renderCreateResourceForm() {
       <select id="cf-rtype" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
     </div>
     <div class="input-group"><label>Title *</label><input id="cf-title" class="input" placeholder="${t('forms.resource_title_ph')}" data-i18n-ph="forms.resource_title_ph"></div>
-    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="${t('forms.event_url_ph')}" data-i18n-ph="forms.event_url_ph"></div>
+    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="${t('forms.resource_url_ph')}" data-i18n-ph="forms.resource_url_ph"></div>
     <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="2" style="resize:vertical"></textarea></div>
     <div class="input-group"><label>Creator / Author</label><input id="cf-creator" class="input" placeholder="Bhante Gunaratana"></div>
     <div class="input-group"><label>Thumbnail URL (optional)</label><input id="cf-thumb" class="input" type="url" placeholder="https://img.youtube.com/…"></div>
@@ -5375,6 +5436,257 @@ async function loadCommunityContributions(assocId) {
   } catch(err) {
     el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4)">${t('community.contributions_error')}</p>`;
   }
+}
+
+// ============================================================
+//  CONTRIBUTOR DASHBOARD + STANDALONE CREATION
+// ============================================================
+
+let _createStandaloneType = null;
+
+function openCreateStandalone(type) {
+  if (!state.token) { showToast('Sign in to contribute', 'info'); return; }
+  _createStandaloneType = type;
+  const titles = { course: 'Create Course', resource: 'Upload Resource', circle: 'Start a Circle' };
+  const labels = { course: 'Create', resource: 'Upload', circle: 'Create' };
+  document.getElementById('create-content-title').textContent = titles[type] || 'Create';
+  const btn = document.getElementById('create-content-submit-btn');
+  if (btn) btn.textContent = labels[type] || 'Create';
+  const form = document.getElementById('create-content-form');
+
+  if (type === 'circle') {
+    form.innerHTML = `
+      <div style="background:var(--surface-sunken);border-radius:var(--radius-lg);padding:var(--space-3);margin-bottom:var(--space-4);font-size:var(--text-xs);color:var(--text-secondary)">
+        💡 Study circles are connected to communities. Select a community below, or <button onclick="switchTab('communities')" style="color:var(--saffron-600);background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:var(--text-xs);font-weight:var(--weight-semibold);padding:0">browse communities</button> to find or create one first.
+      </div>
+      <div class="input-group"><label>Community *</label>
+        <select id="sc-assoc" class="create-form-select" style="width:100%"><option value="">Loading communities…</option></select>
+      </div>
+      ${renderCreateCircleForm()}`;
+    _loadUserCommunityOptions('sc-assoc');
+  } else if (type === 'resource') {
+    form.innerHTML = renderCreateResourceForm();
+  } else if (type === 'course') {
+    form.innerHTML = `
+      <div style="background:var(--surface-sunken);border-radius:var(--radius-lg);padding:var(--space-3);margin-bottom:var(--space-4);font-size:var(--text-xs);color:var(--text-secondary)">
+        📚 Courses can be community-based or individual. Choose below.
+      </div>
+      <div class="input-group"><label>Course Owner</label>
+        <select id="sc-owner-type" class="create-form-select" style="width:100%" onchange="_onCourseOwnerChange(this.value)">
+          <option value="COMMUNITY">Community (recommended)</option>
+          <option value="INDIVIDUAL">Individual (requires contributor status)</option>
+        </select>
+      </div>
+      <div id="sc-community-row" class="input-group"><label>Community</label>
+        <select id="sc-assoc" class="create-form-select" style="width:100%"><option value="">Loading communities…</option></select>
+      </div>
+      ${renderCreateCourseForm()}`;
+    _loadUserCommunityOptions('sc-assoc');
+  }
+  openPanel('panel-create-content');
+}
+
+function _onCourseOwnerChange(val) {
+  const row = document.getElementById('sc-community-row');
+  if (row) row.style.display = val === 'INDIVIDUAL' ? 'none' : '';
+}
+
+async function _loadUserCommunityOptions(selectId) {
+  try {
+    const communities = await api('GET', '/associations/mine');
+    const sel = document.getElementById(selectId);
+    if (!sel) return;
+    if (!communities.length) {
+      sel.innerHTML = '<option value="">No communities joined — join one first</option>';
+      return;
+    }
+    sel.innerHTML = communities.map(c => `<option value="${escHtml(c.id)}">${escHtml(c.name)}</option>`).join('');
+  } catch { /* silently fail */ }
+}
+
+async function submitCreateStandalone() {
+  const type = _createStandaloneType;
+  const btn = document.getElementById('create-content-submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = t('common.creating'); }
+  const unlock = () => { if (btn) { btn.disabled = false; btn.textContent = type === 'resource' ? 'Upload' : 'Create'; } };
+
+  try {
+    if (type === 'resource') {
+      const rtype   = document.getElementById('cf-rtype')?.value;
+      const title   = document.getElementById('cf-title')?.value.trim();
+      const url     = document.getElementById('cf-url')?.value.trim();
+      const desc    = document.getElementById('cf-desc')?.value.trim();
+      const creator = document.getElementById('cf-creator')?.value.trim();
+      const thumb   = document.getElementById('cf-thumb')?.value.trim();
+      const durMins = document.getElementById('cf-dur')?.value;
+      const lang    = document.getElementById('cf-lang')?.value || 'en';
+      if (!rtype) { showToast('Resource type is required', 'error'); unlock(); return; }
+      if (!title) { showToast('Title is required', 'error'); unlock(); return; }
+      if (!url)   { showToast('URL is required', 'error'); unlock(); return; }
+      await api('POST', '/resources', { type: rtype, title, url, language: lang,
+        ...(desc    ? { description: desc }      : {}),
+        ...(creator ? { creator }                : {}),
+        ...(thumb   ? { thumbnailUrl: thumb }    : {}),
+        ...(durMins ? { durationSecs: Number(durMins) * 60 } : {}),
+      });
+      showToast(t('toast.resource_added'), 'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+      closePanel('panel-create-content');
+      _learnTabLoaded.resources = false;
+      if (document.getElementById('learn-tab-resources')?.classList.contains('active')) loadLearnResources();
+
+    } else if (type === 'course') {
+      const ownerType = document.getElementById('sc-owner-type')?.value || 'COMMUNITY';
+      const assocId   = ownerType === 'COMMUNITY' ? document.getElementById('sc-assoc')?.value : null;
+      const title     = document.getElementById('cf-title')?.value.trim();
+      const desc      = document.getElementById('cf-desc')?.value.trim();
+      const lang      = document.getElementById('cf-lang')?.value || 'en';
+      if (!title) { showToast('Course title is required', 'error'); unlock(); return; }
+      if (ownerType === 'COMMUNITY' && !assocId) { showToast('Select a community', 'error'); unlock(); return; }
+      await api('POST', '/courses', { ownerType, title, language: lang,
+        ...(desc    ? { description: desc }       : {}),
+        ...(assocId ? { associationId: assocId }  : {}),
+      });
+      showToast(t('toast.course_created'), 'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+      closePanel('panel-create-content');
+      _learnTabLoaded.courses = false;
+      if (document.getElementById('learn-tab-courses')?.classList.contains('active')) loadLearnCourses();
+
+    } else if (type === 'circle') {
+      const assocId = document.getElementById('sc-assoc')?.value;
+      const topic   = document.getElementById('cf-topic')?.value.trim();
+      const desc    = document.getElementById('cf-desc')?.value.trim();
+      const sched   = document.getElementById('cf-sched')?.value.trim();
+      if (!assocId) { showToast('Select a community', 'error'); unlock(); return; }
+      if (!topic)   { showToast('Topic is required', 'error'); unlock(); return; }
+      await api('POST', '/study-circles', { associationId: assocId, topic,
+        ...(desc  ? { description: desc }         : {}),
+        ...(sched ? { scheduleDescription: sched } : {}),
+      });
+      showToast(t('toast.circle_created'), 'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+      closePanel('panel-create-content');
+      _learnTabLoaded.circles = false;
+      if (document.getElementById('learn-tab-circles')?.classList.contains('active')) loadLearnCircles();
+    }
+  } catch(err) {
+    if (err.message?.includes('contributor status')) {
+      showToast('Upload a resource first to gain contributor status, then create courses.', 'info');
+    } else {
+      showToast(err.message, 'error');
+    }
+    unlock();
+  }
+}
+
+async function openContributorDashboard() {
+  if (!state.token) { showToast('Sign in to view your dashboard', 'info'); return; }
+  openPanel('panel-contributor');
+  await loadContributorDashboard();
+}
+
+async function loadContributorDashboard() {
+  const content = document.getElementById('contributor-panel-content');
+  if (!content) return;
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  const uid = state.user?.id;
+  try {
+    const [coursesData, resourcesData, circlesData, scoreData] = await Promise.allSettled([
+      api('GET', `/courses?ownerId=${uid}&ownerType=INDIVIDUAL&status=PUBLISHED&limit=20`),
+      api('GET', `/resources?contributorId=${uid}&limit=20`),
+      api('GET', `/study-circles?facilitatorId=${uid}&limit=20`),
+      api('GET', `/contributions/${uid}`),
+    ]);
+    const courses   = coursesData.status   === 'fulfilled' ? (coursesData.value.data   || coursesData.value   || []) : [];
+    const resources = resourcesData.status === 'fulfilled' ? (resourcesData.value.data || resourcesData.value || []) : [];
+    const circles   = circlesData.status   === 'fulfilled' ? (circlesData.value.data   || circlesData.value   || []) : [];
+    const score     = scoreData.status     === 'fulfilled' ? scoreData.value : null;
+
+    const scoreHtml = score?.totalScore > 0 ? `
+      <div class="contrib-score-card">
+        <div><div class="contrib-score-num">${score.totalScore}</div><div class="contrib-score-label">${t('contributor.contribution_score')}</div></div>
+        <div style="flex:1">
+          ${[
+            score.coursesCreated      ? `<div class="contrib-score-sub">${score.coursesCreated} course${score.coursesCreated!==1?'s':''}</div>` : '',
+            score.resourcesShared     ? `<div class="contrib-score-sub">${score.resourcesShared} resource${score.resourcesShared!==1?'s':''}</div>` : '',
+            score.studyCirclesFacilitated ? `<div class="contrib-score-sub">${score.studyCirclesFacilitated} circle${score.studyCirclesFacilitated!==1?'s':''}</div>` : '',
+          ].filter(Boolean).join('')}
+        </div>
+      </div>` : `
+      <div style="background:var(--surface-sunken);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-5)">
+        <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-1)">${t('contributor.become_contributor')}</div>
+        <div style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-3)">${t('contributor.upload_first')}</div>
+        <button class="btn btn-primary btn-sm" onclick="openCreateStandalone('resource')">${t('contributor.upload_resource')}</button>
+      </div>`;
+
+    const courseCards = courses.length ? courses.map(c => `
+      <div class="contrib-dash-card">
+        <div class="contrib-dash-card-icon">📚</div>
+        <div class="contrib-dash-card-body">
+          <div class="contrib-dash-card-title">${escHtml(c.title)}</div>
+          <div class="contrib-dash-card-meta">${c._count?.lessons||0} lessons · ${c.language||'en'}</div>
+        </div>
+        <span class="contrib-dash-badge ${c.status==='PUBLISHED'?'contrib-badge-published':'contrib-badge-draft'}">${c.status==='PUBLISHED'?t('contributor.published_badge'):t('contributor.draft_badge')}</span>
+      </div>`).join('') : `<div class="contrib-empty">${t('contributor.no_courses')}<br><button class="contrib-empty-cta" onclick="openCreateStandalone('course')">${t('contributor.create_course')}</button></div>`;
+
+    const resourceCards = resources.length ? resources.map(r => `
+      <div class="contrib-dash-card">
+        <div class="contrib-dash-card-icon">${{YOUTUBE_VIDEO:'▶',PDF:'📄',ARTICLE:'📰',RESEARCH_PAPER:'🔬',GUIDE:'📖',BOOK_SUMMARY:'📕',WORKSHOP_RECORDING:'🎬',YOUTUBE_PLAYLIST:'▶'}[r.type]||'🔗'}</div>
+        <div class="contrib-dash-card-body">
+          <div class="contrib-dash-card-title">${escHtml(r.title)}</div>
+          <div class="contrib-dash-card-meta">${(r.type||'').replace(/_/g,' ')} · ${r.language||'en'}</div>
+        </div>
+        <span class="contrib-dash-badge ${r.isPublished?'contrib-badge-published':'contrib-badge-draft'}">${r.isPublished?t('contributor.published_badge'):t('contributor.draft_badge')}</span>
+      </div>`).join('') : `<div class="contrib-empty">${t('contributor.no_resources')}<br><button class="contrib-empty-cta" onclick="openCreateStandalone('resource')">${t('contributor.upload_resource')}</button></div>`;
+
+    const circleCards = circles.length ? circles.map(c => `
+      <div class="contrib-dash-card">
+        <div class="contrib-dash-card-icon">🔵</div>
+        <div class="contrib-dash-card-body">
+          <div class="contrib-dash-card-title">${escHtml(c.topic)}</div>
+          <div class="contrib-dash-card-meta">${c.status||'OPEN'} · ${c._count?.members||0} members</div>
+        </div>
+        <span class="contrib-dash-badge ${c.status==='ACTIVE'?'contrib-badge-published':'contrib-badge-draft'}">${c.status||'OPEN'}</span>
+      </div>`).join('') : `<div class="contrib-empty">${t('contributor.no_circles')}<br><button class="contrib-empty-cta" onclick="openCreateStandalone('circle')">${t('contributor.start_circle')}</button></div>`;
+
+    content.innerHTML = `
+      <div style="padding:var(--space-4)">
+        ${scoreHtml}
+        <div class="contrib-dash-section">
+          <div class="contrib-dash-header">
+            <span class="contrib-dash-title">${t('contributor.your_courses')}</span>
+            <button class="contrib-dash-add" onclick="openCreateStandalone('course')">${t('contributor.create_course')}</button>
+          </div>
+          ${courseCards}
+        </div>
+        <div class="contrib-dash-section">
+          <div class="contrib-dash-header">
+            <span class="contrib-dash-title">${t('contributor.your_resources')}</span>
+            <button class="contrib-dash-add" onclick="openCreateStandalone('resource')">${t('contributor.upload_resource')}</button>
+          </div>
+          ${resourceCards}
+        </div>
+        <div class="contrib-dash-section">
+          <div class="contrib-dash-header">
+            <span class="contrib-dash-title">${t('contributor.your_circles')}</span>
+            <button class="contrib-dash-add" onclick="openCreateStandalone('circle')">${t('contributor.start_circle')}</button>
+          </div>
+          ${circleCards}
+        </div>
+      </div>`;
+  } catch(err) {
+    content.innerHTML = `<div class="empty-state"><div class="empty-state-title">Unable to load dashboard</div><div class="empty-state-text">${escHtml(err.message)}</div></div>`;
+  }
+}
+
+// Show/hide learn creation buttons based on auth state
+function _updateLearnCreateButtons() {
+  const show = !!state.token;
+  ['learn-create-courses','learn-create-resources','learn-create-circles'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? 'flex' : 'none';
+  });
 }
 
 // ============================================================

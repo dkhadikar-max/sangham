@@ -15,11 +15,12 @@ const RESOURCE_SELECT = {
 
 // GET /resources?associationId=&projectId=&type=&q=
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
-  const { associationId, projectId, type, q, limit = '20', page = '1' } = req.query;
+  const { associationId, projectId, type, q, contributorId, limit = '20', page = '1' } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
-  const where: Record<string, unknown> = { isPublished: true };
-  if (associationId) where.associationId = associationId as string;
-  if (projectId)     where.projectId     = projectId as string;
+  const where: Record<string, unknown> = contributorId ? {} : { isPublished: true };
+  if (associationId)  where.associationId  = associationId as string;
+  if (projectId)      where.projectId      = projectId as string;
+  if (contributorId)  where.contributorId  = contributorId as string;
   if (type && Object.values(ResourceType).includes(type as ResourceType)) where.type = type;
   if (q) where.title = { contains: q as string, mode: 'insensitive' };
 
@@ -65,12 +66,18 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
     select: RESOURCE_SELECT,
   });
 
-  // Increment contributor score
-  await prisma.contributionScore.upsert({
-    where: { userId: req.user!.id },
-    create: { userId: req.user!.id, resourcesShared: 1, totalScore: 1 },
-    update: { resourcesShared: { increment: 1 }, totalScore: { increment: 1 } },
-  });
+  // Increment contributor score + auto-grant contributor status on first resource
+  await Promise.all([
+    prisma.contributionScore.upsert({
+      where: { userId: req.user!.id },
+      create: { userId: req.user!.id, resourcesShared: 1, totalScore: 1 },
+      update: { resourcesShared: { increment: 1 }, totalScore: { increment: 1 } },
+    }),
+    prisma.user.update({
+      where: { id: req.user!.id },
+      data: { isContributor: true, contributorSince: req.user!.contributorSince ?? new Date() },
+    }).catch(() => {}),
+  ]);
 
   res.status(201).json(resource);
 });
