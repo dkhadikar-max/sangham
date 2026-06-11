@@ -4543,7 +4543,7 @@ async function sendMessage() {
     await api('POST', '/messages', { recipientId: state.currentPartnerId, ciphertext: text });
     const roomId = dmRoomId(state.user.id, state.currentPartnerId);
     if (socket) {
-      socket.emit('chat_message', { roomId, message: text, userId: state.user.id });
+      socket.emit('chat_message', { roomId, message: text }); // userId injected server-side from verified JWT
     }
   } catch(err) {
     showToast(err.message, 'error');
@@ -4583,7 +4583,7 @@ function dmRoomId(uid1, uid2) {
 function initSocket() {
   if (!state.token) return;
   try {
-    socket = io(WS_URL, { transports: ['websocket'], reconnectionDelay: 2000 });
+    socket = io(WS_URL, { transports: ['websocket'], reconnectionDelay: 2000, auth: { token: state.token } });
 
     socket.on('connect', () => {
       console.log('[Socket] connected:', socket.id);

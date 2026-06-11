@@ -3,9 +3,11 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
-import { UserRole, Tradition, ProfessionalTag, ProfessionType } from '@prisma/client';
+import { UserRole, Tradition, ProfessionalTag, ProfessionType, VisibilityLevel } from '@prisma/client';
 import { z } from 'zod';
 import { createNotification } from '../utils/notify';
+import jwt from 'jsonwebtoken';
+import { env } from '../config/env';
 
 const router = Router();
 
@@ -100,18 +102,50 @@ router.get('/me/following', authenticate, async (req: AuthRequest, res: Response
 
 // GET /users/:id
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.params.id },
-    select: {
-      id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
-      country: true, city: true, traditions: true, role: true,
-      isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
-      languages: true, preferredLanguage: true, templeAffiliation: true, createdAt: true,
-      tags: { select: { tag: true } },
-      _count: { select: { followers: true, following: true, posts: true, associations: true, projectMemberships: true, events: true } },
-    },
-  });
+  // Optional auth for privacy enforcement
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
+    try {
+      const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+      const u = await prisma.user.findUnique({
+        where: { id: payload.userId },
+        select: { id: true, role: true, isVerifiedClergy: true, isActive: true, isContributor: true, contributorSince: true },
+      });
+      if (u?.isActive) req.user = u;
+    } catch { /* anonymous browsing */ }
+  }
+
+  const [user, settings] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: req.params.id },
+      select: {
+        id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
+        country: true, city: true, traditions: true, role: true,
+        isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
+        languages: true, preferredLanguage: true, templeAffiliation: true, createdAt: true,
+        tags: { select: { tag: true } },
+        _count: { select: { followers: true, following: true, posts: true, associations: true, projectMemberships: true, events: true } },
+      },
+    }),
+    prisma.privacySettings.findUnique({ where: { userId: req.params.id } }),
+  ]);
   if (!user) throw new AppError('User not found', 404);
+
+  const visibility: VisibilityLevel = settings?.profileVisibility ?? VisibilityLevel.PUBLIC;
+
+  if (visibility === VisibilityLevel.ANONYMOUS) {
+    res.json({ id: user.id, displayName: 'Anonymous', profilePhoto: null, _count: user._count });
+    return;
+  }
+  if (visibility === VisibilityLevel.COMMUNITY || visibility === VisibilityLevel.CONNECTIONS) {
+    if (!req.user) { res.status(401).json({ error: 'Sign in to view this profile' }); return; }
+    if (visibility === VisibilityLevel.CONNECTIONS) {
+      const connected = await prisma.follow.findFirst({
+        where: { followerId: req.user.id, followedId: req.params.id },
+      });
+      if (!connected) { res.status(403).json({ error: 'This profile is visible to connections only' }); return; }
+    }
+  }
   res.json(user);
 });
 

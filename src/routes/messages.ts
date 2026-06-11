@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
+import { MessagingPermission } from '@prisma/client';
 
 const router = Router();
 
@@ -11,8 +12,18 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
   if (!recipientId || !ciphertext) throw new AppError('recipientId and ciphertext required', 400);
   if (recipientId === req.user!.id) throw new AppError('Cannot message yourself', 400);
 
-  const recipient = await prisma.user.findUnique({ where: { id: recipientId } });
+  const [recipient, settings, connection] = await Promise.all([
+    prisma.user.findUnique({ where: { id: recipientId } }),
+    prisma.privacySettings.findUnique({ where: { userId: recipientId } }),
+    prisma.follow.findFirst({ where: { followerId: req.user!.id, followedId: recipientId } }),
+  ]);
   if (!recipient) throw new AppError('Recipient not found', 404);
+
+  const perm: MessagingPermission = settings?.messagingPermission ?? MessagingPermission.CONNECTIONS_ONLY;
+  if (perm === MessagingPermission.NOBODY)
+    throw new AppError('This user is not accepting messages', 403);
+  if (perm === MessagingPermission.CONNECTIONS_ONLY && !connection)
+    throw new AppError('This user only accepts messages from connections', 403);
 
   const message = await prisma.message.create({
     data: { senderId: req.user!.id, recipientId, ciphertext },

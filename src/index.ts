@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import path from 'path';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
+import jwt from 'jsonwebtoken';
 
 import { env } from './config/env';
 import { connectDatabase } from './config/database';
@@ -55,11 +56,26 @@ export const io = new SocketServer(httpServer, {
   cors: { origin: allowedOrigins, credentials: true },
 });
 
+// Require a valid JWT on every WebSocket connection
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token as string | undefined;
+  if (!token) return next(new Error('Authentication required'));
+  try {
+    const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+    socket.data.userId = payload.userId;
+    next();
+  } catch {
+    next(new Error('Invalid token'));
+  }
+});
+
 io.on('connection', (socket) => {
+  const userId = socket.data.userId as string; // server-verified, never trust client claim
   socket.on('join_room',    (roomId: string) => socket.join(roomId));
   socket.on('leave_room',   (roomId: string) => socket.leave(roomId));
-  socket.on('chat_message', (data: { roomId: string; message: string; userId: string }) => {
-    socket.to(data.roomId).emit('chat_message', data);
+  // Inject server-verified userId — client-supplied userId is ignored
+  socket.on('chat_message', (data: { roomId: string; message: string }) => {
+    socket.to(data.roomId).emit('chat_message', { ...data, userId });
   });
 });
 

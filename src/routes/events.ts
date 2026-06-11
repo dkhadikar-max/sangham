@@ -6,6 +6,8 @@ import { AppError } from '../middleware/errorHandler';
 import { EventType, RsvpStatus, Tradition } from '@prisma/client';
 import { z } from 'zod';
 import { createNotification } from '../utils/notify';
+import jwt from 'jsonwebtoken';
+import { env } from '../config/env';
 
 const router = Router();
 
@@ -74,7 +76,8 @@ router.get('/nearby', async (req: AuthRequest, res: Response): Promise<void> => 
       _count: { select: { rsvps: true } },
     },
   });
-  res.json(events);
+  // Strip exact GPS from public nearby listing — location name is sufficient for discovery
+  res.json(events.map(({ lat: _lat, lng: _lng, ...e }) => e));
 });
 
 // GET /events/mine — events I organise or have RSVP'd GOING (must be before /:id)
@@ -147,15 +150,40 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
 
 // GET /events/:id — full detail
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
+  // Optional auth — GPS coordinates only returned to signed-in users
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
+    try {
+      const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+      const u = await prisma.user.findUnique({
+        where: { id: payload.userId },
+        select: { id: true, role: true, isVerifiedClergy: true, isActive: true, isContributor: true, contributorSince: true },
+      });
+      if (u?.isActive) req.user = u;
+    } catch { /* anonymous browsing */ }
+  }
+
   const event = await prisma.event.findUnique({
     where: { id: req.params.id },
-    include: {
+    select: {
+      id: true, title: true, description: true, eventType: true, traditionTag: true,
+      startsAt: true, endsAt: true, timezone: true, locationName: true,
+      onlineUrl: true, capacity: true, isPublished: true, isRecurring: true,
+      recurrenceRule: true, associationId: true, organiserId: true, createdAt: true,
+      // Exact GPS only returned to authenticated users
+      lat: true, lng: true,
       organiser: { select: { id: true, displayName: true, profilePhoto: true, role: true, isVerifiedClergy: true, isVerifiedTeacher: true } },
       association: { select: { id: true, name: true } },
       _count: { select: { rsvps: true } },
     },
   });
   if (!event) throw new AppError('Event not found', 404);
+
+  if (!req.user) {
+    const { lat: _lat, lng: _lng, ...publicEvent } = event;
+    res.json(publicEvent);
+    return;
+  }
   res.json(event);
 });
 
