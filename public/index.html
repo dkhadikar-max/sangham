@@ -1080,6 +1080,9 @@ round:var(--error-600)}
     .reader-toc-close{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;cursor:pointer;border-radius:8px;color:var(--rt-muted)}
     .reader-toc-close:hover{background:var(--rt-surface)}
     .reader-toc-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+    .reader-toc-search{padding:8px 12px;border-bottom:1px solid var(--rt-border);flex-shrink:0}
+    .reader-toc-search input{width:100%;padding:7px 10px;border:1px solid var(--rt-border);border-radius:8px;background:var(--rt-surface);color:var(--rt-text);font-size:13px;font-family:inherit;outline:none}
+    .reader-toc-search input:focus{border-color:var(--rt-accent)}
     .reader-toc-list{flex:1;overflow-y:auto;padding:8px 0}
     .reader-toc-item{display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;padding:9px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--rt-muted);line-height:1.4;font-family:inherit;transition:all .15s;border-left:3px solid transparent}
     .reader-toc-item:hover{background:var(--rt-surface);color:var(--rt-text)}
@@ -1116,6 +1119,9 @@ round:var(--error-600)}
     .rsetting-themes,.rsetting-spacing,.rsetting-widths,.rsetting-fonts{display:flex;gap:6px}
     .rsetting-reset{margin-top:4px;padding:8px;border:1px solid var(--rt-border);border-radius:8px;background:transparent;color:var(--rt-muted);font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:all .15s}
     .rsetting-reset:hover{color:var(--rt-text);border-color:var(--rt-text)}
+    .rpref-row{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;font-size:12px;color:var(--rt-text)}
+    .rpref-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--rt-accent);cursor:pointer;flex-shrink:0}
+    .rsetting-divider{height:1px;background:var(--rt-border);margin:10px 0}
 
     /* ── Focus mode ─────────────────────────────────────────────── */
     .reader-panel.focus-mode .reader-header{transform:translateY(-100%);opacity:0;pointer-events:none}
@@ -1960,6 +1966,9 @@ round:var(--error-600)}
               <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
+          <div class="reader-toc-search">
+            <input type="search" id="reader-toc-search-input" placeholder="Filter sections…" oninput="_filterTOC(this.value)" aria-label="Filter sections">
+          </div>
           <div class="reader-toc-list" id="reader-toc-list">
             <div style="padding:16px;font-size:13px;color:var(--rt-muted)">No chapters detected</div>
           </div>
@@ -1979,9 +1988,9 @@ round:var(--error-600)}
             <div class="rsetting-group">
               <div class="rsetting-label">Font Size</div>
               <div class="rsetting-row">
-                <button onclick="libFontStep(-2)">A−</button>
-                <span class="rsetting-font-display" id="rsetting-font-display">17px</span>
-                <button onclick="libFontStep(2)">A+</button>
+                <button onclick="libFontStep(-1)" aria-label="Decrease font size">A−</button>
+                <span class="rsetting-font-display" id="rsetting-font-display">16px</span>
+                <button onclick="libFontStep(1)" aria-label="Increase font size">A+</button>
               </div>
             </div>
             <div class="rsetting-group">
@@ -1993,39 +2002,55 @@ round:var(--error-600)}
               </div>
             </div>
             <div class="rsetting-group">
-              <div class="rsetting-label">Line Spacing</div>
-              <div class="rsetting-spacing">
-                <button class="rspacing-btn" data-spacing="compact" onclick="setReaderSpacing('compact')">Compact</button>
-                <button class="rspacing-btn active" data-spacing="comfortable" onclick="setReaderSpacing('comfortable')">Normal</button>
-                <button class="rspacing-btn" data-spacing="relaxed" onclick="setReaderSpacing('relaxed')">Relaxed</button>
-              </div>
-            </div>
-            <div class="rsetting-group">
-              <div class="rsetting-label">Width</div>
+              <div class="rsetting-label">Reading Width</div>
               <div class="rsetting-widths">
                 <button class="rwidth-btn" data-width="narrow" onclick="setReaderWidth('narrow')">Narrow</button>
-                <button class="rwidth-btn active" data-width="comfortable" onclick="setReaderWidth('comfortable')">Normal</button>
+                <button class="rwidth-btn active" data-width="comfortable" onclick="setReaderWidth('comfortable')">Comfortable</button>
                 <button class="rwidth-btn" data-width="wide" onclick="setReaderWidth('wide')">Wide</button>
               </div>
             </div>
             <div class="rsetting-group">
-              <div class="rsetting-label">Font</div>
-              <div class="rsetting-fonts">
-                <button class="rfont-btn active" data-font="serif" onclick="setReaderFont('serif')" style="font-family:Georgia,serif">Serif</button>
-                <button class="rfont-btn" data-font="sans" onclick="setReaderFont('sans')">Sans</button>
+              <div class="rsetting-label">Line Spacing</div>
+              <div class="rsetting-spacing">
+                <button class="rspacing-btn" data-spacing="compact" onclick="setReaderSpacing('compact')">Compact</button>
+                <button class="rspacing-btn active" data-spacing="comfortable" onclick="setReaderSpacing('comfortable')">Comfortable</button>
+                <button class="rspacing-btn" data-spacing="relaxed" onclick="setReaderSpacing('relaxed')">Relaxed</button>
               </div>
             </div>
-            <button class="rsetting-reset" onclick="resetReaderSettings()">Reset to defaults</button>
+            <div class="rsetting-divider"></div>
+            <div class="rsetting-label">Reading Preferences</div>
+            <label class="rpref-row">
+              <input type="checkbox" id="rpref-autohide" onchange="_savePref('autoHideHeader',this.checked)" checked>
+              Auto-hide header on scroll
+            </label>
+            <label class="rpref-row">
+              <input type="checkbox" id="rpref-paranum" onchange="_savePref('showParagraphNumbers',this.checked)">
+              Show paragraph numbers
+            </label>
+            <label class="rpref-row">
+              <input type="checkbox" id="rpref-community" onchange="_savePref('showCommunityHighlights',this.checked)">
+              Show community highlights
+            </label>
+            <label class="rpref-row">
+              <input type="checkbox" id="rpref-sync" onchange="_savePref('syncProgress',this.checked)" checked>
+              Sync progress across devices
+            </label>
+            <label class="rpref-row">
+              <input type="checkbox" id="rpref-gesture" onchange="_savePref('enableFocusModeGesture',this.checked)" checked>
+              Enable focus mode gesture
+            </label>
+            <button class="rsetting-reset" onclick="resetReaderSettings()">Reset to Defaults</button>
           </div>
         </div>
       </div>
 
       <!-- Annotation toolbar (appears on text selection) -->
       <div class="reader-ann-toolbar" id="reader-ann-toolbar">
-        <button class="rann-color" style="background:#FEF08A" onclick="createHighlight('#FEF08A')" title="Yellow" aria-label="Highlight yellow"></button>
-        <button class="rann-color" style="background:#BBF7D0" onclick="createHighlight('#BBF7D0')" title="Green" aria-label="Highlight green"></button>
-        <button class="rann-color" style="background:#FECACA" onclick="createHighlight('#FECACA')" title="Red" aria-label="Highlight red"></button>
-        <button class="rann-color" style="background:#BFDBFE" onclick="createHighlight('#BFDBFE')" title="Blue" aria-label="Highlight blue"></button>
+        <button class="rann-color" style="background:#FFD700" onclick="createHighlight('#FFD700')" title="Yellow — general importance" aria-label="Highlight yellow"></button>
+        <button class="rann-color" style="background:#90EE90" onclick="createHighlight('#90EE90')" title="Green — key insight" aria-label="Highlight green"></button>
+        <button class="rann-color" style="background:#87CEEB" onclick="createHighlight('#87CEEB')" title="Blue — reference" aria-label="Highlight blue"></button>
+        <button class="rann-color" style="background:#FFB6C1" onclick="createHighlight('#FFB6C1')" title="Pink — question / unclear" aria-label="Highlight pink"></button>
+        <button class="rann-color" style="background:#DDA0DD" onclick="createHighlight('#DDA0DD')" title="Purple — personal resonance" aria-label="Highlight purple"></button>
         <div class="rann-sep"></div>
         <button class="rann-action" onclick="addAnnotationNote()" title="Add note (N)" aria-label="Add note">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -4266,7 +4291,7 @@ const _lib = {
 };
 
 // ── Reader settings (persisted) ─────────────────────────────
-const _rDefaults = { fontSize:17, theme:'light', spacing:'comfortable', width:'comfortable', font:'serif' };
+const _rDefaults = { fontSize:16, theme:'light', spacing:'comfortable', width:'comfortable', autoHideHeader:true, showParagraphNumbers:false, showCommunityHighlights:false, syncProgress:true, enableFocusModeGesture:true };
 function _rSettings(){
   try{ return {..._rDefaults,...JSON.parse(localStorage.getItem('reader_settings')||'{}')}; }
   catch{ return {..._rDefaults}; }
@@ -4520,30 +4545,39 @@ function _applyReaderSettings(s) {
   // Theme
   panel.setAttribute('data-reader-theme', s.theme||'light');
   // Font size
-  panel.style.setProperty('--reader-fs', (s.fontSize||17)+'px');
+  panel.style.setProperty('--reader-fs', (s.fontSize||16)+'px');
   // Line height
-  const lh = {compact:'1.55',comfortable:'1.8',relaxed:'2.1'}[s.spacing||'comfortable']||'1.8';
+  const lh = {compact:'1.5',comfortable:'1.75',relaxed:'2.0'}[s.spacing||'comfortable']||'1.75';
   panel.style.setProperty('--reader-lh', lh);
-  // Width
-  const w = {narrow:'54ch',comfortable:'68ch',wide:'82ch'}[s.width||'comfortable']||'68ch';
+  // Width — ch values from spec §8.3
+  const w = {narrow:'60ch',comfortable:'70ch',wide:'80ch'}[s.width||'comfortable']||'70ch';
   panel.style.setProperty('--reader-width', w);
-  // Font
-  const ff = s.font==='sans' ? 'system-ui,-apple-system,sans-serif' : "'Georgia','Times New Roman',serif";
-  panel.style.setProperty('--reader-font', ff);
+  // Font family: determined by content script (data-script), not user toggle
+  const script = _detectScript(_lib.currentLang||'en');
+  const fontMap = {
+    latin:"'Source Serif 4','Georgia','Times New Roman',serif",
+    devanagari:"'Noto Serif Devanagari','Kohinoor Devanagari','Mangal',serif",
+    telugu:"'Noto Serif Telugu','Ramabhadra',serif",
+    tamil:"'Noto Serif Tamil','Latha',serif"
+  };
+  panel.style.setProperty('--reader-font', fontMap[script]||fontMap.latin);
   // Update settings UI
   const fd = document.getElementById('rsetting-font-display');
-  if (fd) fd.textContent = (s.fontSize||17)+'px';
+  if (fd) fd.textContent = (s.fontSize||16)+'px';
   document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===s.theme));
   document.querySelectorAll('[data-spacing]').forEach(b=>b.classList.toggle('active',b.dataset.spacing===s.spacing));
   document.querySelectorAll('[data-width]').forEach(b=>b.classList.toggle('active',b.dataset.width===s.width));
-  document.querySelectorAll('[data-font]').forEach(b=>b.classList.toggle('active',b.dataset.font===s.font));
+  // Preferences checkboxes
+  const pchk = (id, val) => { const el=document.getElementById(id); if(el) el.checked=!!val; };
+  pchk('rpref-autohide', s.autoHideHeader!==false);
+  pchk('rpref-paranum', !!s.showParagraphNumbers);
+  pchk('rpref-community', !!s.showCommunityHighlights);
+  pchk('rpref-sync', s.syncProgress!==false);
+  pchk('rpref-gesture', s.enableFocusModeGesture!==false);
   // Theme icon in controls
   const themeIcons = {light:'☀',sepia:'📖',dark:'🌙'};
-  const tIcon = themeIcons[s.theme||'light'];
   const rfb = document.getElementById('rfloat-theme-btn');
-  const rcb = document.getElementById('rctrl-theme-btn');
-  if (rfb) rfb.textContent = tIcon;
-  // Note: rctrl-theme-btn contains SVG so don't replace its content
+  if (rfb) rfb.textContent = themeIcons[s.theme||'light'];
 }
 
 // ── Open text detail ─────────────────────────────────────────
@@ -4563,6 +4597,7 @@ async function openTextDetail(textId) {
 
   // Apply persisted settings immediately
   _applyReaderSettings(_rSettings());
+  _updateFontButtons();
   _initReaderKeyboard();
 
   try {
@@ -4576,6 +4611,7 @@ async function openTextDetail(textId) {
     _lib.segTotal = text.segmentsTotal || text.segments?.length || 0;
     _lib.segOffset = text.segments?.length || 0;
     _lib.highlights = Array.isArray(serverHighlights) ? serverHighlights : [];
+    _lib.currentLang = text.language || 'en';
 
     // Merge: server progress wins over localStorage
     const localProg = libProgress()[textId]||{};
@@ -4748,10 +4784,12 @@ function _onReaderScroll() {
   const scroll = document.getElementById('reader-scroll');
   if (!scroll || !_lib.segTotal) return;
 
-  // Header auto-hide
+  // Header auto-hide (respects preference)
   const header = document.getElementById('reader-header');
-  if (header && scroll.scrollTop > 80) header.classList.add('hidden');
-  else if (header) header.classList.remove('hidden');
+  if (header && _rSettings().autoHideHeader !== false) {
+    if (scroll.scrollTop > 80) header.classList.add('hidden');
+    else header.classList.remove('hidden');
+  } else if (header) header.classList.remove('hidden');
 
   // Progress
   const ratio = scroll.scrollTop / Math.max(scroll.scrollHeight - scroll.clientHeight, 1);
@@ -4910,6 +4948,9 @@ function jumpToTOCSection(idx) {
 
 function toggleReaderTOC() {
   document.getElementById('reader-toc-overlay')?.classList.toggle('open');
+  // Reset search filter on open
+  const si = document.getElementById('reader-toc-search-input');
+  if (si) { si.value=''; _filterTOC(''); }
 }
 function _tocOverlayClick(e) {
   if (e.target === document.getElementById('reader-toc-overlay')) toggleReaderTOC();
@@ -4960,6 +5001,7 @@ function setReaderFont(font) {
 function resetReaderSettings() {
   localStorage.removeItem('reader_settings');
   _applyReaderSettings(_rDefaults);
+  _updateFontButtons();
 }
 function cycleReaderTheme() {
   const themes = ['light','sepia','dark'];
@@ -4971,13 +5013,14 @@ function cycleReaderTheme() {
 // Font step — unified for both old and new reader calls
 function libFontStep(delta) {
   const s = _rSettings();
-  const next = Math.min(26, Math.max(12, (s.fontSize||17) + delta));
+  const next = Math.min(24, Math.max(12, (s.fontSize||16) + delta));
   _rSaveSettings({fontSize:next});
   _applyReaderSettings(_rSettings());
+  _updateFontButtons();
 }
 // Legacy alias
 function _libFontStep(delta) { libFontStep(delta); }
-function _libFontSize() { return _rSettings().fontSize||17; }
+function _libFontSize() { return _rSettings().fontSize||16; }
 
 // ── Focus mode ────────────────────────────────────────────────
 function toggleFocusMode() {
@@ -5001,10 +5044,11 @@ function _initReaderKeyboard() {
 function _readerKeyHandler(e) {
   const panel = document.getElementById('panel-text');
   if (!panel || !panel.classList.contains('open')) return;
-  // Don't intercept when typing in inputs
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
 
   const ctrl = e.ctrlKey || e.metaKey;
+  const scroll = document.getElementById('reader-scroll');
+
   switch(e.key) {
     case 'f': case 'F':
       if (!ctrl) { e.preventDefault(); toggleFocusMode(); }
@@ -5023,8 +5067,36 @@ function _readerKeyHandler(e) {
     case ',':
       if (ctrl) { e.preventDefault(); toggleReaderSettings(); }
       break;
+    case 'k': case 'K':
+      if (ctrl) { e.preventDefault(); showToast('Search coming soon','info'); }
+      break;
     case 'ArrowLeft': e.preventDefault(); navReaderSection(-1); break;
     case 'ArrowRight': e.preventDefault(); navReaderSection(1); break;
+    case 'Home':
+      if (!ctrl) { e.preventDefault(); scroll?.scrollTo({top:0,behavior:'smooth'}); }
+      break;
+    case 'End':
+      if (!ctrl) { e.preventDefault(); scroll?.scrollTo({top:scroll.scrollHeight,behavior:'smooth'}); }
+      break;
+    case ' ':
+      e.preventDefault();
+      if (e.shiftKey) scroll?.scrollBy({top:-(scroll.clientHeight*0.85),behavior:'smooth'});
+      else scroll?.scrollBy({top:scroll.clientHeight*0.85,behavior:'smooth'});
+      break;
+    case 'ArrowUp': e.preventDefault(); scroll?.scrollBy({top:-80,behavior:'smooth'}); break;
+    case 'ArrowDown': e.preventDefault(); scroll?.scrollBy({top:80,behavior:'smooth'}); break;
+    case 'h': case 'H':
+      if (!ctrl) {
+        const sel = window.getSelection()?.toString().trim();
+        if (sel) { e.preventDefault(); createHighlight('#FFD700'); }
+      }
+      break;
+    case 'n': case 'N':
+      if (!ctrl) {
+        const sel = window.getSelection()?.toString().trim();
+        if (sel) { e.preventDefault(); addAnnotationNote(); }
+      }
+      break;
     case '+': case '=': if (!ctrl) { e.preventDefault(); libFontStep(1); } break;
     case '-': if (!ctrl) { e.preventDefault(); libFontStep(-1); } break;
     case '1': if (!ctrl) { e.preventDefault(); setReaderTheme('light'); } break;
@@ -5259,18 +5331,36 @@ function readerProgressJump(e) {
   });
 })();
 
-// ── Tap center to toggle reader chrome (mobile) ───────────────
+// ── Tap center: single tap toggles chrome, double-tap exits focus mode ───
 let _readerChromeVisible = true;
+let _readerLastTap = 0;
+let _readerTapTimer = null;
 function _readerTapCenter(e) {
-  // Only act if the tap wasn't on an interactive element
   if (e.target.closest('button,a,input,textarea,select,.reader-hl,.reader-ann-toolbar')) return;
-  // Only on small screens in normal mode (not focus mode)
-  if (window.innerWidth >= 1024) return;
+  if (!_rSettings().enableFocusModeGesture) return;
   const panel = document.getElementById('panel-text');
+  const now = Date.now();
+  const isDoubleTap = (now - _readerLastTap) < 300;
+  _readerLastTap = now;
+
   if (panel?.classList.contains('focus-mode')) {
-    toggleFocusMode(); // tap to exit focus mode
+    if (isDoubleTap) {
+      clearTimeout(_readerTapTimer);
+      toggleFocusMode();
+    } else {
+      // single tap: briefly reveal chrome
+      const header = document.getElementById('reader-header');
+      const footer = document.getElementById('reader-footer');
+      [header, footer].forEach(el => el?.classList.remove('hidden'));
+      clearTimeout(_readerTapTimer);
+      _readerTapTimer = setTimeout(() => {
+        [header, footer].forEach(el => el?.classList.add('hidden'));
+      }, 2000);
+    }
     return;
   }
+  // Outside focus mode on mobile: toggle chrome
+  if (window.innerWidth >= 1024) return;
   _readerChromeVisible = !_readerChromeVisible;
   const header = document.getElementById('reader-header');
   const footer = document.getElementById('reader-footer');
@@ -5280,23 +5370,35 @@ function _readerTapCenter(e) {
   });
 }
 
-// ── Font size: update disabled state on min/max ───────────────
+// ── Font size: update disabled state at min(12)/max(24) ──────
 function _updateFontButtons() {
   const s = _rSettings();
-  const fs = s.fontSize || 17;
+  const fs = s.fontSize || 16;
   document.querySelectorAll('[onclick*="libFontStep(-"]').forEach(btn => {
     btn.disabled = fs <= 12;
     btn.style.opacity = fs <= 12 ? '0.35' : '';
   });
-  document.querySelectorAll('[onclick*="libFontStep("]').forEach(btn => {
-    if (btn.getAttribute('onclick')?.includes('libFontStep(2)') || btn.getAttribute('onclick')?.includes('libFontStep(1)')) {
-      btn.disabled = fs >= 26;
-      btn.style.opacity = fs >= 26 ? '0.35' : '';
-    }
+  document.querySelectorAll('[onclick*="libFontStep(1"]').forEach(btn => {
+    btn.disabled = fs >= 24;
+    btn.style.opacity = fs >= 24 ? '0.35' : '';
   });
-  // Settings panel display
   const fd = document.getElementById('rsetting-font-display');
   if (fd) fd.textContent = fs + 'px';
+}
+
+// ── Save individual preference ────────────────────────────────
+function _savePref(key, value) {
+  _rSaveSettings({[key]: value});
+  _applyReaderSettings(_rSettings());
+}
+
+// ── Filter TOC sections in real-time ─────────────────────────
+function _filterTOC(query) {
+  const q = (query||'').toLowerCase().trim();
+  document.querySelectorAll('[data-toc-idx]').forEach(btn => {
+    const text = btn.querySelector('.toc-text')?.textContent?.toLowerCase() || '';
+    btn.style.display = (!q || text.includes(q)) ? '' : 'none';
+  });
 }
 
 function debounceLearn() {
