@@ -166,6 +166,119 @@ router.get('/collections', async (_req: AuthRequest, res: Response): Promise<voi
   res.json(result);
 });
 
+// GET /library/texts/:id/progress — get user's reading progress for a text
+router.get('/texts/:id/progress', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const progress = await prisma.readingProgress.findUnique({
+    where: { userId_textId: { userId: req.user!.id, textId: req.params.id } },
+  });
+  res.json(progress || { currentSegment: 0, percentComplete: 0, isCompleted: false });
+});
+
+// PUT /library/texts/:id/progress — upsert reading progress
+router.put('/texts/:id/progress', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { currentSegment, percentComplete, timeSpentSeconds } = req.body;
+  if (typeof percentComplete !== 'number') throw new AppError('percentComplete required', 400);
+  const progress = await prisma.readingProgress.upsert({
+    where: { userId_textId: { userId: req.user!.id, textId: req.params.id } },
+    create: {
+      userId: req.user!.id,
+      textId: req.params.id,
+      currentSegment: currentSegment || 0,
+      percentComplete,
+      isCompleted: percentComplete >= 99,
+      timeSpentSeconds: timeSpentSeconds || 0,
+      lastReadAt: new Date(),
+    },
+    update: {
+      currentSegment: currentSegment || 0,
+      percentComplete,
+      isCompleted: percentComplete >= 99,
+      timeSpentSeconds: timeSpentSeconds || 0,
+      lastReadAt: new Date(),
+    },
+  });
+  res.json(progress);
+});
+
+// GET /library/texts/:id/highlights — get user's highlights for a text
+router.get('/texts/:id/highlights', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const highlights = await prisma.highlight.findMany({
+    where: { userId: req.user!.id, textId: req.params.id },
+    orderBy: { createdAt: 'asc' },
+    select: { id: true, segmentId: true, selectedText: true, color: true, note: true, isPublic: true, createdAt: true },
+  });
+  res.json(highlights);
+});
+
+// POST /library/highlights — create a highlight
+router.post('/highlights', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { textId, segmentId, selectedText, color, note } = req.body;
+  if (!textId || !segmentId || !selectedText) throw new AppError('textId, segmentId, selectedText required', 400);
+  const segment = await prisma.librarySegment.findUnique({ where: { id: segmentId }, select: { id: true, textId: true } });
+  if (!segment || segment.textId !== textId) throw new AppError('Segment not found in text', 404);
+  const highlight = await prisma.highlight.create({
+    data: {
+      userId: req.user!.id,
+      textId,
+      segmentId,
+      selectedText: selectedText.slice(0, 2000),
+      color: color || '#FEF08A',
+      note: note ? note.slice(0, 1000) : null,
+    },
+    select: { id: true, segmentId: true, selectedText: true, color: true, note: true, createdAt: true },
+  });
+  res.status(201).json(highlight);
+});
+
+// PATCH /library/highlights/:id — update note or color
+router.patch('/highlights/:id', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { color, note } = req.body;
+  const hl = await prisma.highlight.findUnique({ where: { id: req.params.id }, select: { userId: true } });
+  if (!hl) throw new AppError('Highlight not found', 404);
+  if (hl.userId !== req.user!.id) throw new AppError('Not your highlight', 403);
+  const updated = await prisma.highlight.update({
+    where: { id: req.params.id },
+    data: { ...(color ? { color } : {}), ...(note !== undefined ? { note } : {}) },
+    select: { id: true, segmentId: true, selectedText: true, color: true, note: true, updatedAt: true },
+  });
+  res.json(updated);
+});
+
+// DELETE /library/highlights/:id
+router.delete('/highlights/:id', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const hl = await prisma.highlight.findUnique({ where: { id: req.params.id }, select: { userId: true } });
+  if (!hl) throw new AppError('Highlight not found', 404);
+  if (hl.userId !== req.user!.id) throw new AppError('Not your highlight', 403);
+  await prisma.highlight.delete({ where: { id: req.params.id } });
+  res.json({ deleted: true });
+});
+
+// GET /library/my-reading — authenticated: texts in progress + completed
+router.get('/my-reading', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const progress = await prisma.readingProgress.findMany({
+    where: { userId: req.user!.id, percentComplete: { gt: 0 } },
+    orderBy: { lastReadAt: 'desc' },
+    take: 20,
+    include: {
+      text: {
+        select: {
+          id: true, title: true, author: true, language: true,
+          collection: { select: { name: true, tradition: true } },
+        },
+      },
+    },
+  });
+  res.json(progress.map(p => ({
+    ...p.text,
+    progress: {
+      currentSegment: p.currentSegment,
+      percentComplete: Number(p.percentComplete),
+      isCompleted: p.isCompleted,
+      lastReadAt: p.lastReadAt,
+    },
+  })));
+});
+
 // GET /library/my-bookmarks — authenticated
 router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const bookmarks = await prisma.bookmark.findMany({

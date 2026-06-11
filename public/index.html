@@ -955,35 +955,199 @@ round:var(--error-600)}
     .lib-text-card-lang{background:var(--surface-sunken);padding:1px 5px;border-radius:99px;font-weight:var(--weight-medium)}
     .lib-text-card-prog{height:2px;background:var(--border-default);border-radius:1px;margin-top:var(--space-2);overflow:hidden}
     .lib-text-card-progfill{height:100%;background:var(--saffron-500);border-radius:1px}
-    /* Text reader */
-    #panel-text .panel-content{overflow-y:auto;display:flex;flex-direction:column;scroll-behavior:smooth}
-    .lib-reader-band{height:110px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .lib-reader-band-sym{font-size:3.5rem;line-height:1}
-    .lib-reader-meta{padding:var(--space-5) var(--space-5) 0;flex-shrink:0}
-    .lib-reader-title{font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-primary);line-height:1.2;margin-bottom:var(--space-2)}
-    .lib-reader-byline{font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4);line-height:1.5}
-    .lib-reader-stats{display:flex;gap:var(--space-4);margin-bottom:var(--space-4);flex-wrap:wrap}
-    .lib-reader-stat{font-size:var(--text-xs);color:var(--text-tertiary)}
-    .lib-reader-stat strong{color:var(--text-secondary);font-weight:var(--weight-medium)}
-    .lib-reader-progrow{margin-bottom:var(--space-4)}
-    .lib-reader-progbar{height:4px;background:var(--border-default);border-radius:2px;overflow:hidden;margin-bottom:4px}
-    .lib-reader-progfill{height:100%;background:var(--saffron-500);border-radius:2px;transition:width .5s ease}
-    .lib-reader-proglabel{font-size:11px;color:var(--text-tertiary);display:flex;justify-content:space-between}
-    .lib-reader-actions{display:flex;gap:var(--space-2);margin-bottom:var(--space-5)}
-    .lib-reader-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:var(--space-2) var(--space-3);background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-lg);font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--text-secondary);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
-    .lib-reader-btn:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
-    .lib-reader-btn.bookmarked{color:var(--saffron-600);border-color:var(--saffron-400);background:color-mix(in srgb,var(--saffron-500) 10%,transparent)}
-    .lib-reader-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
-    .lib-font-row{display:flex;align-items:center;gap:var(--space-2);padding:0 var(--space-5) var(--space-4)}
-    .lib-font-btn{padding:4px 10px;border:1px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-sunken);color:var(--text-secondary);cursor:pointer;font-weight:var(--weight-medium);line-height:1}
-    .lib-font-btn:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
-    .lib-font-label{font-size:var(--text-xs);color:var(--text-tertiary);flex:1;text-align:center}
-    .lib-divider{height:1px;background:var(--border-subtle);margin:0 var(--space-5) var(--space-2)}
-    /* Segments */
-    .lib-segments{padding:0 var(--space-5) var(--space-6);flex:1}
-    .lib-seg{padding:var(--space-4) 0;border-bottom:1px solid var(--border-subtle)}
-    .lib-seg:last-child{border-bottom:none}
-    .lib-seg-key{font-size:10px;color:var(--saffron-600);font-weight:var(--weight-semibold);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--space-3)}
+    /* ═══════════════════════════════════════════════════════════════
+       READER — World-class reading experience
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ── Reader panel base ──────────────────────────────────────── */
+    #panel-text{display:flex;flex-direction:column;overflow:hidden}
+    #panel-text .panel-header{display:none} /* replaced by reader-header */
+
+    /* ── Theme tokens ───────────────────────────────────────────── */
+    .reader-panel{--rt-bg:#fff;--rt-text:#1a1a1a;--rt-muted:#6b7280;--rt-border:#e5e7eb;--rt-surface:#f9fafb;--rt-accent:#b45309;--rt-progress:#d97706}
+    .reader-panel[data-reader-theme="sepia"]{--rt-bg:#f8f0e3;--rt-text:#3b2f20;--rt-muted:#7a6652;--rt-border:#d4c4a8;--rt-surface:#f3e8d0;--rt-accent:#8b5e3c;--rt-progress:#a0522d}
+    .reader-panel[data-reader-theme="dark"]{--rt-bg:#18181b;--rt-text:#e4e4e7;--rt-muted:#71717a;--rt-border:#3f3f46;--rt-surface:#27272a;--rt-accent:#f59e0b;--rt-progress:#f59e0b}
+
+    /* ── Collapsible header ─────────────────────────────────────── */
+    .reader-header{position:relative;z-index:30;display:flex;align-items:center;gap:12px;padding:0 12px;height:52px;background:var(--rt-bg);border-bottom:1px solid var(--rt-border);flex-shrink:0;transition:transform .3s ease,opacity .3s ease}
+    .reader-header.hidden{transform:translateY(-100%);opacity:0;pointer-events:none}
+    .reader-back-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:none;background:transparent;cursor:pointer;color:var(--rt-text);flex-shrink:0}
+    .reader-back-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+    .reader-header-title{flex:1;min-width:0}
+    .reader-header-main{font-size:15px;font-weight:600;color:var(--rt-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+    .reader-header-section{font-size:11px;color:var(--rt-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+    .reader-header-actions{display:flex;gap:4px;flex-shrink:0}
+    .reader-icon-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:none;background:transparent;cursor:pointer;color:var(--rt-text);transition:background .15s}
+    .reader-icon-btn:hover{background:var(--rt-surface)}
+    .reader-icon-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75}
+    .reader-icon-btn.active{color:var(--rt-accent)}
+
+    /* ── Scroll container ───────────────────────────────────────── */
+    .reader-scroll{flex:1;overflow-y:auto;background:var(--rt-bg);-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+    .reader-scroll::-webkit-scrollbar{width:4px}
+    .reader-scroll::-webkit-scrollbar-track{background:transparent}
+    .reader-scroll::-webkit-scrollbar-thumb{background:var(--rt-border);border-radius:2px}
+
+    /* ── Book info block (top of scroll) ────────────────────────── */
+    .reader-book-info{padding:24px 20px 16px;background:var(--rt-bg)}
+    .reader-band{height:90px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:20px}
+    .reader-book-title{font-size:20px;font-weight:700;color:var(--rt-text);line-height:1.25;margin-bottom:8px}
+    .reader-book-byline{font-size:13px;color:var(--rt-muted);line-height:1.5;margin-bottom:12px}
+    .reader-book-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+    .reader-book-stat{font-size:12px;color:var(--rt-muted)}
+    .reader-book-stat strong{color:var(--rt-text);font-weight:600}
+    .reader-book-actions{display:flex;gap:8px;margin-bottom:0}
+    .reader-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border:1px solid var(--rt-border);border-radius:10px;background:var(--rt-surface);color:var(--rt-text);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+    .reader-action-btn:hover{border-color:var(--rt-accent);color:var(--rt-accent)}
+    .reader-action-btn.bookmarked{border-color:var(--rt-accent);color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 8%,transparent)}
+    .reader-action-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+    .reader-book-divider{height:1px;background:var(--rt-border);margin:16px 0 0}
+
+    /* ── Content area ───────────────────────────────────────────── */
+    .reader-content-area{
+      padding:20px 20px 120px;
+      font-size:var(--reader-fs, 17px);
+      line-height:var(--reader-lh, 1.8);
+      color:var(--rt-text);
+      font-family:var(--reader-font, 'Georgia', serif);
+      max-width:var(--reader-width, 68ch);
+      margin:0 auto;
+      transition:font-size .2s,line-height .2s;
+    }
+    @media(min-width:768px){.reader-content-area{padding:32px 48px 140px}}
+    @media(min-width:1024px){.reader-content-area{padding:40px 64px 160px}}
+
+    /* ── Segments ───────────────────────────────────────────────── */
+    .reader-seg{position:relative;margin-bottom:0}
+    .reader-seg-key{font-size:10px;color:var(--rt-accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;margin-top:28px}
+    .reader-seg-p{margin-bottom:1.4em;text-align:justify;hyphens:auto;overflow-wrap:break-word;word-break:break-word;position:relative;user-select:text;-webkit-user-select:text}
+    .reader-seg-p:last-child{margin-bottom:0}
+    /* Chapter/section headings synthesized from chapterRef */
+    .reader-chapter-head{font-size:1.15em;font-weight:700;color:var(--rt-text);margin:2.5em 0 1em;line-height:1.3;padding-top:1.5em;border-top:1px solid var(--rt-border)}
+    .reader-chapter-head:first-child{border-top:none;padding-top:0}
+
+    /* ── Highlight rendering ────────────────────────────────────── */
+    .reader-hl{border-radius:2px;cursor:pointer;transition:opacity .15s}
+    .reader-hl:hover{opacity:.8}
+    [data-reader-theme="dark"] .reader-hl{mix-blend-mode:multiply;filter:brightness(1.4)}
+
+    /* ── Load-more button ───────────────────────────────────────── */
+    .reader-load-more{display:block;margin:0 auto 60px;padding:10px 24px;border:1px solid var(--rt-border);border-radius:24px;background:transparent;color:var(--rt-muted);font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+    .reader-load-more:hover{border-color:var(--rt-accent);color:var(--rt-accent)}
+
+    /* ── Attribution ────────────────────────────────────────────── */
+    .reader-attribution{font-size:11px;color:var(--rt-muted);line-height:1.6;padding:0 20px 40px;max-width:68ch;margin:0 auto}
+    @media(min-width:768px){.reader-attribution{padding:0 48px 60px}}
+
+    /* ── Fixed progress footer ──────────────────────────────────── */
+    .reader-footer{flex-shrink:0;background:var(--rt-bg);border-top:1px solid var(--rt-border);transition:transform .3s ease}
+    .reader-footer.hidden{transform:translateY(100%)}
+    .reader-progress-track{height:3px;background:var(--rt-border);position:relative;overflow:hidden}
+    .reader-progress-fill{height:100%;background:var(--rt-progress);border-radius:0 2px 2px 0;transition:width .6s ease}
+    .reader-footer-info{display:flex;justify-content:space-between;align-items:center;padding:6px 16px;font-size:11px;color:var(--rt-muted)}
+
+    /* ── Mobile controls bar ────────────────────────────────────── */
+    .reader-controls-bar{display:flex;align-items:center;justify-content:space-around;padding:6px 8px;background:var(--rt-bg);border-top:1px solid var(--rt-border);flex-shrink:0}
+    @media(min-width:1024px){.reader-controls-bar{display:none}}
+    .rctrl-btn{display:flex;align-items:center;justify-content:center;min-width:40px;height:40px;border:none;background:transparent;color:var(--rt-text);cursor:pointer;font-size:13px;font-weight:600;border-radius:8px;font-family:inherit;padding:0 8px}
+    .rctrl-btn:hover{background:var(--rt-surface)}
+    .rctrl-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+    /* ── Desktop floating controls ──────────────────────────────── */
+    .reader-float-controls{display:none;flex-direction:column;gap:8px;position:fixed;bottom:80px;right:24px;z-index:40}
+    @media(min-width:1024px){.reader-float-controls{display:flex}}
+    .rfloat-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--rt-border);background:var(--rt-bg);color:var(--rt-text);cursor:pointer;font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(0,0,0,.12);transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:inherit}
+    .rfloat-btn:hover{border-color:var(--rt-accent);color:var(--rt-accent);transform:scale(1.08)}
+    .rfloat-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+    /* ── TOC Drawer ─────────────────────────────────────────────── */
+    .reader-toc-overlay{position:absolute;inset:0;z-index:50;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s}
+    .reader-toc-overlay.open{background:rgba(0,0,0,.4);pointer-events:auto}
+    .reader-toc-drawer{position:absolute;top:0;left:0;bottom:0;width:min(280px,85vw);background:var(--rt-bg);border-right:1px solid var(--rt-border);transform:translateX(-100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+    .reader-toc-overlay.open .reader-toc-drawer{transform:translateX(0)}
+    .reader-toc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--rt-border);flex-shrink:0}
+    .reader-toc-title{font-size:14px;font-weight:600;color:var(--rt-text)}
+    .reader-toc-close{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:none;background:transparent;cursor:pointer;border-radius:8px;color:var(--rt-muted)}
+    .reader-toc-close:hover{background:var(--rt-surface)}
+    .reader-toc-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+    .reader-toc-list{flex:1;overflow-y:auto;padding:8px 0}
+    .reader-toc-item{display:block;width:100%;text-align:left;padding:10px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--rt-muted);line-height:1.4;font-family:inherit;transition:all .15s;border-left:3px solid transparent}
+    .reader-toc-item:hover{background:var(--rt-surface);color:var(--rt-text)}
+    .reader-toc-item.active{color:var(--rt-accent);border-left-color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 6%,transparent)}
+    .reader-toc-item-num{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--rt-accent);margin-bottom:2px}
+
+    /* ── Settings Drawer ────────────────────────────────────────── */
+    .reader-settings-overlay{position:absolute;inset:0;z-index:50;background:rgba(0,0,0,0);pointer-events:none;transition:background .25s}
+    .reader-settings-overlay.open{background:rgba(0,0,0,.4);pointer-events:auto}
+    .reader-settings-drawer{position:absolute;bottom:0;left:0;right:0;background:var(--rt-bg);border-top:1px solid var(--rt-border);border-radius:16px 16px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);padding-bottom:env(safe-area-inset-bottom,0)}
+    @media(min-width:768px){.reader-settings-drawer{left:auto;right:0;top:52px;bottom:auto;width:320px;border-radius:12px;border:1px solid var(--rt-border);box-shadow:0 8px 32px rgba(0,0,0,.16);transform:translateY(-8px) scale(.95);opacity:0;transition:transform .2s,opacity .2s}}
+    .reader-settings-overlay.open .reader-settings-drawer{transform:translateY(0);opacity:1}
+    @media(min-width:768px){.reader-settings-overlay.open .reader-settings-drawer{transform:translateY(0) scale(1);opacity:1}}
+    .reader-settings-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--rt-border)}
+    .reader-settings-head span{font-size:14px;font-weight:600;color:var(--rt-text)}
+    .reader-settings-head button{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;background:transparent;cursor:pointer;border-radius:6px;color:var(--rt-muted)}
+    .reader-settings-head button svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+    .reader-settings-body{padding:12px 16px 20px;display:flex;flex-direction:column;gap:16px}
+    .rsetting-group{display:flex;flex-direction:column;gap:6px}
+    .rsetting-label{font-size:11px;font-weight:600;color:var(--rt-muted);text-transform:uppercase;letter-spacing:.05em}
+    .rsetting-row{display:flex;gap:6px;align-items:center}
+    .rsetting-row button,.rtheme-btn,.rspacing-btn,.rwidth-btn,.rfont-btn{padding:7px 14px;border:1px solid var(--rt-border);border-radius:8px;background:var(--rt-surface);color:var(--rt-text);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+    .rsetting-row button:hover,.rtheme-btn:hover,.rspacing-btn:hover,.rwidth-btn:hover,.rfont-btn:hover{border-color:var(--rt-accent)}
+    .rsetting-row button.active,.rtheme-btn.active,.rspacing-btn.active,.rwidth-btn.active,.rfont-btn.active{border-color:var(--rt-accent);color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 8%,transparent);font-weight:600}
+    .rsetting-font-display{font-size:13px;font-weight:600;color:var(--rt-text);min-width:40px;text-align:center}
+    .rsetting-themes,.rsetting-spacing,.rsetting-widths,.rsetting-fonts{display:flex;gap:6px}
+    .rsetting-reset{margin-top:4px;padding:8px;border:1px solid var(--rt-border);border-radius:8px;background:transparent;color:var(--rt-muted);font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:all .15s}
+    .rsetting-reset:hover{color:var(--rt-text);border-color:var(--rt-text)}
+
+    /* ── Focus mode ─────────────────────────────────────────────── */
+    .reader-panel.focus-mode .reader-header{transform:translateY(-100%);opacity:0;pointer-events:none}
+    .reader-panel.focus-mode .reader-footer{transform:translateY(100%);opacity:0;pointer-events:none}
+    .reader-panel.focus-mode .reader-controls-bar{transform:translateY(100%);opacity:0;pointer-events:none}
+    .reader-panel.focus-mode .reader-float-controls{opacity:0;pointer-events:none}
+    .reader-panel.focus-mode .reader-scroll:hover ~ .reader-float-controls,
+    .reader-panel.focus-mode:hover .reader-float-controls{opacity:1;pointer-events:auto}
+    .reader-focus-hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:white;padding:6px 14px;border-radius:20px;font-size:12px;z-index:60;opacity:0;animation:focushint .3s ease .5s forwards}
+    @keyframes focushint{to{opacity:1}}
+
+    /* ── Annotation toolbar ─────────────────────────────────────── */
+    .reader-ann-toolbar{position:absolute;z-index:60;display:none;align-items:center;gap:6px;padding:6px 10px;background:var(--rt-bg);border:1px solid var(--rt-border);border-radius:28px;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateX(-50%)}
+    .reader-ann-toolbar.visible{display:flex}
+    .rann-color{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .15s,border-color .15s;flex-shrink:0}
+    .rann-color:hover{transform:scale(1.2);border-color:var(--rt-text)}
+    .rann-sep{width:1px;height:20px;background:var(--rt-border)}
+    .rann-action{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:none;background:transparent;cursor:pointer;border-radius:8px;color:var(--rt-text);transition:background .15s}
+    .rann-action:hover{background:var(--rt-surface)}
+    .rann-action svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+
+    /* ── Note input overlay ─────────────────────────────────────── */
+    .reader-note-overlay{position:absolute;inset:0;z-index:70;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;padding-bottom:env(safe-area-inset-bottom,0)}
+    @media(min-width:768px){.reader-note-overlay{align-items:center;justify-content:center}}
+    .reader-note-modal{background:var(--rt-bg);border-radius:16px 16px 0 0;padding:20px 16px;width:100%;max-width:520px}
+    @media(min-width:768px){.reader-note-modal{border-radius:12px;padding:24px}}
+    .reader-note-preview{font-size:13px;color:var(--rt-muted);line-height:1.5;margin-bottom:12px;padding:10px 12px;background:var(--rt-surface);border-radius:8px;max-height:80px;overflow:hidden;font-style:italic;border-left:3px solid var(--rt-accent)}
+    .reader-note-input{width:100%;padding:10px 12px;border:1px solid var(--rt-border);border-radius:8px;background:var(--rt-surface);color:var(--rt-text);font-size:14px;font-family:inherit;resize:vertical;line-height:1.6;min-height:100px}
+    .reader-note-input:focus{outline:none;border-color:var(--rt-accent)}
+    .reader-note-actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+    .reader-note-actions button{padding:8px 18px;border-radius:8px;border:1px solid var(--rt-border);background:var(--rt-surface);color:var(--rt-text);font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
+    .reader-note-actions button.primary{background:var(--rt-accent);border-color:var(--rt-accent);color:white;font-weight:600}
+    .reader-note-actions button:first-child:hover{border-color:var(--rt-text)}
+
+    /* ── Highlight note tooltip ─────────────────────────────────── */
+    .hl-tooltip{position:absolute;top:-36px;left:50%;transform:translateX(-50%);background:var(--rt-text);color:var(--rt-bg);padding:4px 10px;border-radius:6px;font-size:11px;white-space:nowrap;pointer-events:none;z-index:55}
+    .hl-tooltip::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--rt-text);border-bottom:none}
+
+    /* ── Desktop mini-TOC (left sidebar) ───────────────────────── */
+    @media(min-width:1024px){
+      .reader-body-wrap{display:flex;flex:1;overflow:hidden;min-height:0}
+      .reader-mini-toc{width:220px;flex-shrink:0;overflow-y:auto;border-right:1px solid var(--rt-border);padding:16px 0;background:var(--rt-bg)}
+      .reader-mini-toc-item{display:block;width:100%;text-align:left;padding:7px 16px;border:none;background:transparent;cursor:pointer;font-size:12px;color:var(--rt-muted);font-family:inherit;border-left:2px solid transparent;transition:all .15s;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .reader-mini-toc-item:hover{background:var(--rt-surface);color:var(--rt-text)}
+      .reader-mini-toc-item.active{color:var(--rt-accent);border-left-color:var(--rt-accent)}
+      .reader-scroll{flex:1}
+    }
+
+    /* Segments legacy aliases (keep for library home cards) */
+    .lib-seg-text{color:var(--text-primary)}
     .lib-seg-text{font-size:var(--text-base);line-height:1.8;color:var(--text-primary)}
     .lib-load-more{width:calc(100% - var(--space-10));margin:var(--space-2) var(--space-5) var(--space-6);padding:var(--space-3);background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-lg);font-size:var(--text-sm);color:var(--saffron-600);font-weight:var(--weight-medium);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:var(--space-2);transition:all var(--duration-fast) var(--ease-out)}
     .lib-load-more:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
@@ -1684,19 +1848,178 @@ round:var(--error-600)}
     </div>
 
     <!-- PANEL: TEXT READER -->
-    <div id="panel-text" class="panel">
-      <div class="panel-header">
-        <button class="panel-back" onclick="closePanel('panel-text')" aria-label="Go back">
+    <div id="panel-text" class="panel reader-panel" data-reader-theme="light">
+
+      <!-- Collapsible reader header -->
+      <div class="reader-header" id="reader-header">
+        <button class="reader-back-btn" onclick="_readerClose()" aria-label="Go back">
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <div class="panel-title" id="text-panel-title">Reading</div>
-        <button class="header-icon" onclick="bookmarkCurrentText()" title="Bookmark" aria-label="Bookmark text">
-          <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <div class="reader-header-title">
+          <div class="reader-header-main" id="reader-header-main">Reading</div>
+          <div class="reader-header-section" id="reader-header-section"></div>
+        </div>
+        <div class="reader-header-actions">
+          <button class="reader-icon-btn" id="reader-toc-btn" onclick="toggleReaderTOC()" title="Contents (T)" aria-label="Table of contents">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
+          </button>
+          <button class="reader-icon-btn" id="reader-bm-btn" onclick="bookmarkCurrentText()" title="Bookmark (Ctrl+B)" aria-label="Bookmark">
+            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+          <button class="reader-icon-btn" id="reader-settings-btn" onclick="toggleReaderSettings()" title="Settings (Ctrl+,)" aria-label="Reading settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop: mini-TOC sidebar + scroll; Mobile: scroll only -->
+      <div class="reader-body-wrap">
+        <div class="reader-mini-toc" id="reader-mini-toc" style="display:none"></div>
+
+        <!-- Main scroll area -->
+        <div class="reader-scroll" id="reader-scroll">
+          <div id="text-panel-content">
+            <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed progress + info footer -->
+      <div class="reader-footer" id="reader-footer">
+        <div class="reader-progress-track">
+          <div class="reader-progress-fill" id="reader-progress-fill" style="width:0%"></div>
+        </div>
+        <div class="reader-footer-info">
+          <span id="reader-pct-label">Not started</span>
+          <span id="reader-time-label"></span>
+        </div>
+      </div>
+
+      <!-- Mobile controls bar -->
+      <div class="reader-controls-bar" id="reader-controls-bar">
+        <button class="rctrl-btn" onclick="navReaderSection(-1)" title="Previous section" aria-label="Previous section">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="rctrl-btn" onclick="toggleReaderTOC()" aria-label="Contents">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
+        </button>
+        <button class="rctrl-btn" onclick="libFontStep(-2)" aria-label="Smaller font">A−</button>
+        <button class="rctrl-btn" onclick="cycleReaderTheme()" id="rctrl-theme-btn" aria-label="Theme">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="rctrl-btn" onclick="libFontStep(2)" aria-label="Larger font">A+</button>
+        <button class="rctrl-btn" onclick="navReaderSection(1)" title="Next section" aria-label="Next section">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
-      <div class="panel-content" id="text-panel-content">
-        <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
+
+      <!-- Desktop floating controls -->
+      <div class="reader-float-controls" id="reader-float-controls">
+        <button class="rfloat-btn" onclick="libFontStep(-2)" title="Decrease font (-)">A−</button>
+        <button class="rfloat-btn" onclick="libFontStep(2)" title="Increase font (+)">A+</button>
+        <button class="rfloat-btn" onclick="cycleReaderTheme()" title="Cycle theme (1/2/3)" id="rfloat-theme-btn">☀</button>
+        <button class="rfloat-btn" onclick="toggleReaderTOC()" title="Contents (T)">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
+        </button>
+        <button class="rfloat-btn" onclick="toggleFocusMode()" title="Focus mode (F)">⛶</button>
       </div>
+
+      <!-- TOC Drawer (slide from left) -->
+      <div class="reader-toc-overlay" id="reader-toc-overlay" onclick="_tocOverlayClick(event)">
+        <div class="reader-toc-drawer">
+          <div class="reader-toc-head">
+            <span class="reader-toc-title">Contents</span>
+            <button class="reader-toc-close" onclick="toggleReaderTOC()" aria-label="Close">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="reader-toc-list" id="reader-toc-list">
+            <div style="padding:16px;font-size:13px;color:var(--rt-muted)">No chapters detected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Drawer -->
+      <div class="reader-settings-overlay" id="reader-settings-overlay" onclick="_settingsOverlayClick(event)">
+        <div class="reader-settings-drawer">
+          <div class="reader-settings-head">
+            <span>Reading Settings</span>
+            <button onclick="toggleReaderSettings()" aria-label="Close settings">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="reader-settings-body">
+            <div class="rsetting-group">
+              <div class="rsetting-label">Font Size</div>
+              <div class="rsetting-row">
+                <button onclick="libFontStep(-2)">A−</button>
+                <span class="rsetting-font-display" id="rsetting-font-display">17px</span>
+                <button onclick="libFontStep(2)">A+</button>
+              </div>
+            </div>
+            <div class="rsetting-group">
+              <div class="rsetting-label">Theme</div>
+              <div class="rsetting-themes">
+                <button class="rtheme-btn active" data-theme="light" onclick="setReaderTheme('light')">Light</button>
+                <button class="rtheme-btn" data-theme="sepia" onclick="setReaderTheme('sepia')">Sepia</button>
+                <button class="rtheme-btn" data-theme="dark" onclick="setReaderTheme('dark')">Dark</button>
+              </div>
+            </div>
+            <div class="rsetting-group">
+              <div class="rsetting-label">Line Spacing</div>
+              <div class="rsetting-spacing">
+                <button class="rspacing-btn" data-spacing="compact" onclick="setReaderSpacing('compact')">Compact</button>
+                <button class="rspacing-btn active" data-spacing="comfortable" onclick="setReaderSpacing('comfortable')">Normal</button>
+                <button class="rspacing-btn" data-spacing="relaxed" onclick="setReaderSpacing('relaxed')">Relaxed</button>
+              </div>
+            </div>
+            <div class="rsetting-group">
+              <div class="rsetting-label">Width</div>
+              <div class="rsetting-widths">
+                <button class="rwidth-btn" data-width="narrow" onclick="setReaderWidth('narrow')">Narrow</button>
+                <button class="rwidth-btn active" data-width="comfortable" onclick="setReaderWidth('comfortable')">Normal</button>
+                <button class="rwidth-btn" data-width="wide" onclick="setReaderWidth('wide')">Wide</button>
+              </div>
+            </div>
+            <div class="rsetting-group">
+              <div class="rsetting-label">Font</div>
+              <div class="rsetting-fonts">
+                <button class="rfont-btn active" data-font="serif" onclick="setReaderFont('serif')" style="font-family:Georgia,serif">Serif</button>
+                <button class="rfont-btn" data-font="sans" onclick="setReaderFont('sans')">Sans</button>
+              </div>
+            </div>
+            <button class="rsetting-reset" onclick="resetReaderSettings()">Reset to defaults</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Annotation toolbar (appears on text selection) -->
+      <div class="reader-ann-toolbar" id="reader-ann-toolbar">
+        <button class="rann-color" style="background:#FEF08A" onclick="createHighlight('#FEF08A')" title="Yellow" aria-label="Highlight yellow"></button>
+        <button class="rann-color" style="background:#BBF7D0" onclick="createHighlight('#BBF7D0')" title="Green" aria-label="Highlight green"></button>
+        <button class="rann-color" style="background:#FECACA" onclick="createHighlight('#FECACA')" title="Red" aria-label="Highlight red"></button>
+        <button class="rann-color" style="background:#BFDBFE" onclick="createHighlight('#BFDBFE')" title="Blue" aria-label="Highlight blue"></button>
+        <div class="rann-sep"></div>
+        <button class="rann-action" onclick="addAnnotationNote()" title="Add note (N)" aria-label="Add note">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </button>
+        <button class="rann-action" onclick="shareSelection()" title="Share" aria-label="Share selection">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+      </div>
+
+      <!-- Note input overlay -->
+      <div class="reader-note-overlay" id="reader-note-overlay" style="display:none" onclick="_noteOverlayClick(event)">
+        <div class="reader-note-modal">
+          <div class="reader-note-preview" id="reader-note-preview"></div>
+          <textarea class="reader-note-input" id="reader-note-input" placeholder="Add your note…" rows="4"></textarea>
+          <div class="reader-note-actions">
+            <button onclick="cancelNote()">Cancel</button>
+            <button class="primary" onclick="saveNote()">Save Note</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- PANEL: CREATE COMMUNITY -->
@@ -1807,7 +2130,7 @@ round:var(--error-600)}
             <button class="daan-tier-btn active" data-amount="108" onclick="selectDaanTier(108,this)">₹108</button>
             <button class="daan-tier-btn" data-amount="501"   onclick="selectDaanTier(501,this)">₹501</button>
             <button class="daan-tier-btn" data-amount="5000"  onclick="selectDaanTier(5000,this)">₹5,000</button>
-            <button class="daan-tier-btn" data-amount="50000" onclick="selectDaanTier(50000,this)">₹50,000</button>
+            <button class="daan-tier-btn" data-amount="100000" onclick="selectDaanTier(100000,this)">₹1,00,000</button>
           </div>
         </div>
         <div class="input-group" style="margin-top:var(--space-2)">
@@ -1815,11 +2138,11 @@ round:var(--error-600)}
             <span>Monthly amount</span>
             <span id="daan-slider-label" style="font-size:var(--text-base);font-weight:var(--weight-bold);color:var(--saffron-700)">₹108</span>
           </label>
-          <input id="daan-custom" type="range" min="49" max="50000" step="1" value="108"
+          <input id="daan-custom" type="range" min="49" max="1000000" step="1" value="108"
             style="width:100%;accent-color:var(--saffron-500);margin-top:var(--space-2);cursor:pointer"
             oninput="updateDaanSlider(this.value)">
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:2px">
-            <span>₹49</span><span>₹50,000</span>
+            <span>₹49</span><span>₹10,00,000</span>
           </div>
         </div>
         <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Give ₹108/month</button>
@@ -3906,8 +4229,26 @@ const _lib = {
   segTotal: 0,
   segLimit: 100,
   loadingMore: false,
+  // Reader state
+  toc: [],           // [{chapterRef, segIndex, label}]
+  highlights: [],    // loaded from server or []
+  sessionStart: 0,   // ms timestamp when reading started
+  lastSaveTime: 0,
+  _pendingHighlight: null, // {segmentId, selectedText} waiting for note
+  _saveTimer: null,
 };
 
+// ── Reader settings (persisted) ─────────────────────────────
+const _rDefaults = { fontSize:17, theme:'light', spacing:'comfortable', width:'comfortable', font:'serif' };
+function _rSettings(){
+  try{ return {..._rDefaults,...JSON.parse(localStorage.getItem('reader_settings')||'{}')}; }
+  catch{ return {..._rDefaults}; }
+}
+function _rSaveSettings(s){
+  localStorage.setItem('reader_settings', JSON.stringify({..._rSettings(),...s}));
+}
+
+// ── Helpers ──────────────────────────────────────────────────
 function libTradClass(tr){ return 'lib-trad-'+(tr||'other').toLowerCase(); }
 function libTradSym(tr){ return {THERAVADA:'☸',NAVAYANA:'⚖',MAHAYANA:'✿',VAJRAYANA:'◈',MULTIPLE:'☸',OTHER:'☸'}[tr]||'☸'; }
 function libLangLabel(l){ return {en:'EN',hi:'हि',mr:'म',te:'తె',pa:'ਪੰ',bn:'বাং',ml:'മ',ta:'த'}[l]||(l||'').toUpperCase(); }
@@ -3922,6 +4263,14 @@ function saveLibProgress(id,offset,total,meta){
   const p=libProgress();
   p[id]={offset,percent:Math.min(100,Math.round(offset/Math.max(total,1)*100)),title:meta.title||'',tradition:meta.tradition||'',lastRead:Date.now()};
   localStorage.setItem('lib_progress',JSON.stringify(p));
+}
+
+// ── Script detection for font selection ─────────────────────
+function _detectScript(lang){
+  if(['hi','mr','sa','ne'].includes(lang)) return 'devanagari';
+  if(['te'].includes(lang)) return 'telugu';
+  if(['ta'].includes(lang)) return 'tamil';
+  return 'latin';
 }
 
 // ============================================================
@@ -4132,96 +4481,167 @@ function clearLearnSearch() {
 }
 
 // ============================================================
-//  LIBRARY — Level 3: Text reader
+//  LIBRARY — Level 3: Text reader (world-class)
 // ============================================================
 let _currentTextId = null;
 
+// ── Apply saved reader settings to panel ────────────────────
+function _applyReaderSettings(s) {
+  const panel = document.getElementById('panel-text');
+  if (!panel) return;
+  s = s || _rSettings();
+  // Theme
+  panel.setAttribute('data-reader-theme', s.theme||'light');
+  // Font size
+  panel.style.setProperty('--reader-fs', (s.fontSize||17)+'px');
+  // Line height
+  const lh = {compact:'1.55',comfortable:'1.8',relaxed:'2.1'}[s.spacing||'comfortable']||'1.8';
+  panel.style.setProperty('--reader-lh', lh);
+  // Width
+  const w = {narrow:'54ch',comfortable:'68ch',wide:'82ch'}[s.width||'comfortable']||'68ch';
+  panel.style.setProperty('--reader-width', w);
+  // Font
+  const ff = s.font==='sans' ? 'system-ui,-apple-system,sans-serif' : "'Georgia','Times New Roman',serif";
+  panel.style.setProperty('--reader-font', ff);
+  // Update settings UI
+  const fd = document.getElementById('rsetting-font-display');
+  if (fd) fd.textContent = (s.fontSize||17)+'px';
+  document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===s.theme));
+  document.querySelectorAll('[data-spacing]').forEach(b=>b.classList.toggle('active',b.dataset.spacing===s.spacing));
+  document.querySelectorAll('[data-width]').forEach(b=>b.classList.toggle('active',b.dataset.width===s.width));
+  document.querySelectorAll('[data-font]').forEach(b=>b.classList.toggle('active',b.dataset.font===s.font));
+  // Theme icon in controls
+  const themeIcons = {light:'☀',sepia:'📖',dark:'🌙'};
+  const tIcon = themeIcons[s.theme||'light'];
+  const rfb = document.getElementById('rfloat-theme-btn');
+  const rcb = document.getElementById('rctrl-theme-btn');
+  if (rfb) rfb.textContent = tIcon;
+  // Note: rctrl-theme-btn contains SVG so don't replace its content
+}
+
+// ── Open text detail ─────────────────────────────────────────
 async function openTextDetail(textId) {
   _currentTextId = textId;
   _lib.currentTextId = textId;
   _lib.segOffset = 0;
   _lib.loadingMore = false;
+  _lib.toc = [];
+  _lib.highlights = [];
+  _lib.sessionStart = Date.now();
+  _lib._pendingHighlight = null;
 
   const content = document.getElementById('text-panel-content');
-  const titleEl = document.getElementById('text-panel-title');
   content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   openPanel('panel-text');
 
+  // Apply persisted settings immediately
+  _applyReaderSettings(_rSettings());
+  _initReaderKeyboard();
+
   try {
-    const text = await api('GET',`/library/texts/${textId}?segOffset=0&segLimit=${_lib.segLimit}`);
+    // Fetch text + progress + highlights in parallel
+    const [text, serverProgress, serverHighlights] = await Promise.all([
+      api('GET',`/library/texts/${textId}?segOffset=0&segLimit=${_lib.segLimit}`),
+      state.token ? api('GET',`/library/texts/${textId}/progress`).catch(()=>null) : null,
+      state.token ? api('GET',`/library/texts/${textId}/highlights`).catch(()=>[]) : [],
+    ]);
+
     _lib.segTotal = text.segmentsTotal || text.segments?.length || 0;
     _lib.segOffset = text.segments?.length || 0;
+    _lib.highlights = Array.isArray(serverHighlights) ? serverHighlights : [];
 
-    const saved = libProgress()[textId]||{};
-    const pct = saved.percent||0;
+    // Merge: server progress wins over localStorage
+    const localProg = libProgress()[textId]||{};
+    const pct = serverProgress?.percentComplete != null
+      ? Number(serverProgress.percentComplete)
+      : (localProg.percent||0);
+
+    // Build TOC from chapterRef values
+    _lib.toc = _buildTOC(text.segments||[]);
+    _renderReaderTOC();
+
+    // Update header
+    const hMain = document.getElementById('reader-header-main');
+    if (hMain) hMain.textContent = text.title.length>40 ? text.title.slice(0,40)+'…' : text.title;
+
+    // Render book info + content
     const tradClass = libTradClass(text.collection?.tradition);
     const sym = libTradSym(text.collection?.tradition);
-
-    saveLibProgress(textId, _lib.segOffset, _lib.segTotal, {title:text.title, tradition:text.collection?.tradition});
+    const readingMins = Math.ceil(_lib.segTotal*30/200);
 
     content.innerHTML = `
-      <div class="lib-reader-band ${tradClass}">
-        <div class="lib-reader-band-sym">${sym}</div>
-      </div>
-      <div class="lib-reader-meta">
-        <div class="lib-reader-title">${escHtml(text.title)}</div>
-        <div class="lib-reader-byline">
+      <div class="reader-book-info">
+        <div class="reader-band ${tradClass}">${sym}</div>
+        <div class="reader-book-title">${escHtml(text.title)}</div>
+        <div class="reader-book-byline">
           ${text.author?`<strong>${escHtml(text.author)}</strong>`:''}
           ${text.translator?` · Trans. ${escHtml(text.translator)}`:''}
-          ${text.collection?.name?` · ${escHtml(text.collection.name)}`:''}
+          ${text.collection?.name?` · <em>${escHtml(text.collection.name)}</em>`:''}
         </div>
-        <div class="lib-reader-stats">
-          <div class="lib-reader-stat"><strong>${_lib.segTotal.toLocaleString()}</strong> passages</div>
-          <div class="lib-reader-stat"><strong>${libReadingTime(_lib.segTotal)}</strong></div>
-          <div class="lib-reader-stat"><strong>${libLangLabel(text.language)}</strong></div>
+        <div class="reader-book-stats">
+          <span class="reader-book-stat"><strong>${_lib.segTotal.toLocaleString()}</strong> passages</span>
+          <span class="reader-book-stat"><strong>${libLangLabel(text.language)}</strong></span>
+          <span class="reader-book-stat"><strong>${readingMins<60?'~'+readingMins+' min':'~'+Math.floor(readingMins/60)+'h '+readingMins%60+'m'}</strong> read</span>
         </div>
-        <div class="lib-reader-progrow">
-          <div class="lib-reader-progbar"><div class="lib-reader-progfill" id="lib-prog-fill" style="width:${pct}%"></div></div>
-          <div class="lib-reader-proglabel">
-            <span id="lib-prog-label">${pct>0?pct+'% read':'Not started'}</span>
-            <span>${_lib.segTotal.toLocaleString()} passages</span>
-          </div>
-        </div>
-        <div class="lib-reader-actions">
-          <button class="lib-reader-btn" id="lib-bm-btn" onclick="bookmarkCurrentText()">
+        <div class="reader-book-actions">
+          <button class="reader-action-btn" id="lib-bm-btn" onclick="bookmarkCurrentText()">
             <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmark
           </button>
-          <button class="lib-reader-btn" onclick="shareCurrentText()">
+          <button class="reader-action-btn" onclick="shareCurrentText()">
             <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Share
           </button>
-          ${text.collection?.sourceUrl?`<a href="${escHtml(text.collection.sourceUrl)}" target="_blank" rel="noopener" class="lib-reader-btn" style="text-decoration:none">
+          ${text.collection?.sourceUrl?`<a href="${escHtml(text.collection.sourceUrl)}" target="_blank" rel="noopener" class="reader-action-btn" style="text-decoration:none">
             <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Source
           </a>`:''}
         </div>
+        <div class="reader-book-divider"></div>
       </div>
-      <div class="lib-font-row">
-        <button class="lib-font-btn" onclick="_libFontStep(-1)" aria-label="Decrease font size">A−</button>
-        <span class="lib-font-label" id="lib-font-label">${_libFontSize()}px</span>
-        <button class="lib-font-btn" onclick="_libFontStep(1)" aria-label="Increase font size">A+</button>
+      <div class="reader-content-area" id="reader-content-area" data-script="${_detectScript(text.language)}">
+        ${_renderSegments(text.segments||[], _lib.highlights, 0)}
       </div>
-      <div class="lib-divider"></div>
-      <div class="lib-segments" id="lib-seg-list">${_renderSegs(text.segments)}</div>
-      ${_lib.segOffset < _lib.segTotal ? `<button class="lib-load-more" id="lib-lm-btn" onclick="loadMoreSegments('${escHtml(textId)}')">
-        Load more · ${_lib.segOffset} of ${_lib.segTotal} passages
+      ${_lib.segOffset < _lib.segTotal ? `<button class="reader-load-more" id="reader-lm-btn" onclick="loadMoreSegments('${escHtml(textId)}')">
+        Load more · ${_lib.segOffset} of ${_lib.segTotal.toLocaleString()} passages
       </button>` : ''}
-      <div class="lib-attribution">${escHtml(text.attribution||'')}</div>`;
+      <div class="reader-attribution">${escHtml(text.attribution||'')}</div>`;
 
-    titleEl.textContent = text.title.length>30 ? text.title.slice(0,30)+'…' : text.title;
-    content.onscroll = () => _updateProgress(textId, content);
+    // Init progress display
+    _updateProgressDisplay(pct);
+    saveLibProgress(textId, _lib.segOffset, _lib.segTotal, {title:text.title, tradition:text.collection?.tradition});
 
-    // Check bookmark state
+    // Setup scroll handler
+    const scroll = document.getElementById('reader-scroll');
+    if (scroll) {
+      scroll.addEventListener('scroll', _onReaderScroll, {passive:true});
+    }
+
+    // Setup text selection → annotation toolbar
+    document.addEventListener('selectionchange', _onSelectionChange);
+
+    // Check bookmark
     if (state.token) {
       api('GET','/library/my-bookmarks').then(bm=>{
         const isBm = bm.some(b=>b.id===textId);
-        const btn = document.getElementById('lib-bm-btn');
-        if (btn && isBm) { btn.classList.add('bookmarked'); btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:currentColor;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmarked`; }
+        _setBookmarkState(isBm);
       }).catch(()=>{});
     }
+
+    // Desktop mini-TOC
+    _renderMiniTOC();
+
+    // Restore scroll position if we have server progress
+    if (serverProgress?.currentSegment > 0 && _lib.segTotal > 0) {
+      setTimeout(() => {
+        const segEl = document.querySelector(`[data-seg-idx="${serverProgress.currentSegment}"]`);
+        if (segEl) segEl.scrollIntoView({behavior:'smooth', block:'center'});
+      }, 300);
+    }
+
   } catch(err) {
-    content.innerHTML = renderEmptyState('feed-error', err.message);
+    content.innerHTML = `<div class="reader-book-info"><p style="color:var(--rt-muted);font-size:14px">${escHtml(err.message||'Could not load text')}</p></div>`;
   }
 }
 
+// ── Sanitize segment content ─────────────────────────────────
 function _sanitizeSegContent(raw) {
   if (!raw) return '';
   return raw
@@ -4232,60 +4652,353 @@ function _sanitizeSegContent(raw) {
     .trim();
 }
 
-function _libFontSize() {
-  return parseInt(localStorage.getItem('lib_font_size') || '16', 10);
+// ── Build TOC from chapterRef values ─────────────────────────
+function _buildTOC(segs) {
+  const toc = [];
+  const seen = new Set();
+  segs.forEach((s,i) => {
+    if (s.chapterRef && !seen.has(s.chapterRef)) {
+      seen.add(s.chapterRef);
+      toc.push({label: s.chapterRef, segIndex: i, segKey: s.segmentKey});
+    }
+  });
+  return toc;
 }
 
-function _libFontStep(delta) {
-  const next = Math.min(24, Math.max(12, _libFontSize() + delta));
-  localStorage.setItem('lib_font_size', next);
-  const segs = document.getElementById('lib-seg-list');
-  if (segs) segs.style.fontSize = next + 'px';
-  const label = document.getElementById('lib-font-label');
-  if (label) label.textContent = next + 'px';
+// ── Render segments into HTML with highlights ─────────────────
+function _renderSegments(segs, highlights, startIdx) {
+  if (!segs?.length) return '<p style="color:var(--rt-muted);font-size:14px;padding:32px 0">No content available.</p>';
+  const hlBySegId = {};
+  (highlights||[]).forEach(h => {
+    if (!hlBySegId[h.segmentId]) hlBySegId[h.segmentId] = [];
+    hlBySegId[h.segmentId].push(h);
+  });
+  let lastChapter = null;
+  return segs.map((s,i) => {
+    const idx = startIdx + i;
+    const clean = _sanitizeSegContent(s.content);
+    const showChapter = s.chapterRef && s.chapterRef !== lastChapter;
+    if (showChapter) lastChapter = s.chapterRef;
+    const hls = hlBySegId[s.id]||[];
+    const textHtml = hls.length ? _applyHighlightsToText(clean, hls) : escHtml(clean);
+    return `${showChapter ? `<div class="reader-chapter-head">${escHtml(s.chapterRef)}</div>` : ''}
+    <div class="reader-seg" id="seg-${escHtml(s.id)}" data-seg-id="${escHtml(s.id)}" data-seg-idx="${idx}">
+      ${s.segmentKey && !/p\d+$/.test(s.segmentKey) && !showChapter ? `<div class="reader-seg-key">${escHtml(s.segmentKey)}</div>` : ''}
+      <p class="reader-seg-p">${textHtml}</p>
+    </div>`;
+  }).join('');
 }
 
-function _renderSegs(segs) {
-  if (!segs?.length) return '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4) 0">No content available.</p>';
-  const fs = _libFontSize();
-  return `<div style="font-size:${fs}px">` + segs.map(s=>`
-    <div class="lib-seg">
-      ${s.segmentKey&&!/p\d+$/.test(s.segmentKey)?`<div class="lib-seg-key">${escHtml(s.segmentKey)}</div>`:''}
-      <div class="lib-seg-text">${escHtml(_sanitizeSegContent(s.content))}</div>
-    </div>`).join('') + '</div>';
+// ── Apply highlights to segment text ─────────────────────────
+function _applyHighlightsToText(text, highlights) {
+  // Simple approach: wrap found text substrings in mark spans
+  // (character-offset approach requires DOM; this is a best-effort text match)
+  let result = escHtml(text);
+  highlights.forEach(h => {
+    const safeText = escHtml(h.selectedText||'');
+    if (safeText && result.includes(safeText)) {
+      const noteAttr = h.note ? ` title="${escHtml(h.note)}"` : '';
+      result = result.replace(
+        safeText,
+        `<mark class="reader-hl" style="background:${escHtml(h.color||'#FEF08A')}" data-hl-id="${escHtml(h.id)}"${noteAttr}>${safeText}</mark>`
+      );
+    }
+  });
+  return result;
 }
 
+// ── Progress update ───────────────────────────────────────────
+function _onReaderScroll() {
+  const scroll = document.getElementById('reader-scroll');
+  if (!scroll || !_lib.segTotal) return;
+
+  // Header auto-hide
+  const header = document.getElementById('reader-header');
+  if (header && scroll.scrollTop > 80) header.classList.add('hidden');
+  else if (header) header.classList.remove('hidden');
+
+  // Progress
+  const ratio = scroll.scrollTop / Math.max(scroll.scrollHeight - scroll.clientHeight, 1);
+  const loadedPct = _lib.segOffset / _lib.segTotal;
+  const pct = Math.max(0, Math.min(99, Math.round(loadedPct * 100 * Math.max(ratio, 0.01))));
+  _updateProgressDisplay(pct);
+
+  // Update active TOC item
+  _updateActiveTOCItem();
+
+  // Debounced save
+  clearTimeout(_lib._saveTimer);
+  _lib._saveTimer = setTimeout(() => _saveProgress(pct), 1000);
+}
+
+function _updateProgressDisplay(pct) {
+  const fill = document.getElementById('reader-progress-fill');
+  const label = document.getElementById('reader-pct-label');
+  const timeEl = document.getElementById('reader-time-label');
+  if (fill) fill.style.width = pct+'%';
+  if (label) label.textContent = pct > 0 ? pct+'% read' : 'Not started';
+  // Time remaining
+  if (timeEl && _lib.segTotal > 0) {
+    const remainingSegs = Math.max(0, _lib.segTotal - Math.round(_lib.segTotal * pct/100));
+    const mins = Math.ceil(remainingSegs * 30 / 200);
+    timeEl.textContent = mins > 0 ? `~${mins<60?mins+'min':Math.floor(mins/60)+'h'} left` : 'Complete';
+  }
+}
+
+function _saveProgress(pct) {
+  if (!_lib.currentTextId) return;
+  const meta = libProgress()[_lib.currentTextId]||{};
+  saveLibProgress(_lib.currentTextId, _lib.segOffset, _lib.segTotal, {title:meta.title,tradition:meta.tradition});
+  if (!state.token) return;
+  const timeSpent = Math.round((Date.now() - _lib.sessionStart) / 1000);
+  api('PUT', `/library/texts/${_lib.currentTextId}/progress`, {
+    currentSegment: _lib.segOffset,
+    percentComplete: pct,
+    timeSpentSeconds: timeSpent,
+  }).catch(()=>{});
+}
+
+// ── Load more segments ────────────────────────────────────────
 async function loadMoreSegments(textId) {
   if (_lib.loadingMore || _lib.segOffset >= _lib.segTotal) return;
   _lib.loadingMore = true;
-  const btn = document.getElementById('lib-lm-btn');
+  const btn = document.getElementById('reader-lm-btn');
   if (btn) { btn.disabled=true; btn.textContent='Loading…'; }
   try {
     const text = await api('GET',`/library/texts/${textId}?segOffset=${_lib.segOffset}&segLimit=${_lib.segLimit}`);
     const segs = text.segments||[];
+    const area = document.getElementById('reader-content-area');
+    if (area) {
+      area.insertAdjacentHTML('beforeend', _renderSegments(segs, _lib.highlights, _lib.segOffset));
+      // Add new chapters to TOC
+      const newTOC = _buildTOC(segs);
+      newTOC.forEach(tc => {
+        if (!_lib.toc.find(t=>t.label===tc.label)) {
+          tc.segIndex += _lib.segOffset;
+          _lib.toc.push(tc);
+        }
+      });
+      _renderReaderTOC();
+      _renderMiniTOC();
+    }
     _lib.segOffset += segs.length;
-    const list = document.getElementById('lib-seg-list');
-    if (list) list.insertAdjacentHTML('beforeend', _renderSegs(segs));
     if (btn) {
       if (_lib.segOffset >= _lib.segTotal) btn.remove();
-      else { btn.disabled=false; btn.textContent=`Load more · ${_lib.segOffset} of ${_lib.segTotal} passages`; }
+      else { btn.disabled=false; btn.textContent=`Load more · ${_lib.segOffset.toLocaleString()} of ${_lib.segTotal.toLocaleString()} passages`; }
     }
-    const content = document.getElementById('text-panel-content');
-    if (content) _updateProgress(textId, content);
   } catch { if (btn) { btn.disabled=false; btn.textContent='Try again'; } }
   _lib.loadingMore = false;
 }
 
-function _updateProgress(textId, el) {
-  if (!_lib.segTotal) return;
-  const ratio = el.scrollTop / Math.max(el.scrollHeight - el.clientHeight, 1);
-  const pct = Math.max(1, Math.min(99, Math.round((_lib.segOffset/_lib.segTotal)*100*Math.max(ratio,.05))));
-  const fill = document.getElementById('lib-prog-fill');
-  const label = document.getElementById('lib-prog-label');
-  if (fill) fill.style.width = pct+'%';
-  if (label) label.textContent = pct+'% read';
-  const meta = libProgress()[textId]||{};
-  saveLibProgress(textId, _lib.segOffset, _lib.segTotal, {title:meta.title, tradition:meta.tradition});
+// ── TOC ───────────────────────────────────────────────────────
+function _renderReaderTOC() {
+  const list = document.getElementById('reader-toc-list');
+  if (!list) return;
+  if (!_lib.toc.length) {
+    list.innerHTML = '<div style="padding:16px;font-size:13px;color:var(--rt-muted)">No chapters detected</div>';
+    return;
+  }
+  list.innerHTML = _lib.toc.map((tc,i)=>`
+    <button class="reader-toc-item" onclick="jumpToTOCSection(${i})" data-toc-idx="${i}">
+      <div class="reader-toc-item-num">§${i+1}</div>
+      ${escHtml(tc.label)}
+    </button>`).join('');
+}
+
+function _renderMiniTOC() {
+  const mini = document.getElementById('reader-mini-toc');
+  if (!mini) return;
+  if (!_lib.toc.length || window.innerWidth < 1024) { mini.style.display='none'; return; }
+  mini.style.display = 'block';
+  mini.innerHTML = `<div style="padding:12px 16px 8px;font-size:10px;font-weight:700;color:var(--rt-muted);text-transform:uppercase;letter-spacing:.06em">Contents</div>` +
+    _lib.toc.map((tc,i)=>`
+      <button class="reader-mini-toc-item" onclick="jumpToTOCSection(${i})" data-mini-toc-idx="${i}">${escHtml(tc.label)}</button>`).join('');
+}
+
+function _updateActiveTOCItem() {
+  if (!_lib.toc.length) return;
+  const heads = document.querySelectorAll('.reader-chapter-head');
+  let activeIdx = 0;
+  const scroll = document.getElementById('reader-scroll');
+  if (!scroll) return;
+  const scrollTop = scroll.scrollTop + 80;
+  heads.forEach((h,i)=>{
+    if (h.offsetTop <= scrollTop) activeIdx = i;
+  });
+  document.querySelectorAll('[data-toc-idx]').forEach(b=>b.classList.toggle('active',+b.dataset.tocIdx===activeIdx));
+  document.querySelectorAll('[data-mini-toc-idx]').forEach(b=>b.classList.toggle('active',+b.dataset.miniTocIdx===activeIdx));
+  // Update header section label
+  const secEl = document.getElementById('reader-header-section');
+  if (secEl && _lib.toc[activeIdx]) secEl.textContent = _lib.toc[activeIdx].label;
+}
+
+function jumpToTOCSection(idx) {
+  const tc = _lib.toc[idx];
+  if (!tc) return;
+  // Find the chapter heading
+  const heads = document.querySelectorAll('.reader-chapter-head');
+  if (heads[idx]) {
+    const scroll = document.getElementById('reader-scroll');
+    if (scroll) scroll.scrollTo({top: heads[idx].offsetTop - 60, behavior:'smooth'});
+  }
+  toggleReaderTOC(); // close drawer after jump
+}
+
+function toggleReaderTOC() {
+  document.getElementById('reader-toc-overlay')?.classList.toggle('open');
+}
+function _tocOverlayClick(e) {
+  if (e.target === document.getElementById('reader-toc-overlay')) toggleReaderTOC();
+}
+
+function navReaderSection(dir) {
+  const heads = document.querySelectorAll('.reader-chapter-head');
+  if (!heads.length) { // fallback: scroll by viewport
+    const scroll = document.getElementById('reader-scroll');
+    if (scroll) scroll.scrollBy({top: dir * (scroll.clientHeight * 0.85), behavior:'smooth'});
+    return;
+  }
+  const scroll = document.getElementById('reader-scroll');
+  const currentTop = scroll ? scroll.scrollTop : 0;
+  let target = null;
+  if (dir > 0) {
+    for (const h of heads) { if (h.offsetTop > currentTop + 40) { target = h; break; } }
+  } else {
+    for (const h of [...heads].reverse()) { if (h.offsetTop < currentTop - 40) { target = h; break; } }
+  }
+  if (target && scroll) scroll.scrollTo({top: target.offsetTop - 60, behavior:'smooth'});
+}
+
+// ── Settings ──────────────────────────────────────────────────
+function toggleReaderSettings() {
+  document.getElementById('reader-settings-overlay')?.classList.toggle('open');
+}
+function _settingsOverlayClick(e) {
+  if (e.target === document.getElementById('reader-settings-overlay')) toggleReaderSettings();
+}
+
+function setReaderTheme(theme) {
+  _rSaveSettings({theme});
+  _applyReaderSettings(_rSettings());
+}
+function setReaderSpacing(spacing) {
+  _rSaveSettings({spacing});
+  _applyReaderSettings(_rSettings());
+}
+function setReaderWidth(width) {
+  _rSaveSettings({width});
+  _applyReaderSettings(_rSettings());
+}
+function setReaderFont(font) {
+  _rSaveSettings({font});
+  _applyReaderSettings(_rSettings());
+}
+function resetReaderSettings() {
+  localStorage.removeItem('reader_settings');
+  _applyReaderSettings(_rDefaults);
+}
+function cycleReaderTheme() {
+  const themes = ['light','sepia','dark'];
+  const cur = _rSettings().theme||'light';
+  const next = themes[(themes.indexOf(cur)+1)%themes.length];
+  setReaderTheme(next);
+}
+
+// Font step — unified for both old and new reader calls
+function libFontStep(delta) {
+  const s = _rSettings();
+  const next = Math.min(26, Math.max(12, (s.fontSize||17) + delta));
+  _rSaveSettings({fontSize:next});
+  _applyReaderSettings(_rSettings());
+}
+// Legacy alias
+function _libFontStep(delta) { libFontStep(delta); }
+function _libFontSize() { return _rSettings().fontSize||17; }
+
+// ── Focus mode ────────────────────────────────────────────────
+function toggleFocusMode() {
+  const panel = document.getElementById('panel-text');
+  if (!panel) return;
+  const on = panel.classList.toggle('focus-mode');
+  if (on) {
+    const hint = document.createElement('div');
+    hint.className='reader-focus-hint';
+    hint.textContent='Focus mode · Press F or Esc to exit';
+    panel.appendChild(hint);
+    setTimeout(()=>hint.remove(), 2500);
+  }
+}
+
+// ── Keyboard shortcuts ────────────────────────────────────────
+function _initReaderKeyboard() {
+  document.removeEventListener('keydown', _readerKeyHandler);
+  document.addEventListener('keydown', _readerKeyHandler);
+}
+function _readerKeyHandler(e) {
+  const panel = document.getElementById('panel-text');
+  if (!panel || !panel.classList.contains('open')) return;
+  // Don't intercept when typing in inputs
+  if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+
+  const ctrl = e.ctrlKey || e.metaKey;
+  switch(e.key) {
+    case 'f': case 'F':
+      if (!ctrl) { e.preventDefault(); toggleFocusMode(); }
+      break;
+    case 'Escape':
+      if (document.getElementById('reader-toc-overlay')?.classList.contains('open')) { toggleReaderTOC(); e.stopPropagation(); }
+      else if (document.getElementById('reader-settings-overlay')?.classList.contains('open')) { toggleReaderSettings(); e.stopPropagation(); }
+      else if (panel.classList.contains('focus-mode')) { toggleFocusMode(); e.stopPropagation(); }
+      break;
+    case 't': case 'T':
+      if (!ctrl) { e.preventDefault(); toggleReaderTOC(); }
+      break;
+    case 'b': case 'B':
+      if (ctrl) { e.preventDefault(); bookmarkCurrentText(); }
+      break;
+    case ',':
+      if (ctrl) { e.preventDefault(); toggleReaderSettings(); }
+      break;
+    case 'ArrowLeft': e.preventDefault(); navReaderSection(-1); break;
+    case 'ArrowRight': e.preventDefault(); navReaderSection(1); break;
+    case '+': case '=': if (!ctrl) { e.preventDefault(); libFontStep(1); } break;
+    case '-': if (!ctrl) { e.preventDefault(); libFontStep(-1); } break;
+    case '1': if (!ctrl) { e.preventDefault(); setReaderTheme('light'); } break;
+    case '2': if (!ctrl) { e.preventDefault(); setReaderTheme('sepia'); } break;
+    case '3': if (!ctrl) { e.preventDefault(); setReaderTheme('dark'); } break;
+  }
+}
+
+// ── Close / cleanup ───────────────────────────────────────────
+function _readerClose() {
+  // Save progress before closing
+  const fill = document.getElementById('reader-progress-fill');
+  if (fill && _lib.currentTextId) {
+    const pct = parseFloat(fill.style.width)||0;
+    _saveProgress(pct);
+  }
+  document.removeEventListener('keydown', _readerKeyHandler);
+  document.removeEventListener('selectionchange', _onSelectionChange);
+  const scroll = document.getElementById('reader-scroll');
+  if (scroll) scroll.removeEventListener('scroll', _onReaderScroll);
+  // Close any open overlays
+  document.getElementById('reader-toc-overlay')?.classList.remove('open');
+  document.getElementById('reader-settings-overlay')?.classList.remove('open');
+  document.getElementById('panel-text')?.classList.remove('focus-mode');
+  closePanel('panel-text');
+}
+
+// ── Bookmark ──────────────────────────────────────────────────
+function _setBookmarkState(isBm) {
+  const btn = document.getElementById('lib-bm-btn');
+  const hBtn = document.getElementById('reader-bm-btn');
+  if (btn) {
+    btn.classList.toggle('bookmarked', isBm);
+    btn.innerHTML = isBm
+      ? `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:currentColor;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmarked`
+      : `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmark`;
+  }
+  if (hBtn) hBtn.classList.toggle('active', isBm);
 }
 
 function bookmarkCurrentText() {
@@ -4295,22 +5008,152 @@ function bookmarkCurrentText() {
   const isBm = btn?.classList.contains('bookmarked');
   api(isBm?'DELETE':'POST', `/library/texts/${_currentTextId}/bookmarks`)
     .then(()=>{
-      if (btn) {
-        btn.classList.toggle('bookmarked',!isBm);
-        btn.innerHTML = !isBm
-          ? `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:currentColor;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmarked`
-          : `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmark`;
-      }
-      showToast(isBm?'Bookmark removed':t('toast.text_bookmarked'),'success');
+      _setBookmarkState(!isBm);
+      showToast(isBm ? 'Bookmark removed' : t('toast.text_bookmarked'), 'success');
       if (navigator.vibrate) navigator.vibrate(15);
     })
     .catch(err=>showToast(err.message,'error'));
 }
 
 function shareCurrentText() {
-  const title = document.getElementById('text-panel-title')?.textContent||'Sangham Library';
-  if (navigator.share) navigator.share({title,url:window.location.href}).catch(()=>{});
+  const title = document.getElementById('reader-header-main')?.textContent||'Sangham Library';
+  if (navigator.share) navigator.share({title, url:window.location.href}).catch(()=>{});
   else navigator.clipboard?.writeText(window.location.href).then(()=>showToast('Link copied','success')).catch(()=>{});
+}
+
+// ── Text selection → annotation toolbar ──────────────────────
+let _selTimer = null;
+function _onSelectionChange() {
+  clearTimeout(_selTimer);
+  _selTimer = setTimeout(_checkSelection, 300);
+}
+
+function _checkSelection() {
+  const toolbar = document.getElementById('reader-ann-toolbar');
+  if (!toolbar) return;
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+    toolbar.classList.remove('visible');
+    return;
+  }
+  // Only show toolbar for text inside reader-content-area
+  const range = sel.getRangeAt(0);
+  const area = document.getElementById('reader-content-area');
+  if (!area || !area.contains(range.commonAncestorContainer)) {
+    toolbar.classList.remove('visible');
+    return;
+  }
+  // Position toolbar above selection
+  const rect = range.getBoundingClientRect();
+  const panelRect = document.getElementById('panel-text').getBoundingClientRect();
+  toolbar.style.left = Math.max(60, rect.left - panelRect.left + rect.width/2) + 'px';
+  toolbar.style.top = (rect.top - panelRect.top - 52) + 'px';
+  toolbar.classList.add('visible');
+}
+
+function _getSelectionContext() {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed) return null;
+  const selectedText = sel.toString().trim();
+  if (!selectedText) return null;
+  const range = sel.getRangeAt(0);
+  // Find containing segment
+  let node = range.commonAncestorContainer;
+  while (node && node.nodeType !== 1) node = node.parentElement;
+  const segDiv = node?.closest('[data-seg-id]');
+  return segDiv ? { selectedText, segmentId: segDiv.dataset.segId } : null;
+}
+
+async function createHighlight(color) {
+  const ctx = _getSelectionContext();
+  if (!ctx) { showToast('Select some text first','info'); return; }
+  window.getSelection()?.removeAllRanges();
+  document.getElementById('reader-ann-toolbar')?.classList.remove('visible');
+
+  if (!state.token) {
+    showToast('Sign in to save highlights','info');
+    return;
+  }
+  try {
+    const hl = await api('POST', '/library/highlights', {
+      textId: _lib.currentTextId,
+      segmentId: ctx.segmentId,
+      selectedText: ctx.selectedText,
+      color,
+    });
+    _lib.highlights.push(hl);
+    // Re-render segment
+    const segEl = document.getElementById(`seg-${ctx.segmentId}`);
+    if (segEl) {
+      const p = segEl.querySelector('.reader-seg-p');
+      if (p) p.innerHTML = _applyHighlightsToText(p.textContent, _lib.highlights.filter(h=>h.segmentId===ctx.segmentId));
+    }
+    showToast('Highlighted','success');
+    if (navigator.vibrate) navigator.vibrate(12);
+  } catch(err) {
+    showToast(err.message,'error');
+  }
+}
+
+function addAnnotationNote() {
+  const ctx = _getSelectionContext();
+  if (!ctx) { showToast('Select some text first','info'); return; }
+  window.getSelection()?.removeAllRanges();
+  document.getElementById('reader-ann-toolbar')?.classList.remove('visible');
+  _lib._pendingHighlight = ctx;
+  const preview = document.getElementById('reader-note-preview');
+  const input = document.getElementById('reader-note-input');
+  if (preview) preview.textContent = ctx.selectedText.slice(0,200)+(ctx.selectedText.length>200?'…':'');
+  if (input) input.value = '';
+  const overlay = document.getElementById('reader-note-overlay');
+  if (overlay) { overlay.style.display='flex'; input?.focus(); }
+}
+
+function _noteOverlayClick(e) {
+  if (e.target === document.getElementById('reader-note-overlay')) cancelNote();
+}
+
+function cancelNote() {
+  document.getElementById('reader-note-overlay').style.display='none';
+  _lib._pendingHighlight = null;
+}
+
+async function saveNote() {
+  const ctx = _lib._pendingHighlight;
+  const note = document.getElementById('reader-note-input')?.value?.trim();
+  if (!ctx) { cancelNote(); return; }
+  document.getElementById('reader-note-overlay').style.display='none';
+  if (!state.token) { showToast('Sign in to save notes','info'); return; }
+  try {
+    const hl = await api('POST', '/library/highlights', {
+      textId: _lib.currentTextId,
+      segmentId: ctx.segmentId,
+      selectedText: ctx.selectedText,
+      color: '#FEF08A',
+      note: note||null,
+    });
+    _lib.highlights.push(hl);
+    const segEl = document.getElementById(`seg-${ctx.segmentId}`);
+    if (segEl) {
+      const p = segEl.querySelector('.reader-seg-p');
+      if (p) p.innerHTML = _applyHighlightsToText(p.textContent, _lib.highlights.filter(h=>h.segmentId===ctx.segmentId));
+    }
+    showToast('Note saved','success');
+  } catch(err) {
+    showToast(err.message,'error');
+  }
+  _lib._pendingHighlight = null;
+}
+
+function shareSelection() {
+  const sel = window.getSelection();
+  const text = sel?.toString()?.trim();
+  document.getElementById('reader-ann-toolbar')?.classList.remove('visible');
+  if (!text) return;
+  const title = document.getElementById('reader-header-main')?.textContent||'Sangham Library';
+  const shareText = `"${text}"\n\n— ${title}`;
+  if (navigator.share) navigator.share({text:shareText}).catch(()=>{});
+  else navigator.clipboard?.writeText(shareText).then(()=>showToast('Copied to clipboard','success')).catch(()=>{});
 }
 
 function debounceLearn() {

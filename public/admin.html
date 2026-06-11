@@ -22,52 +22,27 @@
     body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; min-height: 100vh; }
 
     /* ── LOGIN ─────────────────────────────────────────────────── */
-    #login-screen {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    }
-    .login-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      padding: 2.5rem; width: 100%; max-width: 380px;
-    }
+    #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 380px; }
     .login-logo { font-size: 2rem; text-align: center; margin-bottom: 0.5rem; }
     .login-title { text-align: center; font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
     .login-sub { text-align: center; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
     .login-card label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.35rem; }
-    .login-card input {
-      width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border);
-      background: var(--bg); color: var(--text); border-radius: 8px;
-      font-size: 0.9rem; margin-bottom: 1rem; font-family: inherit;
-    }
+    .login-card input { width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 8px; font-size: 0.9rem; margin-bottom: 1rem; font-family: inherit; }
     .login-card input:focus { outline: none; border-color: var(--accent); }
-    .btn-login {
-      width: 100%; padding: 0.7rem; background: var(--accent); color: #000;
-      border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
-      cursor: pointer; font-family: inherit;
-    }
+    .btn-login { width: 100%; padding: 0.7rem; background: var(--accent); color: #000; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-login:hover { opacity: 0.9; }
     .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.75rem; text-align: center; }
 
-    /* ── BOOTSTRAP SECTION ─────────────────────────────────────── */
-    .bootstrap-toggle {
-      text-align: center; margin-top: 1.5rem; font-size: 0.76rem; color: var(--muted);
-      cursor: pointer; text-decoration: underline;
-    }
+    .bootstrap-toggle { text-align: center; margin-top: 1.5rem; font-size: 0.76rem; color: var(--muted); cursor: pointer; text-decoration: underline; }
     #bootstrap-form { margin-top: 1.2rem; border-top: 1px solid var(--border); padding-top: 1.2rem; display: none; }
     #bootstrap-form input { margin-bottom: 0.75rem; }
-    .btn-bootstrap {
-      width: 100%; padding: 0.65rem; background: var(--info); color: white;
-      border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
-      cursor: pointer; font-family: inherit;
-    }
+    .btn-bootstrap { width: 100%; padding: 0.65rem; background: var(--info); color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; }
 
     /* ── APP LAYOUT ────────────────────────────────────────────── */
     #app { display: none; min-height: 100vh; flex-direction: column; }
     #app.visible { display: flex; }
-    .app-topbar {
-      background: var(--surface); border-bottom: 1px solid var(--border);
-      padding: 0 1.5rem; height: 52px; display: flex; align-items: center;
-      justify-content: space-between; flex-shrink: 0;
-    }
+    .app-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
     .app-topbar-brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1rem; }
     .app-topbar-brand span.badge { background: var(--accent); color: #000; border-radius: 4px; padding: 1px 6px; font-size: 0.7rem; }
     .app-topbar-user { display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; color: var(--muted); }
@@ -77,16 +52,9 @@
     .app-body { display: flex; flex: 1; overflow: hidden; }
 
     /* ── SIDEBAR ───────────────────────────────────────────────── */
-    #sidebar {
-      width: 200px; flex-shrink: 0; background: var(--surface);
-      border-right: 1px solid var(--border); padding: 1rem 0; overflow-y: auto;
-    }
+    #sidebar { width: 200px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 1rem 0; overflow-y: auto; }
     .nav-section { padding: 0.5rem 1rem 0.3rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .nav-item {
-      display: flex; align-items: center; gap: 0.6rem;
-      padding: 0.55rem 1.2rem; font-size: 0.85rem; color: var(--muted);
-      cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent;
-    }
+    .nav-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 1.2rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; }
     .nav-item:hover { background: var(--surface2); color: var(--text); }
     .nav-item.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
     .nav-badge { margin-left: auto; background: var(--danger); color: white; border-radius: 10px; padding: 1px 6px; font-size: 0.65rem; font-weight: 700; }
@@ -108,16 +76,9 @@
 
     /* ── TOOLBAR ───────────────────────────────────────────────── */
     .toolbar { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
-    .toolbar input[type=search], .toolbar input[type=text] {
-      background: var(--surface); border: 1px solid var(--border); color: var(--text);
-      padding: 0.5rem 0.8rem; border-radius: 7px; font-size: 0.85rem;
-      font-family: inherit; width: 240px;
-    }
+    .toolbar input[type=search], .toolbar input[type=text] { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.8rem; border-radius: 7px; font-size: 0.85rem; font-family: inherit; width: 240px; }
     .toolbar input:focus { outline: none; border-color: var(--accent); }
-    .toolbar select {
-      background: var(--surface); border: 1px solid var(--border); color: var(--text);
-      padding: 0.5rem 0.7rem; border-radius: 7px; font-size: 0.85rem; font-family: inherit;
-    }
+    .toolbar select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.7rem; border-radius: 7px; font-size: 0.85rem; font-family: inherit; }
     .toolbar .ml-auto { margin-left: auto; }
 
     /* ── TABLE ─────────────────────────────────────────────────── */
@@ -149,29 +110,33 @@
     .btn-accent  { background: var(--accent); color: #000; }
     .btn:disabled { opacity: 0.5; cursor: default; }
 
+    /* ── ACTIONS CELL ──────────────────────────────────────────── */
+    .actions-cell { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+
     /* ── MODERATION CARD ───────────────────────────────────────── */
     .mod-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
     .mod-content { font-size: 0.85rem; color: var(--text); margin: 0.5rem 0; background: var(--surface2); padding: 0.7rem; border-radius: 7px; line-height: 1.6; }
     .mod-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
     .mod-actions { display: flex; gap: 0.5rem; }
 
-    /* ── TOAST ─────────────────────────────────────────────────── */
-    #toast {
-      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 0.75rem 1.2rem; border-radius: 8px; font-size: 0.85rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: none;
-      max-width: 320px;
+    /* ── CONFIRM MODAL ─────────────────────────────────────────── */
+    #confirm-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 1000;
+      display: none; align-items: center; justify-content: center;
     }
+    #confirm-modal.open { display: flex; }
+    .confirm-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 90%; }
+    .confirm-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--danger); }
+    .confirm-body { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.5; }
+    .confirm-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
+
+    /* ── TOAST ─────────────────────────────────────────────────── */
+    #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; background: var(--surface); border: 1px solid var(--border); padding: 0.75rem 1.2rem; border-radius: 8px; font-size: 0.85rem; box-shadow: 0 4px 16px rgba(0,0,0,0.4); display: none; max-width: 320px; }
     #toast.success { border-color: var(--success); color: var(--success); }
     #toast.error   { border-color: var(--danger); color: var(--danger); }
 
     /* ── SPINNER ───────────────────────────────────────────────── */
-    .spinner {
-      width: 24px; height: 24px; border: 2px solid var(--border);
-      border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 0.7s linear infinite; margin: 2rem auto; display: block;
-    }
+    .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 2rem auto; display: block; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── ROLE SELECT DROPDOWN ──────────────────────────────────── */
@@ -181,9 +146,25 @@
     .pagination { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.82rem; color: var(--muted); }
     .pagination button { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.3rem 0.7rem; border-radius: 5px; cursor: pointer; }
     .pagination button:disabled { opacity: 0.4; cursor: default; }
+
+    /* ── ERROR BANNER ──────────────────────────────────────────── */
+    .error-banner { background: rgba(239,68,68,0.1); border: 1px solid var(--danger); border-radius: 8px; padding: 1rem; color: var(--danger); font-size: 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+    .error-banner button { background: var(--danger); color: white; border: none; border-radius: 5px; padding: 0.25rem 0.6rem; cursor: pointer; font-size: 0.78rem; font-family: inherit; font-weight: 600; flex-shrink: 0; }
   </style>
 </head>
 <body>
+
+<!-- ── CONFIRM MODAL ──────────────────────────────────────────────────────── -->
+<div id="confirm-modal">
+  <div class="confirm-card">
+    <div class="confirm-title" id="confirm-title">Confirm Action</div>
+    <div class="confirm-body" id="confirm-body"></div>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok-btn" onclick="runConfirmAction()">Delete</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────── -->
 <div id="login-screen">
@@ -227,27 +208,25 @@
   </div>
 
   <div class="app-body">
-    <!-- Sidebar -->
     <nav id="sidebar">
       <div class="nav-section">Overview</div>
-      <div class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</div>
+      <div class="nav-item" id="nav-dashboard" onclick="showPage('dashboard')">📊 Dashboard</div>
 
       <div class="nav-section">Management</div>
-      <div class="nav-item" onclick="showPage('users')">👤 Users</div>
-      <div class="nav-item" onclick="showPage('communities')">🏛️ Communities</div>
+      <div class="nav-item" id="nav-users" onclick="showPage('users')">👤 Users</div>
+      <div class="nav-item" id="nav-communities" onclick="showPage('communities')">🏛️ Communities</div>
 
       <div class="nav-section">Moderation</div>
-      <div class="nav-item" id="nav-mod" onclick="showPage('moderation')">🚩 Reports <span class="nav-badge" id="mod-badge" style="display:none;"></span></div>
+      <div class="nav-item" id="nav-moderation" onclick="showPage('moderation')">🚩 Reports <span class="nav-badge" id="mod-badge" style="display:none;"></span></div>
 
       <div class="nav-section">Tools</div>
-      <div class="nav-item" onclick="showPage('tools')">🔧 Tools</div>
+      <div class="nav-item" id="nav-tools" onclick="showPage('tools')">🔧 Tools</div>
     </nav>
 
-    <!-- Main -->
     <main id="main">
 
       <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
+      <div class="page" id="page-dashboard">
         <div class="page-title">Dashboard</div>
         <div class="stats-grid" id="stats-grid"><div class="spinner"></div></div>
         <div style="font-size:0.78rem;color:var(--muted)" id="stats-updated"></div>
@@ -256,6 +235,7 @@
       <!-- USERS -->
       <div class="page" id="page-users">
         <div class="page-title">Users</div>
+        <div id="users-error" style="display:none"></div>
         <div class="toolbar">
           <input type="search" id="user-search" placeholder="Search by name…" oninput="debounceUsers()">
           <select id="user-role-filter" onchange="loadUsers()">
@@ -268,7 +248,8 @@
             <option value="SUPER_ADMIN">Super Admin</option>
             <option value="ASSOCIATION_ADMIN">Association Admin</option>
           </select>
-          <span id="user-total" style="font-size:0.8rem;color:var(--muted);margin-left:auto;"></span>
+          <button class="btn btn-ghost btn-sm" onclick="loadUsers()" style="margin-left:auto">↻ Refresh</button>
+          <span id="user-total" style="font-size:0.8rem;color:var(--muted);"></span>
         </div>
         <div class="table-wrap">
           <table>
@@ -276,11 +257,13 @@
               <th>Name</th><th>Email</th><th>Role</th><th>Country</th>
               <th>Posts</th><th>Joined</th><th>Actions</th>
             </tr></thead>
-            <tbody id="users-tbody"></tbody>
+            <tbody id="users-tbody">
+              <tr><td colspan="7"><div class="spinner"></div></td></tr>
+            </tbody>
           </table>
         </div>
         <div class="pagination">
-          <button id="users-prev" onclick="usersPage(-1)">← Prev</button>
+          <button id="users-prev" onclick="usersPage(-1)" disabled>← Prev</button>
           <span id="users-page-info">–</span>
           <button id="users-next" onclick="usersPage(1)">Next →</button>
         </div>
@@ -310,25 +293,18 @@
       <div class="page" id="page-tools">
         <div class="page-title">Tools</div>
         <div style="display:flex;flex-direction:column;gap:1rem;max-width:500px;">
-
           <div class="table-wrap" style="padding:1.2rem;">
             <div style="font-weight:600;margin-bottom:0.5rem;">Seed Buddhist Library</div>
-            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">
-              Populate the library with core Theravāda texts from SuttaCentral. One-time operation.
-            </div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">Populate the library with core Theravāda texts from SuttaCentral. One-time operation.</div>
             <button class="btn btn-accent" onclick="doSeedLibrary()" id="seed-btn">Run Seed</button>
             <div id="seed-result" style="margin-top:0.75rem;font-size:0.82rem;color:var(--muted);"></div>
           </div>
-
           <div class="table-wrap" style="padding:1.2rem;">
             <div style="font-weight:600;margin-bottom:0.5rem;">API Health</div>
-            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">
-              Check backend health status.
-            </div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">Check backend health status.</div>
             <button class="btn btn-ghost" onclick="checkHealth()">Check Health</button>
             <div id="health-result" style="margin-top:0.75rem;font-size:0.82rem;color:var(--success);"></div>
           </div>
-
         </div>
       </div>
 
@@ -341,8 +317,10 @@
 <script>
   const API = '/api/v1';
   let adminToken = sessionStorage.getItem('admin_token');
+  let adminRole = '';
   let usersPageNum = 1;
   let usersTimer = null;
+  let _confirmAction = null;
 
   // ── HELPERS ──────────────────────────────────────────────────────────────
   function esc(s) {
@@ -362,11 +340,32 @@
     const res = await fetch(API + path, {
       method,
       headers: { 'Content-Type': 'application/json', ...(adminToken ? { Authorization: 'Bearer ' + adminToken } : {}) },
-      ...(body ? { body: JSON.stringify(body) } : {}),
+      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || data.message || 'Request failed');
+    if (!res.ok) throw new Error(data.error || data.message || `HTTP ${res.status}`);
     return data;
+  }
+
+  // ── CONFIRM MODAL ────────────────────────────────────────────────────────
+  function openConfirm(title, body, okLabel, action) {
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-body').textContent = body;
+    document.getElementById('confirm-ok-btn').textContent = okLabel;
+    _confirmAction = action;
+    document.getElementById('confirm-modal').classList.add('open');
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirm-modal').classList.remove('open');
+    _confirmAction = null;
+  }
+
+  async function runConfirmAction() {
+    if (!_confirmAction) return;
+    const btn = document.getElementById('confirm-ok-btn');
+    btn.disabled = true;
+    try { await _confirmAction(); } finally { btn.disabled = false; closeConfirm(); }
   }
 
   // ── AUTH ─────────────────────────────────────────────────────────────────
@@ -380,13 +379,12 @@
       const data = await api('POST', '/auth/login', { email, password });
       adminToken = data.token || data.accessToken;
       if (!adminToken) throw new Error('No token in response');
-      // Verify admin role
       const me = await fetch(API + '/admin/me', {
         headers: { Authorization: 'Bearer ' + adminToken }
       }).then(r => r.json());
       if (me.error) {
         const msg = me.error === 'Admin access required'
-          ? 'Your account does not have admin access yet. Use the ⚙ Bootstrap section below to promote it first, then sign in again.'
+          ? 'Your account does not have admin access. Use the ⚙ Bootstrap section below to promote it first, then sign in again.'
           : me.error;
         errEl.textContent = msg;
         if (me.error === 'Admin access required') {
@@ -396,7 +394,7 @@
         adminToken = null; return;
       }
       sessionStorage.setItem('admin_token', adminToken);
-      initApp(me);
+      initAdminApp(me);
     } catch(e) {
       errEl.textContent = e.message;
     }
@@ -405,6 +403,7 @@
   function doLogout() {
     sessionStorage.removeItem('admin_token');
     adminToken = null;
+    adminRole = '';
     document.getElementById('app').classList.remove('visible');
     document.getElementById('login-screen').style.display = 'flex';
   }
@@ -427,30 +426,47 @@
     }
   }
 
-  function initApp(me) {
+  function initAdminApp(me) {
+    adminRole = me.role;
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').classList.add('visible');
     document.getElementById('topbar-name').textContent = me.displayName || me.email;
     const roleEl = document.getElementById('topbar-role');
     roleEl.textContent = me.role;
     roleEl.className = 'pill ' + (me.role === 'SUPER_ADMIN' ? 'pill-super' : 'pill-mod');
-    loadDashboard();
+    showPage('dashboard');
+    // Pre-load users in background so the Users tab is ready instantly
+    loadUsers();
   }
 
   // ── PAGE NAVIGATION ──────────────────────────────────────────────────────
+  // Use IDs instead of attribute selectors to avoid browser quirks with
+  // single-quote characters inside CSS attribute value selectors.
+  const PAGE_LOADERS = {
+    dashboard:   loadDashboard,
+    users:       loadUsers,
+    communities: loadCommunities,
+    moderation:  loadModeration,
+    tools:       () => {},
+  };
+
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    document.querySelector(`.nav-item[onclick="showPage('${name}')"]`).classList.add('active');
-    if (name === 'users')       loadUsers();
-    if (name === 'communities') loadCommunities();
-    if (name === 'moderation')  loadModeration();
+
+    const page = document.getElementById('page-' + name);
+    if (page) page.classList.add('active');
+
+    const navItem = document.getElementById('nav-' + name);
+    if (navItem) navItem.classList.add('active');
+
+    if (PAGE_LOADERS[name]) PAGE_LOADERS[name]();
   }
 
   // ── DASHBOARD ────────────────────────────────────────────────────────────
   async function loadDashboard() {
     const grid = document.getElementById('stats-grid');
+    grid.innerHTML = '<div class="spinner"></div>';
     try {
       const s = await api('GET', '/admin/stats');
       grid.innerHTML = `
@@ -462,12 +478,10 @@
         <div class="stat-card"><div class="s-label">Live Sessions</div><div class="s-value">${s.sessions}</div></div>
         <div class="stat-card success"><div class="s-label">Contributors</div><div class="s-value">${s.contributors}</div></div>
         <div class="stat-card ${s.pendingClergy > 0 ? 'danger' : ''}">
-          <div class="s-label">Pending Verifications</div>
-          <div class="s-value">${s.pendingClergy}</div>
+          <div class="s-label">Pending Verifications</div><div class="s-value">${s.pendingClergy}</div>
         </div>
         <div class="stat-card ${s.openReports > 0 ? 'danger' : ''}">
-          <div class="s-label">Open Reports</div>
-          <div class="s-value">${s.openReports}</div>
+          <div class="s-label">Open Reports</div><div class="s-value">${s.openReports}</div>
         </div>
       `;
       if (s.openReports > 0) {
@@ -476,7 +490,7 @@
       }
       document.getElementById('stats-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
     } catch(e) {
-      grid.innerHTML = `<div style="color:var(--danger);padding:1rem;">${e.message}</div>`;
+      grid.innerHTML = `<div class="error-banner">${esc(e.message)}<button onclick="loadDashboard()">Retry</button></div>`;
     }
   }
 
@@ -493,7 +507,10 @@
 
   async function loadUsers() {
     const tbody = document.getElementById('users-tbody');
+    const errBanner = document.getElementById('users-error');
     tbody.innerHTML = '<tr><td colspan="7"><div class="spinner" style="margin:1rem auto;"></div></td></tr>';
+    errBanner.style.display = 'none';
+
     const q    = document.getElementById('user-search').value.trim();
     const role = document.getElementById('user-role-filter').value;
     const limit = 50;
@@ -516,15 +533,16 @@
       tbody.innerHTML = users.map(u => {
         const rolePill = u.role === 'SUPER_ADMIN' ? 'pill-super' : u.role === 'MODERATOR' ? 'pill-mod' : 'pill-user';
         const joined = new Date(u.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' });
+        const canDelete = adminRole === 'SUPER_ADMIN' && u.role !== 'SUPER_ADMIN';
         return `<tr id="urow-${u.id}">
           <td>
             <div style="font-weight:600;">${esc(u.displayName)}</div>
-            ${u.isVerifiedClergy ? '<span class="pill pill-verified" style="font-size:0.65rem;">Bhikkhu</span>' : ''}
+            ${u.isVerifiedClergy ? '<span class="pill pill-verified" style="font-size:0.65rem;">Clergy</span>' : ''}
             ${!u.isActive ? '<span class="pill pill-banned" style="font-size:0.65rem;">Banned</span>' : ''}
           </td>
           <td style="color:var(--muted);font-size:0.8rem;">${esc(u.email || '–')}</td>
           <td>
-            <select class="role-select" onchange="changeRole('${u.id}',this.value)" ${u.role === 'SUPER_ADMIN' ? '' : ''}>
+            <select class="role-select" onchange="changeRole('${u.id}',this.value)">
               ${['PRACTITIONER','BHIKKHU','BHIKKHUNI','SCHOLAR','ASSOCIATION_ADMIN','MODERATOR','SUPER_ADMIN'].map(r =>
                 `<option value="${r}" ${r === u.role ? 'selected' : ''}>${r}</option>`
               ).join('')}
@@ -534,14 +552,20 @@
           <td>${u._count?.posts || 0}</td>
           <td style="color:var(--muted);font-size:0.78rem;">${joined}</td>
           <td>
-            <button class="btn btn-sm ${u.isActive ? 'btn-danger' : 'btn-success'}" onclick="banUser('${u.id}',${u.isActive})">
-              ${u.isActive ? 'Ban' : 'Unban'}
-            </button>
+            <div class="actions-cell">
+              <button class="btn btn-sm ${u.isActive ? 'btn-warn' : 'btn-success'}" onclick="banUser('${u.id}',${u.isActive})">
+                ${u.isActive ? 'Ban' : 'Unban'}
+              </button>
+              ${canDelete ? `<button class="btn btn-sm btn-danger" onclick="confirmDeleteUser('${u.id}','${esc(u.displayName)}')">Delete</button>` : ''}
+            </div>
           </td>
         </tr>`;
       }).join('');
     } catch(e) {
-      tbody.innerHTML = `<tr class="empty-row"><td colspan="7" style="color:var(--danger);">${e.message}</td></tr>`;
+      tbody.innerHTML = '';
+      errBanner.innerHTML = `<span>${esc(e.message)}</span><button onclick="loadUsers()">Retry</button>`;
+      errBanner.className = 'error-banner';
+      errBanner.style.display = 'flex';
     }
   }
 
@@ -563,6 +587,24 @@
     } catch(e) {
       toast(e.message, 'error');
     }
+  }
+
+  function confirmDeleteUser(userId, displayName) {
+    openConfirm(
+      'Permanently Delete User',
+      `Are you sure you want to permanently delete "${displayName}"? This will remove all their posts, messages, and data. This cannot be undone.`,
+      'Delete Permanently',
+      async () => {
+        await api('DELETE', `/admin/users/${userId}`);
+        toast(`User "${displayName}" deleted`, 'success');
+        const row = document.getElementById('urow-' + userId);
+        if (row) row.remove();
+        // Update total count
+        const totalEl = document.getElementById('user-total');
+        const current = parseInt(totalEl.textContent) || 0;
+        if (current > 0) totalEl.textContent = (current - 1) + ' users';
+      }
+    );
   }
 
   // ── COMMUNITIES ──────────────────────────────────────────────────────────
@@ -588,11 +630,7 @@
           <td style="color:var(--muted);font-size:0.8rem;">${catLabel[c.category] || c.category}</td>
           <td style="color:var(--muted);">${[c.city, c.country].filter(Boolean).join(', ') || '–'}</td>
           <td>${c._count?.members || 0}</td>
-          <td>
-            ${c.isVerified
-              ? '<span class="pill pill-verified">✓ Verified</span>'
-              : '<span class="pill pill-user">Unverified</span>'}
-          </td>
+          <td>${c.isVerified ? '<span class="pill pill-verified">✓ Verified</span>' : '<span class="pill pill-user">Unverified</span>'}</td>
           <td>
             <button class="btn btn-sm ${c.isVerified ? 'btn-ghost' : 'btn-success'}" onclick="verifyComm('${c.id}',${!c.isVerified},this)">
               ${c.isVerified ? 'Remove verify' : 'Verify'}
@@ -601,7 +639,7 @@
         </tr>`;
       }).join('');
     } catch(e) {
-      tbody.innerHTML = `<tr class="empty-row"><td colspan="6" style="color:var(--danger);">${e.message}</td></tr>`;
+      tbody.innerHTML = `<tr class="empty-row"><td colspan="6" style="color:var(--danger);">${esc(e.message)} <button class="btn btn-sm btn-ghost" style="margin-left:0.5rem" onclick="loadCommunities()">Retry</button></td></tr>`;
     }
   }
 
@@ -643,7 +681,7 @@
         </div>`;
       }).join('');
     } catch(e) {
-      el.innerHTML = `<div style="color:var(--danger);padding:1rem;">${e.message}</div>`;
+      el.innerHTML = `<div class="error-banner">${esc(e.message)}<button onclick="loadModeration()">Retry</button></div>`;
     }
   }
 
@@ -656,9 +694,7 @@
       const remaining = document.querySelectorAll('.mod-card').length;
       document.getElementById('mod-badge').textContent = remaining || '';
       document.getElementById('mod-badge').style.display = remaining ? '' : 'none';
-      if (!remaining) {
-        document.getElementById('mod-list').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">✓ No open reports — queue is clear</div>';
-      }
+      if (!remaining) document.getElementById('mod-list').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">✓ No open reports — queue is clear</div>';
     } catch(e) {
       toast(e.message, 'error');
     }
@@ -701,9 +737,9 @@
       const me = await fetch(API + '/admin/me', {
         headers: { Authorization: 'Bearer ' + adminToken }
       }).then(r => r.json());
-      if (me.error || !me.id) { sessionStorage.removeItem('admin_token'); return; }
-      initApp(me);
-    } catch(_) { sessionStorage.removeItem('admin_token'); }
+      if (me.error || !me.id) { sessionStorage.removeItem('admin_token'); adminToken = null; return; }
+      initAdminApp(me);
+    } catch(_) { sessionStorage.removeItem('admin_token'); adminToken = null; }
   })();
 </script>
 </body>

@@ -87,6 +87,20 @@ router.put('/users/:id/ban', authenticate, requireRole(...adminRoles), async (re
   res.json({ message: ban ? 'User banned' : 'User unbanned' });
 });
 
+// DELETE /admin/users/:id — permanently remove a user (SUPER_ADMIN only, cannot self-delete)
+router.delete('/users/:id', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
+  if (req.params.id === req.user!.id) {
+    res.status(400).json({ error: 'Cannot delete your own account' }); return;
+  }
+  const target = await prisma.user.findUnique({ where: { id: req.params.id }, select: { id: true, email: true, displayName: true, role: true } });
+  if (!target) { res.status(404).json({ error: 'User not found' }); return; }
+  if (target.role === UserRole.SUPER_ADMIN) {
+    res.status(400).json({ error: 'Cannot delete another Super Admin' }); return;
+  }
+  await prisma.user.delete({ where: { id: req.params.id } });
+  res.json({ message: `User ${target.displayName} (${target.email || target.id}) permanently deleted` });
+});
+
 // GET /admin/moderation/queue
 router.get('/moderation/queue', authenticate, requireRole(...adminRoles), async (_req: AuthRequest, res: Response): Promise<void> => {
   const reports = await prisma.contentReport.findMany({

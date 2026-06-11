@@ -161,7 +161,9 @@ model User {
   interestTags      String[]        @default([]) @map("interest_tags")
   intentTags        String[]        @default([]) @map("intent_tags")
 
-  daanContributions  DhammaDaanContribution[]
+  daanContributions   DhammaDaanContribution[]
+  readingProgress     ReadingProgress[]
+  highlights          Highlight[]
   projectsOwned        Project[]          @relation("ProjectOwner")
   projectMemberships   ProjectMember[]
   resourcesContributed Resource[]         @relation("ResourceContributor")
@@ -294,9 +296,11 @@ model LibraryText {
   isSearchable Boolean            @default(true) @map("is_searchable")
   createdAt    DateTime           @default(now()) @map("created_at")
 
-  collection   LibraryCollection  @relation(fields: [collectionId], references: [id])
-  segments     LibrarySegment[]
-  bookmarks    Bookmark[]
+  collection       LibraryCollection  @relation(fields: [collectionId], references: [id])
+  segments         LibrarySegment[]
+  bookmarks        Bookmark[]
+  readingProgress  ReadingProgress[]
+  highlights       Highlight[]
 
   @@index([collectionId])
   @@index([language])
@@ -314,6 +318,7 @@ model LibrarySegment {
 
   text        LibraryText   @relation(fields: [textId], references: [id], onDelete: Cascade)
   annotations Annotation[]
+  highlights  Highlight[]
 
   @@unique([textId, segmentKey])
   @@index([textId])
@@ -345,6 +350,44 @@ model Annotation {
   segment     LibrarySegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
 
   @@map("annotations")
+}
+
+model ReadingProgress {
+  id               String      @id @default(uuid())
+  userId           String      @map("user_id")
+  textId           String      @map("text_id")
+  currentSegment   Int         @default(0) @map("current_segment")
+  percentComplete  Decimal     @default(0) @db.Decimal(5,2) @map("percent_complete")
+  isCompleted      Boolean     @default(false) @map("is_completed")
+  lastReadAt       DateTime    @default(now()) @map("last_read_at")
+  timeSpentSeconds Int         @default(0) @map("time_spent_seconds")
+
+  user             User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text             LibraryText @relation(fields: [textId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, textId])
+  @@index([userId])
+  @@map("reading_progress")
+}
+
+model Highlight {
+  id           String         @id @default(uuid())
+  userId       String         @map("user_id")
+  textId       String         @map("text_id")
+  segmentId    String         @map("segment_id")
+  selectedText String         @db.Text @map("selected_text")
+  color        String         @default("#FEF08A")
+  note         String?        @db.VarChar(1000)
+  isPublic     Boolean        @default(false) @map("is_public")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text         LibraryText    @relation(fields: [textId], references: [id], onDelete: Cascade)
+  segment      LibrarySegment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, textId])
+  @@map("highlights")
 }
 
 // ── Live Sessions ─────────────────────────────────────────────────────────────
