@@ -5451,6 +5451,8 @@ async function openCourse(courseId) {
     document.getElementById('community-panel-title').textContent = course.title;
     content.innerHTML = renderCourseDetail(course);
     if (communityState.currentId) loadCourseRelated(communityState.currentId);
+    const isInstructor = state.user && (course.instructorId === state.user.id || course.ownerId === state.user.id);
+    if (isInstructor) loadLessonResourcePicker(courseId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
   }
@@ -5504,9 +5506,23 @@ function renderCourseDetail(course) {
     </div>`;
   }).join('');
 
-  const enrollCount = course._count?.enrollments ?? 0;
-  const isEnrolled  = !!course.isEnrolled;
-  const enrollBtn = state.user ? `
+  const enrollCount  = course._count?.enrollments ?? 0;
+  const isEnrolled   = !!course.isEnrolled;
+  const isInstructor = !!(state.user && (course.instructorId === state.user.id || course.ownerId === state.user.id));
+  const isDraft      = course.status === 'DRAFT';
+
+  const instructorBar = isInstructor ? `
+    <div style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3);background:var(--surface-sunken);border-radius:var(--radius-lg);margin-bottom:var(--space-3);border:1px solid var(--border-subtle)">
+      <span style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:${isDraft?'var(--saffron-600)':'var(--success-600,#16a34a)'}">
+        ${isDraft ? '📝 Draft — not visible to students' : '✅ Published'}
+      </span>
+      <button id="course-publish-btn" class="btn ${isDraft?'btn-primary':'btn-ghost'} btn-sm" style="margin-left:auto;white-space:nowrap"
+        onclick="toggleCoursePublish('${course.id}','${course.status}',this)">
+        ${isDraft ? 'Publish Course' : 'Unpublish'}
+      </button>
+    </div>` : '';
+
+  const enrollBtn = !isInstructor && state.user ? `
     <button id="course-enroll-btn"
       class="btn ${isEnrolled ? 'btn-ghost' : 'btn-primary'}"
       style="width:100%;margin-bottom:var(--space-3)"
@@ -5514,15 +5530,34 @@ function renderCourseDetail(course) {
       ${isEnrolled ? '✓ Enrolled — Leave Course' : 'Enroll in This Course'}
     </button>` : '';
 
+  const addLessonSection = isInstructor ? `
+    <div style="margin-top:var(--space-5);border-top:1px solid var(--border-subtle);padding-top:var(--space-4)">
+      <h2 class="section-title" style="margin-bottom:var(--space-3)">Add Lesson</h2>
+      <div class="input-group"><label>Lesson Title *</label>
+        <input id="new-lesson-title" class="input" placeholder="e.g. Introduction to the Four Noble Truths">
+      </div>
+      <div class="input-group"><label>Content (optional)</label>
+        <textarea id="new-lesson-content" class="input" rows="3" style="resize:vertical" placeholder="Lesson notes, instructions, or context…"></textarea>
+      </div>
+      <div class="input-group">
+        <label>Attach Resource (optional)</label>
+        <div id="lesson-resource-picker"><div class="spinner" style="width:16px;height:16px;margin:4px 0"></div></div>
+        <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px">Upload a PDF, video, or article first via Resources tab, then attach it here.</div>
+      </div>
+      <button id="add-lesson-btn" class="btn btn-primary" style="width:100%" onclick="submitAddLesson('${course.id}')">+ Add Lesson</button>
+    </div>` : '';
+
   const posts = (course.thread?.posts || []).map(p => renderDiscussionPost(p)).join('');
 
   return `
     <div style="padding:var(--space-4)">
+      ${instructorBar}
       ${course.instructor ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-1)">Instructor: <strong>${escHtml(course.instructor.displayName)}</strong></div>` : ''}
       <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-3)">${course._count?.lessons||0} lessons · ${enrollCount} enrolled · ${course.language||'en'}</div>
       ${course.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.6;margin-bottom:var(--space-4)">${escHtml(course.description)}</div>` : ''}
       ${enrollBtn}
       ${lessons ? `<h2 class="section-title" style="margin-bottom:var(--space-3)">${t('common.lessons')}</h2><div class="comm-member-list" style="padding:0;margin:0">${lessons}</div>` : `<p style="color:var(--text-tertiary);font-size:var(--text-sm)">${t('common.no_lessons')}</p>`}
+      ${addLessonSection}
       <div class="discussion-section">
         <h2 class="section-title" style="margin-bottom:var(--space-3)">Discussion</h2>
         <div id="active-discussion-posts">${posts || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No discussion yet. Be the first.</p>'}</div>
@@ -5554,6 +5589,63 @@ async function toggleCourseEnrollment(courseId, btn) {
     }
   } catch(err) { showToast(err.message, 'error'); }
   btn.disabled = false;
+}
+
+async function toggleCoursePublish(courseId, currentStatus, btn) {
+  const newStatus = currentStatus === 'DRAFT' ? 'PUBLISHED' : 'DRAFT';
+  btn.disabled = true;
+  btn.textContent = newStatus === 'PUBLISHED' ? 'Publishing…' : 'Unpublishing…';
+  try {
+    await api('PUT', `/courses/${courseId}`, { status: newStatus });
+    showToast(newStatus === 'PUBLISHED' ? 'Course published! Students can now enroll.' : 'Moved to Draft.', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    openCourse(courseId);
+  } catch(err) {
+    showToast(err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = currentStatus === 'DRAFT' ? 'Publish Course' : 'Unpublish';
+  }
+}
+
+async function loadLessonResourcePicker(courseId) {
+  const el = document.getElementById('lesson-resource-picker');
+  if (!el || !state.user) return;
+  try {
+    const data = await api('GET', `/resources?contributorId=${state.user.id}&limit=30`);
+    const resources = data.data || data || [];
+    if (!resources.length) {
+      el.innerHTML = `<div style="font-size:var(--text-xs);color:var(--text-secondary)">No resources yet. <button class="link-btn" onclick="openCreateStandalone('resource')">Upload a resource</button>, then come back to attach it.</div>`;
+    } else {
+      el.innerHTML = `<select id="new-lesson-resource" class="create-form-select">
+        <option value="">None (text-only lesson)</option>
+        ${resources.map(r => `<option value="${escHtml(r.id)}">${escHtml(r.title)} (${(r.type||'').replace(/_/g,' ')})</option>`).join('')}
+      </select>`;
+    }
+  } catch {
+    el.innerHTML = `<select id="new-lesson-resource" class="create-form-select"><option value="">None</option></select>`;
+  }
+}
+
+async function submitAddLesson(courseId) {
+  const title      = document.getElementById('new-lesson-title')?.value.trim();
+  const content    = document.getElementById('new-lesson-content')?.value.trim();
+  const resourceId = document.getElementById('new-lesson-resource')?.value || null;
+  if (!title) { showToast('Lesson title is required', 'error'); return; }
+  const btn = document.getElementById('add-lesson-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
+  try {
+    await api('POST', `/courses/${courseId}/lessons`, {
+      title,
+      ...(content    ? { content }    : {}),
+      ...(resourceId ? { resourceId } : {}),
+    });
+    showToast('Lesson added!', 'success');
+    if (navigator.vibrate) navigator.vibrate(15);
+    openCourse(courseId);
+  } catch(err) {
+    showToast(err.message, 'error');
+    if (btn) { btn.disabled = false; btn.textContent = '+ Add Lesson'; }
+  }
 }
 
 // Bug 9: open resource URL directly from the card data-url — no API call needed
