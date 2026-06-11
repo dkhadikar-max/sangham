@@ -104,22 +104,47 @@ router.post('/segments/:id/annotations', authenticate, async (req: AuthRequest, 
   res.status(201).json(annotation);
 });
 
-// GET /library/daily-verse
-router.get('/daily-verse', async (_req: AuthRequest, res: Response): Promise<void> => {
-  const cacheKey = 'library:daily_verse';
+// GET /library/daily-verse?lang=en
+// Fallback hierarchy: requested lang → en → any
+router.get('/daily-verse', async (req: AuthRequest, res: Response): Promise<void> => {
+  const requested = typeof req.query.lang === 'string' && req.query.lang.trim()
+    ? req.query.lang.trim().toLowerCase()
+    : 'en';
+
+  // Resolve effective language with fallback
+  let effectiveLang = requested;
+  let total = await prisma.librarySegment.count({ where: { text: { language: effectiveLang } } });
+
+  if (total === 0 && effectiveLang !== 'en') {
+    effectiveLang = 'en';
+    total = await prisma.librarySegment.count({ where: { text: { language: 'en' } } });
+  }
+
+  const useAny = total === 0;
+  if (useAny) {
+    total = await prisma.librarySegment.count();
+  }
+
+  if (total === 0) { res.json({ message: 'Library not yet seeded' }); return; }
+
+  const cacheKey = `library:daily_verse:${useAny ? 'any' : effectiveLang}`;
   const cached = await redis.get(cacheKey).catch(() => null);
   if (cached) { res.json(JSON.parse(cached)); return; }
 
-  // Pick a deterministic but rotating verse based on day-of-year
+  // Deterministic rotation: different verse each day, same verse for all users on the same day
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
-  const totalSegments = await prisma.librarySegment.count();
-  if (totalSegments === 0) { res.json({ message: 'Library not yet seeded' }); return; }
+  const where = useAny ? {} : { text: { language: effectiveLang } };
   const verse = await prisma.librarySegment.findFirst({
-    skip: dayOfYear % totalSegments,
-    include: { text: { select: { title: true, attribution: true, licence: true } } },
+    where,
+    orderBy: { id: 'asc' },
+    skip: dayOfYear % total,
+    include: { text: { select: { title: true, attribution: true, licence: true, language: true } } },
   });
-  await redis.setex(cacheKey, CACHE_TTL.DAILY_VERSE, JSON.stringify(verse)).catch(() => {});
-  res.json(verse);
+  if (!verse) { res.json({ message: 'No verse found' }); return; }
+
+  const result = { ...verse, resolvedLang: effectiveLang, requestedLang: requested };
+  await redis.setex(cacheKey, CACHE_TTL.DAILY_VERSE, JSON.stringify(result)).catch(() => {});
+  res.json(result);
 });
 
 // GET /library/collections

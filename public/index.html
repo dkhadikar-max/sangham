@@ -1905,6 +1905,11 @@ async function setLanguage(lang) {
     if (state.user) { state.user.preferredLanguage = _lang; saveSession(); }
     api('PUT', '/users/me', { preferredLanguage: _lang }).catch(() => {});
   }
+  // Reload verse in new language if home tab is visible
+  const homeTab = document.getElementById('tab-home');
+  if (homeTab && !homeTab.classList.contains('hidden') && typeof loadDailyVerse === 'function') {
+    loadDailyVerse();
+  }
 }
 
 // ============================================================
@@ -2529,12 +2534,16 @@ async function loadDailyVerse() {
     return;
   }
   try {
-    const verse = await api('GET', '/library/daily-verse');
+    const verse = await api('GET', `/library/daily-verse?lang=${encodeURIComponent(_lang || 'en')}`);
     if (!verse || !verse.content) { container.innerHTML = ''; return; }
     _currentVerseTextId = verse.textId || null;
     const text = verse.content;
     const preview = text.length > 90 ? text.slice(0, 90).trimEnd() + '…' : text;
     const hasTrunc = text.length > 90;
+    // Show a subtle note when falling back to a different language than requested
+    const langNote = (verse.resolvedLang && verse.requestedLang && verse.resolvedLang !== verse.requestedLang)
+      ? `<div style="font-size:10px;opacity:.55;margin-top:4px">Shown in ${verse.resolvedLang.toUpperCase()} — no ${verse.requestedLang.toUpperCase()} verse available today</div>`
+      : '';
     container.innerHTML = `
       <div class="dvc" id="dvcCard">
         <button class="dvc-dismiss" onclick="dismissVerse()" aria-label="Dismiss">✕</button>
@@ -2544,7 +2553,8 @@ async function loadDailyVerse() {
             <div class="dvc-label">${t('home.daily_wisdom')}</div>
             <div class="dvc-preview" id="dvcPreview">${escHtml(preview)}</div>
             ${hasTrunc ? `<div class="dvc-full" id="dvcFull">${escHtml(text)}</div>` : ''}
-            <div class="dvc-source">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + escHtml(verse.segmentKey) : ''}</div>
+            <div class="dvc-source">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + escHtml(verse.segmentKey) : ''}${verse.text?.language ? ' · ' + verse.text.language.toUpperCase() : ''}</div>
+            ${langNote}
             <div class="dvc-actions">
               ${hasTrunc ? `<button class="dvc-btn" id="dvcReadMore" onclick="toggleVerseExpand()">${t('home.read_more')}</button>` : ''}
               <button class="dvc-btn" onclick="bookmarkVerse()">🔖 ${t('home.save_verse')}</button>
