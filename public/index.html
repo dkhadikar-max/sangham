@@ -6,7 +6,7 @@
   <title>Sangham</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   <style>
     :root {
@@ -785,6 +785,164 @@ round:var(--error-600)}
     .daan-impact-allocation{margin-top:var(--space-3);font-size:var(--text-xs);color:var(--text-secondary);line-height:1.5}
     .daan-impact-give{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--saffron-600);background:none;border:none;padding:0;cursor:pointer;margin-top:var(--space-2);display:block}
 
+    /* ── Dhamma Daan full-page panel ─────────────────── */
+    :root {
+      --daan-deep-brown:#3D2314; --daan-deep-brown-soft:#5C3A24;
+      --daan-saffron:#C17A2C; --daan-saffron-light:#D4953F; --daan-saffron-pale:#E8B96A;
+      --daan-saffron-glow:rgba(193,122,44,0.08); --daan-saffron-glow-strong:rgba(193,122,44,0.15);
+      --daan-forest:#3D5A3D; --daan-forest-pale:#8DAF8D;
+      --daan-cream:#F5F0E6; --daan-cream-border:#D4C9B0; --daan-cream-hover:#C9BC9F;
+      --daan-parchment:#FAF6EE; --daan-parchment-elevated:#FFFFFF;
+      --daan-ink:#2A1F14; --daan-ink-muted:#5C4A38; --daan-ink-light:#7A6650; --daan-ink-faint:#9A8568;
+      --daan-shadow-sm:0 1px 2px rgba(42,31,20,0.04);
+      --daan-shadow-md:0 4px 16px rgba(42,31,20,0.06);
+      --daan-shadow-lg:0 12px 40px rgba(42,31,20,0.08);
+      --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+      --ease-out-quart:cubic-bezier(0.25,1,0.5,1);
+    }
+    @keyframes daanFadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes daanFadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes daanBreathe{0%,100%{opacity:0.7}50%{opacity:1}}
+    @keyframes daanFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+    #panel-dhamma-daan{overflow:hidden}
+    #panel-dhamma-daan{--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'Inter',system-ui,sans-serif;--font-mono:'JetBrains Mono',monospace}
+    #panel-dhamma-daan .daan-page-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:var(--font-body);background:var(--daan-parchment);color:var(--daan-ink);line-height:1.6}
+    #panel-dhamma-daan .daan-page-back-btn{position:absolute;top:var(--space-4);left:var(--space-4);z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(42,31,20,0.5);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:white;backdrop-filter:blur(8px);transition:background 0.2s var(--ease-out-expo)}
+    #panel-dhamma-daan .daan-page-back-btn:hover{background:rgba(42,31,20,0.75)}
+    #panel-dhamma-daan .daan-page-back-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    #panel-dhamma-daan ::selection{background:var(--daan-saffron-glow-strong);color:var(--daan-ink)}
+    #panel-dhamma-daan .anim-fade-up{opacity:0;animation:daanFadeUp 1s var(--ease-out-expo) forwards}
+    #panel-dhamma-daan .anim-fade-in{opacity:0;animation:daanFadeIn 1.2s var(--ease-out-quart) forwards}
+    #panel-dhamma-daan .anim-delay-1{animation-delay:0.1s} #panel-dhamma-daan .anim-delay-2{animation-delay:0.2s}
+    #panel-dhamma-daan .anim-delay-3{animation-delay:0.3s} #panel-dhamma-daan .anim-delay-4{animation-delay:0.4s}
+    #panel-dhamma-daan .anim-delay-5{animation-delay:0.5s} #panel-dhamma-daan .anim-delay-6{animation-delay:0.6s}
+
+    #panel-dhamma-daan .container{max-width:1200px;margin:0 auto;padding:0 var(--space-6)}
+    @media(min-width:768px){#panel-dhamma-daan .container{padding:0 var(--space-8)}}
+    #panel-dhamma-daan .section{padding:var(--space-24) 0}
+    @media(min-width:768px){#panel-dhamma-daan .section{padding:var(--space-20) 0}}
+
+    #panel-dhamma-daan .display-xl{font-family:var(--font-display);font-size:clamp(2.5rem,8vw,5.5rem);font-weight:300;line-height:1.05;letter-spacing:-0.03em;color:var(--daan-ink)}
+    #panel-dhamma-daan .display-lg{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:400;line-height:1.1;letter-spacing:-0.02em}
+    #panel-dhamma-daan .display-md{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.25rem);font-weight:400;line-height:1.2;letter-spacing:-0.01em}
+    #panel-dhamma-daan .body-lg{font-family:var(--font-body);font-size:clamp(1.0625rem,1.5vw,1.25rem);font-weight:400;line-height:1.7;color:var(--daan-ink-muted)}
+    #panel-dhamma-daan .body-md{font-family:var(--font-body);font-size:1rem;font-weight:400;line-height:1.7;color:var(--daan-ink-light)}
+    #panel-dhamma-daan .label{font-family:var(--font-body);font-size:0.6875rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--daan-ink-faint)}
+    #panel-dhamma-daan .italic{font-style:italic} #panel-dhamma-daan .text-center{text-align:center} #panel-dhamma-daan .text-balance{text-wrap:balance}
+
+    #panel-dhamma-daan .hero{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    #panel-dhamma-daan .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    #panel-dhamma-daan .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,31,20,0.1) 0%,rgba(42,31,20,0.3) 50%,rgba(42,31,20,0.7) 100%);z-index:1}
+    #panel-dhamma-daan .hero-content{position:relative;z-index:2;text-align:center;max-width:720px;padding:var(--space-8);color:white}
+    #panel-dhamma-daan .hero-enso{width:80px;height:80px;margin:0 auto var(--space-6);opacity:0.7}
+    #panel-dhamma-daan .hero-enso svg{width:100%;height:100%;fill:none;stroke:var(--daan-saffron-pale);stroke-width:2.5;stroke-linecap:round}
+    #panel-dhamma-daan .hero-label{display:inline-flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .hero-label-dot{width:6px;height:6px;border-radius:50%;background:var(--daan-saffron-pale);animation:daanBreathe 3s ease-in-out infinite}
+    #panel-dhamma-daan .hero-label-text{font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6)}
+    #panel-dhamma-daan .hero-title{font-family:var(--font-display);font-size:clamp(2.5rem,7vw,5rem);font-weight:300;line-height:1.05;letter-spacing:-0.03em;color:white;margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .hero-subtitle{font-family:var(--font-display);font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:300;font-style:italic;line-height:1.4;color:rgba(255,255,255,0.75);margin-bottom:var(--space-8)}
+    #panel-dhamma-daan .hero-verse{font-size:0.8125rem;font-weight:400;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:var(--space-10)}
+    #panel-dhamma-daan .hero-cta{display:inline-flex;align-items:center;gap:var(--space-3);padding:var(--space-4) var(--space-10);background:var(--daan-saffron);color:white;border:none;border-radius:100px;font-family:var(--font-body);font-size:1rem;font-weight:500;cursor:pointer;transition:all 0.4s var(--ease-out-expo);text-decoration:none}
+    #panel-dhamma-daan .hero-cta:hover{background:var(--daan-saffron-light);transform:translateY(-2px);box-shadow:0 8px 30px rgba(193,122,44,0.3)}
+    #panel-dhamma-daan .hero-scroll{position:absolute;bottom:var(--space-8);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:var(--space-2);color:rgba(255,255,255,0.4);font-size:0.6875rem;letter-spacing:0.15em;text-transform:uppercase;animation:daanFloat 3s ease-in-out infinite;z-index:2}
+    #panel-dhamma-daan .hero-scroll-line{width:1px;height:48px;background:linear-gradient(180deg,rgba(255,255,255,0.3),transparent)}
+
+    #panel-dhamma-daan .building-section{background:var(--daan-parchment)}
+    #panel-dhamma-daan .building-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .building-content{max-width:680px;margin:0 auto;text-align:center}
+    #panel-dhamma-daan .building-body{margin-bottom:var(--space-8)}
+    #panel-dhamma-daan .building-quote{border-left:2px solid var(--daan-saffron);padding-left:var(--space-6);margin:var(--space-8) auto;max-width:480px;text-align:left}
+    #panel-dhamma-daan .building-quote p{font-family:var(--font-display);font-size:1.5rem;font-weight:300;font-style:italic;line-height:1.5;color:var(--daan-ink-muted)}
+    #panel-dhamma-daan .building-quote cite{display:block;margin-top:var(--space-4);font-size:0.8125rem;font-style:normal;color:var(--daan-ink-faint);letter-spacing:0.05em}
+
+    #panel-dhamma-daan .focus-section{background:var(--daan-deep-brown);color:white}
+    #panel-dhamma-daan .focus-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .focus-header .label{color:rgba(255,255,255,0.35);margin-bottom:var(--space-4)}
+    #panel-dhamma-daan .focus-header .display-lg{color:white}
+    #panel-dhamma-daan .focus-grid{display:grid;grid-template-columns:1fr;gap:var(--space-6)}
+    @media(min-width:768px){#panel-dhamma-daan .focus-grid{grid-template-columns:1fr 1fr;gap:var(--space-8)}}
+    #panel-dhamma-daan .focus-card{background:var(--daan-deep-brown-soft);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:var(--space-10);transition:all 0.5s var(--ease-out-expo)}
+    #panel-dhamma-daan .focus-card:hover{border-color:rgba(255,255,255,0.1);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+    #panel-dhamma-daan .focus-card-number{font-family:var(--font-mono);font-size:0.6875rem;font-weight:500;color:var(--daan-saffron-pale);letter-spacing:0.1em;margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .focus-card-title{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);font-weight:400;color:white;margin-bottom:var(--space-4);line-height:1.2}
+    #panel-dhamma-daan .focus-card-body{font-size:1rem;line-height:1.7;color:rgba(255,255,255,0.5);margin-bottom:var(--space-8)}
+    #panel-dhamma-daan .focus-card-list{list-style:none}
+    #panel-dhamma-daan .focus-card-list li{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;font-size:0.875rem;color:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.04)}
+    #panel-dhamma-daan .focus-card-list li:last-child{border-bottom:none}
+    #panel-dhamma-daan .focus-card-list .check{width:16px;height:16px;border-radius:50%;background:rgba(61,90,61,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    #panel-dhamma-daan .focus-card-list .check svg{width:8px;height:8px;stroke:var(--daan-forest-pale)}
+
+    #panel-dhamma-daan .pillars-section{background:var(--daan-parchment)}
+    #panel-dhamma-daan .pillars-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .pillars-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-6)}
+    @media(min-width:768px){#panel-dhamma-daan .pillars-grid{grid-template-columns:repeat(3,1fr);gap:var(--space-8)}}
+    #panel-dhamma-daan .pillar-card{background:var(--daan-parchment-elevated);border:1px solid var(--daan-cream-border);border-radius:4px;padding:var(--space-8);text-align:center;transition:all 0.4s var(--ease-out-expo)}
+    #panel-dhamma-daan .pillar-card:hover{border-color:var(--daan-saffron);box-shadow:var(--daan-shadow-md);transform:translateY(-4px)}
+    #panel-dhamma-daan .pillar-icon{width:56px;height:56px;border-radius:50%;background:var(--daan-saffron-glow);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-5)}
+    #panel-dhamma-daan .pillar-icon svg{width:24px;height:24px;stroke:var(--daan-saffron)}
+    #panel-dhamma-daan .pillar-title{font-size:1.0625rem;font-weight:600;color:var(--daan-ink);margin-bottom:var(--space-3)}
+    #panel-dhamma-daan .pillar-body{font-size:0.875rem;line-height:1.6;color:var(--daan-ink-light)}
+
+    #panel-dhamma-daan .contribution-section{background:var(--daan-cream)}
+    #panel-dhamma-daan .contribution-inner{max-width:680px;margin:0 auto}
+    #panel-dhamma-daan .contribution-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .amount-display{text-align:center;margin-bottom:var(--space-12)}
+    #panel-dhamma-daan .amount-display-prefix{font-family:var(--font-display);font-size:clamp(2rem,5vw,3rem);font-weight:300;color:var(--daan-ink-faint);vertical-align:top;line-height:1}
+    #panel-dhamma-daan .amount-display-value{font-family:var(--font-display);font-size:clamp(4rem,12vw,7rem);font-weight:300;line-height:1;letter-spacing:-0.04em;color:var(--daan-deep-brown);transition:all 0.3s var(--ease-out-expo)}
+    #panel-dhamma-daan .amount-display-suffix{font-size:1rem;font-weight:400;color:var(--daan-ink-faint);margin-top:var(--space-3)}
+    #panel-dhamma-daan .slider-container{margin-bottom:var(--space-12);padding:0 var(--space-2)}
+    #panel-dhamma-daan .slider-track{position:relative;height:2px;background:var(--daan-cream-border);border-radius:1px;margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .slider-fill{position:absolute;left:0;top:0;height:100%;background:var(--daan-saffron);border-radius:1px;transition:width 0.1s linear}
+    #panel-dhamma-daan .slider-input{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:transparent;position:absolute;top:0;left:0;margin:0;cursor:pointer}
+    #panel-dhamma-daan .slider-input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;border-radius:50%;background:var(--daan-parchment-elevated);border:2px solid var(--daan-saffron);box-shadow:0 2px 12px rgba(193,122,44,0.2),0 0 0 4px var(--daan-saffron-glow);cursor:grab;transition:all 0.2s var(--ease-out-expo)}
+    #panel-dhamma-daan .slider-input::-webkit-slider-thumb:hover{transform:scale(1.15);box-shadow:0 4px 20px rgba(193,122,44,0.3),0 0 0 6px var(--daan-saffron-glow-strong)}
+    #panel-dhamma-daan .slider-input::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1)}
+    #panel-dhamma-daan .slider-input::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--daan-parchment-elevated);border:2px solid var(--daan-saffron);box-shadow:0 2px 12px rgba(193,122,44,0.2);cursor:grab}
+    #panel-dhamma-daan .slider-labels{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.75rem;color:var(--daan-ink-faint)}
+    #panel-dhamma-daan .frequency-group{display:flex;justify-content:center;gap:var(--space-2);margin-bottom:var(--space-12);flex-wrap:wrap}
+    #panel-dhamma-daan .frequency-btn{padding:var(--space-3) var(--space-6);border-radius:100px;border:1px solid var(--daan-cream-border);background:transparent;color:var(--daan-ink-light);font-size:0.9375rem;font-weight:500;cursor:pointer;transition:all 0.3s var(--ease-out-expo)}
+    #panel-dhamma-daan .frequency-btn:hover{border-color:var(--daan-cream-hover);color:var(--daan-ink-muted)}
+    #panel-dhamma-daan .frequency-btn.active{background:var(--daan-deep-brown);border-color:var(--daan-deep-brown);color:white}
+    #panel-dhamma-daan .contribution-cta{text-align:center}
+    #panel-dhamma-daan .btn-primary-large{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);padding:var(--space-5) var(--space-10);background:var(--daan-deep-brown);color:white;border:none;border-radius:100px;font-size:1.0625rem;font-weight:500;cursor:pointer;transition:all 0.4s var(--ease-out-expo)}
+    #panel-dhamma-daan .btn-primary-large:hover{background:var(--daan-deep-brown-soft);transform:translateY(-2px);box-shadow:var(--daan-shadow-lg)}
+    #panel-dhamma-daan .contribution-note{margin-top:var(--space-6);font-size:0.8125rem;color:var(--daan-ink-faint)}
+
+    #panel-dhamma-daan .impact-section{background:var(--daan-parchment)}
+    #panel-dhamma-daan .impact-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .impact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-6)}
+    @media(min-width:768px){#panel-dhamma-daan .impact-grid{grid-template-columns:repeat(4,1fr);gap:var(--space-8)}}
+    #panel-dhamma-daan .impact-item{text-align:center;padding:var(--space-8) var(--space-4);border-radius:4px;border:1px solid transparent;transition:all 0.4s var(--ease-out-expo)}
+    #panel-dhamma-daan .impact-item:hover{border-color:var(--daan-cream-border);background:var(--daan-parchment-elevated)}
+    #panel-dhamma-daan .impact-number{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:300;line-height:1;color:var(--daan-deep-brown);margin-bottom:var(--space-3)}
+    #panel-dhamma-daan .impact-number span{font-size:0.875rem;font-weight:400;color:var(--daan-ink-faint);margin-left:2px}
+    #panel-dhamma-daan .impact-label{font-size:0.875rem;color:var(--daan-ink-light);line-height:1.4}
+
+    #panel-dhamma-daan .final-cta-section{background:var(--daan-deep-brown);color:white;text-align:center;position:relative;overflow:hidden}
+    #panel-dhamma-daan .final-cta-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(193,122,44,0.04) 0%,transparent 50%);pointer-events:none}
+    #panel-dhamma-daan .final-cta-content{position:relative;z-index:1}
+    #panel-dhamma-daan .final-cta-title{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:300;line-height:1.1;color:white;margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .final-cta-body{font-size:1.125rem;line-height:1.7;color:rgba(255,255,255,0.45);max-width:520px;margin:0 auto var(--space-10)}
+    #panel-dhamma-daan .final-cta-amount{font-family:var(--font-display);font-size:clamp(3rem,8vw,5rem);font-weight:300;line-height:1;color:white;margin-bottom:var(--space-2)}
+    #panel-dhamma-daan .final-cta-freq{font-size:0.9375rem;color:rgba(255,255,255,0.4);margin-bottom:var(--space-10)}
+    #panel-dhamma-daan .btn-final{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);padding:var(--space-5) var(--space-12);background:var(--daan-saffron);color:white;border:none;border-radius:100px;font-size:1.0625rem;font-weight:500;cursor:pointer;transition:all 0.4s var(--ease-out-expo)}
+    #panel-dhamma-daan .btn-final:hover{background:var(--daan-saffron-light);transform:translateY(-2px);box-shadow:0 8px 30px rgba(193,122,44,0.3)}
+    #panel-dhamma-daan .final-cta-note{margin-top:var(--space-8);font-size:0.8125rem;color:rgba(255,255,255,0.25)}
+
+    #panel-dhamma-daan .daan-footer{background:var(--daan-deep-brown-soft);padding:var(--space-8) 0;text-align:center}
+    #panel-dhamma-daan .daan-footer p{font-size:0.8125rem;color:rgba(255,255,255,0.25)}
+
+    #panel-dhamma-daan .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s var(--ease-out-expo),transform 0.8s var(--ease-out-expo)}
+    #panel-dhamma-daan .reveal.visible{opacity:1;transform:translateY(0)}
+    #panel-dhamma-daan .reveal-delay-1{transition-delay:0.1s} #panel-dhamma-daan .reveal-delay-2{transition-delay:0.2s}
+    #panel-dhamma-daan .reveal-delay-3{transition-delay:0.3s} #panel-dhamma-daan .reveal-delay-4{transition-delay:0.4s}
+    @media(prefers-reduced-motion:reduce){
+      #panel-dhamma-daan *{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+      #panel-dhamma-daan .reveal{opacity:1;transform:none}
+    }
+
     /* Person card extras */
     .person-langs{font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .btn.connected,.btn.followed{background:var(--surface-muted);color:var(--text-secondary);border:1px solid var(--border-default)}
@@ -955,6 +1113,29 @@ round:var(--error-600)}
     .lib-text-card-lang{background:var(--surface-sunken);padding:1px 5px;border-radius:99px;font-weight:var(--weight-medium)}
     .lib-text-card-prog{height:2px;background:var(--border-default);border-radius:1px;margin-top:var(--space-2);overflow:hidden}
     .lib-text-card-progfill{height:100%;background:var(--saffron-500);border-radius:1px}
+    /* ── Book cover image cards ─────────────────────────── */
+    .lib-book-scroll{display:flex;gap:14px;overflow-x:auto;padding:2px var(--space-4) var(--space-2);-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none}
+    .lib-book-scroll::-webkit-scrollbar{display:none}
+    .lib-book-card{flex-shrink:0;width:120px;cursor:pointer;scroll-snap-align:start;transition:transform var(--duration-fast) var(--ease-out)}
+    .lib-book-card:hover{transform:translateY(-4px)}
+    .lib-book-card:active{transform:scale(0.97)}
+    .lib-book-cover-img{width:120px;height:176px;border-radius:var(--radius-lg);object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.18);background:var(--surface-sunken)}
+    .lib-book-cover-fb{width:120px;height:176px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+    .lib-book-card h4{font-size:12px;font-weight:var(--weight-semibold);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+    .lib-book-card p{font-size:11px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* Featured book card */
+    .lib-featured{display:flex;background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;margin:0 var(--space-4) var(--space-5);box-shadow:var(--shadow-2);transition:all var(--duration-fast) var(--ease-out)}
+    .lib-featured:hover{box-shadow:var(--shadow-4);transform:translateY(-2px)}
+    .lib-featured:active{transform:scale(0.98)}
+    .lib-featured-cover-img{width:90px;object-fit:cover;display:block;flex-shrink:0;min-height:140px}
+    .lib-featured-cover-fb{width:90px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+    .lib-featured-body{padding:var(--space-3) var(--space-4);flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+    .lib-featured-title{font-size:var(--text-sm);font-weight:var(--weight-bold);color:var(--text-primary);margin-bottom:3px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .lib-featured-author{font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-2)}
+    .lib-featured-excerpt{font-size:11px;line-height:1.5;color:var(--text-tertiary);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:var(--space-2)}
+    .lib-featured-meta{font-size:10px;color:var(--text-tertiary);display:flex;gap:var(--space-3);flex-wrap:wrap}
+    /* Reader book cover image */
+    .reader-cover-img{width:90px;height:132px;border-radius:8px;object-fit:cover;display:block;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,0.22)}
     /* ═══════════════════════════════════════════════════════════════
        READER — World-class reading experience
        ═══════════════════════════════════════════════════════════════ */
@@ -2158,53 +2339,214 @@ round:var(--error-600)}
 
     <!-- PANEL: DHAMMA DAAN -->
     <div id="panel-dhamma-daan" class="panel">
-      <div class="panel-header">
-        <button class="panel-back" onclick="closePanel('panel-dhamma-daan')" aria-label="Go back">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="panel-title">Dhamma Daan 🙏</div>
-      </div>
-      <div style="border-bottom:1px solid var(--border-subtle)">
-        <div style="display:flex">
-          <button class="daan-tab active" id="daan-tab-give"    onclick="switchDaanTab('give')"   >Give</button>
-          <button class="daan-tab"        id="daan-tab-history" onclick="switchDaanTab('history')">My History</button>
-          <button class="daan-tab"        id="daan-tab-impact"  onclick="switchDaanTab('impact')" >Impact</button>
-        </div>
-      </div>
-      <div id="daan-view-give" class="panel-content" style="padding:var(--space-4)">
-        <p style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.7;margin-bottom:var(--space-3)">Your contribution sustains the Digital Sangha. Contribution amount <strong>never</strong> affects ranking or visibility.</p>
-        <div class="daan-split"><div class="daan-split-ops"></div><div class="daan-split-fund"></div></div>
-        <div class="daan-split-labels"><span>50% Platform Operations</span><span>50% Dhamma Fund →</span></div>
-        <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-4)">Dhamma Fund supports: translation projects · community education · volunteer networks · digital preservation</div>
-        <div class="input-group"><label>Select Amount</label>
-          <div class="daan-tier-grid" id="daanTierGrid">
-            <button class="daan-tier-btn" data-amount="49"    onclick="selectDaanTier(49,this)">₹49</button>
-            <button class="daan-tier-btn active" data-amount="108" onclick="selectDaanTier(108,this)">₹108</button>
-            <button class="daan-tier-btn" data-amount="501"   onclick="selectDaanTier(501,this)">₹501</button>
-            <button class="daan-tier-btn" data-amount="5000"  onclick="selectDaanTier(5000,this)">₹5,000</button>
-            <button class="daan-tier-btn" data-amount="100000" onclick="selectDaanTier(100000,this)">₹1,00,000</button>
+      <button class="daan-page-back-btn" onclick="closePanel('panel-dhamma-daan')" aria-label="Go back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="daan-page-content">
+
+        <section class="hero" id="daan-hero">
+          <video class="hero-video" autoplay muted loop playsinline id="hero-video">
+            <source src="create_single_unique_extreem.mp4" type="video/mp4">
+          </video>
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="hero-enso anim-fade-up">
+              <svg viewBox="0 0 100 100"><path d="M50 10 C70 10, 85 25, 85 50 C85 75, 70 90, 50 90 C30 90, 15 75, 15 50 C15 30, 28 15, 45 12"/></svg>
+            </div>
+            <div class="hero-label anim-fade-up anim-delay-1">
+              <span class="hero-label-dot"></span>
+              <span class="hero-label-text">Sangham — Dhamma Daan</span>
+            </div>
+            <h1 class="hero-title anim-fade-up anim-delay-2 text-balance">The Power of Giving</h1>
+            <p class="hero-subtitle anim-fade-up anim-delay-3 text-balance">From a single circle of intention, light spreads across the world — connecting communities, nurturing wisdom, and blooming into collective well-being.</p>
+            <p class="hero-verse anim-fade-up anim-delay-4">Sabba-dānaṃ dhamma-dānaṃ jināti — Dhammapada 354</p>
+            <a href="#daan-contribute" class="hero-cta anim-fade-up anim-delay-5">Begin Your Daan <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
-        </div>
-        <div class="input-group" style="margin-top:var(--space-2)">
-          <label style="display:flex;justify-content:space-between;align-items:center">
-            <span>Monthly amount</span>
-            <span id="daan-slider-label" style="font-size:var(--text-base);font-weight:var(--weight-bold);color:var(--saffron-700)">₹108</span>
-          </label>
-          <input id="daan-custom" type="range" min="49" max="1000000" step="1" value="108"
-            style="width:100%;accent-color:var(--saffron-500);margin-top:var(--space-2);cursor:pointer"
-            oninput="updateDaanSlider(this.value)">
-          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:2px">
-            <span>₹49</span><span>₹10,00,000</span>
+          <div class="hero-scroll anim-fade-in anim-delay-6">
+            <span>Scroll</span>
+            <div class="hero-scroll-line"></div>
           </div>
-        </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Give ₹108/month</button>
-        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Monthly recurring · Razorpay · Cancel anytime</p>
-      </div>
-      <div id="daan-view-history" class="panel-content" style="padding:var(--space-4);display:none">
-        <div id="daan-history-content"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
-      </div>
-      <div id="daan-view-impact" class="panel-content" style="padding:var(--space-4);display:none">
-        <div id="daan-impact-content"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+        </section>
+
+        <section class="section building-section">
+          <div class="container">
+            <div class="building-header reveal">
+              <p class="label">What we're building</p>
+              <h2 class="display-lg text-balance">A living network of Dhamma</h2>
+            </div>
+            <div class="building-content">
+              <p class="body-lg building-body reveal text-balance">Just as the ensō begins with a single brushstroke and completes itself in motion, Sangham begins with each practitioner who chooses to give. Your contribution is not a transaction — it is a continuation of a circle that has been unbroken for two thousand years.</p>
+              <p class="body-md reveal reveal-delay-1">We are creating infrastructure that connects practitioners across continents, preserves teachings across languages, and supports those who have devoted their lives to the path. This is not a startup. It is an institution — one that grows from the center outward, like light from a flame.</p>
+              <div class="building-quote reveal reveal-delay-2">
+                <p class="text-balance">"The gift of Dhamma excels all gifts."</p>
+                <cite>— Dhammapada 354</cite>
+              </div>
+              <p class="body-md reveal reveal-delay-2">Every contribution ripples outward. A single act of generosity becomes education for a child, shelter for a bhikkhu, a gathering for a community, and opportunity for someone seeking meaning. The circle never ends — it only expands.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section focus-section">
+          <div class="container">
+            <div class="focus-header reveal">
+              <p class="label">How we allocate</p>
+              <h2 class="display-lg text-balance">Every contribution supports two things</h2>
+            </div>
+            <div class="focus-grid">
+              <div class="focus-card reveal reveal-delay-1">
+                <p class="focus-card-number">01</p>
+                <h3 class="focus-card-title text-balance">Strengthening Sangham</h3>
+                <p class="focus-card-body text-balance">The platform itself — the digital foundation that keeps this space open, secure, and accessible to practitioners everywhere.</p>
+                <ul class="focus-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Server infrastructure &amp; uptime</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Security &amp; data privacy</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Content moderation systems</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Platform engineering</li>
+                </ul>
+              </div>
+              <div class="focus-card reveal reveal-delay-2">
+                <p class="focus-card-number">02</p>
+                <h3 class="focus-card-title text-balance">Strengthening Communities</h3>
+                <p class="focus-card-body text-balance">The Dhamma Fund — directed toward education, empowerment, social connection, and the welfare of those who serve the Sangha.</p>
+                <ul class="focus-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community education programs</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community empowerment</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Social events &amp; gatherings</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Bhikkhu welfare &amp; support</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section pillars-section">
+          <div class="container">
+            <div class="pillars-header reveal">
+              <p class="label">Community initiatives</p>
+              <h2 class="display-lg text-balance">Where the Dhamma Fund flows</h2>
+            </div>
+            <div class="pillars-grid">
+              <div class="pillar-card reveal reveal-delay-1">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div>
+                <h3 class="pillar-title">Education</h3>
+                <p class="pillar-body">Dhamma courses, Pali language programs, and teacher training for the next generation.</p>
+              </div>
+              <div class="pillar-card reveal reveal-delay-2">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg></div>
+                <h3 class="pillar-title">Empowerment</h3>
+                <p class="pillar-body">Skill-building for monastics and lay practitioners. Digital literacy, leadership, and self-reliance.</p>
+              </div>
+              <div class="pillar-card reveal reveal-delay-3">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
+                <h3 class="pillar-title">Social Events</h3>
+                <p class="pillar-body">Retreats, gatherings, and communal observances that strengthen bonds across traditions.</p>
+              </div>
+              <div class="pillar-card reveal reveal-delay-1">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg></div>
+                <h3 class="pillar-title">Project Funding</h3>
+                <p class="pillar-body">Seed funding for community-led initiatives — from digital archives to rural Dhamma centers.</p>
+              </div>
+              <div class="pillar-card reveal reveal-delay-2">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg></div>
+                <h3 class="pillar-title">Opportunity Creation</h3>
+                <p class="pillar-body">Connecting practitioners with teachers, employment, and meaningful work in service of the Dhamma.</p>
+              </div>
+              <div class="pillar-card reveal reveal-delay-3">
+                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></div>
+                <h3 class="pillar-title">Bhikkhu Welfare</h3>
+                <p class="pillar-body">Healthcare, requisites, and dignified support for monastics who have given everything to the path.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section contribution-section" id="daan-contribute">
+          <div class="container">
+            <div class="contribution-inner">
+              <div class="contribution-header reveal">
+                <p class="label">Your contribution</p>
+                <h2 class="display-lg text-balance">Give what feels right</h2>
+              </div>
+              <div class="amount-display reveal reveal-delay-1">
+                <span class="amount-display-prefix">₹</span>
+                <span class="amount-display-value" id="amount-value">108</span>
+                <p class="amount-display-suffix" id="amount-suffix">per month</p>
+              </div>
+              <div class="slider-container reveal reveal-delay-2">
+                <div class="slider-track">
+                  <div class="slider-fill" id="slider-fill" style="width:0.2%"></div>
+                  <input type="range" class="slider-input" id="amount-slider" min="49" max="100000" value="108" step="1" aria-label="Contribution amount"/>
+                </div>
+                <div class="slider-labels"><span>₹49</span><span>₹1,00,000+</span></div>
+              </div>
+              <div class="frequency-group reveal reveal-delay-3" role="radiogroup" aria-label="Contribution frequency">
+                <button class="frequency-btn" data-freq="once" onclick="setFrequency('once')" role="radio" aria-checked="false">Once</button>
+                <button class="frequency-btn active" data-freq="monthly" onclick="setFrequency('monthly')" role="radio" aria-checked="true">Monthly</button>
+                <button class="frequency-btn" data-freq="quarterly" onclick="setFrequency('quarterly')" role="radio" aria-checked="false">Quarterly</button>
+                <button class="frequency-btn" data-freq="yearly" onclick="setFrequency('yearly')" role="radio" aria-checked="false">Yearly</button>
+              </div>
+              <div class="contribution-cta reveal reveal-delay-4">
+                <button class="btn-primary-large" id="daan-pay-btn" onclick="contribute()">
+                  <span id="cta-text">Contribute ₹108 monthly</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <p class="contribution-note">Secured by Razorpay · Cancel anytime · 80G tax deductible</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section impact-section">
+          <div class="container">
+            <div class="impact-header reveal">
+              <p class="label">Impact</p>
+              <h2 class="display-lg text-balance">What the community has built together</h2>
+            </div>
+            <div class="impact-grid">
+              <div class="impact-item reveal reveal-delay-1">
+                <p class="impact-number">12,400<span>+</span></p>
+                <p class="impact-label">Pages of Dhamma<br>text translated</p>
+              </div>
+              <div class="impact-item reveal reveal-delay-2">
+                <p class="impact-number">23</p>
+                <p class="impact-label">Languages<br>supported</p>
+              </div>
+              <div class="impact-item reveal reveal-delay-3">
+                <p class="impact-number">8,600<span>+</span></p>
+                <p class="impact-label">Active<br>practitioners</p>
+              </div>
+              <div class="impact-item reveal reveal-delay-4">
+                <p class="impact-number">100<span>%</span></p>
+                <p class="impact-label">Open source<br>platform</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section final-cta-section" id="daan-final-cta">
+          <div class="container">
+            <div class="final-cta-content">
+              <h2 class="final-cta-title reveal text-balance">Join those building the future of the Sangha</h2>
+              <p class="final-cta-body reveal reveal-delay-1 text-balance">Your contribution is not a transaction. It is participation in something that will outlast all of us.</p>
+              <div class="reveal reveal-delay-2">
+                <p class="final-cta-amount" id="final-amount">₹108</p>
+                <p class="final-cta-freq" id="final-freq">Monthly contribution</p>
+              </div>
+              <button class="btn-final reveal reveal-delay-3" onclick="contribute()">
+                <span id="final-cta-text">Contribute now</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <p class="final-cta-note reveal reveal-delay-4">Sangham is a registered non-profit. Donations are eligible for tax deduction under Section 80G.</p>
+            </div>
+          </div>
+        </section>
+
+        <footer class="daan-footer">
+          <div class="container">
+            <p>© 2026 Sangham. Built by the Sangha, for the Sangha.</p>
+          </div>
+        </footer>
+
       </div>
     </div>
 
@@ -4303,6 +4645,7 @@ function _rSaveSettings(s){
 // ── Helpers ──────────────────────────────────────────────────
 function libTradClass(tr){ return 'lib-trad-'+(tr||'other').toLowerCase(); }
 function libTradSym(tr){ return {THERAVADA:'☸',NAVAYANA:'⚖',MAHAYANA:'✿',VAJRAYANA:'◈',MULTIPLE:'☸',OTHER:'☸'}[tr]||'☸'; }
+function _readerCoverFallback(img){ const d=document.createElement('div'); d.className='reader-band '+(img.dataset.fbClass||''); d.textContent=img.dataset.fbSym||'☸'; img.replaceWith(d); }
 function libLangLabel(l){ return {en:'EN',hi:'हि',mr:'म',te:'తె',pa:'ਪੰ',bn:'বাং',ml:'മ',ta:'த'}[l]||(l||'').toUpperCase(); }
 function libReadingTime(n){
   const m=Math.ceil(n*30/200);
@@ -4326,6 +4669,38 @@ function _detectScript(lang){
 }
 
 // ============================================================
+//  LIBRARY — Book cover image URLs
+// ============================================================
+// Maps partial (lowercase) title keywords → Open Library ISBN cover URL.
+// Open Library always returns an image (cover or "no cover" placeholder),
+// so these URLs will never produce a broken-image icon.
+const _BOOK_COVERS = {
+  'what the buddha taught':    'https://covers.openlibrary.org/b/isbn/0802130313-L.jpg',
+  'dhammapada':                'https://covers.openlibrary.org/b/isbn/0140442847-L.jpg',
+  'annihilation of caste':     'https://covers.openlibrary.org/b/isbn/9781781685785-L.jpg',
+  'buddha and his dhamma':     'https://covers.openlibrary.org/b/isbn/9788171564354-L.jpg',
+  'buddha or karl marx':       'https://covers.openlibrary.org/b/isbn/9788177490398-L.jpg',
+  'castes in india':           'https://covers.openlibrary.org/b/isbn/9789385804137-L.jpg',
+  'essence of buddhism':       'https://covers.openlibrary.org/b/isbn/9781846042003-L.jpg',
+  'satipatthana':              'https://covers.openlibrary.org/b/isbn/9781899579549-L.jpg',
+  'milinda':                   'https://covers.openlibrary.org/b/isbn/9780404567019-L.jpg',
+  'questions of king milinda': 'https://covers.openlibrary.org/b/isbn/9780404567019-L.jpg',
+};
+
+function libGetCoverUrl(text) {
+  const lower = (text.title || '').toLowerCase();
+  const match = Object.keys(_BOOK_COVERS).find(k => lower.includes(k));
+  return match ? _BOOK_COVERS[match] : null;
+}
+
+function _libCoverImgTag(text, cls) {
+  const url = libGetCoverUrl(text);
+  const fb  = `<div class="${cls}-fb ${libTradClass(text.collection?.tradition)}">${libTradSym(text.collection?.tradition)}</div>`;
+  if (!url) return fb;
+  return `<img class="${cls}-img" src="${escHtml(url)}" alt="${escHtml(text.title)}" loading="lazy" onerror="this.replaceWith(this.nextElementSibling)"><div class="${cls}-fb ${libTradClass(text.collection?.tradition)}" style="display:none">${libTradSym(text.collection?.tradition)}</div>`;
+}
+
+// ============================================================
 //  LIBRARY — Level 1: Home
 // ============================================================
 async function loadLearnLibrary() {
@@ -4335,7 +4710,7 @@ async function loadLearnLibrary() {
   try {
     const [cols, txData] = await Promise.all([
       api('GET','/library/collections'),
-      api('GET','/library/search?limit=16'),
+      api('GET','/library/search?limit=24'),
     ]);
     _learnTabLoaded.library = true;
     _lib.view = 'home';
@@ -4351,22 +4726,30 @@ function _renderLibHome(root, cols, texts) {
     .filter(([,p])=>p.percent>0&&p.percent<100)
     .sort(([,a],[,b])=>b.lastRead-a.lastRead).slice(0,3);
 
+  // Continue Reading — use cover image if available
   const continueHtml = inProgress.length ? `
     <div class="lib-section">
       <div class="lib-section-header"><span class="lib-section-title">Continue Reading</span></div>
       <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-        ${inProgress.map(([id,p])=>`
-          <div class="lib-continue-card" onclick="openTextDetail('${id}')">
-            <div class="lib-continue-mini-cover ${libTradClass(p.tradition)}" style="border-radius:var(--radius-md)">${libTradSym(p.tradition)}</div>
+        ${inProgress.map(([id,p])=>{
+          const textObj = texts.find(t=>t.id===id) || {title:p.title, collection:{tradition:p.tradition}};
+          const coverUrl = libGetCoverUrl(textObj);
+          const coverEl = coverUrl
+            ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(p.tradition)}" style="display:none">${libTradSym(p.tradition)}</div>`
+            : `<div class="lib-continue-mini-cover ${libTradClass(p.tradition)}">${libTradSym(p.tradition)}</div>`;
+          return `<div class="lib-continue-card" onclick="openTextDetail('${id}')">
+            ${coverEl}
             <div class="lib-continue-info">
               <div class="lib-continue-title">${escHtml(p.title)}</div>
               <div class="lib-continue-sub">${p.percent}% complete</div>
               <div class="lib-continue-progress"><div class="lib-continue-bar" style="width:${p.percent}%"></div></div>
             </div>
-          </div>`).join('')}
+          </div>`;
+        }).join('')}
       </div>
     </div>` : '';
 
+  // Collections grid
   const collHtml = cols.map((c,i)=>{
     const langs=(c.languages||[]).map(l=>`<span style="background:rgba(255,255,255,.18);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:600;color:white">${libLangLabel(l)}</span>`).join(' ');
     return `<div class="lib-coll-card" onclick="openLibraryCollection('${escHtml(c.id)}')" style="animation-delay:${i*.06}s">
@@ -4381,24 +4764,48 @@ function _renderLibHome(root, cols, texts) {
     </div>`;
   }).join('');
 
-  const chipsHtml = texts.map((tx,i)=>`
-    <div class="lib-text-chip" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
-      <div class="lib-text-chip-cover ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>
-      <div class="lib-text-chip-body">
-        <div class="lib-text-chip-title">${escHtml(tx.title)}</div>
-        <span class="lib-text-chip-lang">${libLangLabel(tx.language)}</span>
+  // Featured card — use the first text that has a known cover, else first text overall
+  const featured = texts.find(t=>libGetCoverUrl(t)) || texts[0];
+  const featuredHtml = featured ? (() => {
+    const coverUrl = libGetCoverUrl(featured);
+    const coverEl = coverUrl
+      ? `<img class="lib-featured-cover-img" src="${escHtml(coverUrl)}" alt="${escHtml(featured.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-featured-cover-fb ${libTradClass(featured.collection?.tradition)}" style="display:none">${libTradSym(featured.collection?.tradition)}</div>`
+      : `<div class="lib-featured-cover-fb ${libTradClass(featured.collection?.tradition)}">${libTradSym(featured.collection?.tradition)}</div>`;
+    const readMins = Math.ceil((featured.segmentsTotal||0)*30/200);
+    const readStr  = readMins < 60 ? `~${readMins} min` : `~${Math.floor(readMins/60)}h ${readMins%60}m`;
+    return `<div class="lib-featured" onclick="openTextDetail('${escHtml(featured.id)}')">
+      ${coverEl}
+      <div class="lib-featured-body">
+        <div class="lib-featured-title">${escHtml(featured.title)}</div>
+        ${featured.author ? `<div class="lib-featured-author">${escHtml(featured.author)}</div>` : ''}
+        ${featured.description ? `<div class="lib-featured-excerpt">${escHtml(featured.description.slice(0,160))}${featured.description.length>160?'…':''}</div>` : ''}
+        <div class="lib-featured-meta">
+          ${readMins>0?`<span>⏱ ${readStr}</span>`:''}
+          ${featured.segmentsTotal?`<span>📄 ${featured.segmentsTotal.toLocaleString()} passages</span>`:''}
+          <span>🌐 ${libLangLabel(featured.language)}</span>
+        </div>
       </div>
+    </div>`;
+  })() : '';
+
+  // Browse All Texts — horizontal scroll with real cover images
+  const booksHtml = texts.map((tx,i)=>`
+    <div class="lib-book-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
+      ${_libCoverImgTag(tx, 'lib-book-cover')}
+      <h4>${escHtml(tx.title)}</h4>
+      <p>${escHtml(tx.author || libLangLabel(tx.language))}</p>
     </div>`).join('');
 
   root.innerHTML = `
     ${continueHtml}
+    ${featuredHtml ? `<div class="lib-section"><div class="lib-section-header"><span class="lib-section-title">Featured</span></div></div>${featuredHtml}` : ''}
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Browse All Texts</span></div>
+      <div class="lib-book-scroll">${booksHtml}</div>
+    </div>
     <div class="lib-section">
       <div class="lib-section-header"><span class="lib-section-title">Collections</span></div>
       <div class="lib-coll-grid">${collHtml}</div>
-    </div>
-    <div class="lib-section">
-      <div class="lib-section-header"><span class="lib-section-title">Browse All Texts</span></div>
-      <div class="lib-text-scroll">${chipsHtml}</div>
     </div>
     <div id="lib-bookmarks-section"></div>`;
 
@@ -4631,10 +5038,14 @@ async function openTextDetail(textId) {
     const tradClass = libTradClass(text.collection?.tradition);
     const sym = libTradSym(text.collection?.tradition);
     const readingMins = Math.ceil(_lib.segTotal*30/200);
+    const coverUrl = libGetCoverUrl(text);
+    const coverBlock = coverUrl
+      ? `<img class="reader-cover-img" src="${escHtml(coverUrl)}" alt="${escHtml(text.title)}" loading="lazy" data-fb-class="${escHtml(tradClass)}" data-fb-sym="${escHtml(sym)}" onerror="_readerCoverFallback(this)">`
+      : `<div class="reader-band ${tradClass}">${sym}</div>`;
 
     content.innerHTML = `
       <div class="reader-book-info">
-        <div class="reader-band ${tradClass}">${sym}</div>
+        ${coverBlock}
         <div class="reader-book-title">${escHtml(text.title)}</div>
         <div class="reader-book-byline">
           ${text.author?`<strong>${escHtml(text.author)}</strong>`:''}
@@ -8343,18 +8754,86 @@ let _daanAmount = 108;
 function openDhammaDaan() {
   if (!state.user) { showToast('Sign in to donate', 'info'); return; }
   openPanel('panel-dhamma-daan');
+  currentAmount = 108;
+  currentFrequency = 'monthly';
   _daanAmount = 108;
-  document.querySelectorAll('.daan-tier-btn').forEach(b => {
-    b.classList.toggle('active', parseInt(b.dataset.amount) === 108);
+  const slider = document.getElementById('amount-slider');
+  if (slider) { slider.value = '108'; updateSlider(); }
+  // re-observe reveal elements now that panel is visible
+  document.querySelectorAll('#panel-dhamma-daan .reveal').forEach(el => {
+    el.classList.remove('visible');
+    _daanRevealObserver.observe(el);
   });
-  const slider = document.getElementById('daan-custom');
-  if (slider) { slider.value = '108'; }
-  const label = document.getElementById('daan-slider-label');
-  if (label) label.textContent = '₹108';
-  const payBtn = document.getElementById('daan-pay-btn');
-  if (payBtn) payBtn.textContent = 'Give ₹108/month';
-  switchDaanTab('give');
 }
+
+// ── Dhamma Daan page UI ─────────────────────────────
+let currentAmount = 108;
+let currentFrequency = 'monthly';
+const frequencyLabels    = { once:'One-time contribution', monthly:'Monthly contribution', quarterly:'Quarterly contribution', yearly:'Yearly contribution' };
+const frequencySuffixes  = { once:'', monthly:'per month', quarterly:'per quarter', yearly:'per year' };
+
+function formatFull(n) { return n.toLocaleString('en-IN'); }
+
+function updateSlider() {
+  const slider = document.getElementById('amount-slider');
+  if (!slider) return;
+  const val = parseInt(slider.value);
+  currentAmount = val;
+  _daanAmount = val;
+  const min = 49, max = 100000;
+  const pct = ((Math.log(val) - Math.log(min)) / (Math.log(max) - Math.log(min))) * 100;
+  const fill = document.getElementById('slider-fill');
+  if (fill) fill.style.width = pct + '%';
+  const amtVal = document.getElementById('amount-value');
+  if (amtVal) amtVal.textContent = formatFull(val);
+  const amtSfx = document.getElementById('amount-suffix');
+  if (amtSfx) amtSfx.textContent = frequencySuffixes[currentFrequency];
+  const fw = currentFrequency === 'once' ? '' : ' ' + currentFrequency;
+  const ctaEl = document.getElementById('cta-text');
+  if (ctaEl) ctaEl.textContent = 'Contribute ₹' + formatFull(val) + fw;
+  const finAmt = document.getElementById('final-amount');
+  if (finAmt) finAmt.textContent = '₹' + formatFull(val);
+  const finFreq = document.getElementById('final-freq');
+  if (finFreq) finFreq.textContent = frequencyLabels[currentFrequency];
+  const finCta = document.getElementById('final-cta-text');
+  if (finCta) finCta.textContent = 'Contribute ₹' + formatFull(val);
+}
+
+function setFrequency(freq) {
+  currentFrequency = freq;
+  document.querySelectorAll('#panel-dhamma-daan .frequency-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.freq === freq);
+    btn.setAttribute('aria-checked', btn.dataset.freq === freq);
+  });
+  updateSlider();
+}
+
+function contribute() { submitDhammaDaan(); }
+
+const _daanRevealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      _daanRevealObserver.unobserve(entry.target);
+    }
+  });
+}, { root: null, rootMargin: '0px 0px -80px 0px', threshold: 0.1 });
+
+document.querySelectorAll('#panel-dhamma-daan .reveal').forEach(el => _daanRevealObserver.observe(el));
+
+(function() {
+  const slider = document.getElementById('amount-slider');
+  if (slider) slider.addEventListener('input', updateSlider);
+  document.querySelectorAll('#panel-dhamma-daan a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const panelContent = document.querySelector('#panel-dhamma-daan .daan-page-content');
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target && panelContent) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  updateSlider();
+})();
 
 function switchDaanTab(tab) {
   ['give','history','impact'].forEach(id => {
@@ -8484,7 +8963,9 @@ async function submitDhammaDaan() {
   if (!amount || amount < 49) { showToast('Minimum contribution is ₹49', 'error'); return; }
 
   const btn = document.getElementById('daan-pay-btn');
-  btn.disabled = true; btn.textContent = t('common.processing');
+  if (!btn) return;
+  const ctaSpan = btn.querySelector('#cta-text') || btn;
+  btn.disabled = true; ctaSpan.textContent = t('common.processing');
   try {
     const sub = await api('POST', '/dhamma-daan/subscribe', { amountPaise: amount * 100 });
     if (!sub.subscriptionId) throw new Error('Could not create subscription');
@@ -8527,7 +9008,7 @@ async function submitDhammaDaan() {
     showToast(err.message, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Give ₹' + amount.toLocaleString('en-IN') + '/month';
+    ctaSpan.textContent = 'Contribute ₹' + amount.toLocaleString('en-IN') + ' monthly';
   }
 }
 
