@@ -116,9 +116,18 @@ router.get('/users', authenticate, requireRole(...adminRoles), async (req: AuthR
 // DELETE /admin/users/test-cleanup — remove all users except the requesting admin
 router.delete('/users/test-cleanup', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
   const adminId = req.user!.id;
-  // Must delete in FK order — messages and moderation_actions have no onDelete: Cascade
+  // FK constraints without onDelete:Cascade must be removed first, in dependency order:
+  // messages (sender/recipient → users, no cascade)
   await prisma.$executeRaw`DELETE FROM messages WHERE sender_id != ${adminId} OR recipient_id != ${adminId}`;
+  // moderation_actions (moderator → users, no cascade)
   await prisma.$executeRaw`DELETE FROM moderation_actions WHERE moderator_id != ${adminId}`;
+  // live_sessions (host → users, no cascade) — cascades to session_attendees
+  await prisma.$executeRaw`DELETE FROM live_sessions WHERE host_id != ${adminId}`;
+  // events (organiser → users, no cascade) — cascades to event_rsvps, sets study_circles.event_id NULL
+  await prisma.$executeRaw`DELETE FROM events WHERE organiser_id != ${adminId}`;
+  // projects (owner → users, no cascade) — cascades to project_members, discussion_threads
+  await prisma.$executeRaw`DELETE FROM projects WHERE owner_id != ${adminId}`;
+  // now safe to delete users — all remaining FK children have onDelete:Cascade
   const deleted = await prisma.$executeRaw`DELETE FROM users WHERE id != ${adminId}`;
   res.json({ deleted, message: `Deleted ${deleted} test user(s). Your admin account was preserved.` });
 });
