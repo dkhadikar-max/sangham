@@ -254,7 +254,7 @@
         <div class="table-wrap">
           <table>
             <thead><tr>
-              <th>Name</th><th>Email</th><th>Role</th><th>Country</th>
+              <th>Name</th><th>Email / Phone</th><th>Role</th><th>Country</th>
               <th>Posts</th><th>Joined</th><th>Actions</th>
             </tr></thead>
             <tbody id="users-tbody">
@@ -490,7 +490,8 @@
       }
       document.getElementById('stats-updated').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
     } catch(e) {
-      grid.innerHTML = `<div class="error-banner">${esc(e.message)}<button onclick="loadDashboard()">Retry</button></div>`;
+      const hint = e.message.includes('Insufficient') ? ' (Stats require Super Admin role)' : '';
+      grid.innerHTML = `<div class="error-banner">${esc(e.message)}${hint}<button onclick="loadDashboard()">Retry</button></div>`;
     }
   }
 
@@ -540,7 +541,7 @@
             ${u.isVerifiedClergy ? '<span class="pill pill-verified" style="font-size:0.65rem;">Clergy</span>' : ''}
             ${!u.isActive ? '<span class="pill pill-banned" style="font-size:0.65rem;">Banned</span>' : ''}
           </td>
-          <td style="color:var(--muted);font-size:0.8rem;">${esc(u.email || '–')}</td>
+          <td style="color:var(--muted);font-size:0.8rem;">${esc(u.email || u.phone || '–')}</td>
           <td>
             <select class="role-select" onchange="changeRole('${u.id}',this.value)">
               ${['PRACTITIONER','BHIKKHU','BHIKKHUNI','SCHOLAR','ASSOCIATION_ADMIN','MODERATOR','SUPER_ADMIN'].map(r =>

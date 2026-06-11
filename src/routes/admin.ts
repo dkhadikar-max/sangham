@@ -61,7 +61,7 @@ router.get('/users', authenticate, requireRole(...adminRoles), async (req: AuthR
       where, skip, take: Number(limit),
       orderBy: { createdAt: 'desc' },
       select: {
-        id: true, email: true, displayName: true, role: true,
+        id: true, email: true, phone: true, displayName: true, role: true,
         isActive: true, isVerifiedClergy: true, isVerifiedTeacher: true,
         country: true, createdAt: true,
         _count: { select: { posts: true, followers: true } },
