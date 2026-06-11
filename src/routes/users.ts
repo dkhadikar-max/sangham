@@ -107,7 +107,7 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
       isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true, contributorSince: true,
       languages: true, preferredLanguage: true, templeAffiliation: true, createdAt: true,
       tags: { select: { tag: true } },
-      _count: { select: { followers: true, following: true, posts: true, associations: true } },
+      _count: { select: { followers: true, following: true, posts: true, associations: true, projectMemberships: true } },
     },
   });
   if (!user) throw new AppError('User not found', 404);
@@ -178,6 +178,46 @@ router.delete('/:id/follow', authenticate, async (req: AuthRequest, res: Respons
     where: { followerId: req.user!.id, followedId: req.params.id },
   });
   res.json({ message: 'Unfollowed' });
+});
+
+// GET /users/me/community-feed — posts from members of the user's communities (spec: Active Discussions)
+router.get('/me/community-feed', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
+
+  // Get all association IDs the user belongs to
+  const memberships = await prisma.associationMember.findMany({
+    where: { userId: req.user!.id, isActive: true },
+    select: { associationId: true },
+  });
+
+  if (!memberships.length) {
+    res.json(paginatedResponse([], 0, parsePagination(req.query as Record<string, unknown>)));
+    return;
+  }
+
+  const assocIds = memberships.map(m => m.associationId);
+
+  // Get all user IDs in those communities
+  const communityMembers = await prisma.associationMember.findMany({
+    where: { associationId: { in: assocIds }, isActive: true },
+    select: { userId: true },
+  });
+
+  const memberIds = [...new Set(communityMembers.map(m => m.userId))];
+
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where: { authorId: { in: memberIds }, isDeleted: false },
+      orderBy: { createdAt: 'desc' },
+      take: limit, skip,
+      include: {
+        author: { select: { id: true, displayName: true, profilePhoto: true, role: true, isVerifiedClergy: true } },
+        _count: { select: { likes: true, comments: true } },
+      },
+    }),
+    prisma.post.count({ where: { authorId: { in: memberIds }, isDeleted: false } }),
+  ]);
+  res.json(paginatedResponse(posts, total, parsePagination(req.query as Record<string, unknown>)));
 });
 
 // GET /users/me/feed

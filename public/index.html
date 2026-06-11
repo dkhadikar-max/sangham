@@ -731,6 +731,17 @@ round:var(--error-600)}
     .teacher-apply-section{margin-top:var(--space-4);padding:var(--space-4);background:var(--surface-secondary);border-radius:var(--radius-xl)}
     .dhamma-daan-home-btn{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-4);background:linear-gradient(135deg,var(--saffron-50),var(--saffron-100));border:1px solid var(--saffron-200);border-radius:var(--radius-xl);cursor:pointer;text-align:left;width:100%;font-family:var(--font-body);margin-bottom:var(--space-3)}
     .dhamma-daan-home-btn:hover{background:linear-gradient(135deg,var(--saffron-100),var(--saffron-200));border-color:var(--saffron-300)}
+    /* Dhamma Daan Impact widget */
+    .daan-impact-widget{margin:var(--space-4);padding:var(--space-4);background:linear-gradient(135deg,color-mix(in srgb,var(--saffron-600) 10%,transparent),color-mix(in srgb,var(--saffron-400) 8%,transparent));border:1px solid var(--saffron-200);border-radius:var(--radius-xl);cursor:pointer}
+    .daan-impact-widget:hover{border-color:var(--saffron-400)}
+    .daan-impact-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+    .daan-impact-label{font-size:var(--text-xs);font-weight:var(--weight-semibold);text-transform:uppercase;letter-spacing:var(--tracking-wider);color:var(--saffron-700)}
+    .daan-impact-stats{display:flex;gap:var(--space-4)}
+    .daan-impact-stat{display:flex;flex-direction:column;gap:2px}
+    .daan-impact-val{font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--text-primary);line-height:1}
+    .daan-impact-lbl{font-size:10px;color:var(--text-tertiary)}
+    .daan-impact-allocation{margin-top:var(--space-3);font-size:var(--text-xs);color:var(--text-secondary);line-height:1.5}
+    .daan-impact-give{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--saffron-600);background:none;border:none;padding:0;cursor:pointer;margin-top:var(--space-2);display:block}
 
     /* Person card extras */
     .person-langs{font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1277,9 +1288,11 @@ round:var(--error-600)}
         <!-- #7 Daily Wisdom -->
         <div id="home-daily-verse"></div>
         <div class="community-pulse" id="communityPulse" style="display:none"></div>
-        <!-- #6 Community Updates -->
+        <!-- #8 Dhamma Daan Impact -->
+        <div id="home-daan-impact"></div>
+        <!-- #6 Active Discussions -->
         <div id="home-feed-header" style="display:none;padding:var(--space-4) var(--space-4) var(--space-2)">
-          <h2 class="section-title" style="margin:0">Community Updates</h2>
+          <h2 class="section-title" style="margin:0">Active Discussions</h2>
         </div>
         <div id="home-feed"></div>
       </div>
@@ -2640,6 +2653,7 @@ async function loadHome() {
   if (pulse) pulse.style.display = 'none';
   loadHomeContinueLearning();
   loadHomeActiveProjects();
+  loadHomeDhammaDaanImpact();
   if (state.token) {
     loadHomePeopleSuggestions();
     loadHomeCommunitySuggestions();
@@ -2649,8 +2663,14 @@ async function loadHome() {
   loadHomeUpcomingEvents();
   const container = document.getElementById('home-feed');
   container.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  // Active Discussions: community-member posts when logged in, follow feed otherwise
+  const feedEndpoint = state.token ? '/users/me/community-feed?limit=20' : null;
+  if (!feedEndpoint) {
+    container.innerHTML = renderEmptyState('feed');
+    return;
+  }
   try {
-    const data = await api('GET', '/users/me/feed?limit=20');
+    const data = await api('GET', feedEndpoint);
     const posts = data.data || data;
     const today = new Date().toISOString().slice(0, 10);
     _pulseState.reflections = posts.filter(p => p.createdAt?.slice(0, 10) === today).length;
@@ -2658,7 +2678,12 @@ async function loadHome() {
     const hdr = document.getElementById('home-feed-header');
     if (!posts.length) {
       if (hdr) hdr.style.display = 'none';
-      container.innerHTML = renderEmptyState('feed');
+      container.innerHTML = `<div class="empty-state" style="padding:var(--space-8) var(--space-4)">
+        <div class="empty-state-icon">💬</div>
+        <div class="empty-state-title">No discussions yet</div>
+        <div class="empty-state-body">Join communities to see their active discussions here.</div>
+        <button class="btn btn-primary" style="margin-top:var(--space-3)" onclick="switchTab('communities')">Explore Communities</button>
+      </div>`;
       return;
     }
     if (hdr) hdr.style.display = '';
@@ -2912,6 +2937,41 @@ let _projectSearchTimer;
 function debounceProjectSearch() {
   clearTimeout(_projectSearchTimer);
   _projectSearchTimer = setTimeout(() => loadDiscoverProjects(), 350);
+}
+
+async function loadHomeDhammaDaanImpact() {
+  const container = document.getElementById('home-daan-impact');
+  if (!container) return;
+  try {
+    const d = await api('GET', '/dhamma-daan/dashboard');
+    const total = d.totalCollectedPaise || 0;
+    const fund  = d.totalFundPaise      || 0;
+    const count = d.contributorCount    || 0;
+    if (!total && !count) return; // nothing to show yet
+    const fmtRupees = (p) => {
+      if (p >= 10000000) return '₹' + (p / 10000000).toFixed(1) + 'Cr';
+      if (p >= 100000)   return '₹' + (p / 100000).toFixed(1) + 'L';
+      if (p >= 1000)     return '₹' + (p / 1000).toFixed(1) + 'K';
+      return '₹' + (p / 100).toFixed(0);
+    };
+    const recent = (d.recentAllocations || []).slice(0, 1);
+    const recentHtml = recent.map(a =>
+      `<div class="daan-impact-allocation">🙏 Recent: <strong>${escHtml(a.title)}</strong> — ${fmtRupees(a.amountPaise)}</div>`
+    ).join('');
+    container.innerHTML = `<div class="daan-impact-widget" onclick="openDhammaDaan()">
+      <div class="daan-impact-hd">
+        <span class="daan-impact-label">🪔 Dhamma Daan Impact</span>
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--saffron-600);fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="daan-impact-stats">
+        <div class="daan-impact-stat"><div class="daan-impact-val">${count}</div><div class="daan-impact-lbl">Contributors</div></div>
+        <div class="daan-impact-stat"><div class="daan-impact-val">${fmtRupees(total)}</div><div class="daan-impact-lbl">Total Raised</div></div>
+        <div class="daan-impact-stat"><div class="daan-impact-val">${fmtRupees(fund)}</div><div class="daan-impact-lbl">For Dhamma Fund</div></div>
+      </div>
+      ${recentHtml}
+      <button class="daan-impact-give" onclick="event.stopPropagation();openDhammaDaan()">Support Sangham →</button>
+    </div>`;
+  } catch { /* silently skip */ }
 }
 
 async function loadDailyVerse() {
@@ -4464,6 +4524,7 @@ async function openProfile(userId) {
     if (isOwn) editBtn.style.display = '';
     content.innerHTML = renderProfileView(user, isOwn);
     loadProfilePosts(userId);
+    loadProfileProjects(userId);
     loadProfileContributions(userId);
   } catch(err) {
     content.innerHTML = renderEmptyState('feed-error', err.message);
@@ -4487,10 +4548,10 @@ function renderProfileView(user, isOwn) {
   const connected  = state.followedUsers.has(user.id);
   const coverClass = _tradCoverClass(user.traditions);
 
-  // Spec-compliant stats: Communities · Connections · Skills (never posts/followers/following)
-  const communityCount  = user._count?.associations ?? 0;
-  const connectionCount = user._count?.followers    ?? 0;
-  const skillCount      = (user.tags || []).length;
+  // Spec-compliant stats: Communities · Projects · Connections (never posts/followers/following)
+  const communityCount  = user._count?.associations       ?? 0;
+  const projectCount    = user._count?.projectMemberships ?? 0;
+  const connectionCount = user._count?.followers          ?? 0;
 
   const actions = !isOwn ? `
     <div class="profile-actions">
@@ -4526,8 +4587,8 @@ function renderProfileView(user, isOwn) {
       </div>
       <div class="profile-stats">
         <div class="profile-stat"><div class="profile-stat-value">${communityCount}</div><div class="profile-stat-label">Communities</div></div>
+        <div class="profile-stat"><div class="profile-stat-value">${projectCount}</div><div class="profile-stat-label">Projects</div></div>
         <div class="profile-stat"><div class="profile-stat-value">${connectionCount}</div><div class="profile-stat-label">Connections</div></div>
-        <div class="profile-stat"><div class="profile-stat-value">${skillCount}</div><div class="profile-stat-label">Skills</div></div>
       </div>
     </div>
     ${actions}
@@ -4544,6 +4605,7 @@ function renderProfileView(user, isOwn) {
     </div>` : ''}
     ${traditions || tags ? `<div class="profile-traditions">${traditions}${tags}</div>` : ''}
     <div id="profile-contributions-container"></div>
+    <div id="profile-projects-container"></div>
     <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Reflections</h2>
     <div id="profile-posts-container"></div>`;
 }
@@ -4563,6 +4625,42 @@ async function loadProfilePosts(userId) {
   } catch(err) {
     container.innerHTML = '';
   }
+}
+
+async function loadProfileProjects(userId) {
+  const container = document.getElementById('profile-projects-container');
+  if (!container) return;
+  try {
+    // Use /projects/mine for own profile, memberId filter for others
+    const isOwn = userId === state.user?.id;
+    let projects;
+    if (isOwn) {
+      const data = await api('GET', '/projects/mine');
+      projects = data || [];
+    } else {
+      const data = await api('GET', `/projects?memberId=${encodeURIComponent(userId)}&status=ALL&limit=10`);
+      projects = data.data || data || [];
+    }
+    if (!projects.length) { container.innerHTML = ''; return; }
+    const CAT_ICON_FE = { TRANSLATION:'📜', EDUCATION:'📚', VOLUNTEER:'🤝', RESEARCH:'🔬', TECHNOLOGY:'💻', ENVIRONMENT:'🌱', SOCIAL_IMPACT:'✊', COMMUNITY_BUILDING:'🏘', ARTS_CULTURE:'🎨', HEALTHCARE:'🏥' };
+    container.innerHTML = `
+      <h2 class="section-title" style="padding:var(--space-4) var(--space-4) var(--space-2)">Projects</h2>
+      <div style="padding:0 var(--space-4) var(--space-4)">
+        ${projects.map(p => {
+          const icon = p.icon || CAT_ICON_FE[p.category] || '🤝';
+          const catLabel = (p.category || '').replace(/_/g, ' ');
+          const role = (p.members || []).find(m => m.userId === userId)?.role || (p.ownerId === userId ? 'OWNER' : 'CONTRIBUTOR');
+          return `<div class="project-list-item" style="padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)" onclick="openProjectDetail('${p.id}')">
+            <div class="project-list-icon" style="font-size:1.5rem">${icon}</div>
+            <div class="project-list-body">
+              <div class="project-list-title">${escHtml(p.title)}</div>
+              <div class="project-list-meta">${escHtml(catLabel)} · <span style="color:var(--saffron-600);font-weight:var(--weight-semibold)">${role}</span></div>
+              ${p.purpose ? `<div class="project-list-purpose">${escHtml(p.purpose)}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+  } catch { container.innerHTML = ''; }
 }
 
 function toggleEditProfile() {

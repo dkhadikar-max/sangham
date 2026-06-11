@@ -25,18 +25,19 @@ const CAT_ICON: Record<string, string> = {
 };
 
 // GET /projects — browse open/active projects
-router.get('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  const { category, status = 'OPEN', q, associationId, limit = '20', page = '1' } = req.query;
+router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
+  const { category, status = 'OPEN', q, associationId, memberId, limit = '20', page = '1' } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
 
-  const where: Record<string, unknown> = {
-    isPublished: true,
-    status: (status as string).toUpperCase() as ProjectStatus,
-  };
+  const where: Record<string, unknown> = { isPublished: true };
+  if (status !== 'ALL') {
+    where.status = (status as string).toUpperCase() as ProjectStatus;
+  }
   if (category && Object.values(ProjectCategory).includes(category as ProjectCategory)) {
     where.category = category as ProjectCategory;
   }
   if (associationId) where.associationId = associationId as string;
+  if (memberId) where.members = { some: { userId: memberId as string, isActive: true } };
   if (q) where.title = { contains: q as string, mode: 'insensitive' };
 
   const [projects, total] = await Promise.all([
