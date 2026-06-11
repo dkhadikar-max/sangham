@@ -116,8 +116,11 @@ router.get('/users', authenticate, requireRole(...adminRoles), async (req: AuthR
 // DELETE /admin/users/test-cleanup — remove all users except the requesting admin
 router.delete('/users/test-cleanup', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
   const adminId = req.user!.id;
-  const result = await prisma.$executeRaw`DELETE FROM users WHERE id != ${adminId}`;
-  res.json({ deleted: result, message: `Deleted ${result} test user(s). Your admin account was preserved.` });
+  // Must delete in FK order — messages and moderation_actions have no onDelete: Cascade
+  await prisma.$executeRaw`DELETE FROM messages WHERE sender_id != ${adminId} OR recipient_id != ${adminId}`;
+  await prisma.$executeRaw`DELETE FROM moderation_actions WHERE moderator_id != ${adminId}`;
+  const deleted = await prisma.$executeRaw`DELETE FROM users WHERE id != ${adminId}`;
+  res.json({ deleted, message: `Deleted ${deleted} test user(s). Your admin account was preserved.` });
 });
 
 // PUT /admin/users/:id/role
