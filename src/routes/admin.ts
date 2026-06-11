@@ -152,6 +152,36 @@ router.put('/associations/:id/verify', authenticate, requireRole(...adminRoles),
   res.json({ message: verify ? 'Community verified' : 'Verification removed' });
 });
 
+// GET /admin/debug/counts — raw SQL vs Prisma comparison to diagnose data discrepancies
+router.get('/debug/counts', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Raw SQL — bypasses Prisma query builder entirely
+    const rawResult = await prisma.$queryRaw<{ count: bigint }[]>`SELECT COUNT(*) as count FROM users`;
+    const rawCount = Number(rawResult[0]?.count ?? 0);
+
+    // Prisma ORM count — same method used by /admin/stats
+    const prismaCount = await prisma.user.count();
+
+    // Prisma findMany count — same method used by /admin/users
+    const findManyResult = await prisma.user.findMany({ select: { id: true }, take: 5, orderBy: { createdAt: 'desc' } });
+
+    // Database URL hint — shows which DB we're actually connected to (no password)
+    const dbUrl = process.env.DATABASE_URL || '';
+    const dbHint = dbUrl.replace(/:([^@]+)@/, ':***@').substring(0, 80);
+
+    res.json({
+      raw_sql_count: rawCount,
+      prisma_count: prismaCount,
+      findmany_sample_count: findManyResult.length,
+      findmany_sample_ids: findManyResult.map(u => u.id),
+      counts_match: rawCount === prismaCount,
+      db_hint: dbHint,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /admin/seed-library
 router.post('/seed-library', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_req: AuthRequest, res: Response): Promise<void> => {
   try {

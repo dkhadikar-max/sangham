@@ -305,6 +305,12 @@
             <button class="btn btn-ghost" onclick="checkHealth()">Check Health</button>
             <div id="health-result" style="margin-top:0.75rem;font-size:0.82rem;color:var(--success);"></div>
           </div>
+          <div class="table-wrap" style="padding:1.2rem;">
+            <div style="font-weight:600;margin-bottom:0.5rem;">Database Count Diagnostic</div>
+            <div style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">Compare raw SQL count vs Prisma ORM count vs findMany result. Use this when dashboard stats and users table disagree.</div>
+            <button class="btn btn-ghost" onclick="runCountDiag()">Run Diagnostic</button>
+            <div id="diag-result" style="margin-top:0.75rem;font-size:0.82rem;font-family:monospace;white-space:pre;"></div>
+          </div>
         </div>
       </div>
 
@@ -728,6 +734,28 @@
     } catch(e) {
       res.style.color = 'var(--danger)';
       res.textContent = 'Unreachable';
+    }
+  }
+
+  async function runCountDiag() {
+    const el = document.getElementById('diag-result');
+    el.style.color = 'var(--text)';
+    el.textContent = 'Running…';
+    try {
+      const d = await api('GET', '/admin/debug/counts');
+      const match = d.counts_match ? '✓ MATCH' : '✗ MISMATCH';
+      el.style.color = d.counts_match ? 'var(--success)' : 'var(--danger)';
+      el.textContent = [
+        `raw SQL COUNT(*): ${d.raw_sql_count}`,
+        `prisma.user.count(): ${d.prisma_count}`,
+        `findMany sample (last 5): ${d.findmany_sample_count} rows`,
+        `sample IDs: ${d.findmany_sample_ids?.join(', ') || 'none'}`,
+        `counts match: ${match}`,
+        `db: ${d.db_hint}`,
+      ].join('\n');
+    } catch(e) {
+      el.style.color = 'var(--danger)';
+      el.textContent = 'Error: ' + e.message;
     }
   }
 
