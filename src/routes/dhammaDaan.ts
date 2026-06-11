@@ -10,7 +10,7 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
-import { createOrder, verifyPaymentSignature } from '../services/razorpay';
+import { createOrder, verifyPaymentSignature, createPlan, createSubscription, verifySubscriptionSignature } from '../services/razorpay';
 import { env } from '../config/env';
 import { AllocationCategory, UserRole } from '@prisma/client';
 import { z } from 'zod';
@@ -105,6 +105,91 @@ router.post('/verify', authenticate, async (req: AuthRequest, res: Response): Pr
 
   res.json({
     captured: true,
+    amountPaise: contribution.amountPaise,
+    splitPlatformPaise: contribution.splitPlatformPaise,
+    splitFundPaise: contribution.splitFundPaise,
+  });
+});
+
+// ── POST /dhamma-daan/subscribe ──────────────────────────────────────────────
+// Create a Razorpay plan + subscription for monthly giving. Returns subscription_id.
+router.post('/subscribe', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { amountPaise } = req.body;
+  if (!amountPaise || typeof amountPaise !== 'number' || amountPaise < MIN_PAISE) {
+    throw new AppError(`Minimum contribution is ₹${MIN_PAISE / 100}`, 400);
+  }
+  if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
+    throw new AppError('Payment system not configured', 503);
+  }
+
+  const amountRupees = (amountPaise / 100).toLocaleString('en-IN');
+  const plan = await createPlan(amountPaise, `Dhamma Daan – ₹${amountRupees}/month`);
+  const subscription = await createSubscription(plan.id);
+
+  const half = Math.floor(amountPaise / 2);
+  await prisma.dhammaDaanContribution.create({
+    data: {
+      userId: req.user!.id,
+      amountPaise,
+      razorpaySubscriptionId: subscription.id,
+      isMonthly: true,
+      status: 'PENDING',
+      splitPlatformPaise: half,
+      splitFundPaise: amountPaise - half,
+    },
+  });
+
+  res.json({ subscriptionId: subscription.id, keyId: env.RAZORPAY_KEY_ID });
+});
+
+// ── POST /dhamma-daan/subscription-verify ────────────────────────────────────
+const subscriptionVerifySchema = z.object({
+  razorpay_payment_id:      z.string(),
+  razorpay_subscription_id: z.string(),
+  razorpay_signature:       z.string(),
+});
+
+router.post('/subscription-verify', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const parsed = subscriptionVerifySchema.safeParse(req.body);
+  if (!parsed.success) throw new AppError('Invalid payload', 400);
+
+  const { razorpay_payment_id, razorpay_subscription_id, razorpay_signature } = parsed.data;
+
+  if (!verifySubscriptionSignature(razorpay_payment_id, razorpay_subscription_id, razorpay_signature)) {
+    throw new AppError('Payment verification failed', 400);
+  }
+
+  const contribution = await prisma.dhammaDaanContribution.findUnique({
+    where: { razorpaySubscriptionId: razorpay_subscription_id },
+  });
+  if (!contribution) throw new AppError('Subscription not found', 404);
+  if (contribution.userId !== req.user!.id) throw new AppError('Forbidden', 403);
+  if (contribution.status === 'CAPTURED') {
+    res.json({ alreadyCaptured: true }); return;
+  }
+
+  await prisma.$transaction([
+    prisma.dhammaDaanContribution.update({
+      where: { razorpaySubscriptionId: razorpay_subscription_id },
+      data: {
+        razorpayPaymentId: razorpay_payment_id,
+        razorpaySignature: razorpay_signature,
+        status: 'CAPTURED',
+        capturedAt: new Date(),
+      },
+    }),
+    prisma.user.update({
+      where: { id: req.user!.id },
+      data: {
+        isContributor: true,
+        contributorSince: req.user!.contributorSince ?? new Date(),
+      },
+    }),
+  ]);
+
+  res.json({
+    captured: true,
+    isMonthly: true,
     amountPaise: contribution.amountPaise,
     splitPlatformPaise: contribution.splitPlatformPaise,
     splitFundPaise: contribution.splitFundPaise,

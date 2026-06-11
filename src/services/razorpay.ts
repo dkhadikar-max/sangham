@@ -56,3 +56,64 @@ export function verifyPaymentSignature(
     .digest('hex');
   return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
 }
+
+export interface RazorpayPlan {
+  id: string;
+  period: string;
+  interval: number;
+  item: { amount: number; currency: string; name: string };
+}
+
+export interface RazorpaySubscription {
+  id: string;
+  plan_id: string;
+  status: string;
+  total_count: number;
+}
+
+export async function createPlan(amountPaise: number, label: string): Promise<RazorpayPlan> {
+  const resp = await fetch(`${RAZORPAY_API}/plans`, {
+    method: 'POST',
+    headers: { 'Authorization': authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      period: 'monthly',
+      interval: 1,
+      item: { name: label, amount: amountPaise, currency: 'INR' },
+    }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({})) as { error?: { description?: string } };
+    throw new Error(err.error?.description || `Razorpay plan error ${resp.status}`);
+  }
+  return resp.json() as Promise<RazorpayPlan>;
+}
+
+export async function createSubscription(planId: string): Promise<RazorpaySubscription> {
+  const resp = await fetch(`${RAZORPAY_API}/subscriptions`, {
+    method: 'POST',
+    headers: { 'Authorization': authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan_id: planId, total_count: 120, quantity: 1 }),
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({})) as { error?: { description?: string } };
+    throw new Error(err.error?.description || `Razorpay subscription error ${resp.status}`);
+  }
+  return resp.json() as Promise<RazorpaySubscription>;
+}
+
+/**
+ * Verify Razorpay subscription payment signature (HMAC SHA256).
+ * The signature is over "paymentId|subscriptionId" using the key secret.
+ */
+export function verifySubscriptionSignature(
+  paymentId: string,
+  subscriptionId: string,
+  signature: string
+): boolean {
+  const body = `${paymentId}|${subscriptionId}`;
+  const expected = crypto
+    .createHmac('sha256', env.RAZORPAY_KEY_SECRET)
+    .update(body)
+    .digest('hex');
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+}

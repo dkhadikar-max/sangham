@@ -1811,11 +1811,19 @@ round:var(--error-600)}
           </div>
         </div>
         <div class="input-group" style="margin-top:var(--space-2)">
-          <label>Or enter custom amount (₹ 49 minimum)</label>
-          <input id="daan-custom" class="input" type="number" min="49" placeholder="e.g. 251" oninput="updateDaanBtnLabel()">
+          <label style="display:flex;justify-content:space-between;align-items:center">
+            <span>Monthly amount</span>
+            <span id="daan-slider-label" style="font-size:var(--text-base);font-weight:var(--weight-bold);color:var(--saffron-700)">₹108</span>
+          </label>
+          <input id="daan-custom" type="range" min="49" max="50000" step="1" value="108"
+            style="width:100%;accent-color:var(--saffron-500);margin-top:var(--space-2);cursor:pointer"
+            oninput="updateDaanSlider(this.value)">
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:2px">
+            <span>₹49</span><span>₹50,000</span>
+          </div>
         </div>
-        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Give ₹108</button>
-        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Secure payment via Razorpay · No data shared beyond what is required</p>
+        <button class="btn btn-primary" style="width:100%;margin-top:var(--space-4)" id="daan-pay-btn" onclick="submitDhammaDaan()">Give ₹108/month</button>
+        <p style="font-size:var(--text-xs);color:var(--text-tertiary);text-align:center;margin-top:var(--space-3)">Monthly recurring · Razorpay · Cancel anytime</p>
       </div>
       <div id="daan-view-history" class="panel-content" style="padding:var(--space-4);display:none">
         <div id="daan-history-content"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
@@ -7245,8 +7253,12 @@ function openDhammaDaan() {
   document.querySelectorAll('.daan-tier-btn').forEach(b => {
     b.classList.toggle('active', parseInt(b.dataset.amount) === 108);
   });
-  const custom = document.getElementById('daan-custom');
-  if (custom) custom.value = '';
+  const slider = document.getElementById('daan-custom');
+  if (slider) { slider.value = '108'; }
+  const label = document.getElementById('daan-slider-label');
+  if (label) label.textContent = '₹108';
+  const payBtn = document.getElementById('daan-pay-btn');
+  if (payBtn) payBtn.textContent = 'Give ₹108/month';
   switchDaanTab('give');
 }
 
@@ -7265,23 +7277,28 @@ function selectDaanTier(amount, btn) {
   _daanAmount = amount;
   document.querySelectorAll('.daan-tier-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const custom = document.getElementById('daan-custom');
-  if (custom && btn) custom.value = '';
+  const slider = document.getElementById('daan-custom');
+  if (slider) slider.value = amount;
+  const label = document.getElementById('daan-slider-label');
+  if (label) label.textContent = '₹' + amount.toLocaleString('en-IN');
   const payBtn = document.getElementById('daan-pay-btn');
-  if (payBtn) payBtn.textContent = 'Give ₹' + amount.toLocaleString('en-IN');
+  if (payBtn) payBtn.textContent = 'Give ₹' + amount.toLocaleString('en-IN') + '/month';
 }
 
-function updateDaanBtnLabel() {
-  const customEl = document.getElementById('daan-custom');
-  const customVal = customEl ? parseInt(customEl.value) : 0;
+function updateDaanSlider(val) {
+  const amount = parseInt(val);
+  if (!amount || amount < 49) return;
+  _daanAmount = amount;
+  // Deactivate tier buttons since slider is now driving
+  document.querySelectorAll('.daan-tier-btn').forEach(b => b.classList.remove('active'));
+  // Activate tier button if value matches exactly
+  document.querySelectorAll('.daan-tier-btn').forEach(b => {
+    if (parseInt(b.dataset.amount) === amount) b.classList.add('active');
+  });
+  const label = document.getElementById('daan-slider-label');
+  if (label) label.textContent = '₹' + amount.toLocaleString('en-IN');
   const payBtn = document.getElementById('daan-pay-btn');
-  if (!payBtn) return;
-  if (customVal >= 49) {
-    document.querySelectorAll('.daan-tier-btn').forEach(b => b.classList.remove('active'));
-    payBtn.textContent = 'Give ₹' + customVal.toLocaleString('en-IN');
-  } else {
-    payBtn.textContent = 'Give ₹' + _daanAmount.toLocaleString('en-IN');
-  }
+  if (payBtn) payBtn.textContent = 'Give ₹' + amount.toLocaleString('en-IN') + '/month';
 }
 
 async function loadDaanHistory() {
@@ -7369,16 +7386,14 @@ async function loadDaanImpact() {
 }
 
 async function submitDhammaDaan() {
-  const customEl = document.getElementById('daan-custom');
-  const customVal = customEl ? parseInt(customEl.value) : 0;
-  const amount = (customVal >= 49) ? customVal : _daanAmount;
+  const amount = _daanAmount;
   if (!amount || amount < 49) { showToast('Minimum contribution is ₹49', 'error'); return; }
 
   const btn = document.getElementById('daan-pay-btn');
   btn.disabled = true; btn.textContent = t('common.processing');
   try {
-    const order = await api('POST', '/dhamma-daan/orders', { amountPaise: amount * 100 });
-    if (!order.orderId) throw new Error('Could not create payment order');
+    const sub = await api('POST', '/dhamma-daan/subscribe', { amountPaise: amount * 100 });
+    if (!sub.subscriptionId) throw new Error('Could not create subscription');
 
     if (typeof Razorpay === 'undefined') {
       await new Promise((resolve, reject) => {
@@ -7391,20 +7406,18 @@ async function submitDhammaDaan() {
     }
 
     const rzp = new Razorpay({
-      key: order.keyId,
-      amount: order.amount,
-      currency: order.currency,
+      key: sub.keyId,
+      subscription_id: sub.subscriptionId,
       name: 'Sangham',
-      description: 'Dhamma Daan — Supporting Buddhist communities',
-      order_id: order.orderId,
+      description: 'Dhamma Daan — ₹' + amount.toLocaleString('en-IN') + '/month',
       prefill: { name: state.user.displayName || '', email: state.user.email || '' },
       theme: { color: '#D4A843' },
       handler: async (response) => {
         try {
-          await api('POST', '/dhamma-daan/verify', {
-            razorpay_order_id:   response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature:  response.razorpay_signature,
+          await api('POST', '/dhamma-daan/subscription-verify', {
+            razorpay_payment_id:      response.razorpay_payment_id,
+            razorpay_subscription_id: response.razorpay_subscription_id,
+            razorpay_signature:       response.razorpay_signature,
           });
           if (state.user) state.user.isContributor = true;
           showToast(t('toast.dhamma_daan_received'), 'success');
@@ -7420,7 +7433,7 @@ async function submitDhammaDaan() {
     showToast(err.message, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Give ₹' + amount.toLocaleString('en-IN');
+    btn.textContent = 'Give ₹' + amount.toLocaleString('en-IN') + '/month';
   }
 }
 
