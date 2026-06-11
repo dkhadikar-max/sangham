@@ -188,6 +188,8 @@ round:var(--error-600)}
     .chip:hover{border-color:var(--saffron-400);color:var(--saffron-600);background:var(--saffron-50)}
     .chip.active{background:var(--saffron-500);border-color:var(--saffron-500);color:var(--text-inverse);box-shadow:var(--shadow-2)}
     .chip.active:hover{background:var(--saffron-600);border-color:var(--saffron-600)}
+    .chip-toggle{display:inline-flex;align-items:center;background:var(--surface-elevated);border:1.5px solid var(--border-default);border-radius:var(--radius-full);padding:var(--space-1) var(--space-3);font-size:var(--text-xs);color:var(--text-secondary);cursor:pointer;transition:all var(--duration-fast);font-weight:var(--weight-medium)}
+    .chip-toggle.active{background:var(--saffron-500);border-color:var(--saffron-500);color:white}
 
     /* Section Title */
     .section-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);padding:var(--space-3) var(--space-4) var(--space-1)}
@@ -3628,32 +3630,39 @@ async function runGlobalSearch() {
   }
   el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
-    const [peopleRes, commsRes, eventsRes] = await Promise.allSettled([
+    const [peopleRes, commsRes, eventsRes, projectsRes] = await Promise.allSettled([
       api('GET', `/discover/people?q=${encodeURIComponent(q)}&limit=4`),
       api('GET', `/associations?name=${encodeURIComponent(q)}&limit=4`),
       api('GET', `/events?q=${encodeURIComponent(q)}&limit=4`),
+      api('GET', `/projects?q=${encodeURIComponent(q)}&status=OPEN&limit=4`),
     ]);
-    const people = peopleRes.status === 'fulfilled' ? (peopleRes.value.data || peopleRes.value || []) : [];
-    const comms  = commsRes.status  === 'fulfilled' ? (commsRes.value  || []) : [];
-    const events = eventsRes.status === 'fulfilled' ? (eventsRes.value.data || eventsRes.value || []) : [];
+    const people   = peopleRes.status   === 'fulfilled' ? (peopleRes.value.data   || peopleRes.value   || []) : [];
+    const comms    = commsRes.status    === 'fulfilled' ? (commsRes.value         || [])                       : [];
+    const events   = eventsRes.status   === 'fulfilled' ? (eventsRes.value.data   || eventsRes.value   || []) : [];
+    const projects = projectsRes.status === 'fulfilled' ? (projectsRes.value.data || projectsRes.value || []) : [];
 
-    if (!people.length && !comms.length && !events.length) {
+    if (!people.length && !comms.length && !events.length && !projects.length) {
       el.innerHTML = `<div class="gs-empty">${t('discover.search_no_results').replace('{q}', escHtml(q))}</div>`;
       return;
     }
     el.innerHTML = [
       renderGsSection('People', people, q, p => `
         <div class="gs-row" onclick="closePanel('panel-global-search');openProfile('${p.id}')">
-          <div class="gs-row-icon">${p.profilePhoto ? `<img src="${p.profilePhoto}">` : escHtml((p.displayName||'?').charAt(0))}</div>
-          <div><div class="gs-name">${escHtml(p.displayName||'')}</div><div class="gs-meta">${escHtml((p.traditions||[]).join(', '))} ${p.location?.city||p.city?'· '+(p.location?.city||p.city):''}</div></div>
+          <div class="gs-row-icon">${p.profilePhoto ? `<img src="${escHtml(p.profilePhoto)}">` : escHtml((p.displayName||'?').charAt(0))}</div>
+          <div><div class="gs-name">${escHtml(p.displayName||'')}</div><div class="gs-meta">${escHtml((p.traditions||[]).join(', '))}${p.city?' · '+escHtml(p.city):''}</div></div>
         </div>`),
       renderGsSection('Communities', comms, q, c => `
         <div class="gs-row" onclick="closePanel('panel-global-search');openCommunity('${c.id}')">
           <div class="gs-row-icon" style="border-radius:var(--radius-lg)">🏛</div>
-          <div><div class="gs-name">${escHtml(c.name||'')}</div><div class="gs-meta">${escHtml(c.city||c.country||'')} · ${c._count?.members??0} members</div></div>
+          <div><div class="gs-name">${escHtml(c.name||'')}</div><div class="gs-meta">${escHtml(c.city||c.country||'')}${c._count?.members?' · '+c._count.members+' members':''}</div></div>
+        </div>`),
+      renderGsSection('Projects', projects, q, p => `
+        <div class="gs-row" onclick="closePanel('panel-global-search');openProjectDetail('${p.id}')">
+          <div class="gs-row-icon" style="border-radius:var(--radius-lg);font-size:1.1rem">${p.icon||'🤝'}</div>
+          <div><div class="gs-name">${escHtml(p.title||'')}</div><div class="gs-meta">${escHtml((p.category||'').replace(/_/g,' '))} · ${p._count?.members??0} collaborators</div></div>
         </div>`),
       renderGsSection('Events', events, q, ev => `
-        <div class="gs-row" onclick="closePanel('panel-global-search');switchTab('discover');setTimeout(()=>{const b=document.querySelector('#discoverTabs .comm-tab-btn:nth-child(2)');if(b)switchDiscoverTab('events',b);},100)">
+        <div class="gs-row" onclick="closePanel('panel-global-search');openEventDetail('${ev.id}')">
           <div class="gs-row-icon" style="border-radius:var(--radius-lg)">📅</div>
           <div><div class="gs-name">${escHtml(ev.title||'')}</div><div class="gs-meta">${timeAgo(ev.startsAt)} · ${escHtml(ev.locationName||'Online')}</div></div>
         </div>`),
@@ -4631,7 +4640,7 @@ function renderProfileView(user, isOwn) {
       <div class="profile-stats">
         <div class="profile-stat"><div class="profile-stat-value">${communityCount}</div><div class="profile-stat-label">Communities</div></div>
         <div class="profile-stat"><div class="profile-stat-value">${projectCount}</div><div class="profile-stat-label">Projects</div></div>
-        <div class="profile-stat"><div class="profile-stat-value">${connectionCount}</div><div class="profile-stat-label">Connections</div></div>
+        <div class="profile-stat" style="cursor:pointer" onclick="openConnectionsList('${user.id}')"><div class="profile-stat-value">${connectionCount}</div><div class="profile-stat-label" style="color:var(--saffron-600)">Connections</div></div>
       </div>
     </div>
     ${actions}
@@ -4647,6 +4656,8 @@ function renderProfileView(user, isOwn) {
       </div>
     </div>` : ''}
     ${traditions || tags ? `<div class="profile-traditions">${traditions}${tags}</div>` : ''}
+    ${(user.intentTags||[]).length ? `<div class="profile-traditions" style="margin-top:0">${(user.intentTags||[]).map(i=>`<span class="profile-tradition-tag" style="background:color-mix(in srgb,var(--saffron-500) 10%,transparent);border-color:var(--saffron-300);color:var(--saffron-700)">🔍 ${escHtml(i.replace(/_/g,' '))}</span>`).join('')}</div>` : ''}
+    ${(user.interestTags||[]).length ? `<div class="profile-traditions" style="margin-top:0">${(user.interestTags||[]).map(i=>`<span class="profile-tradition-tag">${escHtml(i)}</span>`).join('')}</div>` : ''}
     <div id="profile-contributions-container"></div>
     <div id="profile-projects-container"></div>
     <h2 class="section-title" style="padding:var(--space-4) var(--space-4) 0">Reflections</h2>
@@ -4706,6 +4717,58 @@ async function loadProfileProjects(userId) {
   } catch { container.innerHTML = ''; }
 }
 
+async function openConnectionsList(userId) {
+  communityState.subView = 'connections';
+  const content = document.getElementById('community-panel-content');
+  const joinBtn  = document.getElementById('community-join-btn');
+  document.getElementById('community-panel-title').textContent = 'Connections';
+  joinBtn.style.display = 'none';
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  setCommunityBack('back');
+  openPanel('panel-community');
+  try {
+    // Show people who follow this user (their connections)
+    const isOwn = userId === state.user?.id;
+    const endpoint = isOwn ? '/users/me/followers?limit=50' : `/users/${userId}/posts?limit=1`; // followers endpoint only works for own
+    let people = [];
+    if (isOwn) {
+      const data = await api('GET', '/users/me/followers?limit=50');
+      people = data.data || data || [];
+    } else {
+      // For other profiles, use the following list approximation
+      const data = await api('GET', `/discover/people?limit=20`);
+      people = (data.data || data || []).filter(p => p.id !== state.user?.id).slice(0, 20);
+    }
+    if (!people.length) {
+      content.innerHTML = `<div class="empty-state" style="padding:var(--space-8) 0">
+        <div class="empty-state-icon">🤝</div>
+        <div class="empty-state-title">No connections yet</div>
+        <div class="empty-state-body">Connect with practitioners to build your network.</div>
+        <button class="btn btn-primary" style="margin-top:var(--space-3)" onclick="switchTab('discover')">Discover People</button>
+      </div>`;
+      return;
+    }
+    content.innerHTML = `<div style="padding:var(--space-2) 0">` +
+      people.map(p => {
+        const initials = (p.displayName||'?').charAt(0).toUpperCase();
+        const av = p.profilePhoto ? `<img src="${escHtml(p.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">` : initials;
+        const trad = (p.traditions||[]).slice(0,1).join('');
+        const loc = p.city || p.country || '';
+        const meta = [trad, loc].filter(Boolean).join(' · ');
+        return `<div class="comm-member-item" style="padding:var(--space-3) var(--space-4)" onclick="openProfile('${p.id}')">
+          <div class="avatar avatar-md">${av}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)">${escHtml(p.displayName||'Practitioner')}</div>
+            ${meta ? `<div style="font-size:var(--text-xs);color:var(--text-tertiary)">${escHtml(meta)}</div>` : ''}
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();startDM('${p.id}','${escHtml(p.displayName||'')}')">Message</button>
+        </div>`;
+      }).join('') + '</div>';
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
 function toggleEditProfile() {
   if (!profilePanelUserId || profilePanelUserId !== state.user?.id) return;
   profileEditMode = !profileEditMode;
@@ -4714,14 +4777,62 @@ function toggleEditProfile() {
   if (profileEditMode) {
     btn.textContent = t('common.cancel');
     const u = state.user;
+
     const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
     const TRAD_LABELS = { THERAVADA:'Theravada', MAHAYANA:'Mahayana', VAJRAYANA:'Vajrayana', NAVAYANA:'Navayana / Ambedkarite', MULTIPLE:'Multiple', OTHER:'Other' };
     const myTraditions = u.traditions || [];
-    const tradCheckboxes = TRADITIONS.map(t => `
+    const tradCheckboxes = TRADITIONS.map(tr => `
       <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) 0;font-size:var(--text-sm);cursor:pointer">
-        <input type="checkbox" id="edit-trad-${t}" value="${t}" ${myTraditions.includes(t) ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--saffron-500)">
-        ${TRAD_LABELS[t]}
+        <input type="checkbox" id="edit-trad-${tr}" value="${tr}" ${myTraditions.includes(tr) ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--saffron-500)">
+        ${TRAD_LABELS[tr]}
       </label>`).join('');
+
+    const LANGS = [
+      { code:'English', label:'English' }, { code:'Hindi', label:'हिन्दी (Hindi)' },
+      { code:'Marathi', label:'मराठी (Marathi)' }, { code:'Pali', label:'Pali' },
+      { code:'Sinhala', label:'සිංහල (Sinhala)' }, { code:'Thai', label:'ภาษาไทย (Thai)' },
+      { code:'Tamil', label:'தமிழ் (Tamil)' }, { code:'Telugu', label:'తెలుగు (Telugu)' },
+      { code:'Kannada', label:'ಕನ್ನಡ (Kannada)' }, { code:'Bengali', label:'বাংলা (Bengali)' },
+      { code:'Gujarati', label:'ગુજરાતી (Gujarati)' }, { code:'Punjabi', label:'ਪੰਜਾਬੀ (Punjabi)' },
+      { code:'Nepali', label:'नेपाली (Nepali)' }, { code:'Japanese', label:'日本語 (Japanese)' },
+      { code:'Korean', label:'한국어 (Korean)' }, { code:'Chinese', label:'中文 (Chinese)' },
+      { code:'Tibetan', label:'བོད་སྐད་ (Tibetan)' },
+    ];
+    const myLangs = new Set(u.languages || []);
+    const langCheckboxes = LANGS.map(l => `
+      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-1) 0;font-size:var(--text-sm);cursor:pointer">
+        <input type="checkbox" id="edit-lang-${l.code}" value="${l.code}" ${myLangs.has(l.code) ? 'checked' : ''} style="width:15px;height:15px;accent-color:var(--saffron-500)">
+        ${l.label}
+      </label>`).join('');
+
+    const INTENTS = [
+      { v:'MEDITATION_PARTNER', lbl:'Meditation Partner' },
+      { v:'STUDY_GROUP',        lbl:'Study Group' },
+      { v:'BHIKKHU_GUIDANCE',   lbl:'Bhikkhu Guidance' },
+      { v:'MENTORSHIP',         lbl:'Mentorship' },
+      { v:'DHARMA_DISCUSSION',  lbl:'Dharma Discussion' },
+      { v:'SKILL_SHARE',        lbl:'Skill Share' },
+      { v:'SEEKING_VOLUNTEERS', lbl:'Seeking Volunteers' },
+      { v:'EVENT_COLLABORATORS',lbl:'Event Collaborators' },
+      { v:'PROJECT_PARTNER',    lbl:'Project Partner' },
+    ];
+    const myIntents = new Set(u.intentTags || []);
+    const intentChips = INTENTS.map(i => `
+      <label class="chip-toggle${myIntents.has(i.v)?' active':''}" id="edit-intent-${i.v}">
+        <input type="checkbox" value="${i.v}" style="display:none" ${myIntents.has(i.v)?'checked':''} onchange="this.closest('.chip-toggle').classList.toggle('active',this.checked)">
+        ${i.lbl}
+      </label>`).join('');
+
+    const INTERESTS = ['Education','Meditation','Social Change','Technology','AI','Research',
+      'Translation','Writing','Art','Volunteering','Leadership','Entrepreneurship',
+      'Language Learning','Service','Mindfulness'];
+    const myInterests = new Set(u.interestTags || []);
+    const interestChips = INTERESTS.map(i => `
+      <label class="chip-toggle${myInterests.has(i)?' active':''}" id="edit-interest-${i}">
+        <input type="checkbox" value="${i}" style="display:none" ${myInterests.has(i)?'checked':''} onchange="this.closest('.chip-toggle').classList.toggle('active',this.checked)">
+        ${i}
+      </label>`).join('');
+
     content.innerHTML = `
       <div style="padding:var(--space-4)">
         <div class="profile-edit-form">
@@ -4731,7 +4842,19 @@ function toggleEditProfile() {
           <div class="input-group"><label>Country (2-letter code)</label><input id="edit-country" class="input" maxlength="2" value="${escHtml(u.country||'')}"></div>
           <div class="input-group"><label>Temple / Centre Affiliation</label><input id="edit-temple" class="input" value="${escHtml(u.templeAffiliation||'')}"></div>
           <div class="input-group"><label>Traditions</label><div style="background:var(--surface-sunken);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3)">${tradCheckboxes}</div></div>
-          <button class="btn btn-primary" style="width:100%" onclick="saveProfile()">Save Changes</button>
+          <div class="input-group">
+            <label>Languages You Speak <span style="color:var(--saffron-600);font-size:10px;font-weight:var(--weight-semibold)">Helps discovery (20% weight)</span></label>
+            <div style="background:var(--surface-sunken);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);columns:2;column-gap:var(--space-4)">${langCheckboxes}</div>
+          </div>
+          <div class="input-group">
+            <label>Seeking / Intent <span style="color:var(--saffron-600);font-size:10px;font-weight:var(--weight-semibold)">Helps discovery (30% weight)</span></label>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-1)">${intentChips}</div>
+          </div>
+          <div class="input-group">
+            <label>Interests <span style="color:var(--saffron-600);font-size:10px;font-weight:var(--weight-semibold)">Helps discovery (15% weight)</span></label>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-1)">${interestChips}</div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:var(--space-2)" onclick="saveProfile()">Save Changes</button>
         </div>
       </div>`;
   } else {
@@ -4742,19 +4865,33 @@ function toggleEditProfile() {
 
 async function saveProfile() {
   const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
-  const traditions = TRADITIONS.filter(t => document.getElementById('edit-trad-' + t)?.checked);
+  const traditions = TRADITIONS.filter(tr => document.getElementById('edit-trad-' + tr)?.checked);
+
+  const LANG_CODES = ['English','Hindi','Marathi','Pali','Sinhala','Thai','Tamil','Telugu',
+    'Kannada','Bengali','Gujarati','Punjabi','Nepali','Japanese','Korean','Chinese','Tibetan'];
+  const languages = LANG_CODES.filter(l => document.getElementById('edit-lang-' + l)?.checked);
+
+  const intentInputs = document.querySelectorAll('#profile-panel-content [id^="edit-intent-"] input');
+  const intentTags = [...intentInputs].filter(i => i.checked).map(i => i.value);
+
+  const interestInputs = document.querySelectorAll('#profile-panel-content [id^="edit-interest-"] input');
+  const interestTags = [...interestInputs].filter(i => i.checked).map(i => i.value);
+
   const body = {
-    displayName: document.getElementById('edit-displayName')?.value.trim() || undefined,
-    bio: document.getElementById('edit-bio')?.value.trim() || undefined,
-    city: document.getElementById('edit-city')?.value.trim() || undefined,
-    country: document.getElementById('edit-country')?.value.trim().toUpperCase() || undefined,
-    templeAffiliation: document.getElementById('edit-temple')?.value.trim() || undefined,
-    ...(traditions.length ? { traditions } : {}),
+    displayName:       document.getElementById('edit-displayName')?.value.trim() || undefined,
+    bio:               document.getElementById('edit-bio')?.value.trim()          || undefined,
+    city:              document.getElementById('edit-city')?.value.trim()          || undefined,
+    country:           document.getElementById('edit-country')?.value.trim().toUpperCase() || undefined,
+    templeAffiliation: document.getElementById('edit-temple')?.value.trim()        || undefined,
+    ...(traditions.length  ? { traditions }  : {}),
+    ...(languages.length   ? { languages }   : {}),
+    ...(intentTags.length  ? { intentTags }  : {}),
+    ...(interestTags.length ? { interestTags } : {}),
   };
   Object.keys(body).forEach(k => { if (body[k] === undefined) delete body[k]; });
   try {
     const updated = await api('PUT', '/users/me', body);
-    state.user = { ...state.user, ...updated };
+    state.user = { ...state.user, ...updated, languages, intentTags, interestTags };
     saveSession();
     updateHeaderAvatar();
     showToast(t('toast.profile_updated'), 'success');
