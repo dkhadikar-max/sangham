@@ -85,17 +85,8 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
 
   if (ownerType === CourseOwnerType.INDIVIDUAL) {
     ownerId = req.body.ownerId || req.user!.id;
-    // Must be creating for yourself or a mod
     if (ownerId !== req.user!.id && !isMod) {
       res.status(403).json({ error: 'Cannot create a course on behalf of another user' }); return;
-    }
-    // Must be a verified teacher or contributor
-    const creator = await prisma.user.findUnique({
-      where: { id: req.user!.id },
-      select: { isVerifiedTeacher: true, isContributor: true },
-    });
-    if (!creator?.isVerifiedTeacher && !creator?.isContributor && !isMod) {
-      res.status(403).json({ error: 'Individual course creation requires verified teacher or contributor status' }); return;
     }
 
   } else if (ownerType === CourseOwnerType.COMMUNITY) {

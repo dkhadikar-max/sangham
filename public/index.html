@@ -855,6 +855,10 @@ round:var(--error-600)}
     .lib-reader-btn:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
     .lib-reader-btn.bookmarked{color:var(--saffron-600);border-color:var(--saffron-400);background:color-mix(in srgb,var(--saffron-500) 10%,transparent)}
     .lib-reader-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+    .lib-font-row{display:flex;align-items:center;gap:var(--space-2);padding:0 var(--space-5) var(--space-4)}
+    .lib-font-btn{padding:4px 10px;border:1px solid var(--border-default);border-radius:var(--radius-md);background:var(--surface-sunken);color:var(--text-secondary);cursor:pointer;font-weight:var(--weight-medium);line-height:1}
+    .lib-font-btn:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
+    .lib-font-label{font-size:var(--text-xs);color:var(--text-tertiary);flex:1;text-align:center}
     .lib-divider{height:1px;background:var(--border-subtle);margin:0 var(--space-5) var(--space-2)}
     /* Segments */
     .lib-segments{padding:0 var(--space-5) var(--space-6);flex:1}
@@ -1170,19 +1174,14 @@ round:var(--error-600)}
 <main class="app-main">
 <!-- HOME TAB -->
 <div id="tab-home" class="tab-panel active">
-        <div class="presence-bar hide-scrollbar" id="presenceBar">
-          <div class="presence-item"><div class="avatar avatar-md avatar-online">A</div><span class="presence-name">Ananda</span></div>
-          <div class="presence-item"><div class="avatar avatar-md avatar-online">D</div><span class="presence-name">Dhamma</span></div>
-          <div class="presence-item"><div class="avatar avatar-md avatar-away">S</div><span class="presence-name">Sariputta</span></div>
-          <div class="presence-item"><div class="avatar avatar-md avatar-offline">M</div><span class="presence-name">Moggallana</span></div>
-          <div class="presence-item"><div class="avatar avatar-md avatar-online">K</div><span class="presence-name">Kassapa</span></div>
-          <div class="presence-item"><div class="avatar avatar-md avatar-online" style="background:var(--saffron-100)">+12</div><span class="presence-name">More</span></div>
-        </div>
+        <div class="presence-bar hide-scrollbar" id="presenceBar" style="display:none"></div>
         <div id="home-daily-verse"></div>
         <div class="community-pulse" id="communityPulse" style="display:none"></div>
         <div id="home-upcoming-events"></div>
-        <h2 class="section-title" data-i18n="home.your_feed">Your Feed</h2>
-<div id="home-feed"></div>
+        <div id="home-feed-header" style="display:none;padding:0 var(--space-4) var(--space-2)">
+          <h2 class="section-title" data-i18n="home.your_feed" style="margin:0">Your Feed</h2>
+        </div>
+        <div id="home-feed"></div>
       </div>
 
       <!-- DISCOVER TAB -->
@@ -1977,12 +1976,15 @@ async function api(method, path, body, form) {
   if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
   if (!form) headers['Content-Type'] = 'application/json';
 
-  const opts = { method, headers };
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  const opts = { method, headers, signal: ctrl.signal };
   if (body && !form) opts.body = JSON.stringify(body);
   if (form)          opts.body = form;
 
   try {
     const res = await fetch(API_BASE + path, opts);
+    clearTimeout(timer);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       if (res.status === 401 && state.token) {
@@ -1995,9 +1997,9 @@ async function api(method, path, body, form) {
     }
     return data;
   } catch (err) {
-    if (err.message && err.message.includes('Failed to fetch')) {
-      throw new Error('Cannot reach the server. Check your connection.');
-    }
+    clearTimeout(timer);
+    if (err.name === 'AbortError') throw new Error('Request timed out. Check your connection.');
+    if (err.message?.includes('Failed to fetch')) throw new Error('Cannot reach the server. Check your connection.');
     throw err;
   }
 }
@@ -2513,14 +2515,19 @@ async function loadHome() {
     const today = new Date().toISOString().slice(0, 10);
     _pulseState.reflections = posts.filter(p => p.createdAt?.slice(0, 10) === today).length;
     _updatePulseUI();
+    const hdr = document.getElementById('home-feed-header');
     if (!posts.length) {
+      if (hdr) hdr.style.display = 'none';
       container.innerHTML = renderEmptyState('feed');
       return;
     }
+    if (hdr) hdr.style.display = '';
     container.innerHTML = posts.map((post, i) => renderPostCard(post, false, i * 0.05)).join('');
   } catch (err) {
     _pulseState.reflections = 0;
     _updatePulseUI();
+    const hdr2 = document.getElementById('home-feed-header');
+    if (hdr2) hdr2.style.display = 'none';
     container.innerHTML = renderEmptyState('feed-error', err.message);
   }
 }
@@ -2715,7 +2722,7 @@ async function toggleLike(postId, btn) {
 // ============================================================
 function renderEmptyState(type, message) {
   const states = {
-    'feed': { icon: '🪷', title: t('home.empty_title'), text: t('home.empty_text'), actions: `<button class="btn btn-primary" onclick="openCreatePost()">${t('home.share_reflection')}</button><button class="btn btn-ghost" onclick="switchTab('discover')">${t('discover.people')}</button>` },
+    'feed': { icon: '🪷', title: t('home.empty_title'), text: t('home.empty_text'), actions: `<button class="btn btn-primary" onclick="openCreatePost()">${t('home.share_reflection')}</button><button class="btn btn-ghost" onclick="switchTab('discover')">Discover Communities</button><button class="btn btn-ghost" onclick="switchTab('learn');switchLearnTab('library')">Browse Library</button>` },
     'feed-error': { icon: '⚠️', title: t('home.error_title'), text: message || t('home.error_text'), actions: `<button class="btn btn-primary" onclick="loadHome()">${t('common.try_again')}</button>` },
     'discover': { icon: '🔍', title: t('discover.no_people_title'), text: t('discover.no_people_text'), actions: `<button class="btn btn-primary" onclick="clearDiscoverFilters()">${t('discover.clear_filters')}</button><button class="btn btn-ghost" onclick="fetchDiscoverPeople({})">${t('discover.browse_all')}</button>` },
     'learn': { icon: '📖', title: t('learn.no_texts'), text: t('learn.no_texts_text'), actions: `<button class="btn btn-primary" onclick="clearLearnSearch()">${t('learn.browse_collections')}</button>` },
@@ -3608,6 +3615,11 @@ async function openTextDetail(textId) {
           </a>`:''}
         </div>
       </div>
+      <div class="lib-font-row">
+        <button class="lib-font-btn" onclick="_libFontStep(-1)" aria-label="Decrease font size">A−</button>
+        <span class="lib-font-label" id="lib-font-label">${_libFontSize()}px</span>
+        <button class="lib-font-btn" onclick="_libFontStep(1)" aria-label="Increase font size">A+</button>
+      </div>
       <div class="lib-divider"></div>
       <div class="lib-segments" id="lib-seg-list">${_renderSegs(text.segments)}</div>
       ${_lib.segOffset < _lib.segTotal ? `<button class="lib-load-more" id="lib-lm-btn" onclick="loadMoreSegments('${escHtml(textId)}')">
@@ -3631,13 +3643,37 @@ async function openTextDetail(textId) {
   }
 }
 
+function _sanitizeSegContent(raw) {
+  if (!raw) return '';
+  return raw
+    .replace(/[\f\0\v]/g, ' ')
+    .replace(/[​‌‍﻿­]/g, '')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function _libFontSize() {
+  return parseInt(localStorage.getItem('lib_font_size') || '16', 10);
+}
+
+function _libFontStep(delta) {
+  const next = Math.min(24, Math.max(12, _libFontSize() + delta));
+  localStorage.setItem('lib_font_size', next);
+  const segs = document.getElementById('lib-seg-list');
+  if (segs) segs.style.fontSize = next + 'px';
+  const label = document.getElementById('lib-font-label');
+  if (label) label.textContent = next + 'px';
+}
+
 function _renderSegs(segs) {
   if (!segs?.length) return '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4) 0">No content available.</p>';
-  return segs.map(s=>`
+  const fs = _libFontSize();
+  return `<div style="font-size:${fs}px">` + segs.map(s=>`
     <div class="lib-seg">
       ${s.segmentKey&&!/p\d+$/.test(s.segmentKey)?`<div class="lib-seg-key">${escHtml(s.segmentKey)}</div>`:''}
-      <div class="lib-seg-text">${escHtml(s.content)}</div>
-    </div>`).join('');
+      <div class="lib-seg-text">${escHtml(_sanitizeSegContent(s.content))}</div>
+    </div>`).join('') + '</div>';
 }
 
 async function loadMoreSegments(textId) {
@@ -5229,10 +5265,15 @@ function renderCreateResourceForm() {
   const typeOptions = types.map(ty => `<option value="${ty}">${ty.replace(/_/g,' ')}</option>`).join('');
   return `
     <div class="input-group"><label>Resource Type *</label>
-      <select id="cf-rtype" class="create-form-select"><option value="">Select type…</option>${typeOptions}</select>
+      <select id="cf-rtype" class="create-form-select" onchange="_onResourceTypeChange(this.value)"><option value="">Select type…</option>${typeOptions}</select>
+    </div>
+    <div id="cf-upload-row" class="input-group" style="display:none">
+      <label id="cf-upload-label">Upload File *</label>
+      <input id="cf-file" type="file" class="input" style="padding:6px">
+      <div id="cf-upload-status" style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px"></div>
     </div>
     <div class="input-group"><label>Title *</label><input id="cf-title" class="input" placeholder="${t('forms.resource_title_ph')}" data-i18n-ph="forms.resource_title_ph"></div>
-    <div class="input-group"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="${t('forms.resource_url_ph')}" data-i18n-ph="forms.resource_url_ph"></div>
+    <div class="input-group" id="cf-url-row"><label>URL *</label><input id="cf-url" class="input" type="url" placeholder="${t('forms.resource_url_ph')}" data-i18n-ph="forms.resource_url_ph"></div>
     <div class="input-group"><label>Description</label><textarea id="cf-desc" class="input" rows="2" style="resize:vertical"></textarea></div>
     <div class="input-group"><label>Creator / Author</label><input id="cf-creator" class="input" placeholder="Bhante Gunaratana"></div>
     <div class="input-group"><label>Thumbnail URL (optional)</label><input id="cf-thumb" class="input" type="url" placeholder="https://img.youtube.com/…"></div>
@@ -5243,6 +5284,44 @@ function renderCreateResourceForm() {
         <option value="pa">Punjabi</option><option value="ta">Tamil</option><option value="si">Sinhala</option><option value="th">Thai</option>
       </select>
     </div>`;
+}
+
+function _onResourceTypeChange(val) {
+  const uploadRow = document.getElementById('cf-upload-row');
+  const urlRow    = document.getElementById('cf-url-row');
+  const label     = document.getElementById('cf-upload-label');
+  const fileEl    = document.getElementById('cf-file');
+  const needsUpload = val === 'PDF' || val === 'WORKSHOP_RECORDING';
+  if (uploadRow) uploadRow.style.display = needsUpload ? '' : 'none';
+  if (urlRow)    urlRow.style.display    = needsUpload ? 'none' : '';
+  if (label)     label.textContent       = val === 'WORKSHOP_RECORDING' ? 'Upload Audio *' : 'Upload PDF *';
+  if (fileEl) {
+    fileEl.accept = val === 'WORKSHOP_RECORDING' ? 'audio/*,.mp3,.m4a,.wav,.ogg' : 'application/pdf,.pdf';
+    fileEl.value  = '';
+    fileEl.onchange = () => _handleResourceFileUpload(val);
+  }
+}
+
+async function _handleResourceFileUpload(type) {
+  const fileEl = document.getElementById('cf-file');
+  const status = document.getElementById('cf-upload-status');
+  const urlEl  = document.getElementById('cf-url');
+  if (!fileEl?.files?.length) return;
+  const file = fileEl.files[0];
+  const endpoint = type === 'WORKSHOP_RECORDING' ? '/uploads/audio' : '/uploads/document';
+  if (status) status.textContent = 'Uploading…';
+  try {
+    const form = new FormData();
+    form.append('file', file);
+    const result = await api('POST', endpoint, null, form);
+    const url = result.url || result.fileUrl || result.publicUrl;
+    if (!url) throw new Error('Upload succeeded but no URL returned');
+    if (urlEl) { urlEl.value = url; document.getElementById('cf-url-row').style.display = ''; }
+    if (status) status.textContent = 'Uploaded: ' + file.name;
+  } catch(err) {
+    if (status) status.textContent = 'Upload failed: ' + err.message;
+    showToast('Upload failed: ' + err.message, 'error');
+  }
 }
 
 function renderCreateCircleForm() {
@@ -5484,7 +5563,7 @@ function openCreateStandalone(type) {
       <div class="input-group"><label>Course Owner</label>
         <select id="sc-owner-type" class="create-form-select" style="width:100%" onchange="_onCourseOwnerChange(this.value)">
           <option value="COMMUNITY">Community (recommended)</option>
-          <option value="INDIVIDUAL">Individual (requires contributor status)</option>
+          <option value="INDIVIDUAL">Individual (my own courses)</option>
         </select>
       </div>
       <div id="sc-community-row" class="input-group"><label>Community</label>
@@ -5581,11 +5660,7 @@ async function submitCreateStandalone() {
       if (document.getElementById('learn-tab-circles')?.classList.contains('active')) loadLearnCircles();
     }
   } catch(err) {
-    if (err.message?.includes('contributor status')) {
-      showToast('Upload a resource first to gain contributor status, then create courses.', 'info');
-    } else {
-      showToast(err.message, 'error');
-    }
+    showToast(err.message, 'error');
     unlock();
   }
 }
