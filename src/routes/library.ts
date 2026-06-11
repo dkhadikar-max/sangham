@@ -12,10 +12,12 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
   const { q, collection, tradition, language } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
 
+  const { collectionId } = req.query;
   const where: Record<string, unknown> = { isSearchable: true };
   if (tradition) where.collection = { tradition };
   if (language) where.language = language;
-  if (collection) where.collection = { ...(where.collection as object), name: { contains: collection as string, mode: 'insensitive' } };
+  if (collectionId) where.collectionId = collectionId;                           // filter by exact collection UUID
+  else if (collection) where.collection = { ...(where.collection as object), name: { contains: collection as string, mode: 'insensitive' } };
 
   // Basic text search via Postgres ILIKE (Elasticsearch integration is a separate service)
   if (q) {
@@ -41,22 +43,37 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
   res.json(paginatedResponse(texts, total, params));
 });
 
-// GET /library/texts/:id
+// GET /library/texts/:id?segOffset=0&segLimit=100
 router.get('/texts/:id', async (req: AuthRequest, res: Response): Promise<void> => {
-  const cacheKey = `library:text:${req.params.id}`;
+  const segOffset = req.query.segOffset !== undefined ? parseInt(req.query.segOffset as string, 10) : 0;
+  const segLimit  = req.query.segLimit  !== undefined ? parseInt(req.query.segLimit  as string, 10) : 100;
+  const isPaginated = req.query.segOffset !== undefined || req.query.segLimit !== undefined;
+
+  // Cache only full first-page requests
+  const cacheKey = `library:text:${req.params.id}:${segOffset}:${segLimit}`;
   const cached = await redis.get(cacheKey).catch(() => null);
   if (cached) { res.json(JSON.parse(cached)); return; }
 
-  const text = await prisma.libraryText.findUnique({
-    where: { id: req.params.id },
-    include: {
-      collection: { select: { name: true, tradition: true, licence: true, sourceUrl: true } },
-      segments: { orderBy: { sequence: 'asc' }, select: { id: true, segmentKey: true, content: true, verseNumber: true, chapterRef: true, sequence: true } },
-    },
-  });
+  const [text, segmentsTotal] = await Promise.all([
+    prisma.libraryText.findUnique({
+      where: { id: req.params.id },
+      include: {
+        collection: { select: { name: true, tradition: true, licence: true, sourceUrl: true } },
+        segments: {
+          orderBy: { sequence: 'asc' },
+          skip: segOffset,
+          take: segLimit,
+          select: { id: true, segmentKey: true, content: true, verseNumber: true, chapterRef: true, sequence: true },
+        },
+      },
+    }),
+    prisma.librarySegment.count({ where: { textId: req.params.id } }),
+  ]);
   if (!text) throw new AppError('Text not found', 404);
-  await redis.setex(cacheKey, CACHE_TTL.LIBRARY_TEXT, JSON.stringify(text)).catch(() => {});
-  res.json(text);
+
+  const result = { ...text, segmentsTotal, segOffset, segLimit };
+  if (!isPaginated) await redis.setex(cacheKey, CACHE_TTL.LIBRARY_TEXT, JSON.stringify(result)).catch(() => {});
+  res.json(result);
 });
 
 // POST /library/texts/:id/bookmarks
@@ -109,9 +126,37 @@ router.get('/daily-verse', async (_req: AuthRequest, res: Response): Promise<voi
 router.get('/collections', async (_req: AuthRequest, res: Response): Promise<void> => {
   const collections = await prisma.libraryCollection.findMany({
     where: { isActive: true },
-    select: { id: true, name: true, tradition: true, description: true, licence: true, _count: { select: { texts: true } } },
+    select: {
+      id: true, name: true, tradition: true, description: true, licence: true,
+      _count: { select: { texts: true } },
+      texts: { select: { language: true }, distinct: ['language'] },
+    },
+    orderBy: { name: 'asc' },
   });
-  res.json(collections);
+  const result = collections.map(c => ({
+    ...c,
+    languages: [...new Set(c.texts.map((t: any) => t.language))],
+    texts: undefined,
+  }));
+  res.json(result);
+});
+
+// GET /library/my-bookmarks — authenticated
+router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const bookmarks = await prisma.bookmark.findMany({
+    where: { userId: req.user!.id },
+    include: {
+      text: {
+        select: {
+          id: true, title: true, author: true, language: true,
+          collection: { select: { name: true, tradition: true } },
+        },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 30,
+  });
+  res.json(bookmarks.map((b: any) => b.text));
 });
 
 export default router;

@@ -775,14 +775,97 @@ round:var(--error-600)}
     .verse-fallback-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)}
     .verse-fallback-sub{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:1px}
     .verse-fallback-btn{font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-semibold);background:none;border:none;cursor:pointer;font-family:var(--font-body);white-space:nowrap;flex-shrink:0;padding:0}
-    /* Text reader panel */
-    .text-reader{padding:var(--space-4)}
-    .text-reader-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-3)}
-    .text-segment{padding:var(--space-4) 0;border-bottom:1px solid var(--border-subtle)}
-    .text-segment:last-child{border-bottom:none}
-    .text-segment-key{font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-2);font-weight:var(--weight-medium);letter-spacing:var(--tracking-wide)}
-    .text-segment-content{font-size:var(--text-base);line-height:var(--leading-relaxed);color:var(--text-primary)}
-    .text-segment-verse{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-2)}
+    /* ── Library ─────────────────────────────────────────────────── */
+    /* Home sections */
+    .lib-section{margin-bottom:var(--space-6);padding:0 var(--space-4)}
+    .lib-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
+    .lib-section-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-widest)}
+    /* Continue reading */
+    .lib-continue-card{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);background:var(--surface-elevated);border-radius:var(--radius-xl);border:1px solid var(--border-default);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .lib-continue-card:hover{background:var(--surface-sunken);transform:translateY(-1px)}
+    .lib-continue-card:active{transform:scale(0.98)}
+    .lib-continue-mini-cover{width:44px;height:58px;border-radius:var(--radius-md);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+    .lib-continue-info{flex:1;min-width:0}
+    .lib-continue-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lib-continue-sub{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px}
+    .lib-continue-progress{height:3px;background:var(--border-default);border-radius:2px;margin-top:var(--space-2);overflow:hidden}
+    .lib-continue-bar{height:100%;border-radius:2px;background:var(--saffron-500);transition:width .3s ease}
+    .lib-continue-pct{font-size:10px;color:var(--text-tertiary);margin-top:3px;text-align:right}
+    /* Collection grid */
+    .lib-coll-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
+    .lib-coll-card{border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out);box-shadow:var(--shadow-2)}
+    .lib-coll-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-4)}
+    .lib-coll-card:active{transform:scale(0.97)}
+    .lib-coll-cover{padding:var(--space-4) var(--space-3) var(--space-3);display:flex;flex-direction:column;align-items:center;gap:var(--space-1)}
+    .lib-coll-sym{font-size:2.25rem;line-height:1}
+    .lib-coll-trad{font-size:9px;font-weight:var(--weight-bold);letter-spacing:var(--tracking-widest);text-transform:uppercase;opacity:.75}
+    .lib-coll-foot{padding:var(--space-2) var(--space-3) var(--space-3);background:var(--surface-elevated);border-top:1px solid rgba(0,0,0,.1)}
+    .lib-coll-name{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.35;margin-bottom:2px}
+    .lib-coll-count{font-size:10px;color:var(--text-tertiary)}
+    /* Tradition colour palette */
+    .lib-trad-theravada{background:linear-gradient(145deg,#b45309,#d97706);color:white}
+    .lib-trad-navayana{background:linear-gradient(145deg,#1e3a8a,#2563eb);color:white}
+    .lib-trad-mahayana{background:linear-gradient(145deg,#6d28d9,#7c3aed);color:white}
+    .lib-trad-vajrayana{background:linear-gradient(145deg,#7f1d1d,#b91c1c);color:white}
+    .lib-trad-multiple,.lib-trad-other{background:linear-gradient(145deg,#1f2937,#374151);color:white}
+    /* Horizontal browse scroll */
+    .lib-text-scroll{display:flex;gap:var(--space-3);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 0 var(--space-2)}
+    .lib-text-scroll::-webkit-scrollbar{display:none}
+    .lib-text-chip{flex-shrink:0;width:130px;scroll-snap-align:start;background:var(--surface-elevated);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out)}
+    .lib-text-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
+    .lib-text-chip-cover{height:80px;display:flex;align-items:center;justify-content:center;font-size:1.75rem}
+    .lib-text-chip-body{padding:var(--space-2) var(--space-2) var(--space-3)}
+    .lib-text-chip-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .lib-text-chip-lang{display:inline-block;background:var(--surface-sunken);font-size:9px;font-weight:var(--weight-bold);color:var(--text-tertiary);letter-spacing:.04em;padding:1px 5px;border-radius:99px;text-transform:uppercase;margin-top:var(--space-1)}
+    /* Collection view */
+    .lib-breadcrumb{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);cursor:pointer;color:var(--saffron-600);font-size:var(--text-sm);font-weight:var(--weight-medium)}
+    .lib-breadcrumb svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+    .lib-coll-hero{border-radius:var(--radius-xl);padding:var(--space-5);margin:0 var(--space-4) var(--space-5);display:flex;gap:var(--space-4);align-items:flex-start}
+    .lib-coll-hero-sym{font-size:2.75rem;flex-shrink:0;line-height:1;margin-top:2px}
+    .lib-coll-hero-name{font-size:var(--text-lg);font-weight:var(--weight-bold);color:white;line-height:1.2;margin-bottom:var(--space-2)}
+    .lib-coll-hero-desc{font-size:var(--text-xs);opacity:.85;color:white;line-height:var(--leading-relaxed);margin-bottom:var(--space-3)}
+    .lib-coll-hero-tags{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .lib-coll-hero-tag{background:rgba(255,255,255,.18);border-radius:99px;padding:2px 8px;font-size:10px;font-weight:var(--weight-medium);color:white}
+    .lib-text-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3);padding:0 var(--space-4)}
+    .lib-text-card{background:var(--surface-elevated);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-3) var(--space-3);cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out);display:flex;flex-direction:column;min-height:110px}
+    .lib-text-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
+    .lib-text-card:active{transform:scale(0.97)}
+    .lib-text-card-sym{font-size:1.4rem;margin-bottom:var(--space-2);line-height:1}
+    .lib-text-card-title{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-primary);flex:1;line-height:1.4}
+    .lib-text-card-meta{font-size:10px;color:var(--text-tertiary);margin-top:var(--space-2);display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
+    .lib-text-card-lang{background:var(--surface-sunken);padding:1px 5px;border-radius:99px;font-weight:var(--weight-medium)}
+    .lib-text-card-prog{height:2px;background:var(--border-default);border-radius:1px;margin-top:var(--space-2);overflow:hidden}
+    .lib-text-card-progfill{height:100%;background:var(--saffron-500);border-radius:1px}
+    /* Text reader */
+    #panel-text .panel-content{overflow-y:auto;display:flex;flex-direction:column;scroll-behavior:smooth}
+    .lib-reader-band{height:110px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .lib-reader-band-sym{font-size:3.5rem;line-height:1}
+    .lib-reader-meta{padding:var(--space-5) var(--space-5) 0;flex-shrink:0}
+    .lib-reader-title{font-size:var(--text-xl);font-weight:var(--weight-bold);color:var(--text-primary);line-height:1.2;margin-bottom:var(--space-2)}
+    .lib-reader-byline{font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4);line-height:1.5}
+    .lib-reader-stats{display:flex;gap:var(--space-4);margin-bottom:var(--space-4);flex-wrap:wrap}
+    .lib-reader-stat{font-size:var(--text-xs);color:var(--text-tertiary)}
+    .lib-reader-stat strong{color:var(--text-secondary);font-weight:var(--weight-medium)}
+    .lib-reader-progrow{margin-bottom:var(--space-4)}
+    .lib-reader-progbar{height:4px;background:var(--border-default);border-radius:2px;overflow:hidden;margin-bottom:4px}
+    .lib-reader-progfill{height:100%;background:var(--saffron-500);border-radius:2px;transition:width .5s ease}
+    .lib-reader-proglabel{font-size:11px;color:var(--text-tertiary);display:flex;justify-content:space-between}
+    .lib-reader-actions{display:flex;gap:var(--space-2);margin-bottom:var(--space-5)}
+    .lib-reader-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:var(--space-2) var(--space-3);background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-lg);font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--text-secondary);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .lib-reader-btn:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
+    .lib-reader-btn.bookmarked{color:var(--saffron-600);border-color:var(--saffron-400);background:color-mix(in srgb,var(--saffron-500) 10%,transparent)}
+    .lib-reader-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+    .lib-divider{height:1px;background:var(--border-subtle);margin:0 var(--space-5) var(--space-2)}
+    /* Segments */
+    .lib-segments{padding:0 var(--space-5) var(--space-6);flex:1}
+    .lib-seg{padding:var(--space-4) 0;border-bottom:1px solid var(--border-subtle)}
+    .lib-seg:last-child{border-bottom:none}
+    .lib-seg-key{font-size:10px;color:var(--saffron-600);font-weight:var(--weight-semibold);letter-spacing:var(--tracking-wider);text-transform:uppercase;margin-bottom:var(--space-3)}
+    .lib-seg-text{font-size:var(--text-base);line-height:1.8;color:var(--text-primary)}
+    .lib-load-more{width:calc(100% - var(--space-10));margin:var(--space-2) var(--space-5) var(--space-6);padding:var(--space-3);background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-lg);font-size:var(--text-sm);color:var(--saffron-600);font-weight:var(--weight-medium);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:var(--space-2);transition:all var(--duration-fast) var(--ease-out)}
+    .lib-load-more:hover{background:var(--surface-overlay);border-color:var(--saffron-500)}
+    .lib-load-more:disabled{opacity:.4;cursor:default}
+    .lib-attribution{padding:var(--space-4) var(--space-5) var(--space-8);font-size:var(--text-xs);color:var(--text-tertiary);border-top:1px solid var(--border-subtle);line-height:1.65}
 
     /* Related content blocks */
     .related-section{margin-top:var(--space-6);padding-top:var(--space-4);border-top:1px solid var(--border-subtle)}
@@ -3155,115 +3238,409 @@ async function loadLearnCircles(q) {
   }
 }
 
+// ============================================================
+//  LIBRARY — State & helpers
+// ============================================================
+const _lib = {
+  view: 'home',
+  activeCollId: null,
+  currentTextId: null,
+  segOffset: 0,
+  segTotal: 0,
+  segLimit: 100,
+  loadingMore: false,
+};
+
+function libTradClass(tr){ return 'lib-trad-'+(tr||'other').toLowerCase(); }
+function libTradSym(tr){ return {THERAVADA:'☸',NAVAYANA:'⚖',MAHAYANA:'✿',VAJRAYANA:'◈',MULTIPLE:'☸',OTHER:'☸'}[tr]||'☸'; }
+function libLangLabel(l){ return {en:'EN',hi:'हि',mr:'म',te:'తె',pa:'ਪੰ',bn:'বাং',ml:'മ',ta:'த'}[l]||(l||'').toUpperCase(); }
+function libReadingTime(n){
+  const m=Math.ceil(n*30/200);
+  if(m<60) return '~'+m+' min';
+  const h=Math.floor(m/60),r=m%60;
+  return '~'+h+'h'+(r?' '+r+'min':'');
+}
+function libProgress(){ try{return JSON.parse(localStorage.getItem('lib_progress')||'{}')}catch{return{}} }
+function saveLibProgress(id,offset,total,meta){
+  const p=libProgress();
+  p[id]={offset,percent:Math.min(100,Math.round(offset/Math.max(total,1)*100)),title:meta.title||'',tradition:meta.tradition||'',lastRead:Date.now()};
+  localStorage.setItem('lib_progress',JSON.stringify(p));
+}
+
+// ============================================================
+//  LIBRARY — Level 1: Home
+// ============================================================
 async function loadLearnLibrary() {
-  const collectionsEl = document.getElementById('learnCollections');
+  const root = document.getElementById('learn-tab-library');
   if (_learnTabLoaded.library) return;
-  collectionsEl.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  root.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
-    const cols = await api('GET', '/library/collections');
-    collectionsEl.innerHTML = cols.map((c, i) =>
-      `<div class="collection-card" onclick="searchLibrary('',null,'${c.id}')" style="animation-delay: ${i * 0.05}s">
-        <div class="collection-name">${escHtml(c.name)}</div>
-        <div class="collection-meta">${c.tradition} · ${c._count?.texts||0} texts · ${c.licence}</div>
-      </div>`).join('');
+    const [cols, txData] = await Promise.all([
+      api('GET','/library/collections'),
+      api('GET','/library/search?limit=16'),
+    ]);
     _learnTabLoaded.library = true;
+    _lib.view = 'home';
+    _renderLibHome(root, cols, txData.data||txData||[]);
   } catch(err) {
-    collectionsEl.innerHTML = renderEmptyState('learn');
+    root.innerHTML = renderEmptyState('learn');
   }
+}
+
+function _renderLibHome(root, cols, texts) {
+  const progress = libProgress();
+  const inProgress = Object.entries(progress)
+    .filter(([,p])=>p.percent>0&&p.percent<100)
+    .sort(([,a],[,b])=>b.lastRead-a.lastRead).slice(0,3);
+
+  const continueHtml = inProgress.length ? `
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Continue Reading</span></div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        ${inProgress.map(([id,p])=>`
+          <div class="lib-continue-card" onclick="openTextDetail('${id}')">
+            <div class="lib-continue-mini-cover ${libTradClass(p.tradition)}" style="border-radius:var(--radius-md)">${libTradSym(p.tradition)}</div>
+            <div class="lib-continue-info">
+              <div class="lib-continue-title">${escHtml(p.title)}</div>
+              <div class="lib-continue-sub">${p.percent}% complete</div>
+              <div class="lib-continue-progress"><div class="lib-continue-bar" style="width:${p.percent}%"></div></div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  const collHtml = cols.map((c,i)=>{
+    const langs=(c.languages||[]).map(l=>`<span style="background:rgba(255,255,255,.18);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:600;color:white">${libLangLabel(l)}</span>`).join(' ');
+    return `<div class="lib-coll-card" onclick="openLibraryCollection('${escHtml(c.id)}')" style="animation-delay:${i*.06}s">
+      <div class="lib-coll-cover ${libTradClass(c.tradition)}">
+        <div class="lib-coll-sym">${libTradSym(c.tradition)}</div>
+        <div class="lib-coll-trad">${escHtml(c.tradition)}</div>
+      </div>
+      <div class="lib-coll-foot">
+        <div class="lib-coll-name">${escHtml(c.name)}</div>
+        <div class="lib-coll-count">${c._count?.texts||0} texts · ${langs||libLangLabel((c.languages||['en'])[0])}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const chipsHtml = texts.map((tx,i)=>`
+    <div class="lib-text-chip" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
+      <div class="lib-text-chip-cover ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>
+      <div class="lib-text-chip-body">
+        <div class="lib-text-chip-title">${escHtml(tx.title)}</div>
+        <span class="lib-text-chip-lang">${libLangLabel(tx.language)}</span>
+      </div>
+    </div>`).join('');
+
+  root.innerHTML = `
+    ${continueHtml}
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Collections</span></div>
+      <div class="lib-coll-grid">${collHtml}</div>
+    </div>
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Browse All Texts</span></div>
+      <div class="lib-text-scroll">${chipsHtml}</div>
+    </div>
+    <div id="lib-bookmarks-section"></div>`;
+
+  if (state.token) _loadLibBookmarks();
+}
+
+async function _loadLibBookmarks() {
+  try {
+    const bm = await api('GET','/library/my-bookmarks');
+    if (!bm.length) return;
+    const el = document.getElementById('lib-bookmarks-section');
+    if (!el) return;
+    el.innerHTML = `<div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Bookmarked</span></div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        ${bm.map(tx=>`
+          <div class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
+            <div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}" style="border-radius:var(--radius-md)">${libTradSym(tx.collection?.tradition)}</div>
+            <div class="lib-continue-info">
+              <div class="lib-continue-title">${escHtml(tx.title)}</div>
+              <div class="lib-continue-sub">${escHtml(tx.author||'')} · ${libLangLabel(tx.language)}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  } catch {}
+}
+
+// ============================================================
+//  LIBRARY — Level 2: Collection view
+// ============================================================
+async function openLibraryCollection(collId) {
+  const root = document.getElementById('learn-tab-library');
+  root.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  _lib.view = 'collection';
+  _lib.activeCollId = collId;
+  try {
+    const [cols, txData] = await Promise.all([
+      api('GET','/library/collections'),
+      api('GET',`/library/search?collectionId=${encodeURIComponent(collId)}&limit=60`),
+    ]);
+    const coll = cols.find(c=>c.id===collId)||{};
+    _renderCollView(root, coll, txData.data||txData||[]);
+  } catch(err) {
+    root.innerHTML = `<div class="lib-breadcrumb" onclick="showLibraryHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections</div>`+renderEmptyState('learn');
+  }
+}
+
+function _renderCollView(root, coll, texts) {
+  const progress = libProgress();
+  const sym = libTradSym(coll.tradition);
+  const tradClass = libTradClass(coll.tradition);
+  const langs=(coll.languages||[]).map(l=>`<span class="lib-coll-hero-tag">${libLangLabel(l)}</span>`).join('');
+  const cards = texts.map((tx,i)=>{
+    const pct=(progress[tx.id]?.percent)||0;
+    return `<div class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
+      <div class="lib-text-card-sym">${sym}</div>
+      <div class="lib-text-card-title">${escHtml(tx.title)}</div>
+      <div class="lib-text-card-meta">
+        <span class="lib-text-card-lang">${libLangLabel(tx.language)}</span>
+        ${tx.author?`<span>${escHtml(tx.author.split(' ').pop())}</span>`:''}
+      </div>
+      ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
+    </div>`;
+  }).join('');
+
+  root.innerHTML = `
+    <div class="lib-breadcrumb" onclick="showLibraryHome()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections
+    </div>
+    <div class="lib-coll-hero ${tradClass}">
+      <div class="lib-coll-hero-sym">${sym}</div>
+      <div>
+        <div class="lib-coll-hero-name">${escHtml(coll.name||'Collection')}</div>
+        ${coll.description?`<div class="lib-coll-hero-desc">${escHtml(coll.description.slice(0,160))}${coll.description.length>160?'…':''}</div>`:''}
+        <div class="lib-coll-hero-tags">
+          <span class="lib-coll-hero-tag">${texts.length} texts</span>
+          ${langs}
+          <span class="lib-coll-hero-tag">${escHtml(coll.licence||'')}</span>
+        </div>
+      </div>
+    </div>
+    <div class="lib-text-grid">${cards}</div>
+    <div style="height:var(--space-8)"></div>`;
+}
+
+function showLibraryHome() {
+  _learnTabLoaded.library = false;
+  _lib.view = 'home';
+  loadLearnLibrary();
+}
+
+// ============================================================
+//  LIBRARY — Search (wired to global learn search bar)
+// ============================================================
+async function searchLibrary(q, tradition, collId) {
+  if (collId) { openLibraryCollection(collId); return; }
+  const root = document.getElementById('learn-tab-library');
+  if (!q) { showLibraryHome(); return; }
+  root.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  try {
+    const data = await api('GET',`/library/search?limit=20&q=${encodeURIComponent(q)}`);
+    const texts = data.data||data||[];
+    const progress = libProgress();
+    root.innerHTML = `
+      <div class="lib-breadcrumb" onclick="showLibraryHome()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections
+      </div>
+      <div class="lib-section" style="margin-top:0">
+        <div class="lib-section-header"><span class="lib-section-title">Results for "${escHtml(q)}"</span></div>
+        ${texts.length ? `<div class="lib-text-grid">
+          ${texts.map((tx,i)=>{
+            const pct=progress[tx.id]?.percent||0;
+            return `<div class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
+              <div class="lib-text-card-sym">${libTradSym(tx.collection?.tradition)}</div>
+              <div class="lib-text-card-title">${escHtml(tx.title)}</div>
+              <div class="lib-text-card-meta">
+                <span class="lib-text-card-lang">${libLangLabel(tx.language)}</span>
+                ${tx.author?`<span>${escHtml(tx.author)}</span>`:''}
+              </div>
+              ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
+            </div>`;
+          }).join('')}
+        </div>` : renderEmptyState('learn')}
+      </div>`;
+  } catch { root.innerHTML = renderEmptyState('learn'); }
+}
+
+function clearLearnSearch() {
+  document.getElementById('learnSearch').value = '';
+  showLibraryHome();
+}
+
+// ============================================================
+//  LIBRARY — Level 3: Text reader
+// ============================================================
+let _currentTextId = null;
+
+async function openTextDetail(textId) {
+  _currentTextId = textId;
+  _lib.currentTextId = textId;
+  _lib.segOffset = 0;
+  _lib.loadingMore = false;
+
+  const content = document.getElementById('text-panel-content');
+  const titleEl = document.getElementById('text-panel-title');
+  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  openPanel('panel-text');
+
+  try {
+    const text = await api('GET',`/library/texts/${textId}?segOffset=0&segLimit=${_lib.segLimit}`);
+    _lib.segTotal = text.segmentsTotal || text.segments?.length || 0;
+    _lib.segOffset = text.segments?.length || 0;
+
+    const saved = libProgress()[textId]||{};
+    const pct = saved.percent||0;
+    const tradClass = libTradClass(text.collection?.tradition);
+    const sym = libTradSym(text.collection?.tradition);
+
+    saveLibProgress(textId, _lib.segOffset, _lib.segTotal, {title:text.title, tradition:text.collection?.tradition});
+
+    content.innerHTML = `
+      <div class="lib-reader-band ${tradClass}">
+        <div class="lib-reader-band-sym">${sym}</div>
+      </div>
+      <div class="lib-reader-meta">
+        <div class="lib-reader-title">${escHtml(text.title)}</div>
+        <div class="lib-reader-byline">
+          ${text.author?`<strong>${escHtml(text.author)}</strong>`:''}
+          ${text.translator?` · Trans. ${escHtml(text.translator)}`:''}
+          ${text.collection?.name?` · ${escHtml(text.collection.name)}`:''}
+        </div>
+        <div class="lib-reader-stats">
+          <div class="lib-reader-stat"><strong>${_lib.segTotal.toLocaleString()}</strong> passages</div>
+          <div class="lib-reader-stat"><strong>${libReadingTime(_lib.segTotal)}</strong></div>
+          <div class="lib-reader-stat"><strong>${libLangLabel(text.language)}</strong></div>
+        </div>
+        <div class="lib-reader-progrow">
+          <div class="lib-reader-progbar"><div class="lib-reader-progfill" id="lib-prog-fill" style="width:${pct}%"></div></div>
+          <div class="lib-reader-proglabel">
+            <span id="lib-prog-label">${pct>0?pct+'% read':'Not started'}</span>
+            <span>${_lib.segTotal.toLocaleString()} passages</span>
+          </div>
+        </div>
+        <div class="lib-reader-actions">
+          <button class="lib-reader-btn" id="lib-bm-btn" onclick="bookmarkCurrentText()">
+            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmark
+          </button>
+          <button class="lib-reader-btn" onclick="shareCurrentText()">
+            <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Share
+          </button>
+          ${text.collection?.sourceUrl?`<a href="${escHtml(text.collection.sourceUrl)}" target="_blank" rel="noopener" class="lib-reader-btn" style="text-decoration:none">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Source
+          </a>`:''}
+        </div>
+      </div>
+      <div class="lib-divider"></div>
+      <div class="lib-segments" id="lib-seg-list">${_renderSegs(text.segments)}</div>
+      ${_lib.segOffset < _lib.segTotal ? `<button class="lib-load-more" id="lib-lm-btn" onclick="loadMoreSegments('${escHtml(textId)}')">
+        Load more · ${_lib.segOffset} of ${_lib.segTotal} passages
+      </button>` : ''}
+      <div class="lib-attribution">${escHtml(text.attribution||'')}</div>`;
+
+    titleEl.textContent = text.title.length>30 ? text.title.slice(0,30)+'…' : text.title;
+    content.onscroll = () => _updateProgress(textId, content);
+
+    // Check bookmark state
+    if (state.token) {
+      api('GET','/library/my-bookmarks').then(bm=>{
+        const isBm = bm.some(b=>b.id===textId);
+        const btn = document.getElementById('lib-bm-btn');
+        if (btn && isBm) { btn.classList.add('bookmarked'); btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:currentColor;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmarked`; }
+      }).catch(()=>{});
+    }
+  } catch(err) {
+    content.innerHTML = renderEmptyState('feed-error', err.message);
+  }
+}
+
+function _renderSegs(segs) {
+  if (!segs?.length) return '<p style="color:var(--text-tertiary);font-size:var(--text-sm);padding:var(--space-4) 0">No content available.</p>';
+  return segs.map(s=>`
+    <div class="lib-seg">
+      ${s.segmentKey&&!/p\d+$/.test(s.segmentKey)?`<div class="lib-seg-key">${escHtml(s.segmentKey)}</div>`:''}
+      <div class="lib-seg-text">${escHtml(s.content)}</div>
+    </div>`).join('');
+}
+
+async function loadMoreSegments(textId) {
+  if (_lib.loadingMore || _lib.segOffset >= _lib.segTotal) return;
+  _lib.loadingMore = true;
+  const btn = document.getElementById('lib-lm-btn');
+  if (btn) { btn.disabled=true; btn.textContent='Loading…'; }
+  try {
+    const text = await api('GET',`/library/texts/${textId}?segOffset=${_lib.segOffset}&segLimit=${_lib.segLimit}`);
+    const segs = text.segments||[];
+    _lib.segOffset += segs.length;
+    const list = document.getElementById('lib-seg-list');
+    if (list) list.insertAdjacentHTML('beforeend', _renderSegs(segs));
+    if (btn) {
+      if (_lib.segOffset >= _lib.segTotal) btn.remove();
+      else { btn.disabled=false; btn.textContent=`Load more · ${_lib.segOffset} of ${_lib.segTotal} passages`; }
+    }
+    const content = document.getElementById('text-panel-content');
+    if (content) _updateProgress(textId, content);
+  } catch { if (btn) { btn.disabled=false; btn.textContent='Try again'; } }
+  _lib.loadingMore = false;
+}
+
+function _updateProgress(textId, el) {
+  if (!_lib.segTotal) return;
+  const ratio = el.scrollTop / Math.max(el.scrollHeight - el.clientHeight, 1);
+  const pct = Math.max(1, Math.min(99, Math.round((_lib.segOffset/_lib.segTotal)*100*Math.max(ratio,.05))));
+  const fill = document.getElementById('lib-prog-fill');
+  const label = document.getElementById('lib-prog-label');
+  if (fill) fill.style.width = pct+'%';
+  if (label) label.textContent = pct+'% read';
+  const meta = libProgress()[textId]||{};
+  saveLibProgress(textId, _lib.segOffset, _lib.segTotal, {title:meta.title, tradition:meta.tradition});
+}
+
+function bookmarkCurrentText() {
+  if (!state.token) { showToast(t('toast.sign_in_bookmark'),'info'); return; }
+  if (!_currentTextId) return;
+  const btn = document.getElementById('lib-bm-btn');
+  const isBm = btn?.classList.contains('bookmarked');
+  api(isBm?'DELETE':'POST', `/library/texts/${_currentTextId}/bookmarks`)
+    .then(()=>{
+      if (btn) {
+        btn.classList.toggle('bookmarked',!isBm);
+        btn.innerHTML = !isBm
+          ? `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:currentColor;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmarked`
+          : `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Bookmark`;
+      }
+      showToast(isBm?'Bookmark removed':t('toast.text_bookmarked'),'success');
+      if (navigator.vibrate) navigator.vibrate(15);
+    })
+    .catch(err=>showToast(err.message,'error'));
+}
+
+function shareCurrentText() {
+  const title = document.getElementById('text-panel-title')?.textContent||'Sangham Library';
+  if (navigator.share) navigator.share({title,url:window.location.href}).catch(()=>{});
+  else navigator.clipboard?.writeText(window.location.href).then(()=>showToast('Link copied','success')).catch(()=>{});
 }
 
 function debounceLearn() {
   clearTimeout(state.learnSearchTimer);
   state.learnSearchTimer = setTimeout(() => {
     const q = document.getElementById('learnSearch').value.trim();
-    const activeTab = document.querySelector('#learnTabs .comm-tab-btn.active')?.id?.replace('learn-tab-btn-', '') || 'courses';
+    const activeTab = document.querySelector('#learnTabs .comm-tab-btn.active')?.id?.replace('learn-tab-btn-','') || 'courses';
     if (activeTab === 'library') {
       if (q) searchLibrary(q);
-      else {
-        document.getElementById('learnResults').innerHTML = '';
-        document.getElementById('learnCollections').style.display = '';
-        document.getElementById('learnLibraryTitle').style.display = '';
-      }
+      else showLibraryHome();
     } else {
-      // Reset loaded flag so search re-fetches
       _learnTabLoaded[activeTab] = false;
       if (activeTab === 'courses')   loadLearnCourses(q);
       if (activeTab === 'resources') loadLearnResources(q);
     }
   }, 400);
-}
-
-async function searchLibrary(q, tradition, collection) {
-  const resultsEl = document.getElementById('learnResults');
-  if (!q && !collection) { resultsEl.innerHTML = ''; return; }
-  resultsEl.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  document.getElementById('learnCollections').style.display = 'none';
-  document.getElementById('learnLibraryTitle').style.display = 'none';
-
-  try {
-    const qs = new URLSearchParams({ limit: 20, ...(q?{q}:{}), ...(collection?{collection}:{}) }).toString();
-    const data = await api('GET', `/library/search?${qs}`);
-    const texts = data.data || data;
-    if (!texts.length) { resultsEl.innerHTML = renderEmptyState('learn'); return; }
-    resultsEl.innerHTML = `
-      <div style="padding:var(--space-2) var(--space-4)">
-        <span style="font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer" onclick="clearLearnSearch()">← All Collections</span>
-      </div>
-      ${texts.map((t, i) => `<div class="text-result" onclick="openTextDetail('${t.id}')" style="animation-delay:${i*0.05}s;padding:var(--space-3) var(--space-4)">
-        <div class="text-result-title">${escHtml(t.title)}</div>
-        <div class="text-result-meta">${t.author||''}${t.translator?' · Trans: '+t.translator:''} · ${t.language} · ${t.collection?.name||''}</div>
-      </div>`).join('')}`;
-  } catch(err) {
-    resultsEl.innerHTML = renderEmptyState('learn');
-  }
-}
-
-function clearLearnSearch() {
-  document.getElementById('learnSearch').value = '';
-  document.getElementById('learnResults').innerHTML = '';
-  document.getElementById('learnCollections').style.display = '';
-  document.getElementById('learnLibraryTitle').style.display = '';
-}
-
-let _currentTextId = null;
-
-async function openTextDetail(textId) {
-  _currentTextId = textId;
-  const content = document.getElementById('text-panel-content');
-  const title   = document.getElementById('text-panel-title');
-  content.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  openPanel('panel-text');
-  try {
-    const text = await api('GET', `/library/texts/${textId}`);
-    title.textContent = text.title;
-    const segments = (text.segments || []).map(s => `
-      <div class="text-segment">
-        ${s.segmentKey ? `<div class="text-segment-key">${escHtml(s.segmentKey)}</div>` : ''}
-        <div class="text-segment-content">${escHtml(s.content)}</div>
-        ${s.verseNumber ? `<div class="text-segment-verse">v.${s.verseNumber}</div>` : ''}
-      </div>`).join('');
-    content.innerHTML = `
-      <div class="text-reader">
-        <div class="text-reader-meta">
-          ${text.author ? `<span>By ${escHtml(text.author)}</span>` : ''}
-          ${text.translator ? `<span>Trans: ${escHtml(text.translator)}</span>` : ''}
-          <span>${escHtml(text.language || '')}</span>
-          ${text.collection?.name ? `<span>${escHtml(text.collection.name)}</span>` : ''}
-          ${text.collection?.tradition ? `<span>${escHtml(text.collection.tradition)}</span>` : ''}
-        </div>
-        ${segments || '<p style="color:var(--text-tertiary);font-size:var(--text-sm)">No content available for this text.</p>'}
-      </div>`;
-  } catch(err) {
-    content.innerHTML = renderEmptyState('feed-error', err.message);
-  }
-}
-
-function bookmarkCurrentText() {
-  if (!state.token) { showToast(t('toast.sign_in_bookmark'), 'info'); return; }
-  if (!_currentTextId) return;
-  api('POST', `/library/texts/${_currentTextId}/bookmarks`)
-    .then(() => { showToast(t('toast.text_bookmarked'), 'success'); if (navigator.vibrate) navigator.vibrate(15); })
-    .catch(err => showToast(err.message, 'error'));
 }
 // ============================================================
 //  CHAT TAB — THREAD LIST
