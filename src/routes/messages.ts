@@ -74,7 +74,7 @@ router.get('/threads', authenticate, async (req: AuthRequest, res: Response): Pr
   });
   const partnerMap = Object.fromEntries(partners.map(p => [p.id, p]));
 
-  res.json(threads.map(t => ({ ...t, partner: partnerMap[t.partnerId] })));
+  res.json(threads.map(t => ({ ...t, unreadCount: Number(t.unreadCount), partner: partnerMap[t.partnerId] })));
 });
 
 // GET /messages/threads/:partnerId
