@@ -9,7 +9,7 @@ const COURSE_SELECT = {
   id: true, title: true, description: true, language: true, status: true,
   ownerType: true, ownerId: true, associationId: true, createdAt: true,
   instructor: { select: { id: true, displayName: true, profilePhoto: true } },
-  _count: { select: { lessons: true } },
+  _count: { select: { lessons: true, enrollments: true } },
 } as const;
 
 // GET /courses?ownerType=&ownerId=&associationId=&status=&q=
@@ -36,32 +36,70 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
   res.json({ data: items, total });
 });
 
-// GET /courses/:id — with lessons and thread
+// GET /courses/enrolled — authenticated user's enrolled courses (must be before /:id)
+router.get('/enrolled', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const enrollments = await prisma.courseEnrollment.findMany({
+    where: { userId: req.user!.id },
+    orderBy: { enrolledAt: 'desc' },
+    take: 20,
+    include: { course: { select: COURSE_SELECT } },
+  });
+  res.json(enrollments.map(e => e.course));
+});
+
+// GET /courses/:id — with lessons, thread, and enrollment state
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
-  const course = await prisma.course.findUnique({
-    where: { id: req.params.id },
-    include: {
-      instructor: { select: { id: true, displayName: true, profilePhoto: true } },
-      lessons: {
-        where: { isPublished: true },
-        orderBy: { sequence: 'asc' },
-        include: { resource: { select: { id: true, type: true, title: true, url: true, thumbnailUrl: true, durationSecs: true } } },
-      },
-      thread: {
-        include: {
-          posts: {
-            where: { isDeleted: false },
-            orderBy: { createdAt: 'asc' },
-            take: 50,
-            include: { author: { select: { id: true, displayName: true, profilePhoto: true } } },
+  const [course, isEnrolled] = await Promise.all([
+    prisma.course.findUnique({
+      where: { id: req.params.id },
+      include: {
+        instructor: { select: { id: true, displayName: true, profilePhoto: true } },
+        lessons: {
+          where: { isPublished: true },
+          orderBy: { sequence: 'asc' },
+          include: { resource: { select: { id: true, type: true, title: true, url: true, thumbnailUrl: true, durationSecs: true } } },
+        },
+        thread: {
+          include: {
+            posts: {
+              where: { isDeleted: false },
+              orderBy: { createdAt: 'asc' },
+              take: 50,
+              include: { author: { select: { id: true, displayName: true, profilePhoto: true } } },
+            },
           },
         },
+        _count: { select: { lessons: true, enrollments: true } },
       },
-      _count: { select: { lessons: true } },
-    },
-  });
+    }),
+    req.user
+      ? prisma.courseEnrollment.findUnique({
+          where: { courseId_userId: { courseId: req.params.id, userId: req.user.id } },
+        }).then(e => !!e)
+      : Promise.resolve(false),
+  ]);
   if (!course) { res.status(404).json({ error: 'Course not found' }); return; }
-  res.json(course);
+  res.json({ ...course, isEnrolled });
+});
+
+// POST /courses/:id/enroll
+router.post('/:id/enroll', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const course = await prisma.course.findUnique({ where: { id: req.params.id } });
+  if (!course) { res.status(404).json({ error: 'Course not found' }); return; }
+  await prisma.courseEnrollment.upsert({
+    where: { courseId_userId: { courseId: req.params.id, userId: req.user!.id } },
+    create: { courseId: req.params.id, userId: req.user!.id },
+    update: {},
+  });
+  res.json({ enrolled: true });
+});
+
+// DELETE /courses/:id/enroll
+router.delete('/:id/enroll', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  await prisma.courseEnrollment.deleteMany({
+    where: { courseId: req.params.id, userId: req.user!.id },
+  });
+  res.json({ enrolled: false });
 });
 
 // POST /courses

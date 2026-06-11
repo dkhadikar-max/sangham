@@ -165,6 +165,7 @@ model User {
   projectMemberships   ProjectMember[]
   resourcesContributed Resource[]         @relation("ResourceContributor")
   coursesInstructed    Course[]           @relation("CourseInstructor")
+  courseEnrollments    CourseEnrollment[]
   studyCirclesFacilitated StudyCircle[]   @relation("StudyCircleFacilitator")
   studyCircleMemberships StudyCircleMember[]
   discussionPosts      DiscussionPost[]   @relation("DiscussionPostAuthor")
@@ -982,11 +983,26 @@ model Course {
   association    Association?    @relation(fields: [associationId], references: [id], onDelete: Cascade)
   instructor     User?           @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: SetNull)
   lessons        CourseLesson[]
+  enrollments    CourseEnrollment[]
   thread         DiscussionThread?
 
   @@index([associationId])
   @@index([ownerType, ownerId])
   @@map("courses")
+}
+
+model CourseEnrollment {
+  id         String   @id @default(uuid())
+  courseId   String   @map("course_id")
+  userId     String   @map("user_id")
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, userId])
+  @@index([userId])
+  @@map("course_enrollments")
 }
 
 model CourseLesson {
