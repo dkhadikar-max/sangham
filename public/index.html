@@ -2370,6 +2370,12 @@ function initApp() {
   initTheme();
   initSidebar();
   _updateLearnCreateButtons();
+  // Hydrate full profile — fixes stale/incomplete state.user after login or session restore
+  if (state.token) {
+    api('GET', '/users/me').then(u => {
+      if (u && state.user) { state.user = { ...state.user, ...u }; saveSession(); updateHeaderAvatar(); }
+    }).catch(() => {});
+  }
 }
 
 function initSidebar() {

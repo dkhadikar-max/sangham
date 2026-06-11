@@ -303,6 +303,8 @@ router.get('/recommended', authenticate, async (req: AuthRequest, res: Response)
     select: {
       traditions: true,
       languages:  true,
+      city:       true,
+      country:    true,
       tags:       { select: { tag: true } },
       location:   { select: { city: true, country: true } },
       intents:    { where: { status: IntentStatus.OPEN }, select: { category: true } },
@@ -319,19 +321,23 @@ router.get('/recommended', authenticate, async (req: AuthRequest, res: Response)
   const myTraditions = me.traditions;
   const myLanguages  = me.languages;
   const myIntentCats = me.intents.map(i => i.category);
-  const myCity       = me.location?.city    ?? '';
-  const myCountry    = me.location?.country ?? '';
+  // Prefer UserLocation relation; fall back to direct User fields (set via onboarding)
+  const myCity    = me.location?.city    ?? (me as any).city    ?? '';
+  const myCountry = me.location?.country ?? (me as any).country ?? '';
 
   // Candidate pool: any signal overlap (broad OR for diversity)
   const orClauses: object[] = [];
   if (myTraditions.length) orClauses.push({ traditions: { hasSome: myTraditions } });
   if (myTags.length)       orClauses.push({ tags: { some: { tag: { in: myTags } } } });
   if (myLanguages.length)  orClauses.push({ languages: { hasSome: myLanguages } });
-  if (myCity)              orClauses.push({ location: { is: { city: myCity } } });
+  if (myCity) orClauses.push({ OR: [
+    { location: { is: { city: { equals: myCity, mode: 'insensitive' } } } },
+    { city: { equals: myCity, mode: 'insensitive' } },
+  ]});
   if (myIntentCats.length) orClauses.push({ intents: { some: { category: { in: myIntentCats }, status: IntentStatus.OPEN } } });
   // If profile is empty, fall back to active users in same country
   if (orClauses.length === 0 && myCountry) {
-    orClauses.push({ country: myCountry });
+    orClauses.push({ OR: [{ country: myCountry }, { location: { is: { country: myCountry } } }] });
   }
   // Last resort: any active user
   if (orClauses.length === 0) orClauses.push({ isActive: true });

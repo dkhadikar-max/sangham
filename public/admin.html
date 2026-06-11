@@ -460,6 +460,11 @@
         <div class="stat-card"><div class="s-label">Communities</div><div class="s-value">${s.associations}</div></div>
         <div class="stat-card"><div class="s-label">Events</div><div class="s-value">${s.events}</div></div>
         <div class="stat-card"><div class="s-label">Live Sessions</div><div class="s-value">${s.sessions}</div></div>
+        <div class="stat-card success"><div class="s-label">Contributors</div><div class="s-value">${s.contributors}</div></div>
+        <div class="stat-card ${s.pendingClergy > 0 ? 'danger' : ''}">
+          <div class="s-label">Pending Verifications</div>
+          <div class="s-value">${s.pendingClergy}</div>
+        </div>
         <div class="stat-card ${s.openReports > 0 ? 'danger' : ''}">
           <div class="s-label">Open Reports</div>
           <div class="s-value">${s.openReports}</div>

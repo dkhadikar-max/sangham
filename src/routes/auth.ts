@@ -8,6 +8,18 @@ import { z } from 'zod';
 
 const router = Router();
 
+// Fields returned on login/register — keeps state.user fully hydrated
+const SESSION_USER_SELECT = {
+  id: true, displayName: true, role: true, preferredLanguage: true,
+  profilePhoto: true, bio: true, country: true, city: true,
+  isActive: true, isVerifiedClergy: true, isVerifiedTeacher: true,
+  isContributor: true, contributorSince: true,
+  traditions: true, languages: true,
+  professionType: true, customProfession: true,
+  interestTags: true, intentTags: true,
+  email: true,
+} as const;
+
 const registerSchema = z.object({
   email: z.string().email().optional(),
   phone: z.string().min(7).optional(),
@@ -34,15 +46,15 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
   if (existing) throw new AppError('Account already exists', 409);
 
   const passwordHash = await bcrypt.hash(password, 12);
-  const user = await prisma.user.create({
+  const created = await prisma.user.create({
     data: { email, phone, displayName, country, passwordHash } as any,
-    select: { id: true, displayName: true, role: true, preferredLanguage: true, createdAt: true },
+    select: { id: true },
   });
 
   // Create default privacy settings so user appears in Discover immediately
   await prisma.privacySettings.create({
     data: {
-      userId:              user.id,
+      userId:              created.id,
       showInDiscovery:     true,
       profileVisibility:   'PUBLIC',
       messagingPermission: 'CONNECTIONS_ONLY',
@@ -52,9 +64,10 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
     },
   });
 
+  const user = await prisma.user.findUnique({ where: { id: created.id }, select: SESSION_USER_SELECT });
   res.status(201).json({
-    token: signToken(user.id),
-    refreshToken: signRefreshToken(user.id),
+    token: signToken(created.id),
+    refreshToken: signRefreshToken(created.id),
     user,
   });
 });
@@ -65,20 +78,23 @@ router.post('/login', authLimiter, async (req: Request, res: Response): Promise<
   if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
   const { email, phone, password } = parsed.data;
 
-  const user = await prisma.user.findFirst({
+  const raw = await prisma.user.findFirst({
     where: { OR: [email ? { email } : {}, phone ? { phone } : {}] },
   }) as any;
-  if (!user) throw new AppError('Invalid credentials', 401);
+  if (!raw) throw new AppError('Invalid credentials', 401);
 
-  const valid = await bcrypt.compare(password, user.passwordHash || '');
+  const valid = await bcrypt.compare(password, raw.passwordHash || '');
   if (!valid) throw new AppError('Invalid credentials', 401);
 
-  await prisma.user.update({ where: { id: user.id }, data: { lastActiveAt: new Date() } });
+  const [user] = await Promise.all([
+    prisma.user.findUnique({ where: { id: raw.id }, select: SESSION_USER_SELECT }),
+    prisma.user.update({ where: { id: raw.id }, data: { lastActiveAt: new Date() } }),
+  ]);
 
   res.json({
-    token: signToken(user.id),
-    refreshToken: signRefreshToken(user.id),
-    user: { id: user.id, displayName: user.displayName, role: user.role, preferredLanguage: user.preferredLanguage || 'en' },
+    token: signToken(raw.id),
+    refreshToken: signRefreshToken(raw.id),
+    user,
   });
 });
 

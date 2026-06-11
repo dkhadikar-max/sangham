@@ -35,7 +35,7 @@ router.get('/me', authenticate, async (req: AuthRequest, res: Response): Promise
 
 // GET /admin/stats
 router.get('/stats', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_req: AuthRequest, res: Response): Promise<void> => {
-  const [users, posts, sessions, events, assocs, reports, activeUsers] = await Promise.all([
+  const [users, posts, sessions, events, assocs, reports, activeUsers, contributors, pendingClergy] = await Promise.all([
     prisma.user.count(),
     prisma.post.count({ where: { isDeleted: false } }),
     prisma.liveSession.count(),
@@ -43,8 +43,10 @@ router.get('/stats', authenticate, requireRole(UserRole.SUPER_ADMIN), async (_re
     prisma.association.count(),
     prisma.contentReport.count({ where: { isResolved: false } }),
     prisma.user.count({ where: { isActive: true } }),
+    prisma.user.count({ where: { isContributor: true } }),
+    prisma.clergyApplication.count({ where: { status: 'PENDING' } }),
   ]);
-  res.json({ users, activeUsers, posts, sessions, events, associations: assocs, openReports: reports });
+  res.json({ users, activeUsers, posts, sessions, events, associations: assocs, openReports: reports, contributors, pendingClergy });
 });
 
 // GET /admin/users

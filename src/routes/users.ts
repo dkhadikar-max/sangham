@@ -30,6 +30,26 @@ const updateProfileSchema = z.object({
   intentTags:       z.array(z.string()).optional(),
 });
 
+// GET /users/me — full profile for current user (hydrates state.user after login)
+router.get('/me', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    select: {
+      id: true, displayName: true, bio: true, profilePhoto: true, coverImage: true,
+      country: true, city: true, traditions: true, role: true, email: true,
+      isVerifiedClergy: true, isVerifiedTeacher: true, isContributor: true,
+      contributorSince: true, isActive: true, preferredLanguage: true,
+      languages: true, templeAffiliation: true,
+      professionType: true, customProfession: true,
+      interestTags: true, intentTags: true,
+      tags: { select: { tag: true } },
+      _count: { select: { followers: true, following: true, posts: true } },
+    },
+  });
+  if (!user) throw new AppError('User not found', 404);
+  res.json(user);
+});
+
 // GET /users/me/followers — people who follow me, annotated with isFollowingBack
 router.get('/me/followers', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
@@ -184,7 +204,7 @@ router.put('/me', authenticate, async (req: AuthRequest, res: Response): Promise
   const updated = await prisma.user.update({
     where: { id: req.user!.id },
     data: parsed.data,
-    select: { id: true, displayName: true, bio: true, country: true, traditions: true, preferredLanguage: true, professionType: true, customProfession: true, interestTags: true, intentTags: true },
+    select: { id: true, displayName: true, bio: true, profilePhoto: true, country: true, city: true, traditions: true, languages: true, preferredLanguage: true, professionType: true, customProfession: true, interestTags: true, intentTags: true, isContributor: true, isActive: true },
   });
   res.json(updated);
 });
