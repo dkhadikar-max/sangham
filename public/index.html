@@ -53,6 +53,9 @@
     #tab-learn .resource-card{background:white;border-radius:.75rem;padding:1rem;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);display:flex;align-items:center;gap:1rem;transition:all .3s ease}
     #tab-learn .resource-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(192,149,83,.15)}
     .progress-bar{background:linear-gradient(90deg,#C09553 0%,#D4A96A 100%)}
+    #tab-learn #learnTabs .comm-tab-btn{padding:1rem 0}
+    .learn-continue-card{background:white;border-radius:1rem;padding:1.25rem;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .learn-continue-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(192,149,83,.2)}
     /* legacy stubs — suppressed by new UI */
     #create-sangha-btn{display:none!important}
     #mySanghasSection{display:none!important}
@@ -2516,23 +2519,29 @@ round:var(--error-600)}
       <!-- LEARN TAB -->
       <div id="tab-learn" class="tab-panel">
         <!-- Header: Search + Tab Nav -->
-        <div style="background:white;border-bottom:1px solid rgba(192,149,83,.08);padding:1rem;position:sticky;top:0;z-index:10">
+        <div style="background:#FDF8F0;padding:1rem;position:sticky;top:0;z-index:10">
           <div class="relative mb-3">
             <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#A69076;pointer-events:none"></i>
             <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()"
-              class="w-full rounded-xl pl-11 pr-4 py-3 text-sm search-focus transition-all" style="background:#FDF8F0;border:none;color:#2C2416;outline:none">
+              class="w-full rounded-xl pl-11 pr-4 py-3 text-sm search-focus transition-all" style="background:white;border:1px solid rgba(192,149,83,.07);color:#2C2416;outline:none;box-shadow:0 1px 3px rgba(0,0,0,.05)">
           </div>
-          <div class="flex items-center gap-1 overflow-x-auto scrollbar-hide" id="learnTabs" style="touch-action:pan-x">
-            <button class="comm-tab-btn active whitespace-nowrap" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
-            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
-            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
-            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
-            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
+          <div class="bg-white rounded-2xl px-5 shadow-sm" style="border:1px solid rgba(192,149,83,.05)">
+            <div class="flex items-center overflow-x-auto scrollbar-hide" id="learnTabs" style="touch-action:pan-x;gap:1.5rem">
+              <button class="comm-tab-btn active whitespace-nowrap" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
+              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
+              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
+              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
+              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
+            </div>
           </div>
         </div>
         <!-- COURSES -->
-        <div id="learn-tab-courses" class="comm-tab-panel active space-y-4 p-4">
-          <div id="learn-create-courses" class="flex items-center justify-end" style="display:none">
+        <div id="learn-tab-courses" class="comm-tab-panel active p-4" style="display:block">
+          <div id="learn-continue-reading" style="display:none" class="mb-5">
+            <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest mb-3">Continue Reading</h2>
+            <div id="learn-continue-list" class="space-y-3"></div>
+          </div>
+          <div id="learn-create-courses" class="flex items-center justify-end mb-4" style="display:none">
             <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('course')">
               <i class="fa-solid fa-plus"></i><span>Create Course</span>
             </button>
@@ -2549,19 +2558,23 @@ round:var(--error-600)}
           <div class="grid gap-3" style="grid-template-columns:repeat(4,1fr)">
             <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('PDF')">
               <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
-              <span class="font-medium text-sangham-ink text-xs">Texts</span>
+              <h4 class="font-medium text-sangham-ink text-xs">Documents</h4>
+              <p class="text-[10px] text-sangham-brown-light mt-0.5">PDFs</p>
             </div>
             <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('YOUTUBE_VIDEO')">
               <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
-              <span class="font-medium text-sangham-ink text-xs">Videos</span>
+              <h4 class="font-medium text-sangham-ink text-xs">Videos</h4>
+              <p class="text-[10px] text-sangham-brown-light mt-0.5">YouTube &amp; more</p>
             </div>
             <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('WORKSHOP_RECORDING')">
               <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
-              <span class="font-medium text-sangham-ink text-xs">Audio</span>
+              <h4 class="font-medium text-sangham-ink text-xs">Audio</h4>
+              <p class="text-[10px] text-sangham-brown-light mt-0.5">Recordings</p>
             </div>
             <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('ARTICLE')">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-newspaper text-amber-500 text-lg"></i></div>
-              <span class="font-medium text-sangham-ink text-xs">Articles</span>
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-amber-500 text-lg"></i></div>
+              <h4 class="font-medium text-sangham-ink text-xs">Links</h4>
+              <p class="text-[10px] text-sangham-brown-light mt-0.5">Articles &amp; more</p>
             </div>
           </div>
           <div id="learnResources" class="space-y-3"></div>
@@ -5286,6 +5299,54 @@ function switchLearnTab(tab, btn) {
 async function loadLearnCourses(q) {
   const el = document.getElementById('learnCourses');
   el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+
+  // Populate "Continue Reading" from library reading progress
+  const crSection = document.getElementById('learn-continue-reading');
+  const crList = document.getElementById('learn-continue-list');
+  if (crSection && crList) {
+    const progress = libProgress();
+    const inProgress = Object.entries(progress)
+      .filter(([,p]) => p.percent > 0 && p.percent < 100)
+      .sort(([,a],[,b]) => b.lastRead - a.lastRead)
+      .slice(0, 3);
+    if (inProgress.length) {
+      const tradGrad = { THERAVADA:'from-sangham-theravada to-orange-700', NAVAYANA:'from-sangham-navayana to-blue-700', MAHAYANA:'from-amber-500 to-orange-500', VAJRAYANA:'from-purple-500 to-indigo-600' };
+      const tradIcon = { THERAVADA:'fa-dharmachakra', NAVAYANA:'fa-scale-balanced', MAHAYANA:'fa-yin-yang', VAJRAYANA:'fa-bell' };
+      crList.innerHTML = inProgress.map(([id,p]) => {
+        const grad = tradGrad[p.tradition] || 'from-sangham-navayana to-blue-700';
+        const icon = tradIcon[p.tradition] || 'fa-book-open';
+        const tradLabel = (p.tradition||'').charAt(0)+(p.tradition||'').slice(1).toLowerCase();
+        return `<div class="learn-continue-card" onclick="openTextDetail('${id}')">
+          <div class="flex items-start gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-white shadow-md flex-shrink-0">
+              <i class="fa-solid ${icon} text-xl"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between">
+                <div>
+                  <span class="text-[10px] font-semibold uppercase tracking-wider" style="color:#C09553">${escHtml(tradLabel)}</span>
+                  <h3 class="font-serif font-semibold text-sangham-ink text-base mt-0.5 leading-snug">${escHtml(p.title)}</h3>
+                </div>
+                <span class="text-xs font-semibold text-sangham-gold flex-shrink-0 ml-2">${p.percent}% complete</span>
+              </div>
+              <div class="mt-3">
+                <div class="h-2 bg-sangham-cream rounded-full overflow-hidden">
+                  <div class="progress-bar h-full rounded-full" style="width:${p.percent}%"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 mt-3">
+                <button class="px-4 py-2 text-white text-xs font-semibold rounded-xl transition-colors shadow-md" style="background:#C09553" onclick="event.stopPropagation();openTextDetail('${id}')">Continue Reading</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      crSection.style.display = '';
+    } else {
+      crSection.style.display = 'none';
+    }
+  }
+
   try {
     const qs = new URLSearchParams({ status: 'PUBLISHED', limit: '20', ...(q ? { q } : {}) }).toString();
     const data = await api('GET', `/courses?${qs}`);
@@ -7431,6 +7492,15 @@ function toggleEditProfile() {
     content.innerHTML = `
       <div style="padding:var(--space-4)">
         <div class="profile-edit-form">
+          <div class="input-group">
+            <label>Cover Photo</label>
+            <div style="border:1px dashed rgba(192,149,83,.3);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;position:relative;min-height:80px;background:var(--surface-sunken)" onclick="document.getElementById('edit-coverImage').click()">
+              ${u.coverImage ? `<img id="edit-cover-preview" src="${escHtml(u.coverImage)}" alt="" style="width:100%;height:80px;object-fit:cover">` : `<div id="edit-cover-preview" style="height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><i class="fa-solid fa-image" style="font-size:1.5rem;color:var(--text-tertiary)"></i><span style="font-size:var(--text-xs);color:var(--text-tertiary)">Click to upload cover photo</span></div>`}
+            </div>
+            <input type="file" id="edit-coverImage" accept="image/*" style="display:none" onchange="handleCoverImageSelect(this)">
+            <input type="hidden" id="edit-coverImageUrl" value="${escHtml(u.coverImage||'')}">
+            <span id="edit-cover-status" style="font-size:var(--text-xs);color:var(--text-tertiary);margin-top:4px;display:block"></span>
+          </div>
           <div class="input-group"><label>Display Name</label><input id="edit-displayName" class="input" value="${escHtml(u.displayName||'')}"></div>
           <div class="input-group"><label>Bio</label><textarea id="edit-bio" class="input" rows="3" style="resize:vertical">${escHtml(u.bio||'')}</textarea></div>
           <div class="input-group"><label>City</label><input id="edit-city" class="input" value="${escHtml(u.city||'')}"></div>
@@ -7458,6 +7528,32 @@ function toggleEditProfile() {
   }
 }
 
+async function handleCoverImageSelect(input) {
+  const file = input.files?.[0];
+  if (!file) return;
+  const status = document.getElementById('edit-cover-status');
+  const preview = document.getElementById('edit-cover-preview');
+  if (status) status.textContent = 'Uploading…';
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch(`${API_BASE}/uploads/image`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${state.token}` },
+      body: fd,
+    });
+    if (!res.ok) throw new Error('Upload failed');
+    const { url } = await res.json();
+    document.getElementById('edit-coverImageUrl').value = url;
+    if (preview) {
+      preview.innerHTML = `<img src="${escHtml(url)}" alt="" style="width:100%;height:80px;object-fit:cover">`;
+    }
+    if (status) status.textContent = 'Cover photo ready — save to apply.';
+  } catch(err) {
+    if (status) status.textContent = 'Upload failed. Try again.';
+  }
+}
+
 async function saveProfile() {
   const TRADITIONS = ['THERAVADA','MAHAYANA','VAJRAYANA','NAVAYANA','MULTIPLE','OTHER'];
   const traditions = TRADITIONS.filter(tr => document.getElementById('edit-trad-' + tr)?.checked);
@@ -7472,12 +7568,14 @@ async function saveProfile() {
   const interestInputs = document.querySelectorAll('#profile-panel-content [id^="edit-interest-"] input');
   const interestTags = [...interestInputs].filter(i => i.checked).map(i => i.value);
 
+  const coverImageUrl = document.getElementById('edit-coverImageUrl')?.value.trim() || undefined;
   const body = {
     displayName:       document.getElementById('edit-displayName')?.value.trim() || undefined,
     bio:               document.getElementById('edit-bio')?.value.trim()          || undefined,
     city:              document.getElementById('edit-city')?.value.trim()          || undefined,
     country:           document.getElementById('edit-country')?.value.trim().toUpperCase() || undefined,
     templeAffiliation: document.getElementById('edit-temple')?.value.trim()        || undefined,
+    ...(coverImageUrl ? { coverImage: coverImageUrl } : {}),
     ...(traditions.length  ? { traditions }  : {}),
     ...(languages.length   ? { languages }   : {}),
     ...(intentTags.length  ? { intentTags }  : {}),
@@ -7838,7 +7936,7 @@ function renderResourceCard(r) {
       <p class="text-xs text-sangham-brown-light mt-0.5">${typeLabel}${r.creator ? ' · '+escHtml(r.creator) : ''}${dur ? ' · '+dur : ''}${r.language?.toUpperCase()||'EN'}</p>
     </div>
     <button class="w-9 h-9 rounded-xl bg-sangham-cream flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors flex-shrink-0">
-      <i class="fa-solid ${isPlayable ? 'fa-play' : 'fa-arrow-up-right-from-square'} text-sm"></i>
+      <i class="fa-solid ${isPlayable ? 'fa-play' : 'fa-download'} text-sm"></i>
     </button>
   </div>`;
 }
@@ -9934,6 +10032,7 @@ document.addEventListener('touchend', (e) => {
 (async function boot() {
   loadSession();
   initTheme();
+  if (state.token && state.user) routeTo('view-app');
   await setLanguage((state.token && state.user?.preferredLanguage) ? state.user.preferredLanguage : 'en');
   if (state.token && state.user) {
     initApp();
@@ -10082,7 +10181,9 @@ document.addEventListener('click', function(e) {
     renderer.setSize(container.offsetWidth, container.offsetHeight);
   });
 
-  gsap.from('#view-landing nav, #view-landing main', { duration: 1.2, opacity: 0, ease: 'power2.inOut' });
+  if (document.getElementById('view-landing')?.classList.contains('active')) {
+    gsap.from('#view-landing nav, #view-landing main', { duration: 1.2, opacity: 0, ease: 'power2.inOut' });
+  }
 })();
 </script>
 </body>
