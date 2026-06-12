@@ -1900,7 +1900,8 @@ round:var(--error-600)}
                                 <i class="fa-solid fa-quote-left text-white/40 text-lg"></i>
                                 <span class="text-[10px] font-semibold uppercase tracking-widest opacity-70">Daily Wisdom</span>
                             </div>
-                            <p class="font-serif text-sm leading-relaxed italic mb-4 opacity-95" id="home-sidebar-verse">Loading verse...</p>
+                            <p class="font-serif text-sm leading-relaxed italic mb-2 opacity-95" id="home-sidebar-verse">Loading verse...</p>
+                            <div class="text-[10px] opacity-60 mb-4" id="home-sidebar-verse-source"></div>
                             <div class="flex items-center gap-2">
                                 <button class="flex-1 py-2 bg-white/15 hover:bg-white/25 rounded-lg text-xs font-medium transition-colors" onclick="switchTab('learn');switchLearnTab('library')">Read More</button>
                                 <button class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-lg flex items-center justify-center transition-colors"><i class="fa-regular fa-bookmark text-xs"></i></button>
@@ -4354,18 +4355,10 @@ const _HOME_FEED_LIMIT = 20;
 async function loadHome() {
   _homeFeedOffset = 0;
   _pulseState = { reflections: -1, events: -1 };
-  const pulse = document.getElementById('communityPulse');
-  if (pulse) pulse.style.display = 'none';
-  loadHomeContinueLearning();
-  loadHomeActiveProjects();
-  loadHomeDhammaDaanImpact();
   if (state.token) {
     loadHomePeopleSuggestions();
-    loadHomeCommunitySuggestions();
-    loadHomeEnrolledCourses();
   }
   loadDailyVerse();
-  loadHomeUpcomingEvents();
   loadHomeSidebarTrending();
   loadHomeSidebarEvents();
   if (state.token) loadHomeSuggestedConnections();
@@ -4524,14 +4517,10 @@ async function loadHomeEnrolledCourses() {
 }
 
 async function loadHomePeopleSuggestions() {
-  const section = document.getElementById('home-connect-section');
-  const container = document.getElementById('home-connect-suggestions');
-  if (!section || !container) return;
   try {
     const data = await api('GET', '/discover/recommended');
     const people = (data.data || data || []).slice(0, 8);
     if (!people.length) return;
-    // Populate stories strip with real users (after the static "Add" item)
     const strip = document.getElementById('home-stories-strip');
     if (strip) {
       const addItem = strip.firstElementChild;
@@ -4550,26 +4539,7 @@ async function loadHomePeopleSuggestions() {
         strip.appendChild(item);
       });
     }
-    // Also populate the sidebar suggest section
-    if (section && container) {
-      section.style.display = '';
-      container.innerHTML = people.map(p => {
-        const initials = (p.displayName || '?').charAt(0).toUpperCase();
-        const avatar   = p.profilePhoto
-          ? `<img src="${escHtml(p.profilePhoto)}" alt="${escHtml(p.displayName||'')}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
-          : `<div class="avatar avatar-md" style="width:44px;height:44px">${initials}</div>`;
-        const trad = (p.traditions||[]).slice(0,1).join('') || '';
-        const loc  = p.location?.city || p.city || '';
-        const connected = state.followedUsers.has(p.id);
-        return `<div class="suggest-person" onclick="openProfile('${p.id}')">
-          ${avatar}
-          <div class="suggest-person-name">${escHtml(p.displayName||'Anonymous')}</div>
-          ${trad||loc ? `<div class="suggest-person-meta">${escHtml(trad||loc)}</div>` : ''}
-          ${p.id !== state.user?.id ? `<button class="suggest-person-btn ${connected?'connected':''}" onclick="event.stopPropagation();_homeSuggestConnect('${p.id}',this)">${connected?'Connected':'Connect'}</button>` : ''}
-        </div>`;
-      }).join('');
-    }
-  } catch { /* silently skip — home still loads without suggestions */ }
+  } catch { }
 }
 
 async function _homeSuggestConnect(userId, btn) {
@@ -4824,45 +4794,20 @@ async function loadHomeDhammaDaanImpact() {
 }
 
 async function loadDailyVerse() {
-  const container = document.getElementById('home-daily-verse');
-  if (!container) return;
-  const dismissed = localStorage.getItem('sangham_verse_dismissed');
-  if (dismissed && (Date.now() - parseInt(dismissed)) < 86400000) {
-    container.innerHTML = _verseFallbackHtml();
-    return;
-  }
   try {
     const verse = await api('GET', `/library/daily-verse?lang=${encodeURIComponent(_lang || 'en')}`);
-    if (!verse || !verse.content) { container.innerHTML = ''; return; }
+    if (!verse || !verse.content) return;
     _currentVerseTextId = verse.textId || null;
     const text = verse.content;
     const sVerse = document.getElementById('home-sidebar-verse');
     if (sVerse) sVerse.textContent = text.length > 120 ? text.slice(0,120).trimEnd()+'…' : text;
-    const preview = text.length > 90 ? text.slice(0, 90).trimEnd() + '…' : text;
-    const hasTrunc = text.length > 90;
-    // Show a subtle note when falling back to a different language than requested
-    const langNote = (verse.resolvedLang && verse.requestedLang && verse.resolvedLang !== verse.requestedLang)
-      ? `<div style="font-size:10px;opacity:.55;margin-top:4px">Shown in ${verse.resolvedLang.toUpperCase()} — no ${verse.requestedLang.toUpperCase()} verse available today</div>`
-      : '';
-    container.innerHTML = `
-      <div class="dvc" id="dvcCard">
-        <button class="dvc-dismiss" onclick="dismissVerse()" aria-label="Dismiss">✕</button>
-        <div class="dvc-inner">
-          <div class="dvc-icon">☸</div>
-          <div class="dvc-body">
-            <div class="dvc-label">${t('home.daily_wisdom')}</div>
-            <div class="dvc-preview" id="dvcPreview">${escHtml(preview)}</div>
-            ${hasTrunc ? `<div class="dvc-full" id="dvcFull">${escHtml(text)}</div>` : ''}
-            <div class="dvc-source">${escHtml(verse.text?.title || '')}${verse.segmentKey ? ' · ' + escHtml(verse.segmentKey) : ''}${verse.text?.language ? ' · ' + verse.text.language.toUpperCase() : ''}</div>
-            ${langNote}
-            <div class="dvc-actions">
-              ${hasTrunc ? `<button class="dvc-btn" id="dvcReadMore" onclick="toggleVerseExpand()">${t('home.read_more')}</button>` : ''}
-              <button class="dvc-btn" onclick="bookmarkVerse()">🔖 ${t('home.save_verse')}</button>
-            </div>
-          </div>
-        </div>
-      </div>`;
-  } catch(e) { container.innerHTML = ''; }
+    const sSource = document.getElementById('home-sidebar-verse-source');
+    if (sSource) {
+      const title = verse.text?.title || '';
+      const lang = verse.text?.language ? verse.text.language.toUpperCase() : '';
+      sSource.textContent = title + (lang ? ' · ' + lang : '');
+    }
+  } catch { }
 }
 
 function toggleVerseExpand() {
