@@ -1879,6 +1879,13 @@ round:var(--error-600)}
                     <!-- dynamic posts inserted here -->
                 </div>
 
+                <!-- Load More -->
+                <div class="text-center pt-4" id="home-load-more-wrap" style="display:none">
+                    <button id="home-load-more-btn" onclick="loadMoreFeed()" class="px-6 py-3 bg-white border border-sangham-gold/20 text-sangham-gold hover:bg-sangham-gold hover:text-white text-sm font-medium rounded-xl transition-all shadow-sm hover:shadow-md">
+                        Load More Activity
+                    </button>
+                </div>
+
             </main>
 
             <!-- RIGHT SIDEBAR (Sticky) -->
@@ -4193,7 +4200,11 @@ function _updatePulseUI() {
   }
 }
 
+let _homeFeedOffset = 0;
+const _HOME_FEED_LIMIT = 20;
+
 async function loadHome() {
+  _homeFeedOffset = 0;
   _pulseState = { reflections: -1, events: -1 };
   const pulse = document.getElementById('communityPulse');
   if (pulse) pulse.style.display = 'none';
@@ -4212,15 +4223,12 @@ async function loadHome() {
   if (state.token) loadHomeSuggestedConnections();
   _updateLeftSidebars();
   const container = document.getElementById('home-feed');
+  const lmWrap = document.getElementById('home-load-more-wrap');
+  if (lmWrap) lmWrap.style.display = 'none';
   container.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
-  // Active Discussions: community-member posts when logged in, follow feed otherwise
-  const feedEndpoint = state.token ? '/users/me/community-feed?limit=20' : null;
-  if (!feedEndpoint) {
-    container.innerHTML = renderEmptyState('feed');
-    return;
-  }
+  if (!state.token) { container.innerHTML = renderEmptyState('feed'); return; }
   try {
-    const data = await api('GET', feedEndpoint);
+    const data = await api('GET', `/users/me/community-feed?limit=${_HOME_FEED_LIMIT}&skip=0`);
     const posts = data.data || data;
     const today = new Date().toISOString().slice(0, 10);
     _pulseState.reflections = posts.filter(p => p.createdAt?.slice(0, 10) === today).length;
@@ -4238,6 +4246,8 @@ async function loadHome() {
     }
     if (hdr) hdr.style.display = '';
     container.innerHTML = posts.map((post, i) => renderPostCard(post, false, i * 0.05)).join('');
+    _homeFeedOffset = posts.length;
+    if (lmWrap && posts.length >= _HOME_FEED_LIMIT) lmWrap.style.display = '';
   } catch (err) {
     _pulseState.reflections = 0;
     _updatePulseUI();
@@ -4245,6 +4255,23 @@ async function loadHome() {
     if (hdr2) hdr2.style.display = 'none';
     container.innerHTML = renderEmptyState('feed-error', err.message);
   }
+}
+
+async function loadMoreFeed() {
+  const btn = document.getElementById('home-load-more-btn');
+  const lmWrap = document.getElementById('home-load-more-wrap');
+  if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+  try {
+    const data = await api('GET', `/users/me/community-feed?limit=${_HOME_FEED_LIMIT}&skip=${_homeFeedOffset}`);
+    const posts = data.data || data;
+    if (posts.length) {
+      const container = document.getElementById('home-feed');
+      container.insertAdjacentHTML('beforeend', posts.map((post, i) => renderPostCard(post, false, i * 0.05)).join(''));
+      _homeFeedOffset += posts.length;
+    }
+    if (lmWrap && posts.length < _HOME_FEED_LIMIT) lmWrap.style.display = 'none';
+  } catch (e) { /* non-critical */ }
+  if (btn) { btn.disabled = false; btn.textContent = 'Load More Activity'; }
 }
 
 async function loadHomeSuggestedConnections() {
