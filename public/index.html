@@ -1755,8 +1755,76 @@ round:var(--error-600)}
     <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
+            <!-- LEFT SIDEBAR -->
+            <aside class="hidden lg:block lg:col-span-3">
+              <div class="sticky top-24 space-y-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="home-lsb-avatar-wrap"></div>
+                    <div class="min-w-0">
+                      <h3 class="font-semibold text-sangham-ink text-sm truncate" id="home-lsb-name">—</h3>
+                      <p class="text-xs text-sangham-brown-light truncate" id="home-lsb-sub">Practitioner</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="home-lsb-followers">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Followers</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="home-lsb-following">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Following</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="home-lsb-posts">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Posts</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <nav class="space-y-1">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left" onclick="switchTab('home')">
+                      <i class="fa-solid fa-house w-5 text-center"></i>Home Feed
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('communities')">
+                      <i class="fa-solid fa-user-group w-5 text-center text-sangham-brown-light"></i>My Communities
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('learn');switchLearnTab('library')">
+                      <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Library
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
+                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
+                      <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
+                    </button>
+                  </nav>
+                </div>
+                <div class="bg-gradient-to-br from-sangham-gold to-sangham-gold-dark rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-semibold text-sm">Daily Practice</h4>
+                    <i class="fa-solid fa-spa opacity-60"></i>
+                  </div>
+                  <div class="flex gap-1.5 mb-3">
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">M</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">W</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">F</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                  </div>
+                  <p class="text-xs opacity-80">Stay consistent with your Dhamma practice.</p>
+                </div>
+              </div>
+            </aside>
+
             <!-- CENTER FEED -->
-            <main class="lg:col-span-9 space-y-6">
+            <main class="lg:col-span-6 space-y-6">
 
                 <!-- Stories / People Near Me -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
@@ -1780,9 +1848,7 @@ round:var(--error-600)}
                 <!-- Create Post -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
                     <div class="flex gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                        </div>
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="home-create-post-avatar"></div>
                         <div class="flex-1">
                             <input type="text" placeholder="Share your Dhamma reflection, question, or insight..."
                                 class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-sm text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()">
@@ -1852,6 +1918,15 @@ round:var(--error-600)}
                             <a href="#" onclick="switchTab('communities');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Explore</a>
                         </div>
                         <div class="space-y-3" id="home-sidebar-trending"></div>
+                    </div>
+
+                    <!-- Suggested Connections (live data) -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-suggested-card" style="display:none">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif font-semibold text-sangham-ink text-sm">Suggested Connections</h3>
+                            <a href="#" onclick="switchTab('discover');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">See All</a>
+                        </div>
+                        <div class="space-y-3" id="home-sidebar-suggested"></div>
                     </div>
 
                     <!-- Upcoming Events (live data) -->
@@ -1998,8 +2073,64 @@ round:var(--error-600)}
         <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
+            <!-- LEFT SIDEBAR -->
+            <aside class="hidden lg:block lg:col-span-3">
+              <div class="sticky top-24 space-y-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="comm-lsb-avatar-wrap"></div>
+                    <div class="min-w-0">
+                      <h3 class="font-semibold text-sangham-ink text-sm truncate" id="comm-lsb-name">—</h3>
+                      <p class="text-xs text-sangham-brown-light truncate" id="comm-lsb-sub">Practitioner</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="comm-lsb-followers">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Followers</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="comm-lsb-following">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Following</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="comm-lsb-posts">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Posts</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <nav class="space-y-1">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('home')">
+                      <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left">
+                      <i class="fa-solid fa-user-group w-5 text-center"></i>My Communities
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('learn');switchLearnTab('library')">
+                      <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Library
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
+                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
+                      <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
+                    </button>
+                  </nav>
+                </div>
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5" id="comm-lsb-sanghas-card" style="display:none">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">My Sanghas</h4>
+                  <div class="space-y-1" id="comm-lsb-sanghas-list"></div>
+                </div>
+              </div>
+            </aside>
+
             <!-- CENTER CONTENT -->
-            <main class="lg:col-span-12 space-y-6">
+            <main class="lg:col-span-9 space-y-6">
               <!-- Page Header -->
               <div class="flex items-center justify-between">
                 <div>
@@ -2017,19 +2148,7 @@ round:var(--error-600)}
                   <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest">Your Communities</h2>
                   <a href="#" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium">Manage</a>
                 </div>
-                <div class="flex flex-wrap gap-2" id="comm-your-chips">
-                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-full text-sm font-medium shadow-md shadow-sangham-gold/20">
-                    <i class="fa-solid fa-heart text-xs"></i>
-                    <span>Nagpur Buddhist Study Circle</span>
-                    <button class="ml-1 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark text-[10px]"></i></button>
-                  </div>
-                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-sangham-cream text-sangham-ink rounded-full text-sm border border-sangham-gold/10 hover:border-sangham-gold/30 transition-colors cursor-pointer">
-                    <i class="fa-solid fa-dharmachakra text-sangham-gold text-xs"></i><span>Mumbai Navayana Sangha</span>
-                  </div>
-                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-sangham-cream text-sangham-ink rounded-full text-sm border border-sangham-gold/10 hover:border-sangham-gold/30 transition-colors cursor-pointer">
-                    <i class="fa-solid fa-seedling text-sangham-gold text-xs"></i><span>Seed Events Org</span>
-                  </div>
-                </div>
+                <div class="flex flex-wrap gap-2" id="comm-your-chips"></div>
               </div>
 
               <!-- Search & Filters -->
@@ -3888,6 +4007,7 @@ function updateHeaderAvatar() {
     ? `<img src="${state.user.profilePhoto}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="">`
     : `<span style="font-weight:var(--weight-semibold);color:var(--saffron-600);font-size:var(--text-sm);">${initials}</span>`;
   el.innerHTML = avatarHtml;
+  _updateLeftSidebars();
 
   const sidebar = document.getElementById('dsSidebarUser');
   if (sidebar) {
@@ -3896,6 +4016,40 @@ function updateHeaderAvatar() {
       : `<div style="width:32px;height:32px;border-radius:50%;background:var(--saffron-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:var(--weight-semibold);color:var(--saffron-700);font-size:var(--text-sm)">${initials}</div>`;
     sidebar.innerHTML = `${sidebarAvatar}<span class="ds-user-name">${state.user.displayName || ''}</span><svg class="ds-user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:12px;height:12px;flex-shrink:0;opacity:0.4;margin-left:auto"><polyline points="9 18 15 12 9 6"/></svg>`;
   }
+}
+
+function _updateLeftSidebars() {
+  if (!state.user) return;
+  const u = state.user;
+  const initials = (u.displayName || 'U').charAt(0).toUpperCase();
+  const avatarHtml = u.profilePhoto
+    ? `<img src="${escHtml(u.profilePhoto)}" class="w-full h-full object-cover rounded-full" alt="">`
+    : `<span class="text-sm font-semibold text-sangham-gold">${initials}</span>`;
+  const trad = (u.traditions||[])[0]||'';
+  const city = u.city||u.location?.city||'';
+  const sub = [trad,city].filter(Boolean).join(' · ')||'Practitioner';
+  const fmt = n => n > 999 ? (n/1000).toFixed(1)+'k' : String(n||0);
+  const followers = fmt(u._count?.followers);
+  const following = fmt(u._count?.following);
+  const posts = fmt(u._count?.posts);
+  ['home','comm'].forEach(prefix => {
+    const wrap = document.getElementById(`${prefix}-lsb-avatar-wrap`);
+    if (wrap) wrap.innerHTML = avatarHtml;
+    const nameEl = document.getElementById(`${prefix}-lsb-name`);
+    if (nameEl) nameEl.textContent = u.displayName||'';
+    const subEl = document.getElementById(`${prefix}-lsb-sub`);
+    if (subEl) subEl.textContent = sub;
+    const follEl = document.getElementById(`${prefix}-lsb-followers`);
+    if (follEl) follEl.textContent = followers;
+    const folgEl = document.getElementById(`${prefix}-lsb-following`);
+    if (folgEl) folgEl.textContent = following;
+    const postEl = document.getElementById(`${prefix}-lsb-posts`);
+    if (postEl) postEl.textContent = posts;
+  });
+  const cpAvatar = document.getElementById('home-create-post-avatar');
+  if (cpAvatar) cpAvatar.innerHTML = u.profilePhoto
+    ? `<img src="${escHtml(u.profilePhoto)}" class="w-full h-full object-cover" alt="">`
+    : `<span class="text-xs font-semibold text-sangham-gold">${initials}</span>`;
 }
 
 function openProfileQuickPanel() {
@@ -4055,6 +4209,8 @@ async function loadHome() {
   loadHomeUpcomingEvents();
   loadHomeSidebarTrending();
   loadHomeSidebarEvents();
+  if (state.token) loadHomeSuggestedConnections();
+  _updateLeftSidebars();
   const container = document.getElementById('home-feed');
   container.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   // Active Discussions: community-member posts when logged in, follow feed otherwise
@@ -4089,6 +4245,33 @@ async function loadHome() {
     if (hdr2) hdr2.style.display = 'none';
     container.innerHTML = renderEmptyState('feed-error', err.message);
   }
+}
+
+async function loadHomeSuggestedConnections() {
+  try {
+    const data = await api('GET', '/discover/recommended');
+    const people = (data.data||data||[]).slice(0,3);
+    if (!people.length) return;
+    const card = document.getElementById('home-sidebar-suggested-card');
+    const el = document.getElementById('home-sidebar-suggested');
+    if (!el||!card) return;
+    el.innerHTML = people.map(p => {
+      const initials = (p.displayName||'U').charAt(0).toUpperCase();
+      const avatar = p.profilePhoto
+        ? `<img src="${escHtml(p.profilePhoto)}" class="w-9 h-9 rounded-full object-cover border border-sangham-gold/20 flex-shrink-0" alt="">`
+        : `<div class="w-9 h-9 rounded-full bg-sangham-cream border border-sangham-gold/20 flex items-center justify-center text-xs font-semibold text-sangham-gold flex-shrink-0">${initials}</div>`;
+      const trad = (p.traditions||[])[0]||'Practitioner';
+      return `<div class="flex items-center gap-3">
+        ${avatar}
+        <div class="flex-1 min-w-0">
+          <h4 class="font-medium text-sangham-ink text-xs truncate">${escHtml(p.displayName||'')}</h4>
+          <p class="text-[10px] text-sangham-brown-light truncate">${escHtml(trad)}</p>
+        </div>
+        <button class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-semibold flex-shrink-0 px-2 py-1 rounded-lg hover:bg-sangham-gold/10 transition-colors" onclick="followUser('${escHtml(p.id)}',this)">Connect</button>
+      </div>`;
+    }).join('');
+    card.style.display = '';
+  } catch(e) { /* non-critical */ }
 }
 
 const _trad_sym = { THERAVADA:'🌿', MAHAYANA:'☸', VAJRAYANA:'🔔', NAVAYANA:'💙', MULTIPLE:'🪷', OTHER:'✨' };
@@ -5525,15 +5708,15 @@ function _renderLibHome(root, cols, texts) {
 
   root.innerHTML = `
     ${continueHtml}
-    ${featuredHtml ? `<div class="lib-section"><div class="lib-section-header"><span class="lib-section-title">Featured</span></div></div>${featuredHtml}` : ''}
-    <div class="lib-section">
-      <div class="lib-section-header"><span class="lib-section-title">Browse All Texts</span></div>
-      <div class="lib-book-scroll">${booksHtml}</div>
-    </div>
     <div class="lib-section">
       <div class="lib-section-header"><span class="lib-section-title">Collections</span></div>
       <div class="lib-coll-grid">${collHtml}</div>
     </div>
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Browse All Texts</span></div>
+      <div class="lib-book-scroll">${booksHtml}</div>
+    </div>
+    ${featuredHtml ? `<div class="lib-section"><div class="lib-section-header"><span class="lib-section-title">Featured</span></div></div>${featuredHtml}` : ''}
     <div id="lib-bookmarks-section"></div>`;
 
   if (state.token) _loadLibBookmarks();
@@ -7537,6 +7720,8 @@ async function loadCommunities() {
       return;
     }
     list.innerHTML = assocs.map((a, i) => renderCommunityCard(a, i * 0.04)).join('');
+    const staticGrid = document.getElementById('comm-static-grid');
+    if (staticGrid) staticGrid.style.display = 'none';
   } catch(err) {
     list.innerHTML = renderEmptyState('discover', err.message);
   }
@@ -8562,6 +8747,20 @@ async function loadMyCommunities() {
           <i class="fa-solid ${icon} text-sangham-gold text-[11px]"></i><span>${escHtml(a.name)}</span>
         </button>`;
       }).join('');
+    }
+    // Populate sidebar My Sanghas list
+    const sCard = document.getElementById('comm-lsb-sanghas-card');
+    const sList = document.getElementById('comm-lsb-sanghas-list');
+    if (sCard && sList) {
+      const tradMeta = { THERAVADA:{icon:'fa-seedling',bg:'from-green-50 to-green-100',clr:'text-green-600'}, MAHAYANA:{icon:'fa-dharmachakra',bg:'from-amber-50 to-amber-100',clr:'text-amber-600'}, VAJRAYANA:{icon:'fa-bell',bg:'from-purple-50 to-purple-100',clr:'text-purple-600'} };
+      sList.innerHTML = mine.slice(0,5).map(a => {
+        const tm = tradMeta[a.tradition]||{icon:'fa-landmark',bg:'from-blue-50 to-blue-100',clr:'text-blue-600'};
+        return `<button class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-xs transition-colors w-full text-left" onclick="openCommunity('${escHtml(a.id)}')">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-br ${tm.bg} flex items-center justify-center ${tm.clr} flex-shrink-0"><i class="fa-solid ${tm.icon} text-[10px]"></i></div>
+          <span class="truncate">${escHtml(a.name)}</span>
+        </button>`;
+      }).join('');
+      sCard.style.display = '';
     }
     // Legacy hidden containers (CSS suppresses them via !important)
     if (section && list) {
