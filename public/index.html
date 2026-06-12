@@ -1694,9 +1694,9 @@ round:var(--error-600)}
         <!-- Divider -->
         <div class="ds-nav-divider"></div>
         <div class="ds-nav-section-label">Quick Actions</div>
-        <button class="ds-nav-item" onclick="openDhammaDaan()" data-tooltip="Dhamma Daan">
+        <button class="ds-nav-item" onclick="openDhammaDaan()" data-tooltip="Contribute">
           <i class="fa-solid fa-hand-holding-heart ds-nav-icon"></i>
-          <span class="ds-label">Dhamma Daan</span>
+          <span class="ds-label">Contribute</span>
         </button>
         <button class="ds-nav-item" onclick="openPanel('panel-settings')" data-tooltip="Settings">
           <i class="fa-solid fa-gear ds-nav-icon"></i>
@@ -1816,7 +1816,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
-                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Contribute
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
                       <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
@@ -2153,7 +2153,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
-                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Contribute
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
                       <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
@@ -2537,7 +2537,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
-                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Contribute
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
                       <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
@@ -3175,7 +3175,7 @@ round:var(--error-600)}
             </button>
             <button onclick="closePanel('panel-settings');openDhammaDaan&&openDhammaDaan()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
               <i class="fa-solid fa-hand-holding-heart" style="color:var(--text-secondary);width:18px;text-align:center"></i>
-              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">Dhamma Daan</span>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">Contribute</span>
               <i class="fa-solid fa-chevron-right" style="color:var(--text-tertiary);font-size:10px"></i>
             </button>
             <button onclick="logout()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid rgba(239,68,68,.2);text-align:left;cursor:pointer;width:100%">
@@ -3645,9 +3645,9 @@ const LOCALE_EN = {
   communities:{ title:'Sanghas', new_sangha:'+ New Sangha', your_communities:'Your Communities', search:'Search communities…', members:'members', join:'Join', joined:'Joined', leave:'Leave' },
   learn:{ courses:'Courses', resources:'Resources', circles:'Circles', sessions:'Sessions', library:'Library', search:'Search courses, texts, resources…', host_session:'+ Host a Session', no_texts:'No texts found', no_texts_text:'Try a different search or browse collections.', browse_collections:'Browse Collections', no_courses:'No courses yet', no_courses_text:'Courses created by communities will appear here.', no_resources:'No resources yet', no_resources_text:'Community-shared videos, articles, and guides appear here.', no_circles:'No study circles yet', no_circles_text:'Join a community to find or start a study circle.', no_sessions:'No upcoming sessions', no_sessions_text:'Live teaching sessions appear here when scheduled.', sessions_error:'Unable to load sessions.' },
   events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events', load_error:'Unable to load events.', organised_by:'Organised by', spots_taken:'spots taken', going_count:'going', add_event:'+ Event', loading:'Loading event…' },
-  profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Support Sangham (Dhamma Daan)', language_label:'App Language', change_language:'Change Language', no_posts:'No posts yet.' },
+  profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Contribute to Sangham', language_label:'App Language', change_language:'Change Language', no_posts:'No posts yet.' },
   common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave', try_again:'Try Again', creating:'Creating…', posting:'Posting…', submitting:'Submitting…', processing:'Processing…', scheduling:'Scheduling…', adding:'Adding…', coming_soon:'Coming soon', lessons:'Lessons', no_lessons:'No lessons yet.', lesson_one:'lesson', lesson_many:'lessons', all_courses:'All Courses', no_related_courses:'No related courses yet.', no_related_content:'No related learning content yet.', course:'Course', study_circle:'Study Circle', project:'Project' },
-  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only Bhikkhus, Scholars and trusted members can host sessions.', copied:'Copied!', reflection_added:'Reflection added', posted_to_sangham:'Posted to Sangham', write_something_first:'Write something first', left_circle:'Left study circle', joined_circle:'Joined study circle!', left_project:'Left project', joined_project:'Joined project!', left_community:'Left community', joined_community:'Joined community!', community_created:'Sangha created!', event_created:'Event created!', course_created:'Course created!', resource_added:'Resource added!', circle_created:'Study circle created!', project_created:'Project created!', verse_bookmarked:'Verse bookmarked', text_bookmarked:'Text bookmarked', verse_copied:'Verse copied to clipboard', application_submitted:"Application submitted! We'll review within 7 days.", dhamma_daan_received:'Thank you! Your Dhamma Daan has been received. 🙏', passkey_coming_soon:'Passkey authentication coming soon', sign_in_bookmark:'Sign in to bookmark', group_chat_coming_soon:'Group chat coming soon', session_scheduled:'Session scheduled!' },
+  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only Bhikkhus, Scholars and trusted members can host sessions.', copied:'Copied!', reflection_added:'Reflection added', posted_to_sangham:'Posted to Sangham', write_something_first:'Write something first', left_circle:'Left study circle', joined_circle:'Joined study circle!', left_project:'Left project', joined_project:'Joined project!', left_community:'Left community', joined_community:'Joined community!', community_created:'Sangha created!', event_created:'Event created!', course_created:'Course created!', resource_added:'Resource added!', circle_created:'Study circle created!', project_created:'Project created!', verse_bookmarked:'Verse bookmarked', text_bookmarked:'Text bookmarked', verse_copied:'Verse copied to clipboard', application_submitted:"Application submitted! We'll review within 7 days.", dhamma_daan_received:'Thank you! Your contribution has been received. 🙏', passkey_coming_soon:'Passkey authentication coming soon', sign_in_bookmark:'Sign in to bookmark', group_chat_coming_soon:'Group chat coming soon', session_scheduled:'Session scheduled!' },
   language:{ en:'English', hi:'हिन्दी', mr:'मराठी' },
   home:{ your_feed:'Your Feed', empty_title:'The hall is quiet', empty_text:'Be the first to share your practice.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Reflection', first_reflection:'Be the first to share a reflection.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.', daily_wisdom:'Daily Wisdom', read_more:'Read More', show_less:'Show Less', save_verse:'Save', verse_dismissed:'Dismissed for today.', verse_restore:'Restore' },
   feed:{ like:'Like', reply:'Reply', message:'Message', save:'Save', reply_one:'reply', reply_many:'replies', join_discussion:'Join the discussion', write_reply:'Write a reply…' },
@@ -4820,7 +4820,7 @@ async function loadHomeDhammaDaanImpact() {
     ).join('');
     container.innerHTML = `<div class="daan-impact-widget" onclick="openDhammaDaan()">
       <div class="daan-impact-hd">
-        <span class="daan-impact-label">🪔 Dhamma Daan Impact</span>
+        <span class="daan-impact-label">🪔 Contribute Impact</span>
         <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:var(--saffron-600);fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div class="daan-impact-stats">
@@ -7567,7 +7567,7 @@ function renderProfileView(user, isOwn) {
     ${completenessHint}
     ${isOwn ? `<div style="display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3) var(--space-4)">
       ${!user.isVerifiedTeacher ? `<button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openTeacherApply()">🎓 Apply for Teacher Badge</button>` : ''}
-      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openDhammaDaan()">🪔 Support Sangham (Dhamma Daan)</button>
+      <button class="btn btn-ghost" style="width:100%;justify-content:flex-start;gap:var(--space-2)" onclick="openDhammaDaan()">🪔 Contribute to Sangham</button>
       <div style="padding-top:var(--space-2)">
         <div style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-2)">${t('profile.language_label')}</div>
         <div id="profile-lang-switcher" style="display:flex;gap:var(--space-2)">
@@ -10194,7 +10194,7 @@ async function submitDhammaDaan() {
       key: sub.keyId,
       subscription_id: sub.subscriptionId,
       name: 'Sangham',
-      description: 'Dhamma Daan — ₹' + amount.toLocaleString('en-IN') + '/month',
+      description: 'Contribute — ₹' + amount.toLocaleString('en-IN') + '/month',
       prefill: { name: state.user.displayName || '', email: state.user.email || '' },
       theme: { color: '#D4A843' },
       handler: async (response) => {
