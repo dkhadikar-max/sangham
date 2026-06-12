@@ -906,41 +906,43 @@ round:var(--error-600)}
     #panel-dhamma-daan .hero-scroll{position:absolute;bottom:var(--space-8);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:var(--space-2);color:rgba(255,255,255,0.4);font-size:0.6875rem;letter-spacing:0.15em;text-transform:uppercase;animation:daanFloat 3s ease-in-out infinite;z-index:2}
     #panel-dhamma-daan .hero-scroll-line{width:1px;height:48px;background:linear-gradient(180deg,rgba(255,255,255,0.3),transparent)}
 
-    #panel-dhamma-daan .building-section{background:var(--daan-parchment)}
-    #panel-dhamma-daan .building-header{text-align:center;margin-bottom:var(--space-16)}
-    #panel-dhamma-daan .building-content{max-width:680px;margin:0 auto;text-align:center}
-    #panel-dhamma-daan .building-body{margin-bottom:var(--space-8)}
-    #panel-dhamma-daan .building-quote{border-left:2px solid var(--daan-saffron);padding-left:var(--space-6);margin:var(--space-8) auto;max-width:480px;text-align:left}
-    #panel-dhamma-daan .building-quote p{font-family:var(--font-display);font-size:1.5rem;font-weight:300;font-style:italic;line-height:1.5;color:var(--daan-ink-muted)}
-    #panel-dhamma-daan .building-quote cite{display:block;margin-top:var(--space-4);font-size:0.8125rem;font-style:normal;color:var(--daan-ink-faint);letter-spacing:0.05em}
+    #panel-dhamma-daan .why-section{background:var(--daan-parchment)}
+    #panel-dhamma-daan .why-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .why-content{max-width:680px;margin:0 auto;text-align:center}
+    #panel-dhamma-daan .why-body{margin-bottom:var(--space-8)}
+    #panel-dhamma-daan .why-quote{border-left:2px solid var(--daan-saffron);padding-left:var(--space-6);margin:var(--space-8) auto;max-width:480px;text-align:left}
+    #panel-dhamma-daan .why-quote p{font-family:var(--font-display);font-size:1.5rem;font-weight:300;font-style:italic;line-height:1.5;color:var(--daan-ink-muted)}
+    #panel-dhamma-daan .why-quote cite{display:block;margin-top:var(--space-4);font-size:0.8125rem;font-style:normal;color:var(--daan-ink-faint);letter-spacing:0.05em}
 
-    #panel-dhamma-daan .focus-section{background:var(--daan-deep-brown);color:white}
-    #panel-dhamma-daan .focus-header{text-align:center;margin-bottom:var(--space-16)}
-    #panel-dhamma-daan .focus-header .label{color:rgba(255,255,255,0.35);margin-bottom:var(--space-4)}
-    #panel-dhamma-daan .focus-header .display-lg{color:white}
-    #panel-dhamma-daan .focus-grid{display:grid;grid-template-columns:1fr;gap:var(--space-6)}
-    @media(min-width:768px){#panel-dhamma-daan .focus-grid{grid-template-columns:1fr 1fr;gap:var(--space-8)}}
-    #panel-dhamma-daan .focus-card{background:var(--daan-deep-brown-soft);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:var(--space-10);transition:all 0.5s var(--ease-out-expo)}
-    #panel-dhamma-daan .focus-card:hover{border-color:rgba(255,255,255,0.1);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-    #panel-dhamma-daan .focus-card-number{font-family:var(--font-mono);font-size:0.6875rem;font-weight:500;color:var(--daan-saffron-pale);letter-spacing:0.1em;margin-bottom:var(--space-6)}
-    #panel-dhamma-daan .focus-card-title{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);font-weight:400;color:white;margin-bottom:var(--space-4);line-height:1.2}
-    #panel-dhamma-daan .focus-card-body{font-size:1rem;line-height:1.7;color:rgba(255,255,255,0.5);margin-bottom:var(--space-8)}
-    #panel-dhamma-daan .focus-card-list{list-style:none}
-    #panel-dhamma-daan .focus-card-list li{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;font-size:0.875rem;color:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.04)}
-    #panel-dhamma-daan .focus-card-list li:last-child{border-bottom:none}
-    #panel-dhamma-daan .focus-card-list .check{width:16px;height:16px;border-radius:50%;background:rgba(61,90,61,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    #panel-dhamma-daan .focus-card-list .check svg{width:8px;height:8px;stroke:var(--daan-forest-pale)}
+    #panel-dhamma-daan .benefits-section{background:var(--daan-deep-brown);color:white}
+    #panel-dhamma-daan .benefits-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .benefits-header .label{color:rgba(255,255,255,0.35);margin-bottom:var(--space-4)}
+    #panel-dhamma-daan .benefits-header .display-lg{color:white}
+    #panel-dhamma-daan .benefits-grid{display:grid;grid-template-columns:1fr;gap:var(--space-6)}
+    @media(min-width:768px){#panel-dhamma-daan .benefits-grid{grid-template-columns:repeat(3,1fr);gap:var(--space-8)}}
+    #panel-dhamma-daan .benefit-card{background:var(--daan-deep-brown-soft);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:var(--space-10);transition:all 0.5s var(--ease-out-expo)}
+    #panel-dhamma-daan .benefit-card:hover{border-color:rgba(255,255,255,0.1);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+    #panel-dhamma-daan .benefit-card-number{font-family:var(--font-mono);font-size:0.6875rem;font-weight:500;color:var(--daan-saffron-pale);letter-spacing:0.1em;margin-bottom:var(--space-6)}
+    #panel-dhamma-daan .benefit-card-title{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);font-weight:400;color:white;margin-bottom:var(--space-4);line-height:1.2}
+    #panel-dhamma-daan .benefit-card-body{font-size:1rem;line-height:1.7;color:rgba(255,255,255,0.5);margin-bottom:var(--space-8)}
+    #panel-dhamma-daan .benefit-card-list{list-style:none}
+    #panel-dhamma-daan .benefit-card-list li{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;font-size:0.875rem;color:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.04)}
+    #panel-dhamma-daan .benefit-card-list li:last-child{border-bottom:none}
+    #panel-dhamma-daan .benefit-card-list .check{width:16px;height:16px;border-radius:50%;background:rgba(61,90,61,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    #panel-dhamma-daan .benefit-card-list .check svg{width:8px;height:8px;stroke:var(--daan-forest-pale)}
 
-    #panel-dhamma-daan .pillars-section{background:var(--daan-parchment)}
-    #panel-dhamma-daan .pillars-header{text-align:center;margin-bottom:var(--space-16)}
-    #panel-dhamma-daan .pillars-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-6)}
-    @media(min-width:768px){#panel-dhamma-daan .pillars-grid{grid-template-columns:repeat(3,1fr);gap:var(--space-8)}}
-    #panel-dhamma-daan .pillar-card{background:var(--daan-parchment-elevated);border:1px solid var(--daan-cream-border);border-radius:4px;padding:var(--space-8);text-align:center;transition:all 0.4s var(--ease-out-expo)}
-    #panel-dhamma-daan .pillar-card:hover{border-color:var(--daan-saffron);box-shadow:var(--daan-shadow-md);transform:translateY(-4px)}
-    #panel-dhamma-daan .pillar-icon{width:56px;height:56px;border-radius:50%;background:var(--daan-saffron-glow);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-5)}
-    #panel-dhamma-daan .pillar-icon svg{width:24px;height:24px;stroke:var(--daan-saffron)}
-    #panel-dhamma-daan .pillar-title{font-size:1.0625rem;font-weight:600;color:var(--daan-ink);margin-bottom:var(--space-3)}
-    #panel-dhamma-daan .pillar-body{font-size:0.875rem;line-height:1.6;color:var(--daan-ink-light)}
+    #panel-dhamma-daan .who-section{background:var(--daan-parchment)}
+    #panel-dhamma-daan .who-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .categories-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-4);max-width:900px;margin:0 auto}
+    #panel-dhamma-daan .category-tag{padding:var(--space-4) var(--space-8);background:var(--daan-parchment-elevated);border:1px solid var(--daan-cream-border);border-radius:100px;font-size:0.9375rem;color:var(--daan-ink-light);transition:all 0.4s var(--ease-out-expo);cursor:default}
+    #panel-dhamma-daan .category-tag:hover{border-color:var(--daan-saffron);color:var(--daan-deep-brown);background:var(--daan-saffron-glow);transform:translateY(-2px);box-shadow:var(--daan-shadow-sm)}
+
+    #panel-dhamma-daan .future-section{background:var(--daan-cream)}
+    #panel-dhamma-daan .future-header{text-align:center;margin-bottom:var(--space-16)}
+    #panel-dhamma-daan .future-content{max-width:680px;margin:0 auto;text-align:center}
+    #panel-dhamma-daan .future-paragraphs{display:flex;flex-direction:column;gap:var(--space-6)}
+    #panel-dhamma-daan .future-paragraphs p{font-family:var(--font-display);font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:300;line-height:1.6;color:var(--daan-ink-muted)}
+    #panel-dhamma-daan .future-paragraphs p strong{color:var(--daan-ink);font-weight:400}
 
     #panel-dhamma-daan .contribution-section{background:var(--daan-cream)}
     #panel-dhamma-daan .contribution-inner{max-width:680px;margin:0 auto}
@@ -958,24 +960,10 @@ round:var(--error-600)}
     #panel-dhamma-daan .slider-input::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1)}
     #panel-dhamma-daan .slider-input::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:var(--daan-parchment-elevated);border:2px solid var(--daan-saffron);box-shadow:0 2px 12px rgba(193,122,44,0.2);cursor:grab}
     #panel-dhamma-daan .slider-labels{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:0.75rem;color:var(--daan-ink-faint)}
-    #panel-dhamma-daan .frequency-group{display:flex;justify-content:center;gap:var(--space-2);margin-bottom:var(--space-12);flex-wrap:wrap}
-    #panel-dhamma-daan .frequency-btn{padding:var(--space-3) var(--space-6);border-radius:100px;border:1px solid var(--daan-cream-border);background:transparent;color:var(--daan-ink-light);font-size:0.9375rem;font-weight:500;cursor:pointer;transition:all 0.3s var(--ease-out-expo)}
-    #panel-dhamma-daan .frequency-btn:hover{border-color:var(--daan-cream-hover);color:var(--daan-ink-muted)}
-    #panel-dhamma-daan .frequency-btn.active{background:var(--daan-deep-brown);border-color:var(--daan-deep-brown);color:white}
     #panel-dhamma-daan .contribution-cta{text-align:center}
     #panel-dhamma-daan .btn-primary-large{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);padding:var(--space-5) var(--space-10);background:var(--daan-deep-brown);color:white;border:none;border-radius:100px;font-size:1.0625rem;font-weight:500;cursor:pointer;transition:all 0.4s var(--ease-out-expo)}
     #panel-dhamma-daan .btn-primary-large:hover{background:var(--daan-deep-brown-soft);transform:translateY(-2px);box-shadow:var(--daan-shadow-lg)}
     #panel-dhamma-daan .contribution-note{margin-top:var(--space-6);font-size:0.8125rem;color:var(--daan-ink-faint)}
-
-    #panel-dhamma-daan .impact-section{background:var(--daan-parchment)}
-    #panel-dhamma-daan .impact-header{text-align:center;margin-bottom:var(--space-16)}
-    #panel-dhamma-daan .impact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-6)}
-    @media(min-width:768px){#panel-dhamma-daan .impact-grid{grid-template-columns:repeat(4,1fr);gap:var(--space-8)}}
-    #panel-dhamma-daan .impact-item{text-align:center;padding:var(--space-8) var(--space-4);border-radius:4px;border:1px solid transparent;transition:all 0.4s var(--ease-out-expo)}
-    #panel-dhamma-daan .impact-item:hover{border-color:var(--daan-cream-border);background:var(--daan-parchment-elevated)}
-    #panel-dhamma-daan .impact-number{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,3.5rem);font-weight:300;line-height:1;color:var(--daan-deep-brown);margin-bottom:var(--space-3)}
-    #panel-dhamma-daan .impact-number span{font-size:0.875rem;font-weight:400;color:var(--daan-ink-faint);margin-left:2px}
-    #panel-dhamma-daan .impact-label{font-size:0.875rem;color:var(--daan-ink-light);line-height:1.4}
 
     #panel-dhamma-daan .final-cta-section{background:var(--daan-deep-brown);color:white;text-align:center;position:relative;overflow:hidden}
     #panel-dhamma-daan .final-cta-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(193,122,44,0.04) 0%,transparent 50%);pointer-events:none}
@@ -3039,12 +3027,12 @@ round:var(--error-600)}
             </div>
             <div class="hero-label anim-fade-up anim-delay-1">
               <span class="hero-label-dot"></span>
-              <span class="hero-label-text">Sangham — Dhamma Daan</span>
+              <span class="hero-label-text">Sangham — Contributor Ecosystem</span>
             </div>
-            <h1 class="hero-title anim-fade-up anim-delay-2 text-balance">The Power of Giving</h1>
-            <p class="hero-subtitle anim-fade-up anim-delay-3 text-balance">From a single circle of intention, light spreads across the world — connecting communities, nurturing wisdom, and blooming into collective well-being.</p>
-            <p class="hero-verse anim-fade-up anim-delay-4">Sabba-dānaṃ dhamma-dānaṃ jināti — Dhammapada 354</p>
-            <a href="#daan-contribute" class="hero-cta anim-fade-up anim-delay-5">Begin Your Daan <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            <h1 class="hero-title anim-fade-up anim-delay-2 text-balance">Become a <em>Contributor</em></h1>
+            <p class="hero-subtitle anim-fade-up anim-delay-3 text-balance">Support and participate in a growing ecosystem of learning, communities, knowledge sharing and meaningful human connection.</p>
+            <p class="hero-verse anim-fade-up anim-delay-4">Contributors help strengthen the ecosystem while gaining deeper access</p>
+            <a href="#daan-contribute" class="hero-cta anim-fade-up anim-delay-5">Become a Contributor <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           </div>
           <div class="hero-scroll anim-fade-in anim-delay-6">
             <span>Scroll</span>
@@ -3052,93 +3040,132 @@ round:var(--error-600)}
           </div>
         </section>
 
-        <section class="section building-section">
+        <section class="section why-section" id="daan-why">
           <div class="container">
-            <div class="building-header reveal">
-              <p class="label">What we're building</p>
-              <h2 class="display-lg text-balance">A living network of Dhamma</h2>
+            <div class="why-header reveal">
+              <p class="label">Purpose</p>
+              <h2 class="display-lg text-balance">Help Build Something That Lasts</h2>
             </div>
-            <div class="building-content">
-              <p class="body-lg building-body reveal text-balance">Just as the ensō begins with a single brushstroke and completes itself in motion, Sangham begins with each practitioner who chooses to give. Your contribution is not a transaction — it is a continuation of a circle that has been unbroken for two thousand years.</p>
-              <p class="body-md reveal reveal-delay-1">We are creating infrastructure that connects practitioners across continents, preserves teachings across languages, and supports those who have devoted their lives to the path. This is not a startup. It is an institution — one that grows from the center outward, like light from a flame.</p>
-              <div class="building-quote reveal reveal-delay-2">
-                <p class="text-balance">"The gift of Dhamma excels all gifts."</p>
-                <cite>— Dhammapada 354</cite>
+            <div class="why-content">
+              <p class="body-lg why-body reveal text-balance">Sangham exists to bring together learning, communities, resources, discussions, mentorship and meaningful connections into a shared ecosystem. Contributors help strengthen the foundation that allows these experiences to remain accessible and continue growing over time.</p>
+              <div class="why-quote reveal reveal-delay-1">
+                <p class="text-balance">"Knowledge survives because people choose to preserve it. Communities thrive because people choose to participate."</p>
+                <cite>— The Sangham Ecosystem</cite>
               </div>
-              <p class="body-md reveal reveal-delay-2">Every contribution ripples outward. A single act of generosity becomes education for a child, shelter for a bhikkhu, a gathering for a community, and opportunity for someone seeking meaning. The circle never ends — it only expands.</p>
+              <p class="body-md reveal reveal-delay-2">Every contribution strengthens the foundation. A single act of participation becomes deeper learning for a student, connection for a community member, and opportunity for someone seeking meaningful collaboration. The circle never ends — it only expands.</p>
             </div>
           </div>
         </section>
 
-        <section class="section focus-section">
+        <section class="section benefits-section" id="daan-benefits">
           <div class="container">
-            <div class="focus-header reveal">
-              <p class="label">How we allocate</p>
-              <h2 class="display-lg text-balance">Every contribution supports two things</h2>
+            <div class="benefits-header reveal">
+              <p class="label">What you receive</p>
+              <h2 class="display-lg text-balance">Contributor Benefits</h2>
             </div>
-            <div class="focus-grid">
-              <div class="focus-card reveal reveal-delay-1">
-                <p class="focus-card-number">01</p>
-                <h3 class="focus-card-title text-balance">Strengthening Sangham</h3>
-                <p class="focus-card-body text-balance">The platform itself — the digital foundation that keeps this space open, secure, and accessible to practitioners everywhere.</p>
-                <ul class="focus-card-list">
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Server infrastructure &amp; uptime</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Security &amp; data privacy</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Content moderation systems</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Platform engineering</li>
+            <div class="benefits-grid">
+              <div class="benefit-card reveal reveal-delay-1">
+                <p class="benefit-card-number">01</p>
+                <h3 class="benefit-card-title text-balance">Access to Communities</h3>
+                <p class="benefit-card-body text-balance">Join and participate in Sanghas, discussion groups and interest-based communities.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community participation</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community updates</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community networking</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community events</li>
                 </ul>
               </div>
-              <div class="focus-card reveal reveal-delay-2">
-                <p class="focus-card-number">02</p>
-                <h3 class="focus-card-title text-balance">Strengthening Communities</h3>
-                <p class="focus-card-body text-balance">The Dhamma Fund — directed toward education, empowerment, social connection, and the welfare of those who serve the Sangha.</p>
-                <ul class="focus-card-list">
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community education programs</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community empowerment</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Social events &amp; gatherings</li>
-                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Bhikkhu welfare &amp; support</li>
+              <div class="benefit-card reveal reveal-delay-2">
+                <p class="benefit-card-number">02</p>
+                <h3 class="benefit-card-title text-balance">Access to Circles</h3>
+                <p class="benefit-card-body text-balance">Participate in focused learning and discussion circles.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Study circles</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Discussion circles</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Mentorship circles</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Specialized interest groups</li>
+                </ul>
+              </div>
+              <div class="benefit-card reveal reveal-delay-3">
+                <p class="benefit-card-number">03</p>
+                <h3 class="benefit-card-title text-balance">Access to Learning</h3>
+                <p class="benefit-card-body text-balance">Unlock deeper learning opportunities across the ecosystem.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Structured learning paths</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Educational content</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Guided learning journeys</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Learning recommendations</li>
+                </ul>
+              </div>
+              <div class="benefit-card reveal reveal-delay-1">
+                <p class="benefit-card-number">04</p>
+                <h3 class="benefit-card-title text-balance">Access to Courses</h3>
+                <p class="benefit-card-body text-balance">Explore contributor-supported courses and educational experiences.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Course participation</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Learning resources</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Educational collections</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Specialized content</li>
+                </ul>
+              </div>
+              <div class="benefit-card reveal reveal-delay-2">
+                <p class="benefit-card-number">05</p>
+                <h3 class="benefit-card-title text-balance">Events &amp; Experiences</h3>
+                <p class="benefit-card-body text-balance">Participate in community activities and learning experiences.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Online events</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Community gatherings</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Workshops</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Discussions &amp; learning sessions</li>
+                </ul>
+              </div>
+              <div class="benefit-card reveal reveal-delay-3">
+                <p class="benefit-card-number">06</p>
+                <h3 class="benefit-card-title text-balance">Contributor Recognition</h3>
+                <p class="benefit-card-body text-balance">Become part of the contributor ecosystem with visible recognition.</p>
+                <ul class="benefit-card-list">
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Contributor badge</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Contributor profile</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Early feature access</li>
+                  <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>Contributor updates</li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="section pillars-section">
+        <section class="section who-section" id="daan-who">
           <div class="container">
-            <div class="pillars-header reveal">
-              <p class="label">Community initiatives</p>
-              <h2 class="display-lg text-balance">Where the Dhamma Fund flows</h2>
+            <div class="who-header reveal">
+              <p class="label">Community</p>
+              <h2 class="display-lg text-balance">Who Contributes</h2>
             </div>
-            <div class="pillars-grid">
-              <div class="pillar-card reveal reveal-delay-1">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 006 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div>
-                <h3 class="pillar-title">Education</h3>
-                <p class="pillar-body">Dhamma courses, Pali language programs, and teacher training for the next generation.</p>
-              </div>
-              <div class="pillar-card reveal reveal-delay-2">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg></div>
-                <h3 class="pillar-title">Empowerment</h3>
-                <p class="pillar-body">Skill-building for monastics and lay practitioners. Digital literacy, leadership, and self-reliance.</p>
-              </div>
-              <div class="pillar-card reveal reveal-delay-3">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div>
-                <h3 class="pillar-title">Social Events</h3>
-                <p class="pillar-body">Retreats, gatherings, and communal observances that strengthen bonds across traditions.</p>
-              </div>
-              <div class="pillar-card reveal reveal-delay-1">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg></div>
-                <h3 class="pillar-title">Project Funding</h3>
-                <p class="pillar-body">Seed funding for community-led initiatives — from digital archives to rural Dhamma centers.</p>
-              </div>
-              <div class="pillar-card reveal reveal-delay-2">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg></div>
-                <h3 class="pillar-title">Opportunity Creation</h3>
-                <p class="pillar-body">Connecting practitioners with teachers, employment, and meaningful work in service of the Dhamma.</p>
-              </div>
-              <div class="pillar-card reveal reveal-delay-3">
-                <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></div>
-                <h3 class="pillar-title">Bhikkhu Welfare</h3>
-                <p class="pillar-body">Healthcare, requisites, and dignified support for monastics who have given everything to the path.</p>
+            <div class="categories-grid">
+              <div class="category-tag reveal reveal-delay-1">Learners</div>
+              <div class="category-tag reveal reveal-delay-1">Educators</div>
+              <div class="category-tag reveal reveal-delay-2">Translators</div>
+              <div class="category-tag reveal reveal-delay-2">Researchers</div>
+              <div class="category-tag reveal reveal-delay-3">Community Builders</div>
+              <div class="category-tag reveal reveal-delay-3">Professionals</div>
+              <div class="category-tag reveal reveal-delay-4">Students</div>
+              <div class="category-tag reveal reveal-delay-4">Organizations</div>
+              <div class="category-tag reveal reveal-delay-4">Volunteers</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section future-section" id="daan-future">
+          <div class="container">
+            <div class="future-header reveal">
+              <p class="label">Legacy</p>
+              <h2 class="display-lg text-balance">Support What <em>Outlives Us</em></h2>
+            </div>
+            <div class="future-content">
+              <div class="future-paragraphs">
+                <p class="reveal reveal-delay-1 text-balance"><strong>Knowledge survives</strong> because people choose to preserve it.</p>
+                <p class="reveal reveal-delay-2 text-balance"><strong>Communities thrive</strong> because people choose to participate.</p>
+                <p class="reveal reveal-delay-3 text-balance"><strong>Learning expands</strong> because people choose to contribute.</p>
+                <p class="reveal reveal-delay-4 text-balance">Every contributor helps ensure that Sangham continues to grow as a place for learning, connection and collaboration.</p>
               </div>
             </div>
           </div>
@@ -3149,59 +3176,26 @@ round:var(--error-600)}
             <div class="contribution-inner">
               <div class="contribution-header reveal">
                 <p class="label">Your contribution</p>
-                <h2 class="display-lg text-balance">Give what feels right</h2>
+                <h2 class="display-lg text-balance">Choose Your Contribution</h2>
               </div>
               <div class="amount-display reveal reveal-delay-1">
                 <span class="amount-display-prefix">₹</span>
-                <span class="amount-display-value" id="amount-value">108</span>
+                <span class="amount-display-value" id="amount-value">999</span>
                 <p class="amount-display-suffix" id="amount-suffix">per month</p>
               </div>
               <div class="slider-container reveal reveal-delay-2">
                 <div class="slider-track">
-                  <div class="slider-fill" id="slider-fill" style="width:0.2%"></div>
-                  <input type="range" class="slider-input" id="amount-slider" min="49" max="100000" value="108" step="1" aria-label="Contribution amount"/>
+                  <div class="slider-fill" id="slider-fill" style="width:1.0%"></div>
+                  <input type="range" class="slider-input" id="amount-slider" min="99" max="99999" value="999" step="1" aria-label="Contribution amount"/>
                 </div>
-                <div class="slider-labels"><span>₹49</span><span>₹1,00,000+</span></div>
+                <div class="slider-labels"><span>₹99</span><span>₹99,999+</span></div>
               </div>
-              <div class="frequency-group reveal reveal-delay-3" role="radiogroup" aria-label="Contribution frequency">
-                <button class="frequency-btn" data-freq="once" onclick="setFrequency('once')" role="radio" aria-checked="false">Once</button>
-                <button class="frequency-btn active" data-freq="monthly" onclick="setFrequency('monthly')" role="radio" aria-checked="true">Monthly</button>
-                <button class="frequency-btn" data-freq="quarterly" onclick="setFrequency('quarterly')" role="radio" aria-checked="false">Quarterly</button>
-                <button class="frequency-btn" data-freq="yearly" onclick="setFrequency('yearly')" role="radio" aria-checked="false">Yearly</button>
-              </div>
-              <div class="contribution-cta reveal reveal-delay-4">
+              <div class="contribution-cta reveal reveal-delay-3">
                 <button class="btn-primary-large" id="daan-pay-btn" onclick="contribute()">
-                  <span id="cta-text">Contribute ₹108 monthly</span>
+                  <span id="cta-text">Become a Contributor</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
-                <p class="contribution-note">Secured by Razorpay · Cancel anytime · 80G tax deductible</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section impact-section">
-          <div class="container">
-            <div class="impact-header reveal">
-              <p class="label">Impact</p>
-              <h2 class="display-lg text-balance">What the community has built together</h2>
-            </div>
-            <div class="impact-grid">
-              <div class="impact-item reveal reveal-delay-1">
-                <p class="impact-number">12,400<span>+</span></p>
-                <p class="impact-label">Pages of Dhamma<br>text translated</p>
-              </div>
-              <div class="impact-item reveal reveal-delay-2">
-                <p class="impact-number">23</p>
-                <p class="impact-label">Languages<br>supported</p>
-              </div>
-              <div class="impact-item reveal reveal-delay-3">
-                <p class="impact-number">8,600<span>+</span></p>
-                <p class="impact-label">Active<br>practitioners</p>
-              </div>
-              <div class="impact-item reveal reveal-delay-4">
-                <p class="impact-number">100<span>%</span></p>
-                <p class="impact-label">Open source<br>platform</p>
+                <p class="contribution-note">Minimum ₹99/month · No predefined maximum · Cancel anytime</p>
               </div>
             </div>
           </div>
@@ -3210,24 +3204,24 @@ round:var(--error-600)}
         <section class="section final-cta-section" id="daan-final-cta">
           <div class="container">
             <div class="final-cta-content">
-              <h2 class="final-cta-title reveal text-balance">Join those building the future of the Sangha</h2>
-              <p class="final-cta-body reveal reveal-delay-1 text-balance">Your contribution is not a transaction. It is participation in something that will outlast all of us.</p>
+              <h2 class="final-cta-title reveal text-balance">Join the Contributors Behind Sangham</h2>
+              <p class="final-cta-body reveal reveal-delay-1 text-balance">Become part of a growing ecosystem dedicated to learning, knowledge sharing and community building.</p>
               <div class="reveal reveal-delay-2">
-                <p class="final-cta-amount" id="final-amount">₹108</p>
+                <p class="final-cta-amount" id="final-amount">₹999</p>
                 <p class="final-cta-freq" id="final-freq">Monthly contribution</p>
               </div>
               <button class="btn-final reveal reveal-delay-3" onclick="contribute()">
-                <span id="final-cta-text">Contribute now</span>
+                <span id="final-cta-text">Become a Contributor</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
-              <p class="final-cta-note reveal reveal-delay-4">Sangham is a registered non-profit. Donations are eligible for tax deduction under Section 80G.</p>
+              <p class="final-cta-note reveal reveal-delay-4">This is a contributor ecosystem, not a donation.</p>
             </div>
           </div>
         </section>
 
         <footer class="daan-footer">
           <div class="container">
-            <p>© 2026 Sangham. Built by the Sangha, for the Sangha.</p>
+            <p>© 2026 Sangham. An ecosystem for learning, connection and collaboration.</p>
           </div>
         </footer>
 
@@ -9781,16 +9775,15 @@ async function submitTeacherApplication() {
 // ============================================================
 //  SPRINT 10: DHAMMA DAAN (RAZORPAY)
 // ============================================================
-let _daanAmount = 108;
+let _daanAmount = 999;
 
 function openDhammaDaan() {
-  if (!state.user) { showToast('Sign in to donate', 'info'); return; }
+  if (!state.user) { showToast('Sign in to contribute', 'info'); return; }
   openPanel('panel-dhamma-daan');
-  currentAmount = 108;
-  currentFrequency = 'monthly';
-  _daanAmount = 108;
+  currentAmount = 999;
+  _daanAmount = 999;
   const slider = document.getElementById('amount-slider');
-  if (slider) { slider.value = '108'; updateSlider(); }
+  if (slider) { slider.value = '999'; updateSlider(); }
   // re-observe reveal elements now that panel is visible
   document.querySelectorAll('#panel-dhamma-daan .reveal').forEach(el => {
     el.classList.remove('visible');
@@ -9798,11 +9791,8 @@ function openDhammaDaan() {
   });
 }
 
-// ── Dhamma Daan page UI ─────────────────────────────
-let currentAmount = 108;
-let currentFrequency = 'monthly';
-const frequencyLabels    = { once:'One-time contribution', monthly:'Monthly contribution', quarterly:'Quarterly contribution', yearly:'Yearly contribution' };
-const frequencySuffixes  = { once:'', monthly:'per month', quarterly:'per quarter', yearly:'per year' };
+// ── Contributor page UI ─────────────────────────────
+let currentAmount = 999;
 
 function formatFull(n) { return n.toLocaleString('en-IN'); }
 
@@ -9812,32 +9802,22 @@ function updateSlider() {
   const val = parseInt(slider.value);
   currentAmount = val;
   _daanAmount = val;
-  const min = 49, max = 100000;
+  const min = 99, max = 99999;
   const pct = ((Math.log(val) - Math.log(min)) / (Math.log(max) - Math.log(min))) * 100;
   const fill = document.getElementById('slider-fill');
   if (fill) fill.style.width = pct + '%';
   const amtVal = document.getElementById('amount-value');
   if (amtVal) amtVal.textContent = formatFull(val);
   const amtSfx = document.getElementById('amount-suffix');
-  if (amtSfx) amtSfx.textContent = frequencySuffixes[currentFrequency];
-  const fw = currentFrequency === 'once' ? '' : ' ' + currentFrequency;
+  if (amtSfx) amtSfx.textContent = 'per month';
   const ctaEl = document.getElementById('cta-text');
-  if (ctaEl) ctaEl.textContent = 'Contribute ₹' + formatFull(val) + fw;
+  if (ctaEl) ctaEl.textContent = 'Become a Contributor';
   const finAmt = document.getElementById('final-amount');
   if (finAmt) finAmt.textContent = '₹' + formatFull(val);
   const finFreq = document.getElementById('final-freq');
-  if (finFreq) finFreq.textContent = frequencyLabels[currentFrequency];
+  if (finFreq) finFreq.textContent = 'Monthly contribution';
   const finCta = document.getElementById('final-cta-text');
-  if (finCta) finCta.textContent = 'Contribute ₹' + formatFull(val);
-}
-
-function setFrequency(freq) {
-  currentFrequency = freq;
-  document.querySelectorAll('#panel-dhamma-daan .frequency-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.freq === freq);
-    btn.setAttribute('aria-checked', btn.dataset.freq === freq);
-  });
-  updateSlider();
+  if (finCta) finCta.textContent = 'Become a Contributor';
 }
 
 function contribute() { submitDhammaDaan(); }
@@ -9992,7 +9972,7 @@ async function loadDaanImpact() {
 
 async function submitDhammaDaan() {
   const amount = _daanAmount;
-  if (!amount || amount < 49) { showToast('Minimum contribution is ₹49', 'error'); return; }
+  if (!amount || amount < 99) { showToast('Minimum contribution is ₹99', 'error'); return; }
 
   const btn = document.getElementById('daan-pay-btn');
   if (!btn) return;
