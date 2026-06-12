@@ -4080,7 +4080,7 @@ function toggleOnboardChip(set, value, el) {
 }
 
 // Profession combobox
-function _obLc() { return (i18n[state.lang] || i18n.en)?.onboarding || {}; }
+function _obLc() { return _translations?.onboarding || LOCALE_EN.onboarding || {}; }
 
 function _renderObProfOptions() {
   const list = document.getElementById('obProfList');
@@ -10447,7 +10447,7 @@ document.addEventListener('click', function(e) {
 (function initLandingThreeJS() {
   if (typeof THREE === 'undefined' || typeof gsap === 'undefined') return;
   const container = document.getElementById('canvas-container');
-  if (!container) return;
+  if (!container || container.offsetWidth === 0 || container.offsetHeight === 0) return;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
