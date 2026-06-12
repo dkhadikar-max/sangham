@@ -1800,15 +1800,15 @@ round:var(--error-600)}
                     <i class="fa-solid fa-spa opacity-60"></i>
                   </div>
                   <div class="flex gap-1.5 mb-3">
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">M</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">W</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">F</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
-                    <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                    <div id="practice-day-0" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">M</div>
+                    <div id="practice-day-1" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                    <div id="practice-day-2" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">W</div>
+                    <div id="practice-day-3" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                    <div id="practice-day-4" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">F</div>
+                    <div id="practice-day-5" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                    <div id="practice-day-6" class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
                   </div>
-                  <p class="text-xs opacity-80">Stay consistent with your Dhamma practice.</p>
+                  <p class="text-xs opacity-80" id="practice-streak-text">Stay consistent with your Dhamma practice.</p>
                 </div>
               </div>
             </aside>
@@ -1909,30 +1909,41 @@ round:var(--error-600)}
                     </div>
 
                     <!-- Trending Communities (live data) -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-trending-card" style="display:none">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-trending-card">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Trending Communities</h3>
                             <a href="#" onclick="switchTab('communities');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Explore</a>
                         </div>
-                        <div class="space-y-3" id="home-sidebar-trending"></div>
+                        <div class="space-y-3" id="home-sidebar-trending">
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-10 h-10 rounded-xl bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-3/4"></div><div class="h-2.5 bg-sangham-cream rounded w-1/2"></div></div></div>
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-10 h-10 rounded-xl bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-2/3"></div><div class="h-2.5 bg-sangham-cream rounded w-2/5"></div></div></div>
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-10 h-10 rounded-xl bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-4/5"></div><div class="h-2.5 bg-sangham-cream rounded w-1/3"></div></div></div>
+                        </div>
                     </div>
 
                     <!-- Suggested Connections (live data) -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-suggested-card" style="display:none">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-suggested-card">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Suggested Connections</h3>
                             <a href="#" onclick="switchTab('discover');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">See All</a>
                         </div>
-                        <div class="space-y-3" id="home-sidebar-suggested"></div>
+                        <div class="space-y-3" id="home-sidebar-suggested">
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-9 h-9 rounded-full bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-3/4"></div><div class="h-2.5 bg-sangham-cream rounded w-1/2"></div></div></div>
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-9 h-9 rounded-full bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-2/3"></div><div class="h-2.5 bg-sangham-cream rounded w-2/5"></div></div></div>
+                          <div class="flex items-center gap-3 animate-pulse"><div class="w-9 h-9 rounded-full bg-sangham-cream flex-shrink-0"></div><div class="flex-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-4/5"></div><div class="h-2.5 bg-sangham-cream rounded w-1/3"></div></div></div>
+                        </div>
                     </div>
 
                     <!-- Upcoming Events (live data) -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-events-card" style="display:none">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-events-card">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Upcoming Events</h3>
                             <a href="#" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},100);return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</a>
                         </div>
-                        <div class="space-y-3" id="home-sidebar-events"></div>
+                        <div class="space-y-3" id="home-sidebar-events">
+                          <div class="flex gap-3 p-3 rounded-xl animate-pulse" style="background:rgba(253,248,240,.5)"><div class="w-10 h-10 rounded-lg bg-sangham-cream flex-shrink-0"></div><div class="flex-1 pt-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-3/4"></div><div class="h-2.5 bg-sangham-cream rounded w-1/2"></div></div></div>
+                          <div class="flex gap-3 p-3 rounded-xl animate-pulse" style="background:rgba(253,248,240,.5)"><div class="w-10 h-10 rounded-lg bg-sangham-cream flex-shrink-0"></div><div class="flex-1 pt-1"><div class="h-3 bg-sangham-cream rounded mb-1.5 w-2/3"></div><div class="h-2.5 bg-sangham-cream rounded w-2/5"></div></div></div>
+                        </div>
                     </div>
 
                     <!-- Footer -->
@@ -2203,21 +2214,27 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Nagpur Buddhist Study Circle</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Nagpur Buddhist Study Circle</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">A community dedicated to studying Buddhist scriptures, meditation practice, and Dhamma discussions in the Navayana tradition.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+42</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">856 members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span>
                     </div>
-                    <button class="join-btn joined w-full py-2 rounded-xl text-xs font-semibold">Joined</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn joined flex-1 py-2 rounded-xl text-xs font-semibold">Joined</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bell text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
                 <!-- Card 2 -->
@@ -2236,20 +2253,27 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Mumbai Navayana Sangha</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Mumbai, Maharashtra</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Mumbai Navayana Sangha</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-location-dot text-[10px]"></i>Mumbai, Maharashtra</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Weekly gatherings for meditation, Dhamma talks, and community building. Open to all practitioners of the Navayana path.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+1.1k</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">1.2k members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span>
                     </div>
-                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
                 <!-- Card 3 -->
@@ -2268,20 +2292,26 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Seed Events Org</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-globe text-[10px]"></i>India-wide</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Seed Events Org</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-globe text-[10px]"></i>India-wide</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Organizing retreats, workshops, and Dhamma events across India. Connecting practitioners with teachers and opportunities.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+230</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">234 members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-medium rounded-md">Events</span>
                     </div>
-                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
                 <!-- Card 4 -->
@@ -2300,20 +2330,27 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Deekshabhoomi Pilgrims</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Deekshabhoomi Pilgrims</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">For those who have taken refuge at Deekshabhoomi. Share experiences, plan visits, and connect with fellow pilgrims.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+3.2k</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">3.5k members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-medium rounded-md">Temple</span>
                     </div>
-                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
                 <!-- Card 5 -->
@@ -2329,20 +2366,26 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Theravada Study Group</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Pune, Maharashtra</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Theravada Study Group</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-location-dot text-[10px]"></i>Pune, Maharashtra</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Deep study of Pali Canon, Abhidhamma, and meditation techniques in the Theravada tradition. Weekly online sessions.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+156</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">412 members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[10px] font-medium rounded-md">Study Group</span>
                     </div>
-                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
                 <!-- Card 6 -->
@@ -2361,20 +2404,27 @@ round:var(--error-600)}
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
-                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Vipassana Meditators</h3>
-                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-globe text-[10px]"></i>Global</p>
+                    <div class="flex items-start justify-between mb-2"><div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Vipassana Meditators</h3>
+                      <p class="text-xs text-sangham-brown-light mt-0.5 flex items-center gap-1"><i class="fa-solid fa-globe text-[10px]"></i>Global</p>
+                    </div></div>
                     <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Daily group sits, Dhamma sharing, and support for Vipassana practitioners. Open to all traditions and experience levels.</p>
                     <div class="flex items-center justify-between mb-4">
                       <div class="flex items-center gap-2">
                         <div class="flex -space-x-2">
                           <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
                           <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+5k</div>
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">5.8k members</span>
                       </div>
                       <span class="px-2 py-0.5 bg-teal-50 text-teal-600 text-[10px] font-medium rounded-md">Mahayana</span>
                     </div>
-                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                    <div class="flex items-center gap-2">
+                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4224,9 +4274,9 @@ function switchTab(tab) {
   if (dsNav) dsNav.classList.add('active');
   state.currentTab = tab;
 
-  // Home tab uses its own 3-col layout — hide the app sidebar so there's no double-panel
+  // These tabs embed their own left sidebar — hide the app sidebar to avoid double-panel
   const dsSidebar = document.getElementById('desktopSidebar');
-  if (dsSidebar) dsSidebar.classList.toggle('tab-home-active', tab === 'home');
+  if (dsSidebar) dsSidebar.classList.toggle('tab-home-active', ['home','learn','communities'].includes(tab));
 
   if (navigator.vibrate && _userHasInteracted) navigator.vibrate(10);
 
@@ -4320,6 +4370,22 @@ async function loadHome() {
   loadHomeSidebarEvents();
   if (state.token) loadHomeSuggestedConnections();
   _updateLeftSidebars();
+  // Highlight today's day in Daily Practice tracker (0=Mon … 6=Sun)
+  (function() {
+    const jsDay = new Date().getDay(); // 0=Sun,1=Mon,...,6=Sat
+    const idx = jsDay === 0 ? 6 : jsDay - 1; // remap to M=0…S=6
+    for (let i = 0; i < 7; i++) {
+      const el = document.getElementById('practice-day-' + i);
+      if (!el) continue;
+      if (i === idx) {
+        el.classList.remove('bg-white/20');
+        el.classList.add('bg-white', 'text-sangham-gold');
+      } else {
+        el.classList.remove('bg-white', 'text-sangham-gold');
+        el.classList.add('bg-white/20');
+      }
+    }
+  })();
   const container = document.getElementById('home-feed');
   const lmWrap = document.getElementById('home-load-more-wrap');
   if (lmWrap) lmWrap.style.display = 'none';
@@ -4376,10 +4442,10 @@ async function loadHomeSuggestedConnections() {
   try {
     const data = await api('GET', '/discover/recommended');
     const people = (data.data||data||[]).slice(0,3);
-    if (!people.length) return;
     const card = document.getElementById('home-sidebar-suggested-card');
     const el = document.getElementById('home-sidebar-suggested');
     if (!el||!card) return;
+    if (!people.length) { card.style.display = 'none'; return; }
     el.innerHTML = people.map(p => {
       const initials = (p.displayName||'U').charAt(0).toUpperCase();
       const avatar = p.profilePhoto
@@ -4564,7 +4630,7 @@ async function loadHomeSidebarTrending() {
   try {
     const data = await api('GET', '/associations?limit=4&sort=members');
     const communities = (data.data || data || []).slice(0, 3);
-    if (!communities.length) return;
+    if (!communities.length) { card.style.display = 'none'; return; }
     const TRAD_ICONS = { THERAVADA:'fa-dharmachakra', NAVAYANA:'fa-scale-balanced', MAHAYANA:'fa-yin-yang', VAJRAYANA:'fa-bell', MULTIPLE:'fa-dharmachakra', OTHER:'fa-globe' };
     const TRAD_COLORS = { THERAVADA:'text-orange-600 bg-orange-50', NAVAYANA:'text-blue-600 bg-blue-50', MAHAYANA:'text-amber-600 bg-amber-50', VAJRAYANA:'text-purple-600 bg-purple-50', MULTIPLE:'text-sangham-gold bg-sangham-cream', OTHER:'text-sangham-brown bg-sangham-cream' };
     list.innerHTML = communities.map(c => {
@@ -4594,7 +4660,7 @@ async function loadHomeSidebarEvents() {
   try {
     const data = await api('GET', '/events?limit=3');
     const events = (data.data || data || []).filter(e => new Date(e.startsAt) >= new Date()).slice(0, 3);
-    if (!events.length) return;
+    if (!events.length) { card.style.display = 'none'; return; }
     const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     list.innerHTML = events.map(ev => {
       const d = new Date(ev.startsAt);
@@ -7903,7 +7969,10 @@ function renderCommunityCard(a, delay = 0) {
         <span class="text-[10px] text-sangham-brown-light">${memberCount} ${t('community.members')}</span>
         ${cat ? `<span class="px-2 py-0.5 ${catColor} text-[10px] font-medium rounded-md">${cat}</span>` : ''}
       </div>
-      <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20" onclick="event.stopPropagation();joinCommunityFromHome('${a.id}',this)">Join</button>
+      <div class="flex items-center gap-2">
+        <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg" onclick="event.stopPropagation();joinCommunityFromHome('${a.id}',this)">Join</button>
+        <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors" onclick="event.stopPropagation()"><i class="fa-regular fa-bookmark text-sm"></i></button>
+      </div>
     </div>
   </div>`;
 }
