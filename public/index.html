@@ -1705,32 +1705,51 @@ round:var(--error-600)}
     </aside>
     <div class="desktop-main-col">
     <header class="app-header">
-      <div class="app-header-brand">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-        Sangham
+      <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+        <!-- Left: Logo & Brand -->
+        <div class="flex items-center gap-3 flex-shrink-0">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark flex items-center justify-center shadow-lg shadow-sangham-gold/20">
+            <i class="fa-solid fa-dharmachakra text-white text-sm"></i>
+          </div>
+          <span class="font-serif text-xl font-semibold text-sangham-ink tracking-tight">Sangham</span>
+        </div>
+        <!-- Center: Navigation (hidden below md=768px) -->
+        <div class="hidden md:flex items-center gap-8">
+          <button onclick="switchTab('home')" class="flex items-center gap-2 text-sangham-gold font-medium text-sm transition-colors hover:opacity-80">
+            <i class="fa-solid fa-house"></i><span>Home</span>
+          </button>
+          <button onclick="switchTab('communities')" class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
+            <i class="fa-solid fa-users"></i><span>Communities</span>
+          </button>
+          <button onclick="switchTab('learn');switchLearnTab('library')" class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
+            <i class="fa-solid fa-book-open"></i><span>Library</span>
+          </button>
+          <button onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},200)" class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
+            <i class="fa-solid fa-calendar-days"></i><span>Events</span>
+          </button>
+        </div>
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-3 flex-shrink-0">
+          <button class="w-9 h-9 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown" onclick="switchTab('discover')" title="Search" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </button>
+          <button class="w-9 h-9 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown relative" id="notifBellBtn" onclick="openNotifications()" title="Notifications" aria-label="Notifications">
+            <i class="fa-regular fa-bell text-sm"></i>
+            <span class="header-notif-badge" id="notifBadge" style="display:none">0</span>
+          </button>
+          <button class="w-9 h-9 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark text-white flex items-center justify-center shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-shadow" onclick="openCreatePost()" title="Share reflection" aria-label="Share reflection">
+            <i class="fa-solid fa-plus text-sm"></i>
+          </button>
+          <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-sangham-gold/30 cursor-pointer hover:border-sangham-gold transition-colors bg-sangham-cream flex items-center justify-center" id="headerAvatar" onclick="openProfileQuickPanel()" title="Profile" aria-label="Profile"></div>
+          <button class="header-icon" onclick="logout()" title="Sign out" aria-label="Sign out" style="display:none">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="header-actions">
-        <button class="header-icon" onclick="openCreatePost()" title="Share reflection" aria-label="Share reflection">
-          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </button>
-        <button class="header-icon" id="notifBellBtn" onclick="openNotifications()" title="Notifications" aria-label="Notifications" style="display:none">
-          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="header-notif-badge" id="notifBadge" style="display:none">0</span>
-        </button>
-        <button class="header-icon" id="headerAvatar" onclick="openProfileQuickPanel()" title="Profile" aria-label="Profile">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </button>
-<button class="header-icon" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark mode">
-          <svg viewBox="0 0 24 24" id="themeIcon"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        </button>
-        <button class="header-icon" onclick="logout()" title="Sign out" aria-label="Sign out" style="display:none">
-          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </button>
-</div>
-</header>
+    </header>
 <main class="app-main">
 <!-- HOME TAB -->
-<div id="tab-home" class="tab-panel active bg-sangham-cream font-sans text-sangham-ink antialiased">
+<div id="tab-home" class="tab-panel active font-sans text-sangham-ink antialiased">
   <!-- dynamic stubs (hidden; JS still populates these) -->
   <div id="home-connect-section" style="display:none"><div id="home-connect-suggestions"></div></div>
   <div id="home-community-section" style="display:none"><div id="home-community-suggestions"></div></div>
@@ -1744,10 +1763,10 @@ round:var(--error-600)}
 
     <!-- Main Layout -->
     <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
             <!-- LEFT SIDEBAR -->
-            <aside class="hidden lg:block lg:col-span-3">
+            <aside class="hidden md:block md:col-span-3">
               <div class="sticky top-24 space-y-6">
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
                   <div class="flex items-center gap-3 mb-4">
@@ -1815,7 +1834,7 @@ round:var(--error-600)}
             </aside>
 
             <!-- CENTER FEED -->
-            <main class="lg:col-span-6 space-y-6">
+            <main class="md:col-span-6 space-y-6">
 
                 <!-- Stories / People Near Me -->
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
@@ -1890,7 +1909,7 @@ round:var(--error-600)}
             </main>
 
             <!-- RIGHT SIDEBAR (Sticky) -->
-            <aside class="hidden lg:block lg:col-span-3">
+            <aside class="hidden md:block md:col-span-3">
                 <div class="sticky top-24 space-y-6">
 
                     <!-- Daily Wisdom -->
