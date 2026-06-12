@@ -96,7 +96,7 @@ app.use(helmet({
       fontSrc:       ["'self'", 'https://fonts.gstatic.com'],
       // Same-origin fetches + WebSocket (Socket.IO)
       connectSrc:    ["'self'", 'wss:', 'ws:'],
-      imgSrc:        ["'self'", 'data:', 'blob:'],
+      imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org'],
       mediaSrc:      ["'self'", 'blob:'],
     },
   },
