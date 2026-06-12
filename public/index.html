@@ -1755,87 +1755,6 @@ round:var(--error-600)}
     <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <!-- LEFT SIDEBAR removed — desktop-sidebar handles navigation on lg+ -->
-            <aside class="hidden">
-                <div class="sticky top-24 space-y-6">
-                    <!-- User Mini Profile -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-sangham-ink text-sm">Dhamma Seeker</h3>
-                                <p class="text-xs text-sangham-brown-light">@dhamma_practitioner</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2 text-center">
-                            <div class="bg-sangham-cream rounded-lg p-2">
-                                <div class="font-bold text-sangham-ink text-sm">12</div>
-                                <div class="text-[10px] text-sangham-brown-light">Communities</div>
-                            </div>
-                            <div class="bg-sangham-cream rounded-lg p-2">
-                                <div class="font-bold text-sangham-ink text-sm">248</div>
-                                <div class="text-[10px] text-sangham-brown-light">Connections</div>
-                            </div>
-                            <div class="bg-sangham-cream rounded-lg p-2">
-                                <div class="font-bold text-sangham-ink text-sm">1.2k</div>
-                                <div class="text-[10px] text-sangham-brown-light">Karma</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Menu -->
-                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
-                        <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
-                        <nav class="space-y-1">
-                            <a href="#" onclick="return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm">
-                                <i class="fa-solid fa-house w-5 text-center"></i>
-                                Home Feed
-                            </a>
-                            <a href="#" onclick="switchTab('communities');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                                <i class="fa-solid fa-user-group w-5 text-center text-sangham-brown-light"></i>
-                                My Communities
-                            </a>
-                            <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                                <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>
-                                Saved Teachings
-                            </a>
-                            <a href="#" onclick="switchTab('discover');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                                <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>
-                                People Near Me
-                            </a>
-                            <a href="#" onclick="openDhammaDaan();return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                                <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>
-                                Dhamma Daan
-                            </a>
-                            <a href="#" onclick="openPanel('panel-settings');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                                <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>
-                                Settings
-                            </a>
-                        </nav>
-                    </div>
-
-                    <!-- Daily Practice Tracker -->
-                    <div class="bg-gradient-to-br from-sangham-gold to-sangham-gold-dark rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20">
-                        <div class="flex items-center justify-between mb-3">
-                            <h4 class="font-semibold text-sm">Daily Practice</h4>
-                            <i class="fa-solid fa-spa opacity-60"></i>
-                        </div>
-                        <div class="flex gap-1.5 mb-3">
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">M</div>
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
-                            <div class="flex-1 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-medium text-sangham-gold">W</div>
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">F</div>
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
-                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
-                        </div>
-                        <p class="text-xs opacity-80">3-day streak! Meditate today to continue.</p>
-                    </div>
-                </div>
-            </aside>
-
             <!-- CENTER FEED -->
             <main class="lg:col-span-9 space-y-6">
 
@@ -1926,84 +1845,22 @@ round:var(--error-600)}
                         </div>
                     </div>
 
-                    <!-- Trending Communities -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                    <!-- Trending Communities (live data) -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-trending-card" style="display:none">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Trending Communities</h3>
                             <a href="#" onclick="switchTab('communities');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Explore</a>
                         </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 group cursor-pointer">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 border border-blue-100">
-                                    <i class="fa-solid fa-heart text-sm"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Mumbai Navayana Sangha</h4>
-                                    <p class="text-[10px] text-sangham-brown-light">1.2k members · Mumbai</p>
-                                </div>
-                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="flex items-center gap-3 group cursor-pointer">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600 border border-amber-100">
-                                    <i class="fa-solid fa-book-open text-sm"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Nagpur Buddhist Study</h4>
-                                    <p class="text-[10px] text-sangham-brown-light">856 members · Nagpur</p>
-                                </div>
-                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="flex items-center gap-3 group cursor-pointer">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center text-purple-600 border border-purple-100">
-                                    <i class="fa-solid fa-dharmachakra text-sm"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Dhamma Daan Circle</h4>
-                                    <p class="text-[10px] text-sangham-brown-light">2.1k members · Global</p>
-                                </div>
-                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                        </div>
+                        <div class="space-y-3" id="home-sidebar-trending"></div>
                     </div>
 
-                    <!-- Upcoming Events -->
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                    <!-- Upcoming Events (live data) -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5" id="home-sidebar-events-card" style="display:none">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Upcoming Events</h3>
                             <a href="#" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},100);return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</a>
                         </div>
-                        <div class="space-y-3">
-                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
-                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
-                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
-                                    <span class="text-sm font-bold text-sangham-ink leading-none">15</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-sangham-ink text-xs">Group Meditation</h4>
-                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Deekshabhoomi, Nagpur · 6:00 AM</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
-                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
-                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
-                                    <span class="text-sm font-bold text-sangham-ink leading-none">18</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-sangham-ink text-xs">Dhamma Talk: Right Livelihood</h4>
-                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Online · 7:00 PM IST</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
-                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
-                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
-                                    <span class="text-sm font-bold text-sangham-ink leading-none">22</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-medium text-sangham-ink text-xs">Pali Language Workshop</h4>
-                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Mumbai Center · 10:00 AM</p>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="space-y-3" id="home-sidebar-events"></div>
                     </div>
 
                     <!-- Footer -->
@@ -2140,87 +1997,6 @@ round:var(--error-600)}
 
         <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-            <!-- LEFT SIDEBAR -->
-            <!-- LEFT SIDEBAR removed — desktop-sidebar handles navigation on lg+ -->
-            <aside class="hidden">
-              <div class="sticky top-24 space-y-6">
-                <!-- User Mini Profile -->
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20">
-                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                      <h3 class="font-semibold text-sangham-ink text-sm">Dhamma Seeker</h3>
-                      <p class="text-xs text-sangham-brown-light">@dhamma_practitioner</p>
-                    </div>
-                  </div>
-                  <div class="grid grid-cols-3 gap-2 text-center">
-                    <div class="bg-sangham-cream rounded-lg p-2">
-                      <div class="font-bold text-sangham-ink text-sm">12</div>
-                      <div class="text-[10px] text-sangham-brown-light">Communities</div>
-                    </div>
-                    <div class="bg-sangham-cream rounded-lg p-2">
-                      <div class="font-bold text-sangham-ink text-sm">248</div>
-                      <div class="text-[10px] text-sangham-brown-light">Connections</div>
-                    </div>
-                    <div class="bg-sangham-cream rounded-lg p-2">
-                      <div class="font-bold text-sangham-ink text-sm">1.2k</div>
-                      <div class="text-[10px] text-sangham-brown-light">Karma</div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Quick Menu -->
-                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
-                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
-                  <nav class="space-y-1">
-                    <a href="#" onclick="switchTab('home');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
-                    </a>
-                    <a href="#" onclick="return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm">
-                      <i class="fa-solid fa-user-group w-5 text-center"></i>My Communities
-                    </a>
-                    <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Saved Teachings
-                    </a>
-                    <a href="#" onclick="switchTab('discover');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
-                    </a>
-                    <a href="#" onclick="openDhammaDaan&&openDhammaDaan();return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
-                    </a>
-                    <a href="#" onclick="openPanel('panel-settings');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
-                    </a>
-                  </nav>
-                </div>
-                <!-- My Sanghas Mini List -->
-                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
-                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">My Sanghas</h4>
-                  <div class="space-y-2">
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-sangham-gold/5 text-sangham-gold text-sm">
-                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600">
-                        <i class="fa-solid fa-heart text-xs"></i>
-                      </div>
-                      <span class="font-medium text-xs">Nagpur Buddhist Study Circle</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600">
-                        <i class="fa-solid fa-dharmachakra text-xs"></i>
-                      </div>
-                      <span class="text-xs">Mumbai Navayana Sangha</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
-                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center text-green-600">
-                        <i class="fa-solid fa-seedling text-xs"></i>
-                      </div>
-                      <span class="text-xs">Seed Events Org</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </aside>
 
             <!-- CENTER CONTENT -->
             <main class="lg:col-span-12 space-y-6">
@@ -2536,7 +2312,7 @@ round:var(--error-600)}
           </div>
         </div>
         <!-- COURSES -->
-        <div id="learn-tab-courses" class="comm-tab-panel active p-4" style="display:block">
+        <div id="learn-tab-courses" class="comm-tab-panel active p-4">
           <div id="learn-continue-reading" style="display:none" class="mb-5">
             <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest mb-3">Continue Reading</h2>
             <div id="learn-continue-list" class="space-y-3"></div>
@@ -3047,6 +2823,80 @@ round:var(--error-600)}
             <option value="GLOBAL">Global</option>
           </select>
         </div>
+      </div>
+    </div>
+
+    <!-- PANEL: SETTINGS -->
+    <div id="panel-settings" class="panel">
+      <div class="panel-header">
+        <button class="panel-back" onclick="closePanel('panel-settings')" aria-label="Close settings">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="panel-title">Settings</div>
+      </div>
+      <div class="panel-content" style="padding:var(--space-4)">
+        <!-- Appearance -->
+        <div style="margin-bottom:var(--space-5)">
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Appearance</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle)">
+            <div style="display:flex;align-items:center;gap:var(--space-3)">
+              <i class="fa-solid fa-moon" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary)">Dark Mode</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="settings-theme-toggle" onchange="toggleTheme();this.checked=state.theme==='dark'">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <!-- Language -->
+        <div style="margin-bottom:var(--space-5)">
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Language</p>
+          <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+            <button onclick="setLanguage('en');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">English</span>
+              <i class="fa-solid fa-check settings-lang-check" data-lang="en" style="color:var(--saffron-500)"></i>
+            </button>
+            <button onclick="setLanguage('hi');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">हिन्दी</span>
+              <i class="fa-solid fa-check settings-lang-check" data-lang="hi" style="color:var(--saffron-500)"></i>
+            </button>
+            <button onclick="setLanguage('mr');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">मराठी</span>
+              <i class="fa-solid fa-check settings-lang-check" data-lang="mr" style="color:var(--saffron-500)"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Account -->
+        <div style="margin-bottom:var(--space-5)">
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Account</p>
+          <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+            <button onclick="closePanel('panel-settings');if(state.user)openProfile(state.user.id)" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-user-pen" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">Edit Profile</span>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-tertiary);font-size:10px"></i>
+            </button>
+            <button onclick="closePanel('panel-settings');openDhammaDaan&&openDhammaDaan()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-hand-holding-heart" style="color:var(--text-secondary);width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">Dhamma Daan</span>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-tertiary);font-size:10px"></i>
+            </button>
+            <button onclick="logout()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid rgba(239,68,68,.2);text-align:left;cursor:pointer;width:100%">
+              <i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;width:18px;text-align:center"></i>
+              <span style="font-size:var(--text-sm);color:#ef4444">Sign Out</span>
+            </button>
+          </div>
+        </div>
+        <!-- Legal -->
+        <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;margin-top:var(--space-4)">
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Privacy Policy</a>
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Terms of Service</a>
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Help</a>
+        </div>
+        <p style="text-align:center;font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-4);opacity:.5">Sangham v0.2.0</p>
       </div>
     </div>
 
@@ -4134,6 +3984,16 @@ function switchTab(tab) {
 function openPanel(id) {
   const el = document.getElementById(id);
   if (el && !el.classList.contains('active')) el.classList.add('active');
+  if (id === 'panel-settings') _syncSettingsState();
+}
+
+function _syncSettingsState() {
+  const toggle = document.getElementById('settings-theme-toggle');
+  if (toggle) toggle.checked = state.theme === 'dark';
+  const cur = state.user?.preferredLanguage || _lang || 'en';
+  document.querySelectorAll('.settings-lang-check').forEach(el => {
+    el.style.display = el.dataset.lang === cur ? '' : 'none';
+  });
 }
 function closePanel(id) {
   document.getElementById(id)?.classList.remove('active');
@@ -4193,6 +4053,8 @@ async function loadHome() {
   }
   loadDailyVerse();
   loadHomeUpcomingEvents();
+  loadHomeSidebarTrending();
+  loadHomeSidebarEvents();
   const container = document.getElementById('home-feed');
   container.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   // Active Discussions: community-member posts when logged in, follow feed otherwise
@@ -4384,6 +4246,65 @@ async function loadHomeCommunitySuggestions() {
         <button class="suggest-comm-btn" onclick="event.stopPropagation();joinCommunityFromHome('${c.id}',this)">Join</button>
       </div>`;
     }).join('');
+  } catch { /* silently skip */ }
+}
+
+async function loadHomeSidebarTrending() {
+  const card = document.getElementById('home-sidebar-trending-card');
+  const list = document.getElementById('home-sidebar-trending');
+  if (!card || !list) return;
+  try {
+    const data = await api('GET', '/associations?limit=4&sort=members');
+    const communities = (data.data || data || []).slice(0, 3);
+    if (!communities.length) return;
+    const TRAD_ICONS = { THERAVADA:'fa-dharmachakra', NAVAYANA:'fa-scale-balanced', MAHAYANA:'fa-yin-yang', VAJRAYANA:'fa-bell', MULTIPLE:'fa-dharmachakra', OTHER:'fa-globe' };
+    const TRAD_COLORS = { THERAVADA:'text-orange-600 bg-orange-50', NAVAYANA:'text-blue-600 bg-blue-50', MAHAYANA:'text-amber-600 bg-amber-50', VAJRAYANA:'text-purple-600 bg-purple-50', MULTIPLE:'text-sangham-gold bg-sangham-cream', OTHER:'text-sangham-brown bg-sangham-cream' };
+    list.innerHTML = communities.map(c => {
+      const icon = TRAD_ICONS[c.tradition] || 'fa-globe';
+      const color = TRAD_COLORS[c.tradition] || 'text-sangham-brown bg-sangham-cream';
+      const members = c._count?.members ?? 0;
+      const meta = [members ? members + ' members' : '', c.city || c.country].filter(Boolean).join(' · ');
+      return `<div class="flex items-center gap-3 group cursor-pointer" onclick="openCommunity('${c.id}')">
+        <div class="w-10 h-10 rounded-xl ${color} flex items-center justify-center flex-shrink-0" style="border:1px solid rgba(0,0,0,.05)">
+          <i class="fa-solid ${icon} text-sm"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">${escHtml(c.name||'')}</h4>
+          ${meta ? `<p class="text-[10px] text-sangham-brown-light">${escHtml(meta)}</p>` : ''}
+        </div>
+        <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]" onclick="event.stopPropagation();joinCommunityFromHome('${c.id}',this)"><i class="fa-solid fa-plus"></i></button>
+      </div>`;
+    }).join('');
+    card.style.display = '';
+  } catch { /* silently skip */ }
+}
+
+async function loadHomeSidebarEvents() {
+  const card = document.getElementById('home-sidebar-events-card');
+  const list = document.getElementById('home-sidebar-events');
+  if (!card || !list) return;
+  try {
+    const data = await api('GET', '/events?limit=3');
+    const events = (data.data || data || []).filter(e => new Date(e.startsAt) >= new Date()).slice(0, 3);
+    if (!events.length) return;
+    const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    list.innerHTML = events.map(ev => {
+      const d = new Date(ev.startsAt);
+      const mon = MONTHS[d.getMonth()];
+      const day = d.getDate();
+      const location = ev.location || (ev.isOnline ? 'Online' : '');
+      return `<div class="flex gap-3 p-3 rounded-xl cursor-pointer" style="background:rgba(253,248,240,.5)" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},100)">
+        <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
+          <span class="text-[9px] font-bold text-sangham-gold">${mon}</span>
+          <span class="text-sm font-bold text-sangham-ink leading-none">${day}</span>
+        </div>
+        <div>
+          <h4 class="font-medium text-sangham-ink text-xs">${escHtml(ev.title)}</h4>
+          ${location ? `<p class="text-[10px] text-sangham-brown-light mt-0.5">${escHtml(location)}</p>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+    card.style.display = '';
   } catch { /* silently skip */ }
 }
 
