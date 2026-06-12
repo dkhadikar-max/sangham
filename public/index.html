@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>tailwind={config:{corePlugins:{preflight:false},theme:{extend:{colors:{sangham:{gold:'#C09553','gold-light':'#D4A96A','gold-dark':'#A67D3E',cream:'#FDF8F0','cream-dark':'#F5EFE6',warm:'#FAF6F0',brown:'#8B7355','brown-light':'#A69076','brown-dark':'#6B5B45',ink:'#2C2416','ink-light':'#4A3F2E'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}}</script>
+  <script>tailwind={config:{corePlugins:{preflight:false},theme:{extend:{colors:{sangham:{gold:'#C09553','gold-light':'#D4A96A','gold-dark':'#A67D3E',cream:'#FDF8F0','cream-dark':'#F5EFE6',warm:'#FAF6F0',brown:'#8B7355','brown-light':'#A69076','brown-dark':'#6B5B45',ink:'#2C2416','ink-light':'#4A3F2E',navayana:'#2563EB',theravada:'#C4621E'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}}</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -43,6 +43,21 @@
     .join-btn.joined{background:transparent;color:#C09553;border:1.5px solid #C09553}
     .sangha-row{transition:all .2s ease}
     .sangha-row:hover{background:#FDF8F0}
+    /* ── Educate tab — override old learn card styles ── */
+    #tab-learn .course-card{background:white;border-radius:1rem;padding:1.25rem;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);transition:all .3s cubic-bezier(.4,0,.2,1)}
+    #tab-learn .course-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(192,149,83,.2)}
+    #tab-learn .circle-card{background:white;border-radius:1rem;padding:1.25rem;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);transition:all .3s ease}
+    #tab-learn .circle-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(192,149,83,.15)}
+    #tab-learn .session-card{background:white;border-radius:.75rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);display:flex;align-items:center;gap:1rem;transition:all .3s ease;cursor:pointer}
+    #tab-learn .session-card:hover{transform:translateX(4px);border-color:rgba(192,149,83,.25)}
+    #tab-learn .resource-card{background:white;border-radius:.75rem;padding:1rem;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);border:1px solid rgba(192,149,83,.06);display:flex;align-items:center;gap:1rem;transition:all .3s ease}
+    #tab-learn .resource-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(192,149,83,.15)}
+    .progress-bar{background:linear-gradient(90deg,#C09553 0%,#D4A96A 100%)}
+    /* legacy stubs — suppressed by new UI */
+    #create-sangha-btn{display:none!important}
+    #mySanghasSection{display:none!important}
+    /* landing nav/main must be visible even if GSAP doesn't run */
+    #view-landing nav,#view-landing main{opacity:1}
   </style>
   <style>
     :root {
@@ -320,7 +335,7 @@ round:var(--error-600)}
     .pulse-chevron{width:16px;height:16px;stroke:var(--text-tertiary);fill:none;stroke-width:2;flex-shrink:0;margin-left:auto}
 
     /* Feed container */
-    #home-feed{border-top:1px solid var(--border-default)}
+    #home-feed{}
 
     /* Post Card — discussion style */
     .post-card{background:var(--surface-elevated);border:none;border-bottom:8px solid var(--surface-primary);border-radius:0;margin:0;overflow:hidden;animation:fadeInUp var(--duration-normal) var(--ease-out) both}
@@ -376,13 +391,9 @@ round:var(--error-600)}
     .tradition-dot{display:inline-block;width:6px;height:6px;background:var(--saffron-500);border-radius:50%}
     .person-actions{display:flex;flex-direction:column;gap:var(--space-2)}
 
-    /* Community Card */
-    .community-card{background:linear-gradient(135deg,var(--saffron-800) 0%,var(--saffron-700) 100%);border-radius:var(--radius-lg);margin:0 var(--space-4) var(--space-3);padding:var(--space-5);color:white;position:relative;overflow:hidden;box-shadow:var(--shadow-3);transition:all var(--duration-fast) var(--ease-out)}
+    /* Community Card — new design handled entirely by Tailwind classes */
+    .community-card{transition:all var(--duration-fast) var(--ease-out)}
     .community-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-4)}
-    .community-card::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%}
-    .community-name{font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--space-2);position:relative;z-index:1}
-    .community-meta{font-size:var(--text-xs);opacity:0.7;position:relative;z-index:1}
-    .community-actions{display:flex;gap:var(--space-3);margin-top:var(--space-4);position:relative;z-index:1}
 
     /* Text Result Card */
     .text-result{border-left:3px solid var(--saffron-500);border-radius:0 var(--radius-md) var(--radius-md) 0;background:var(--surface-elevated);margin:0 var(--space-4) var(--space-3);padding:var(--space-4);cursor:pointer;transition:all var(--duration-fast) var(--ease-out);border-top:1px solid var(--border-default);border-right:1px solid var(--border-default);border-bottom:1px solid var(--border-default)}
@@ -444,8 +455,7 @@ round:var(--error-600)}
 
     /* Landing Page */
     #view-landing{background:linear-gradient(180deg,var(--surface-bg) 0%,var(--saffron-50) 100%);position:relative;overflow:hidden;height:100svh;height:100dvh}
-    #view-landing::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,var(--saffron-200) 0%,transparent 70%);opacity:0.5;animation:float 8s ease-in-out infinite}
-    #view-landing::after{content:'';position:absolute;bottom:-50px;left:-50px;width:200px;height:200px;background:radial-gradient(circle,var(--lotus-200) 0%,transparent 70%);opacity:0.3;animation:float 10s ease-in-out infinite reverse}
+    #view-landing::before,#view-landing::after{content:none}
     .landing-nav{position:fixed;top:0;width:100%;padding:var(--space-4) var(--space-6);display:flex;justify-content:space-between;align-items:center;background:rgba(250,246,240,0.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:1000;border-bottom:1px solid var(--border-default)}
     .hero{height:100svh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(64px + var(--space-6)) var(--space-6) var(--space-6);position:relative;z-index:1;box-sizing:border-box}
     .hero-sym{font-size:1.75rem;display:block;margin-bottom:var(--space-3);line-height:1;color:var(--saffron-500);animation:fadeIn var(--duration-slow) var(--ease-out) 0.1s both}
@@ -646,7 +656,7 @@ round:var(--error-600)}
     /* ── Communities Tab & Panel ───────────────── */
     .comm-filter-bar{padding:var(--space-2) var(--space-4);display:flex;gap:var(--space-2);overflow-x:auto;flex-shrink:0}
     .comm-filter-bar::-webkit-scrollbar{display:none}
-    .comm-list{padding:0 var(--space-4) var(--space-4)}
+    .comm-list{padding:0}
     .comm-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-3);cursor:pointer;transition:all var(--duration-fast) var(--ease-out);animation:fadeInScale var(--duration-normal) var(--ease-out) both}
     .comm-card:hover,.comm-card:active{border-color:var(--saffron-400);box-shadow:var(--shadow-2)}
     .comm-card-header{display:flex;align-items:flex-start;gap:var(--space-3)}
@@ -1441,7 +1451,7 @@ round:var(--error-600)}
 
   <nav style="position:absolute;top:0;width:100%;padding:2rem;display:flex;justify-content:space-between;align-items:center;z-index:20;font-family:'Inter',sans-serif">
     <div class="flex items-center gap-4">
-      <img src="http://googleusercontent.com/image_collection/image_retrieval/18286873929078991332_0" alt="Sangham Logo" class="w-10 h-10 object-contain opacity-90">
+      <div class="w-10 h-10 flex items-center justify-center opacity-90"><i class="fa-solid fa-dharmachakra text-2xl" style="color:#c6863d"></i></div>
       <span style="font-size:1.25rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase">Sangham</span>
     </div>
     <div class="hidden md:flex gap-8 text-xs uppercase tracking-[0.3em] opacity-60">
@@ -1835,63 +1845,12 @@ round:var(--error-600)}
                         </div>
                         <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium">View All</a>
                     </div>
-                    <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
+                    <div id="home-stories-strip" class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
                         <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer group">
                             <div class="w-16 h-16 rounded-full bg-sangham-cream border-2 border-dashed border-sangham-gold/30 flex items-center justify-center group-hover:border-sangham-gold transition-colors">
                                 <i class="fa-solid fa-plus text-sangham-gold"></i>
                             </div>
                             <span class="text-[11px] text-sangham-brown-light">Add</span>
-                        </div>
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
-                            <div class="story-ring">
-                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
-                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full pulse-dot"></span>
-                                <span class="text-[11px] text-sangham-ink">Anjali</span>
-                            </div>
-                            <span class="text-[10px] text-sangham-brown-light">2km away</span>
-                        </div>
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
-                            <div class="story-ring">
-                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
-                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full pulse-dot"></span>
-                                <span class="text-[11px] text-sangham-ink">Rahul</span>
-                            </div>
-                            <span class="text-[10px] text-sangham-brown-light">5km away</span>
-                        </div>
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
-                            <div class="story-ring story-ring-viewed">
-                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
-                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <span class="text-[11px] text-sangham-ink">Priya</span>
-                            <span class="text-[10px] text-sangham-brown-light">1km away</span>
-                        </div>
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
-                            <div class="story-ring">
-                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
-                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <span class="text-[11px] text-sangham-ink">Vikram</span>
-                            <span class="text-[10px] text-sangham-brown-light">8km away</span>
-                        </div>
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
-                            <div class="story-ring story-ring-viewed">
-                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
-                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <span class="text-[11px] text-sangham-ink">Sneha</span>
-                            <span class="text-[10px] text-sangham-brown-light">3km away</span>
                         </div>
                     </div>
                 </div>
@@ -1937,159 +1896,11 @@ round:var(--error-600)}
                     <button class="px-4 py-2 bg-white text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors">Events</button>
                 </div>
 
-                <!-- FEED POSTS (id="home-feed" so dynamic posts load here) -->
+                <!-- FEED POSTS — populated by loadHome() via renderPostCard() -->
                 <div id="home-feed" class="space-y-5">
-                    <!-- Post 1: Teaching Share -->
-                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20">
-                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-sangham-ink text-sm">Anjali Sharma</h4>
-                                        <p class="text-xs text-sangham-brown-light">Shared in <span class="text-sangham-gold font-medium">Mumbai Navayana Sangha</span> · 2h ago</p>
-                                    </div>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
-                            </div>
-                            <p class="text-sangham-ink-light text-sm leading-relaxed mb-4">
-                                "The mind is everything. What you think you become." — Buddha<br><br>
-                                Reflecting on this teaching during this morning's meditation. 🙏
-                            </p>
-                            <div class="rounded-xl overflow-hidden mb-4">
-                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop" alt="Meditation" class="w-full h-56 object-cover">
-                            </div>
-                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
-                                <div class="flex items-center gap-6">
-                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
-                                        <i class="fa-regular fa-heart"></i><span class="font-medium">24</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
-                                        <i class="fa-regular fa-comment"></i><span class="font-medium">8</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm">
-                                        <i class="fa-solid fa-share-nodes"></i><span class="font-medium">Share</span>
-                                    </button>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
-                            </div>
-                        </div>
-                        <div class="comment-expand bg-sangham-cream/50 border-t border-sangham-gold/5">
-                            <div class="p-5 space-y-4">
-                                <div class="flex gap-3">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="bg-white rounded-xl px-3 py-2">
-                                            <h5 class="font-semibold text-xs text-sangham-ink">Rahul Patil</h5>
-                                            <p class="text-xs text-sangham-ink-light mt-0.5">Beautiful reflection. This reminds me of the Dhammapada verse on mind cultivation.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-3">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden border border-sangham-gold/20 flex-shrink-0">
-                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="flex-1 relative">
-                                        <input type="text" placeholder="Write a comment..." class="w-full bg-white rounded-xl px-4 py-2.5 text-xs text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 pr-10">
-                                        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-sangham-gold"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Post 2: Event -->
-                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20">
-                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-sangham-ink text-sm">Rahul Patil</h4>
-                                        <p class="text-xs text-sangham-brown-light">Created an event · 4h ago</p>
-                                    </div>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
-                            </div>
-                            <div class="bg-gradient-to-r from-sangham-gold/10 to-sangham-gold/5 rounded-xl p-4 mb-4 border border-sangham-gold/10">
-                                <div class="flex items-start gap-4">
-                                    <div class="flex-shrink-0 bg-white rounded-xl p-3 text-center shadow-sm min-w-[60px]">
-                                        <div class="text-[10px] font-semibold text-sangham-gold uppercase tracking-wider">JUN</div>
-                                        <div class="text-xl font-bold text-sangham-ink">15</div>
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="font-serif font-semibold text-sangham-ink mb-1">Group Meditation &amp; Dhamma Talk</h3>
-                                        <div class="flex items-center gap-4 text-xs text-sangham-brown-light">
-                                            <span class="flex items-center gap-1"><i class="fa-regular fa-clock"></i> 6:00 AM — 8:00 AM</span>
-                                            <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Deekshabhoomi, Nagpur</span>
-                                        </div>
-                                    </div>
-                                    <button class="flex-shrink-0 px-4 py-2 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20">Join</button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
-                                <div class="flex items-center gap-6">
-                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
-                                        <i class="fa-regular fa-heart"></i><span class="font-medium">18</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
-                                        <i class="fa-regular fa-comment"></i><span class="font-medium">5</span>
-                                    </button>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Post 3: Community Update -->
-                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex items-start justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-sangham-gold/10 flex items-center justify-center border border-sangham-gold/20">
-                                        <i class="fa-solid fa-users text-sangham-gold"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-sangham-ink text-sm">Nagpur Navayana Sangha</h4>
-                                        <p class="text-xs text-sangham-brown-light">Community update · 8h ago</p>
-                                    </div>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
-                            </div>
-                            <p class="text-sangham-ink-light text-sm leading-relaxed mb-4">
-                                We are delighted to announce that our community has reached 50 members! 🎉<br><br>
-                                Special Dhamma discourse on <strong>"Practical Vipassana for Daily Life"</strong> this Sunday at 10 AM. All are welcome.
-                            </p>
-                            <div class="rounded-xl overflow-hidden mb-4">
-                                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=400&fit=crop" alt="Community" class="w-full h-48 object-cover">
-                            </div>
-                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
-                                <div class="flex items-center gap-6">
-                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
-                                        <i class="fa-regular fa-heart"></i><span class="font-medium">45</span>
-                                    </button>
-                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
-                                        <i class="fa-regular fa-comment"></i><span class="font-medium">9</span>
-                                    </button>
-                                </div>
-                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
-                            </div>
-                        </div>
-                    </article>
+                    <!-- dynamic posts inserted here -->
                 </div>
 
-                <!-- Load More -->
-                <div class="text-center pt-4">
-                    <button class="px-6 py-3 bg-white border border-sangham-gold/20 text-sangham-gold hover:bg-sangham-gold hover:text-white text-sm font-medium rounded-xl transition-all shadow-sm hover:shadow-md">
-                        Load More Activity
-                    </button>
-                </div>
             </main>
 
             <!-- RIGHT SIDEBAR (Sticky) -->
@@ -2156,7 +1967,7 @@ round:var(--error-600)}
                     <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-serif font-semibold text-sangham-ink text-sm">Upcoming Events</h3>
-                            <a href="#" onclick="switchTab('discover');switchDiscoverTab('events',document.querySelector('[onclick*=events]'));return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</a>
+                            <a href="#" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},100);return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</a>
                         </div>
                         <div class="space-y-3">
                             <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
@@ -2212,7 +2023,7 @@ round:var(--error-600)}
       <div id="tab-discover" class="tab-panel">
         <div class="comm-tabs" id="discoverTabs" style="border-bottom:1px solid var(--border-subtle)">
           <button class="comm-tab-btn active" onclick="switchDiscoverTab('people',this)">People</button>
-          <button class="comm-tab-btn" onclick="switchDiscoverTab('events',this)">Events</button>
+          <button class="comm-tab-btn" id="discover-tab-btn-events" onclick="switchDiscoverTab('events',this)">Events</button>
           <button class="comm-tab-btn discover-tab-projects" onclick="switchDiscoverTab('projects',this)">Projects</button>
           <button class="nav-item" style="flex:0;padding:var(--space-2) var(--space-3);color:var(--text-secondary)" onclick="openGlobalSearch()" aria-label="Search all" title="Search all">
             <svg viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -2477,7 +2288,7 @@ round:var(--error-600)}
               </div>
 
               <!-- Dynamic community list (populated by JS) + static preview cards -->
-              <div id="commList" class="comm-list"></div>
+              <div id="commList" class="comm-list grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
 
               <!-- Static community grid (shown when commList is empty/loading) -->
               <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="comm-static-grid">
@@ -2704,41 +2515,76 @@ round:var(--error-600)}
 
       <!-- LEARN TAB -->
       <div id="tab-learn" class="tab-panel">
-        <div class="search-bar" style="margin:var(--space-4) var(--space-4) var(--space-2)">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()">
-        </div>
-        <div class="comm-tabs" id="learnTabs">
-          <button class="comm-tab-btn active" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
-          <button class="comm-tab-btn" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
-          <button class="comm-tab-btn" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
-          <button class="comm-tab-btn" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
-          <button class="comm-tab-btn" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
-        </div>
-        <div id="learn-tab-courses" class="comm-tab-panel active" style="padding:var(--space-4)">
-          <div id="learn-create-courses" class="learn-create-row" style="display:none">
-            <button class="btn btn-primary btn-sm learn-create-btn" onclick="openCreateStandalone('course')">+ Create Course</button>
+        <!-- Header: Search + Tab Nav -->
+        <div style="background:white;border-bottom:1px solid rgba(192,149,83,.08);padding:1rem;position:sticky;top:0;z-index:10">
+          <div class="relative mb-3">
+            <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#A69076;pointer-events:none"></i>
+            <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()"
+              class="w-full rounded-xl pl-11 pr-4 py-3 text-sm search-focus transition-all" style="background:#FDF8F0;border:none;color:#2C2416;outline:none">
           </div>
-          <div id="learnCourses"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
-        </div>
-        <div id="learn-tab-resources" class="comm-tab-panel" style="padding:var(--space-4)">
-          <div id="learn-create-resources" class="learn-create-row" style="display:none">
-            <button class="btn btn-primary btn-sm learn-create-btn" onclick="openCreateStandalone('resource')">+ Upload Resource</button>
+          <div class="flex items-center gap-1 overflow-x-auto scrollbar-hide" id="learnTabs" style="touch-action:pan-x">
+            <button class="comm-tab-btn active whitespace-nowrap" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
+            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
+            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
+            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
+            <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
           </div>
-          <div id="learnResources"></div>
         </div>
-        <div id="learn-tab-circles" class="comm-tab-panel" style="padding:var(--space-4)">
-          <div id="learn-create-circles" class="learn-create-row" style="display:none">
-            <button class="btn btn-ghost btn-sm learn-create-btn" onclick="openCreateStandalone('circle')">+ Start a Circle</button>
+        <!-- COURSES -->
+        <div id="learn-tab-courses" class="comm-tab-panel active space-y-4 p-4">
+          <div id="learn-create-courses" class="flex items-center justify-end" style="display:none">
+            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('course')">
+              <i class="fa-solid fa-plus"></i><span>Create Course</span>
+            </button>
           </div>
-          <div id="learnCircles"></div>
+          <div id="learnCourses" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
         </div>
-        <div id="learn-tab-sessions" class="comm-tab-panel" style="padding:var(--space-4)">
-          <div id="host-session-row" style="display:none;margin-bottom:var(--space-3)">
-            <button class="btn btn-primary" style="width:100%" onclick="openCreateSession()" data-i18n="learn.host_session">+ Host a Session</button>
+        <!-- RESOURCES -->
+        <div id="learn-tab-resources" class="comm-tab-panel p-4 space-y-4">
+          <div id="learn-create-resources" class="flex items-center justify-end" style="display:none">
+            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('resource')">
+              <i class="fa-solid fa-cloud-arrow-up"></i><span>Upload Resource</span>
+            </button>
           </div>
-          <div id="learnSessions"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+          <div class="grid gap-3" style="grid-template-columns:repeat(4,1fr)">
+            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('PDF')">
+              <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
+              <span class="font-medium text-sangham-ink text-xs">Texts</span>
+            </div>
+            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('YOUTUBE_VIDEO')">
+              <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
+              <span class="font-medium text-sangham-ink text-xs">Videos</span>
+            </div>
+            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('WORKSHOP_RECORDING')">
+              <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
+              <span class="font-medium text-sangham-ink text-xs">Audio</span>
+            </div>
+            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('ARTICLE')">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-newspaper text-amber-500 text-lg"></i></div>
+              <span class="font-medium text-sangham-ink text-xs">Articles</span>
+            </div>
+          </div>
+          <div id="learnResources" class="space-y-3"></div>
         </div>
+        <!-- CIRCLES -->
+        <div id="learn-tab-circles" class="comm-tab-panel p-4 space-y-4">
+          <div id="learn-create-circles" class="flex items-center justify-end" style="display:none">
+            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('circle')">
+              <i class="fa-solid fa-plus"></i><span>Start a Circle</span>
+            </button>
+          </div>
+          <div id="learnCircles" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+        <!-- SESSIONS -->
+        <div id="learn-tab-sessions" class="comm-tab-panel p-4 space-y-4">
+          <div id="host-session-row" style="display:none;margin-bottom:0">
+            <button class="w-full py-3 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateSession()" data-i18n="learn.host_session">
+              <i class="fa-solid fa-plus mr-2"></i>Host a Session
+            </button>
+          </div>
+          <div id="learnSessions" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+        </div>
+        <!-- LIBRARY (fully replaced by loadLearnLibrary()) -->
         <div id="learn-tab-library" class="comm-tab-panel" style="padding:var(--space-2) 0 0">
           <div style="padding:0 var(--space-4)">
             <h2 class="section-title" id="learnLibraryTitle">Collections</h2>
@@ -4436,22 +4282,44 @@ async function loadHomePeopleSuggestions() {
     const data = await api('GET', '/discover/recommended');
     const people = (data.data || data || []).slice(0, 8);
     if (!people.length) return;
-    section.style.display = '';
-    container.innerHTML = people.map(p => {
-      const initials = (p.displayName || '?').charAt(0).toUpperCase();
-      const avatar   = p.profilePhoto
-        ? `<img src="${escHtml(p.profilePhoto)}" alt="${escHtml(p.displayName||'')}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
-        : `<div class="avatar avatar-md" style="width:44px;height:44px">${initials}</div>`;
-      const trad = (p.traditions||[]).slice(0,1).join('') || '';
-      const loc  = p.location?.city || p.city || '';
-      const connected = state.followedUsers.has(p.id);
-      return `<div class="suggest-person" onclick="openProfile('${p.id}')">
-        ${avatar}
-        <div class="suggest-person-name">${escHtml(p.displayName||'Anonymous')}</div>
-        ${trad||loc ? `<div class="suggest-person-meta">${escHtml(trad||loc)}</div>` : ''}
-        ${p.id !== state.user?.id ? `<button class="suggest-person-btn ${connected?'connected':''}" onclick="event.stopPropagation();_homeSuggestConnect('${p.id}',this)">${connected?'Connected':'Connect'}</button>` : ''}
-      </div>`;
-    }).join('');
+    // Populate stories strip with real users (after the static "Add" item)
+    const strip = document.getElementById('home-stories-strip');
+    if (strip) {
+      const addItem = strip.firstElementChild;
+      strip.innerHTML = '';
+      if (addItem) strip.appendChild(addItem);
+      people.forEach(p => {
+        const initials = (p.displayName || '?').charAt(0).toUpperCase();
+        const imgHtml = p.profilePhoto
+          ? `<img src="${escHtml(p.profilePhoto)}" alt="" class="w-full h-full object-cover">`
+          : `<span class="text-sm font-semibold text-sangham-brown">${initials}</span>`;
+        const loc = p.location?.city || p.city || '';
+        const item = document.createElement('div');
+        item.className = 'flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer';
+        item.onclick = () => openProfile(p.id);
+        item.innerHTML = `<div class="story-ring"><div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white bg-sangham-cream flex items-center justify-center">${imgHtml}</div></div><span class="text-[11px] text-sangham-ink">${escHtml((p.displayName||'').split(' ')[0]||'…')}</span>${loc ? `<span class="text-[10px] text-sangham-brown-light">${escHtml(loc)}</span>` : ''}`;
+        strip.appendChild(item);
+      });
+    }
+    // Also populate the sidebar suggest section
+    if (section && container) {
+      section.style.display = '';
+      container.innerHTML = people.map(p => {
+        const initials = (p.displayName || '?').charAt(0).toUpperCase();
+        const avatar   = p.profilePhoto
+          ? `<img src="${escHtml(p.profilePhoto)}" alt="${escHtml(p.displayName||'')}" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`
+          : `<div class="avatar avatar-md" style="width:44px;height:44px">${initials}</div>`;
+        const trad = (p.traditions||[]).slice(0,1).join('') || '';
+        const loc  = p.location?.city || p.city || '';
+        const connected = state.followedUsers.has(p.id);
+        return `<div class="suggest-person" onclick="openProfile('${p.id}')">
+          ${avatar}
+          <div class="suggest-person-name">${escHtml(p.displayName||'Anonymous')}</div>
+          ${trad||loc ? `<div class="suggest-person-meta">${escHtml(trad||loc)}</div>` : ''}
+          ${p.id !== state.user?.id ? `<button class="suggest-person-btn ${connected?'connected':''}" onclick="event.stopPropagation();_homeSuggestConnect('${p.id}',this)">${connected?'Connected':'Connect'}</button>` : ''}
+        </div>`;
+      }).join('');
+    }
   } catch { /* silently skip — home still loads without suggestions */ }
 }
 
@@ -4660,6 +4528,8 @@ async function loadDailyVerse() {
     if (!verse || !verse.content) { container.innerHTML = ''; return; }
     _currentVerseTextId = verse.textId || null;
     const text = verse.content;
+    const sVerse = document.getElementById('home-sidebar-verse');
+    if (sVerse) sVerse.textContent = text.length > 120 ? text.slice(0,120).trimEnd()+'…' : text;
     const preview = text.length > 90 ? text.slice(0, 90).trimEnd() + '…' : text;
     const hasTrunc = text.length > 90;
     // Show a subtle note when falling back to a different language than requested
@@ -4759,7 +4629,7 @@ function renderPostCard(post, full, delay = 0) {
     : myInitials;
 
   return `
-    <div class="post-card" id="post-card-${post.id}" style="animation-delay:${delay}s">
+    <div class="post-card feed-card" id="post-card-${post.id}" style="animation-delay:${delay}s">
       <div class="post-header">
         <div class="avatar avatar-md ${author.isVerifiedClergy ? 'avatar-verified' : ''}" style="cursor:pointer;flex-shrink:0" onclick="openProfile('${author.id}')">${avatar}</div>
         <div style="flex:1;min-width:0;cursor:pointer" onclick="openProfile('${author.id}')">
@@ -5447,6 +5317,27 @@ async function loadLearnResources(q) {
   } catch(err) {
     el.innerHTML = `<div style="padding:var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${escHtml(err.message)}</div>`;
   }
+}
+
+function filterLearnResources(type) {
+  _learnTabLoaded.resources = false;
+  const el = document.getElementById('learnResources');
+  if (!el) return;
+  el.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+  const qs = new URLSearchParams({ limit: '20', type }).toString();
+  api('GET', `/resources?${qs}`)
+    .then(data => {
+      const resources = data.data || data || [];
+      if (!resources.length) {
+        el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔗</div><div class="empty-state-title">${t('learn.no_resources')}</div></div>`;
+      } else {
+        el.innerHTML = resources.map(r => renderResourceCard(r)).join('');
+        _learnTabLoaded.resources = true;
+      }
+    })
+    .catch(err => {
+      el.innerHTML = `<p style="font-size:var(--text-sm);color:var(--text-tertiary);text-align:center;padding:var(--space-8) 0">${escHtml(err.message)}</p>`;
+    });
 }
 
 async function loadLearnCircles(q) {
@@ -7633,28 +7524,45 @@ async function loadCommunities() {
 }
 
 function renderCommunityCard(a, delay = 0) {
-  const icon = a.tradition === 'THERAVADA' ? '🪷' : a.tradition === 'MAHAYANA' ? '☸️' : a.tradition === 'VAJRAYANA' ? '🔔' : '🕌';
   const memberCount = a._count?.members ?? 0;
   const cat = (a.category || '').replace(/_/g,' ').toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
-  const verified = a.isVerified ? '<span class="badge-verified" title="Verified"></span>' : '';
-  return `<div class="comm-card" style="animation-delay:${delay}s" onclick="openCommunity('${a.id}')">
-    <div class="comm-card-header">
-      <div class="comm-icon">${icon}</div>
-      <div class="comm-card-info">
-        <div class="comm-card-name">${escHtml(a.name)} ${verified}</div>
-        <div class="comm-card-meta">
-          <span>${escHtml(a.city || a.country || '')}</span>
-          <span>${memberCount} ${t('community.members')}</span>
+  const verified = a.isVerified ? '<i class="fa-solid fa-circle-check text-sangham-gold text-xs ml-0.5" title="Verified"></i>' : '';
+  const tradStyle = {
+    THERAVADA: { grad:'from-green-400 to-emerald-600', iclr:'text-green-600', ibg:'from-green-50 to-green-100', icon:'fa-seedling' },
+    MAHAYANA:  { grad:'from-amber-400 to-orange-500', iclr:'text-amber-600', ibg:'from-amber-50 to-amber-100', icon:'fa-dharmachakra' },
+    VAJRAYANA: { grad:'from-purple-400 to-indigo-600', iclr:'text-purple-600', ibg:'from-purple-50 to-purple-100', icon:'fa-bell' },
+  };
+  const ts = tradStyle[a.tradition] || { grad:'from-blue-400 to-blue-600', iclr:'text-blue-500', ibg:'from-blue-50 to-blue-100', icon:'fa-heart' };
+  const catColorMap = { 'Temple':'bg-amber-50 text-amber-600','Sangha':'bg-amber-50 text-amber-600','Study Group':'bg-blue-50 text-blue-600','Events':'bg-green-50 text-green-600','Ambedkarite':'bg-orange-50 text-orange-600' };
+  const catColor = Object.entries(catColorMap).find(([k]) => cat.includes(k))?.[1] || 'bg-sangham-cream text-sangham-brown';
+  const loc = a.city || a.country || '';
+  const locHtml = loc ? `<p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>${escHtml(loc)}</p>` : '';
+  return `<div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden cursor-pointer" style="animation-delay:${delay}s" onclick="openCommunity('${a.id}')">
+    <div class="h-24 bg-gradient-to-br ${ts.grad} relative">
+      <div class="absolute inset-0 bg-black/10"></div>
+      <div class="absolute -bottom-8 left-5">
+        <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+          <div class="w-full h-full rounded-xl bg-gradient-to-br ${ts.ibg} flex items-center justify-center">
+            <i class="fa-solid ${ts.icon} ${ts.iclr} text-xl"></i>
+          </div>
         </div>
       </div>
-      <span class="comm-badge">${cat}</span>
     </div>
-    ${a.description ? `<div class="comm-card-desc">${escHtml(a.description)}</div>` : ''}
+    <div class="pt-10 px-5 pb-5">
+      <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">${escHtml(a.name)} ${verified}</h3>
+      ${locHtml}
+      ${a.description ? `<p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">${escHtml(a.description)}</p>` : '<div class="mb-4"></div>'}
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-[10px] text-sangham-brown-light">${memberCount} ${t('community.members')}</span>
+        ${cat ? `<span class="px-2 py-0.5 ${catColor} text-[10px] font-medium rounded-md">${cat}</span>` : ''}
+      </div>
+      <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20" onclick="event.stopPropagation();joinCommunityFromHome('${a.id}',this)">Join</button>
+    </div>
   </div>`;
 }
 
 function filterCommunities(filter, chip) {
-  document.querySelectorAll('#commFilters .chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#commFilters .filter-pill, #commFilters .chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   commFilter = filter || {};
   loadCommunities();
@@ -7884,34 +7792,54 @@ async function loadCommunityCircles(assocId) {
 
 function renderCourseCard(c) {
   const lessonCount = c._count?.lessons ?? 0;
-  const instructor  = c.instructor?.displayName || t('roles.community');
-  const statusClass = 'course-status-' + (c.status || 'DRAFT');
+  const instructor = c.instructor?.displayName || t('roles.community');
+  const tradGrad = c.tradition === 'THERAVADA' ? 'from-sangham-theravada to-orange-700' : c.tradition === 'MAHAYANA' ? 'from-amber-500 to-orange-500' : c.tradition === 'VAJRAYANA' ? 'from-purple-500 to-indigo-600' : 'from-sangham-navayana to-blue-700';
+  const tradIcon = c.tradition === 'THERAVADA' ? 'fa-dharmachakra' : c.tradition === 'MAHAYANA' ? 'fa-yin-yang' : c.tradition === 'VAJRAYANA' ? 'fa-bell' : 'fa-book-open';
+  const tradLabel = c.tradition ? `<span class="text-[10px] font-semibold uppercase tracking-wider" style="color:#2563EB">${escHtml(c.tradition)}</span>` : '';
   return `<div class="course-card" onclick="openCourse('${c.id}')">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div class="course-title">${escHtml(c.title)}</div>
-      <span class="course-status-badge ${statusClass}">${c.status||'DRAFT'}</span>
+    <div class="flex items-start gap-4">
+      <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${tradGrad} flex items-center justify-center text-white shadow-md flex-shrink-0">
+        <i class="fa-solid ${tradIcon} text-xl"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            ${tradLabel}
+            <h3 class="font-serif font-semibold text-sangham-ink text-sm mt-0.5 leading-snug">${escHtml(c.title)}</h3>
+            <p class="text-xs text-sangham-brown-light mt-0.5">${escHtml(instructor)}</p>
+          </div>
+          <span class="text-xs text-sangham-brown-light flex-shrink-0 mt-0.5">${lessonCount} lesson${lessonCount!==1?'s':''}</span>
+        </div>
+        ${c.description ? `<p class="text-xs text-sangham-brown-light mt-2 line-clamp-1 leading-relaxed">${escHtml(c.description.slice(0,100))}</p>` : ''}
+        <div class="flex items-center gap-3 mt-3">
+          <button class="px-4 py-1.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm" style="background:#C09553" onclick="event.stopPropagation();openCourse('${c.id}')">Start Course</button>
+          <span class="text-[10px] text-sangham-brown-light">${c.language?.toUpperCase()||'EN'}</span>
+        </div>
+      </div>
     </div>
-    <div class="course-meta">${escHtml(instructor)} · ${lessonCount} lesson${lessonCount!==1?'s':''} · ${c.language?.toUpperCase()||'EN'}</div>
-    ${c.description ? `<div style="font-size:var(--text-sm);color:var(--text-secondary);margin-top:var(--space-2)">${escHtml(c.description.slice(0,120))}${c.description.length>120?'…':''}</div>` : ''}
   </div>`;
 }
 
 function renderResourceCard(r) {
-  const ICONS = { YOUTUBE_VIDEO:'▶️', YOUTUBE_PLAYLIST:'📋', PDF:'📄', ARTICLE:'📰', RESEARCH_PAPER:'🔬', WORKSHOP_RECORDING:'🎥', GUIDE:'📖', BOOK_SUMMARY:'📚' };
-  const icon = ICONS[r.type] || '📎';
-  const dur  = r.durationSecs ? `${Math.round(r.durationSecs/60)}m` : '';
-  const typeLabel = (r.type||'').replace(/_/g,' ');
-  // Bug 6: show thumbnail when available; Bug 9: use data-url, no API call needed
+  const FA_ICONS = { YOUTUBE_VIDEO:'fa-video', YOUTUBE_PLAYLIST:'fa-list', PDF:'fa-file-pdf', ARTICLE:'fa-newspaper', RESEARCH_PAPER:'fa-microscope', WORKSHOP_RECORDING:'fa-headphones', GUIDE:'fa-book-open', BOOK_SUMMARY:'fa-bookmark' };
+  const FA_COLORS = { YOUTUBE_VIDEO:'bg-purple-50 text-purple-500', YOUTUBE_PLAYLIST:'bg-purple-50 text-purple-500', PDF:'bg-red-50 text-red-500', ARTICLE:'bg-amber-50 text-amber-500', RESEARCH_PAPER:'bg-blue-50 text-blue-500', WORKSHOP_RECORDING:'bg-green-50 text-green-500', GUIDE:'bg-orange-50 text-orange-500', BOOK_SUMMARY:'bg-sangham-cream text-sangham-gold' };
+  const faIcon = FA_ICONS[r.type] || 'fa-paperclip';
+  const faColor = FA_COLORS[r.type] || 'bg-sangham-cream text-sangham-brown-light';
+  const dur = r.durationSecs ? `${Math.round(r.durationSecs/60)}m · ` : '';
+  const typeLabel = (r.type||'').replace(/_/g,' ').toLowerCase().replace(/\b\w/g,ch=>ch.toUpperCase());
   const thumb = r.thumbnailUrl
-    ? `<img class="resource-thumb" src="${escHtml(r.thumbnailUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
-    : '';
+    ? `<img src="${escHtml(r.thumbnailUrl)}" alt="" loading="lazy" class="w-12 h-12 rounded-xl object-cover flex-shrink-0" onerror="this.style.display='none'">`
+    : `<div class="w-12 h-12 rounded-xl ${faColor} flex items-center justify-center flex-shrink-0"><i class="fa-solid ${faIcon} text-lg"></i></div>`;
+  const isPlayable = r.type?.includes('VIDEO') || r.type === 'WORKSHOP_RECORDING';
   return `<div class="resource-card" data-url="${escHtml(r.url)}" onclick="openResourceByEl(this)">
-    ${thumb}<div class="resource-thumb-placeholder" style="${r.thumbnailUrl ? 'display:none' : ''}">${icon}</div>
-    <div class="resource-body">
-      <span class="resource-type-badge">${typeLabel}</span>
-      <div class="resource-title">${escHtml(r.title)}</div>
-      <div class="resource-meta">${r.creator ? escHtml(r.creator)+' · ' : ''}${dur}${dur?' · ':''}${r.language?.toUpperCase()||'EN'}</div>
+    ${thumb}
+    <div class="flex-1 min-w-0">
+      <h4 class="font-medium text-sangham-ink text-sm truncate">${escHtml(r.title)}</h4>
+      <p class="text-xs text-sangham-brown-light mt-0.5">${typeLabel}${r.creator ? ' · '+escHtml(r.creator) : ''}${dur ? ' · '+dur : ''}${r.language?.toUpperCase()||'EN'}</p>
     </div>
+    <button class="w-9 h-9 rounded-xl bg-sangham-cream flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors flex-shrink-0">
+      <i class="fa-solid ${isPlayable ? 'fa-play' : 'fa-arrow-up-right-from-square'} text-sm"></i>
+    </button>
   </div>`;
 }
 
@@ -7931,14 +7859,24 @@ function renderCommProjectCard(p) {
 
 function renderCircleCard(c) {
   const memberCount = c._count?.members ?? 0;
-  const statusClass = 'circle-status-' + (c.status || 'OPEN');
+  const statusColors = { OPEN:'bg-green-50 text-green-600', FULL:'bg-red-50 text-red-500', CLOSED:'bg-gray-50 text-gray-400' };
+  const sColor = statusColors[c.status] || statusColors.OPEN;
   return `<div class="circle-card" onclick="openCircle('${c.id}')">
-    <div class="circle-topic">${escHtml(c.topic)}</div>
-    <div class="circle-meta">
-      ${t('roles.facilitated_by')} ${escHtml(c.facilitator?.displayName || t('roles.unknown'))} · ${memberCount} members
-      ${c.scheduleDescription ? ' · ' + escHtml(c.scheduleDescription) : ''}
+    <div class="flex items-start gap-3 mb-3">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style="background:linear-gradient(135deg,#2563EB,#1d4ed8)">
+        <i class="fa-solid fa-users text-sm"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-semibold text-sangham-ink text-sm leading-snug">${escHtml(c.topic)}</h4>
+        <p class="text-xs text-sangham-brown-light mt-0.5">${memberCount} members${c.scheduleDescription ? ' · ' + escHtml(c.scheduleDescription) : ''}</p>
+      </div>
+      <span class="px-2 py-0.5 ${sColor} text-[10px] font-medium rounded-md flex-shrink-0">${c.status||'OPEN'}</span>
     </div>
-    <span class="circle-status ${statusClass}">${c.status||'OPEN'}</span>
+    ${c.description ? `<p class="text-xs text-sangham-brown-light leading-relaxed mb-3">${escHtml(c.description.slice(0,110))}${c.description.length>110?'…':''}</p>` : ''}
+    <div class="flex items-center justify-between">
+      <span class="text-xs text-sangham-brown-light">By ${escHtml(c.facilitator?.displayName || t('roles.unknown'))}</span>
+      <button class="px-4 py-1.5 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm" style="background:#C09553" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">Join</button>
+    </div>
   </div>`;
 }
 
@@ -8483,26 +8421,30 @@ function renderSessionCard(s) {
   const isLive = s.status === 'LIVE';
   const host = s.host || {};
   const initials = (host.displayName || '?').charAt(0).toUpperCase();
-  const av = host.profilePhoto
-    ? `<img src="${escHtml(host.profilePhoto)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" alt="">`
+  const avInner = host.profilePhoto
+    ? `<img src="${escHtml(host.profilePhoto)}" class="w-full h-full object-cover" alt="">`
     : initials;
   const typeLabel = (s.sessionType || '').replace(/_/g,' ');
   const attendees = s._count?.attendees ?? 0;
+  const dateBlock = s.scheduledAt ? (() => {
+    const d = new Date(s.scheduledAt);
+    return `<div class="flex-shrink-0 bg-white rounded-xl p-3 text-center shadow-sm min-w-[56px]" style="border:1px solid rgba(192,149,83,.1)">
+      <div class="text-[10px] font-semibold uppercase tracking-wider" style="color:#C09553">${d.toLocaleString('en',{month:'short'}).toUpperCase()}</div>
+      <div class="text-xl font-bold text-sangham-ink leading-tight">${d.getDate()}</div>
+      <div class="text-[10px] text-sangham-brown-light">${d.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}</div>
+    </div>`;
+  })() : `<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center text-sangham-brown text-sm font-semibold">${avInner}</div>`;
   return `<div class="session-card" onclick="openProfile('${host.id}')">
-    <div class="avatar avatar-md">${av}</div>
-    <div class="session-card-body">
-      <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-1)">
-        ${isLive ? `<span class="session-live-badge"><span class="session-live-dot"></span>LIVE</span>` : ''}
-        <span style="font-size:var(--text-xs);color:var(--saffron-600);font-weight:var(--weight-semibold);text-transform:uppercase;letter-spacing:var(--tracking-wider)">${typeLabel}</span>
+    ${dateBlock}
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2 mb-1 flex-wrap">
+        ${isLive ? '<span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-semibold rounded-md">Live</span>' : ''}
+        ${typeLabel ? `<span class="px-2 py-0.5 text-[10px] font-medium rounded-md bg-sangham-cream text-sangham-gold">${typeLabel}</span>` : ''}
       </div>
-      <div class="session-card-title">${escHtml(s.title)}</div>
-      <div class="session-card-meta">
-        By ${escHtml(host.displayName || 'Unknown')}
-        ${isLive ? ` · ${attendees} watching` : ` · ${timeAgo(s.scheduledAt)}`}
-        ${s.language ? ` · ${s.language.toUpperCase()}` : ''}
-      </div>
-      ${isLive ? `<button class="btn btn-primary btn-sm" style="margin-top:var(--space-2)" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">Watch Live</button>` : ''}
+      <h4 class="font-semibold text-sangham-ink text-sm truncate">${escHtml(s.title)}</h4>
+      <p class="text-xs text-sangham-brown-light mt-0.5">By ${escHtml(host.displayName||'Unknown')} · ${isLive ? attendees+' watching' : timeAgo(s.scheduledAt)}${s.language ? ' · '+s.language.toUpperCase() : ''}</p>
     </div>
+    <button class="px-4 py-2 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm flex-shrink-0" style="background:#C09553" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">${isLive ? 'Watch' : 'RSVP'}</button>
   </div>`;
 }
 
@@ -8591,14 +8533,26 @@ async function loadMyCommunities() {
     const mine = await api('GET', '/associations/mine');
     const section = document.getElementById('mySanghasSection');
     const list    = document.getElementById('mySanghasList');
-    if (!mine.length || !section || !list) return;
-    section.style.display = '';
-    list.innerHTML = mine.map(a => {
-      const icon = a.tradition === 'THERAVADA' ? '🪷' : a.tradition === 'MAHAYANA' ? '☸️' : a.tradition === 'VAJRAYANA' ? '🔔' : '🕌';
-      return `<button class="chip active" onclick="openCommunity('${a.id}')" style="display:flex;align-items:center;gap:var(--space-1)">
-        <span>${icon}</span><span>${escHtml(a.name)}</span>
-      </button>`;
-    }).join('');
+    const chips = document.getElementById('comm-your-chips');
+    if (!mine.length) return;
+    // Populate the new UI chips container
+    if (chips) {
+      chips.innerHTML = mine.map(a => {
+        const icon = a.tradition === 'THERAVADA' ? 'fa-seedling' : a.tradition === 'MAHAYANA' ? 'fa-dharmachakra' : a.tradition === 'VAJRAYANA' ? 'fa-bell' : 'fa-landmark';
+        return `<button class="flex items-center gap-1.5 px-3 py-1.5 bg-sangham-cream hover:bg-sangham-gold/10 text-sangham-ink text-xs font-medium rounded-lg transition-colors border border-sangham-gold/10" onclick="openCommunity('${a.id}')">
+          <i class="fa-solid ${icon} text-sangham-gold text-[11px]"></i><span>${escHtml(a.name)}</span>
+        </button>`;
+      }).join('');
+    }
+    // Legacy hidden containers (CSS suppresses them via !important)
+    if (section && list) {
+      list.innerHTML = mine.map(a => {
+        const icon = a.tradition === 'THERAVADA' ? '🪷' : a.tradition === 'MAHAYANA' ? '☸️' : a.tradition === 'VAJRAYANA' ? '🔔' : '🕌';
+        return `<button class="chip active" onclick="openCommunity('${a.id}')" style="display:flex;align-items:center;gap:var(--space-1)">
+          <span>${icon}</span><span>${escHtml(a.name)}</span>
+        </button>`;
+      }).join('');
+    }
   } catch(e) { /* non-critical */ }
 }
 
@@ -10128,7 +10082,7 @@ document.addEventListener('click', function(e) {
     renderer.setSize(container.offsetWidth, container.offsetHeight);
   });
 
-  gsap.from('#view-landing nav, #view-landing main', { duration: 2.5, opacity: 0, ease: 'power2.inOut' });
+  gsap.from('#view-landing nav, #view-landing main', { duration: 1.2, opacity: 0, ease: 'power2.inOut' });
 })();
 </script>
 </body>
