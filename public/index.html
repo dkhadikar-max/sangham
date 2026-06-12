@@ -2410,92 +2410,190 @@ round:var(--error-600)}
 
       <!-- LEARN TAB -->
       <div id="tab-learn" class="tab-panel">
-        <!-- Header: Search + Tab Nav -->
-        <div style="background:#FDF8F0;padding:1rem;position:sticky;top:0;z-index:10">
-          <div class="relative mb-3">
-            <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#A69076;pointer-events:none"></i>
-            <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()"
-              class="w-full rounded-xl pl-11 pr-4 py-3 text-sm search-focus transition-all" style="background:white;border:1px solid rgba(192,149,83,.07);color:#2C2416;outline:none;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+        <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT SIDEBAR -->
+            <aside class="hidden lg:block lg:col-span-3">
+              <div class="sticky top-24 space-y-6">
+                <!-- User Mini Profile -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="learn-lsb-avatar-wrap"></div>
+                    <div class="min-w-0">
+                      <h3 class="font-semibold text-sangham-ink text-sm truncate" id="learn-lsb-name">—</h3>
+                      <p class="text-xs text-sangham-brown-light truncate" id="learn-lsb-handle">@practitioner</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="learn-lsb-communities">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Communities</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="learn-lsb-connections">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Connections</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="learn-lsb-karma">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Karma</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Quick Menu -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <nav class="space-y-1">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('home')">
+                      <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('communities')">
+                      <i class="fa-solid fa-user-group w-5 text-center text-sangham-brown-light"></i>My Communities
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left">
+                      <i class="fa-solid fa-book-bookmark w-5 text-center"></i>Saved Teachings
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
+                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openPanel('panel-settings')">
+                      <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
+                    </button>
+                  </nav>
+                </div>
+                <!-- Learning Stats -->
+                <div class="bg-gradient-to-br from-sangham-gold to-sangham-gold-dark rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-semibold text-sm">Your Learning</h4>
+                    <i class="fa-solid fa-graduation-cap opacity-60"></i>
+                  </div>
+                  <div class="space-y-3">
+                    <div>
+                      <div class="flex items-center justify-between text-xs mb-1 opacity-90">
+                        <span>Texts Read</span>
+                        <span class="font-semibold" id="learn-stat-texts">—</span>
+                      </div>
+                      <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.2)">
+                        <div class="h-full bg-white rounded-full" id="learn-stat-texts-bar" style="width:0%"></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex items-center justify-between text-xs mb-1 opacity-90">
+                        <span>Courses Active</span>
+                        <span class="font-semibold" id="learn-stat-courses">—</span>
+                      </div>
+                      <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.2)">
+                        <div class="h-full bg-white rounded-full" id="learn-stat-courses-bar" style="width:0%"></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex items-center justify-between text-xs mb-1 opacity-90">
+                        <span>Study Hours</span>
+                        <span class="font-semibold" id="learn-stat-hours">—</span>
+                      </div>
+                      <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.2)">
+                        <div class="h-full bg-white rounded-full" id="learn-stat-hours-bar" style="width:0%"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <!-- CENTER CONTENT -->
+            <main class="lg:col-span-9 space-y-6">
+              <!-- Search Bar -->
+              <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sangham-brown-light" style="pointer-events:none"></i>
+                <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()"
+                  class="w-full bg-white rounded-xl pl-11 pr-4 py-3.5 text-sm text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/20 shadow-sm border border-sangham-gold/5 transition-all">
+              </div>
+              <!-- Tab Nav Card -->
+              <div class="bg-white rounded-2xl px-5 shadow-sm border border-sangham-gold/5">
+                <div class="flex items-center overflow-x-auto scrollbar-hide" id="learnTabs" style="touch-action:pan-x;gap:1.5rem">
+                  <button class="comm-tab-btn active whitespace-nowrap" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
+                  <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
+                  <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
+                  <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
+                  <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
+                </div>
+              </div>
+              <!-- COURSES -->
+              <div id="learn-tab-courses" class="comm-tab-panel active">
+                <div id="learn-continue-reading" style="display:none" class="mb-5">
+                  <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest mb-3">Continue Reading</h2>
+                  <div id="learn-continue-list" class="space-y-3"></div>
+                </div>
+                <div id="learn-create-courses" class="flex items-center justify-end mb-4" style="display:none">
+                  <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('course')">
+                    <i class="fa-solid fa-plus"></i><span>Create Course</span>
+                  </button>
+                </div>
+                <div id="learnCourses" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+              </div>
+              <!-- RESOURCES -->
+              <div id="learn-tab-resources" class="comm-tab-panel space-y-4">
+                <div id="learn-create-resources" class="flex items-center justify-end" style="display:none">
+                  <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('resource')">
+                    <i class="fa-solid fa-cloud-arrow-up"></i><span>Upload Resource</span>
+                  </button>
+                </div>
+                <div class="grid gap-3" style="grid-template-columns:repeat(4,1fr)">
+                  <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('PDF')">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
+                    <h4 class="font-medium text-sangham-ink text-xs">Documents</h4>
+                    <p class="text-[10px] text-sangham-brown-light mt-0.5">PDFs</p>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('YOUTUBE_VIDEO')">
+                    <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
+                    <h4 class="font-medium text-sangham-ink text-xs">Videos</h4>
+                    <p class="text-[10px] text-sangham-brown-light mt-0.5">YouTube &amp; more</p>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('WORKSHOP_RECORDING')">
+                    <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
+                    <h4 class="font-medium text-sangham-ink text-xs">Audio</h4>
+                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Recordings</p>
+                  </div>
+                  <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('ARTICLE')">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-amber-500 text-lg"></i></div>
+                    <h4 class="font-medium text-sangham-ink text-xs">Links</h4>
+                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Articles &amp; more</p>
+                  </div>
+                </div>
+                <div id="learnResources" class="space-y-3"></div>
+              </div>
+              <!-- CIRCLES -->
+              <div id="learn-tab-circles" class="comm-tab-panel space-y-4">
+                <div id="learn-create-circles" class="flex items-center justify-end" style="display:none">
+                  <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('circle')">
+                    <i class="fa-solid fa-plus"></i><span>Start a Circle</span>
+                  </button>
+                </div>
+                <div id="learnCircles" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+              </div>
+              <!-- SESSIONS -->
+              <div id="learn-tab-sessions" class="comm-tab-panel space-y-4">
+                <div id="host-session-row" style="display:none;margin-bottom:0">
+                  <button class="w-full py-3 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateSession()" data-i18n="learn.host_session">
+                    <i class="fa-solid fa-plus mr-2"></i>Host a Session
+                  </button>
+                </div>
+                <div id="learnSessions" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
+              </div>
+              <!-- LIBRARY -->
+              <div id="learn-tab-library" class="comm-tab-panel">
+                <div>
+                  <h2 class="section-title" id="learnLibraryTitle">Collections</h2>
+                </div>
+                <div id="learnCollections"></div>
+                <div id="learnResults"></div>
+              </div>
+            </main>
+
           </div>
-          <div class="bg-white rounded-2xl px-5 shadow-sm" style="border:1px solid rgba(192,149,83,.05)">
-            <div class="flex items-center overflow-x-auto scrollbar-hide" id="learnTabs" style="touch-action:pan-x;gap:1.5rem">
-              <button class="comm-tab-btn active whitespace-nowrap" onclick="switchLearnTab('courses',this)" id="learn-tab-btn-courses" data-i18n="learn.courses">Courses</button>
-              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('resources',this)" id="learn-tab-btn-resources" data-i18n="learn.resources">Resources</button>
-              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('circles',this)" id="learn-tab-btn-circles" data-i18n="learn.circles">Circles</button>
-              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('sessions',this)" id="learn-tab-btn-sessions" data-i18n="learn.sessions">Sessions</button>
-              <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
-            </div>
-          </div>
-        </div>
-        <!-- COURSES -->
-        <div id="learn-tab-courses" class="comm-tab-panel active p-4">
-          <div id="learn-continue-reading" style="display:none" class="mb-5">
-            <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest mb-3">Continue Reading</h2>
-            <div id="learn-continue-list" class="space-y-3"></div>
-          </div>
-          <div id="learn-create-courses" class="flex items-center justify-end mb-4" style="display:none">
-            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('course')">
-              <i class="fa-solid fa-plus"></i><span>Create Course</span>
-            </button>
-          </div>
-          <div id="learnCourses" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
-        </div>
-        <!-- RESOURCES -->
-        <div id="learn-tab-resources" class="comm-tab-panel p-4 space-y-4">
-          <div id="learn-create-resources" class="flex items-center justify-end" style="display:none">
-            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('resource')">
-              <i class="fa-solid fa-cloud-arrow-up"></i><span>Upload Resource</span>
-            </button>
-          </div>
-          <div class="grid gap-3" style="grid-template-columns:repeat(4,1fr)">
-            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('PDF')">
-              <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
-              <h4 class="font-medium text-sangham-ink text-xs">Documents</h4>
-              <p class="text-[10px] text-sangham-brown-light mt-0.5">PDFs</p>
-            </div>
-            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('YOUTUBE_VIDEO')">
-              <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
-              <h4 class="font-medium text-sangham-ink text-xs">Videos</h4>
-              <p class="text-[10px] text-sangham-brown-light mt-0.5">YouTube &amp; more</p>
-            </div>
-            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('WORKSHOP_RECORDING')">
-              <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
-              <h4 class="font-medium text-sangham-ink text-xs">Audio</h4>
-              <p class="text-[10px] text-sangham-brown-light mt-0.5">Recordings</p>
-            </div>
-            <div class="bg-white rounded-xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid rgba(192,149,83,.06)" onclick="filterLearnResources('ARTICLE')">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-amber-500 text-lg"></i></div>
-              <h4 class="font-medium text-sangham-ink text-xs">Links</h4>
-              <p class="text-[10px] text-sangham-brown-light mt-0.5">Articles &amp; more</p>
-            </div>
-          </div>
-          <div id="learnResources" class="space-y-3"></div>
-        </div>
-        <!-- CIRCLES -->
-        <div id="learn-tab-circles" class="comm-tab-panel p-4 space-y-4">
-          <div id="learn-create-circles" class="flex items-center justify-end" style="display:none">
-            <button class="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:shadow-lg" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateStandalone('circle')">
-              <i class="fa-solid fa-plus"></i><span>Start a Circle</span>
-            </button>
-          </div>
-          <div id="learnCircles" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-        </div>
-        <!-- SESSIONS -->
-        <div id="learn-tab-sessions" class="comm-tab-panel p-4 space-y-4">
-          <div id="host-session-row" style="display:none;margin-bottom:0">
-            <button class="w-full py-3 text-white text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all" style="background:linear-gradient(135deg,#C09553,#A67D3E)" onclick="openCreateSession()" data-i18n="learn.host_session">
-              <i class="fa-solid fa-plus mr-2"></i>Host a Session
-            </button>
-          </div>
-          <div id="learnSessions" class="space-y-3"><div class="spinner-center"><div class="spinner spinner-lg"></div></div></div>
-        </div>
-        <!-- LIBRARY (fully replaced by loadLearnLibrary()) -->
-        <div id="learn-tab-library" class="comm-tab-panel" style="padding:var(--space-2) 0 0">
-          <div style="padding:0 var(--space-4)">
-            <h2 class="section-title" id="learnLibraryTitle">Collections</h2>
-          </div>
-          <div id="learnCollections" style="padding:0 var(--space-4)"></div>
-          <div id="learnResults"></div>
         </div>
       </div>
 
@@ -4035,7 +4133,7 @@ function _updateLeftSidebars() {
   const communities = fmt(u._count?.associations);
   const connections = fmt(u._count?.followers);
   const karma = fmt(u._count?.posts);
-  ['home','comm'].forEach(prefix => {
+  ['home','comm','learn'].forEach(prefix => {
     const wrap = document.getElementById(`${prefix}-lsb-avatar-wrap`);
     if (wrap) wrap.innerHTML = avatarHtml;
     const nameEl = document.getElementById(`${prefix}-lsb-name`);
@@ -5411,6 +5509,23 @@ let _learnTabLoaded = {};
 
 async function loadLearn() {
   if (!_learnTabLoaded.courses) loadLearnCourses();
+  updateLearnStats();
+}
+
+function updateLearnStats(activeCourseCount) {
+  const progress = libProgress ? libProgress() : {};
+  const textsRead = Object.values(progress).filter(p => p.percent > 0).length;
+  const coursesActive = activeCourseCount != null ? activeCourseCount : 0;
+  const fmt = n => n > 999 ? (n/1000).toFixed(1)+'k' : String(n);
+  const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setBar = (id, pct) => { const el = document.getElementById(id); if (el) el.style.width = Math.min(pct, 100) + '%'; };
+  setEl('learn-stat-texts', fmt(textsRead));
+  setBar('learn-stat-texts-bar', textsRead / 50 * 100);
+  setEl('learn-stat-courses', fmt(coursesActive));
+  setBar('learn-stat-courses-bar', coursesActive / 10 * 100);
+  const studyHours = Math.round(Object.values(progress).reduce((acc, p) => acc + (p.percent || 0) * 0.1, 0));
+  setEl('learn-stat-hours', studyHours + 'h');
+  setBar('learn-stat-hours-bar', studyHours / 50 * 100);
 }
 
 function switchLearnTab(tab, btn) {
@@ -5488,6 +5603,7 @@ async function loadLearnCourses(q) {
     }
     el.innerHTML = courses.map(c => renderCourseCard(c)).join('');
     _learnTabLoaded.courses = true;
+    updateLearnStats(courses.length);
   } catch(err) {
     el.innerHTML = `<div style="padding:var(--space-4);color:var(--text-tertiary);font-size:var(--text-sm)">${escHtml(err.message)}</div>`;
   }
