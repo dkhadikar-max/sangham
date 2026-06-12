@@ -6,8 +6,44 @@
   <title>Sangham</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>tailwind={config:{corePlugins:{preflight:false},theme:{extend:{colors:{sangham:{gold:'#C09553','gold-light':'#D4A96A','gold-dark':'#A67D3E',cream:'#FDF8F0','cream-dark':'#F5EFE6',warm:'#FAF6F0',brown:'#8B7355','brown-light':'#A69076','brown-dark':'#6B5B45',ink:'#2C2416','ink-light':'#4A3F2E'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}}</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    /* ── sangham_homepage styles ── */
+    .scrollbar-hide::-webkit-scrollbar{display:none}
+    .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+    .feed-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .feed-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px -12px rgba(192,149,83,.25)}
+    .story-ring{background:linear-gradient(135deg,#C09553 0%,#D4A96A 50%,#A67D3E 100%);padding:2.5px;border-radius:50%}
+    .story-ring-viewed{background:#E5DDD0}
+    .pulse-dot{animation:shPulse 2s cubic-bezier(.4,0,.6,1) infinite}
+    @keyframes shPulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .gradient-text{background:linear-gradient(135deg,#C09553 0%,#A67D3E 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .glass-panel{background:rgba(253,248,240,.85);backdrop-filter:blur(12px);border:1px solid rgba(192,149,83,.1)}
+    .like-btn.liked{color:#E74C3C}
+    .like-btn.liked i{font-weight:900}
+    .comment-expand{max-height:0;overflow:hidden;transition:max-height .4s ease-out}
+    .comment-expand.open{max-height:400px}
+    /* ── sangham_sanghas styles ── */
+    .community-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .community-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(192,149,83,.2)}
+    .filter-pill{transition:all .2s ease}
+    .filter-pill.active{background:linear-gradient(135deg,#C09553 0%,#A67D3E 100%);color:white;box-shadow:0 4px 12px rgba(192,149,83,.3)}
+    .filter-pill:not(.active):hover{background:#F5EFE6;color:#2C2416}
+    .search-focus:focus{box-shadow:0 0 0 3px rgba(192,149,83,.15)}
+    .member-avatar{transition:transform .2s ease}
+    .member-avatar:hover{transform:scale(1.15);z-index:10}
+    .join-btn{transition:all .2s ease}
+    .join-btn:hover{transform:scale(1.05)}
+    .join-btn.joined{background:transparent;color:#C09553;border:1.5px solid #C09553}
+    .sangha-row{transition:all .2s ease}
+    .sangha-row:hover{background:#FDF8F0}
+  </style>
   <style>
     :root {
       --saffron-50: #FFFBF0;
@@ -1394,27 +1430,31 @@ round:var(--error-600)}
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- VIEW: LANDING -->
-<div id="view-landing" class="view active">
-  <nav class="landing-nav">
-    <div class="logo"><div class="logo-symbol"></div> Sangham</div>
-    <div><button class="btn btn-primary" onclick="routeTo('view-auth')">Join Sangham</button></div>
+<div id="view-landing" class="view active" style="background-color:#f8f5f0;color:#2d2926;overflow-x:hidden;position:relative">
+  <div id="canvas-container" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0"></div>
+
+  <nav style="position:absolute;top:0;width:100%;padding:2rem;display:flex;justify-content:space-between;align-items:center;z-index:20;font-family:'Inter',sans-serif">
+    <div class="flex items-center gap-4">
+      <img src="http://googleusercontent.com/image_collection/image_retrieval/18286873929078991332_0" alt="Sangham Logo" class="w-10 h-10 object-contain opacity-90">
+      <span style="font-size:1.25rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase">Sangham</span>
+    </div>
+    <div class="hidden md:flex gap-8 text-xs uppercase tracking-[0.3em] opacity-60">
+      <a href="#" style="text-decoration:none;color:inherit;transition:color .5s" onmouseover="this.style.color='#c6863d'" onmouseout="this.style.color='inherit'">Approach</a>
+      <a href="#" style="text-decoration:none;color:inherit;transition:color .5s" onmouseover="this.style.color='#c6863d'" onmouseout="this.style.color='inherit'">Community</a>
+      <a href="#" style="text-decoration:none;color:inherit;transition:color .5s" onmouseover="this.style.color='#c6863d'" onmouseout="this.style.color='inherit'">Knowledge</a>
+    </div>
   </nav>
-  <div class="hero">
-    <span class="hero-sym">☸</span>
-    <h1>Sangham</h1>
-    <span class="hero-sharanam">सङ्घम् शरणम् गच्छामि</span>
-    <span class="hero-sharanam-roman">Sangham Sharanam Gacchami</span>
-    <p>A digital community for learning, practicing,<br>teaching, and sharing Buddhist wisdom together.</p>
-    <div class="hero-cta">
-      <button class="btn btn-primary btn-lg" onclick="routeTo('view-auth')" style="min-width:200px">Enter Sangham</button>
-      <button class="btn btn-ghost btn-sm" onclick="routeTo('view-auth')">Create a free account →</button>
+
+  <main style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100svh;text-align:center;padding:0 1.5rem;font-family:'Inter',sans-serif;color:#2d2926">
+    <h2 style="font-family:'Noto Sans Devanagari',sans-serif;font-size:1.875rem;margin-bottom:0.75rem;opacity:0.7">संघं शरणं गच्छामि</h2>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(4rem,12vw,9rem);margin-bottom:1.5rem;letter-spacing:-0.025em;line-height:1">SANGHAM</h1>
+    <p style="font-size:1.125rem;font-weight:300;letter-spacing:0.1em;margin-bottom:3rem;opacity:0.8;text-transform:uppercase">Where Knowledge Meets Community</p>
+
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center">
+      <a href="#" onclick="routeTo('view-auth');return false;" style="padding:1rem 2.5rem;border:1px solid rgba(198,134,61,0.5);color:#c6863d;text-decoration:none;transition:all .7s;text-transform:uppercase;letter-spacing:0.15em;font-size:0.875rem" onmouseover="this.style.background='#c6863d';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#c6863d'">Enter Sangham</a>
+      <a href="#" onclick="routeTo('view-auth');return false;" style="padding:1rem 2.5rem;color:rgba(45,41,38,0.7);text-decoration:underline;text-underline-offset:8px;transition:all .7s;text-transform:uppercase;letter-spacing:0.15em;font-size:0.875rem" onmouseover="this.style.color='#c6863d'" onmouseout="this.style.color='rgba(45,41,38,0.7)'">Join the Network</a>
     </div>
-    <div class="trust-bar">
-      <div class="trust-item"><span class="trust-icon">☸</span><span>Buddhist Tradition</span></div>
-      <div class="trust-item"><span class="trust-icon">📖</span><span>Open Knowledge</span></div>
-      <div class="trust-item"><span class="trust-icon">🤝</span><span>Community First</span></div>
-    </div>
-  </div>
+  </main>
 </div>
 
 <!-- VIEW: AUTH -->
@@ -1665,52 +1705,487 @@ round:var(--error-600)}
 </header>
 <main class="app-main">
 <!-- HOME TAB -->
-<div id="tab-home" class="tab-panel active">
-        <!-- #2 People You May Connect With -->
-        <div class="home-section" id="home-connect-section" style="display:none">
-          <div class="home-section-hd">
-            <span class="home-section-title">People You May Connect With</span>
-            <button class="home-section-link" onclick="switchTab('discover')">See all</button>
-          </div>
-          <div class="suggest-scroll" id="home-connect-suggestions"></div>
+<div id="tab-home" class="tab-panel active bg-sangham-cream font-sans text-sangham-ink antialiased">
+  <!-- dynamic stubs (hidden; JS still populates these) -->
+  <div id="home-connect-section" style="display:none"><div id="home-connect-suggestions"></div></div>
+  <div id="home-community-section" style="display:none"><div id="home-community-suggestions"></div></div>
+  <div id="home-projects-section" style="display:none"><div id="home-project-cards"></div></div>
+  <div id="home-upcoming-events" style="display:none"></div>
+  <div id="home-continue-section" style="display:none"><div id="home-continue-learning"></div></div>
+  <div id="home-daily-verse" style="display:none"></div>
+  <div id="communityPulse" style="display:none"></div>
+  <div id="home-daan-impact" style="display:none"></div>
+  <div id="home-feed-header" style="display:none"></div>
+
+    <!-- Main Layout -->
+    <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT SIDEBAR (Sticky) -->
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-24 space-y-6">
+                    <!-- User Mini Profile -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sangham-ink text-sm">Dhamma Seeker</h3>
+                                <p class="text-xs text-sangham-brown-light">@dhamma_practitioner</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="bg-sangham-cream rounded-lg p-2">
+                                <div class="font-bold text-sangham-ink text-sm">12</div>
+                                <div class="text-[10px] text-sangham-brown-light">Communities</div>
+                            </div>
+                            <div class="bg-sangham-cream rounded-lg p-2">
+                                <div class="font-bold text-sangham-ink text-sm">248</div>
+                                <div class="text-[10px] text-sangham-brown-light">Connections</div>
+                            </div>
+                            <div class="bg-sangham-cream rounded-lg p-2">
+                                <div class="font-bold text-sangham-ink text-sm">1.2k</div>
+                                <div class="text-[10px] text-sangham-brown-light">Karma</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Menu -->
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                        <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm">
+                                <i class="fa-solid fa-house w-5 text-center"></i>
+                                Home Feed
+                            </a>
+                            <a href="#" onclick="switchTab('communities');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                                <i class="fa-solid fa-user-group w-5 text-center text-sangham-brown-light"></i>
+                                My Communities
+                            </a>
+                            <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                                <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>
+                                Saved Teachings
+                            </a>
+                            <a href="#" onclick="switchTab('discover');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                                <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>
+                                People Near Me
+                            </a>
+                            <a href="#" onclick="openDhammaDaan();return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                                <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>
+                                Dhamma Daan
+                            </a>
+                            <a href="#" onclick="openPanel('panel-settings');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                                <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>
+                                Settings
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- Daily Practice Tracker -->
+                    <div class="bg-gradient-to-br from-sangham-gold to-sangham-gold-dark rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-sm">Daily Practice</h4>
+                            <i class="fa-solid fa-spa opacity-60"></i>
+                        </div>
+                        <div class="flex gap-1.5 mb-3">
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">M</div>
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                            <div class="flex-1 h-8 bg-white rounded-lg flex items-center justify-center text-xs font-medium text-sangham-gold">W</div>
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">T</div>
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">F</div>
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                            <div class="flex-1 h-8 bg-white/20 rounded-lg flex items-center justify-center text-xs font-medium">S</div>
+                        </div>
+                        <p class="text-xs opacity-80">3-day streak! Meditate today to continue.</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CENTER FEED -->
+            <main class="lg:col-span-6 space-y-6">
+
+                <!-- Stories / People Near Me -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="font-serif text-lg font-semibold text-sangham-ink">People Near You</h2>
+                            <p class="text-xs text-sangham-brown-light mt-0.5">Practitioners in Mumbai, Nagpur &amp; nearby</p>
+                        </div>
+                        <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium">View All</a>
+                    </div>
+                    <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer group">
+                            <div class="w-16 h-16 rounded-full bg-sangham-cream border-2 border-dashed border-sangham-gold/30 flex items-center justify-center group-hover:border-sangham-gold transition-colors">
+                                <i class="fa-solid fa-plus text-sangham-gold"></i>
+                            </div>
+                            <span class="text-[11px] text-sangham-brown-light">Add</span>
+                        </div>
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
+                            <div class="story-ring">
+                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
+                                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full pulse-dot"></span>
+                                <span class="text-[11px] text-sangham-ink">Anjali</span>
+                            </div>
+                            <span class="text-[10px] text-sangham-brown-light">2km away</span>
+                        </div>
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
+                            <div class="story-ring">
+                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full pulse-dot"></span>
+                                <span class="text-[11px] text-sangham-ink">Rahul</span>
+                            </div>
+                            <span class="text-[10px] text-sangham-brown-light">5km away</span>
+                        </div>
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
+                            <div class="story-ring story-ring-viewed">
+                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
+                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-sangham-ink">Priya</span>
+                            <span class="text-[10px] text-sangham-brown-light">1km away</span>
+                        </div>
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
+                            <div class="story-ring">
+                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-sangham-ink">Vikram</span>
+                            <span class="text-[10px] text-sangham-brown-light">8km away</span>
+                        </div>
+                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer">
+                            <div class="story-ring story-ring-viewed">
+                                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-sangham-ink">Sneha</span>
+                            <span class="text-[10px] text-sangham-brown-light">3km away</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Post -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <input type="text" placeholder="Share your Dhamma reflection, question, or insight..."
+                                class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-sm text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()">
+                            <div class="flex items-center justify-between mt-3">
+                                <div class="flex gap-2">
+                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                        <i class="fa-solid fa-image text-sangham-gold"></i>
+                                        <span>Photo</span>
+                                    </button>
+                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                        <i class="fa-solid fa-link text-sangham-gold"></i>
+                                        <span>Link</span>
+                                    </button>
+                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                        <i class="fa-solid fa-quote-right text-sangham-gold"></i>
+                                        <span>Quote</span>
+                                    </button>
+                                </div>
+                                <button class="px-5 py-2 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20" onclick="openCreatePost&&openCreatePost()">
+                                    Post
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feed Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide" style="touch-action:pan-x">
+                    <button class="px-4 py-2 bg-sangham-gold text-white text-xs font-medium rounded-full shadow-md shadow-sangham-gold/20 whitespace-nowrap">All Activity</button>
+                    <button class="px-4 py-2 bg-white text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors">My Communities</button>
+                    <button class="px-4 py-2 bg-white text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors">Connections</button>
+                    <button class="px-4 py-2 bg-white text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors">Teachings</button>
+                    <button class="px-4 py-2 bg-white text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors">Events</button>
+                </div>
+
+                <!-- FEED POSTS (id="home-feed" so dynamic posts load here) -->
+                <div id="home-feed" class="space-y-5">
+                    <!-- Post 1: Teaching Share -->
+                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-sangham-ink text-sm">Anjali Sharma</h4>
+                                        <p class="text-xs text-sangham-brown-light">Shared in <span class="text-sangham-gold font-medium">Mumbai Navayana Sangha</span> · 2h ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
+                            </div>
+                            <p class="text-sangham-ink-light text-sm leading-relaxed mb-4">
+                                "The mind is everything. What you think you become." — Buddha<br><br>
+                                Reflecting on this teaching during this morning's meditation. 🙏
+                            </p>
+                            <div class="rounded-xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop" alt="Meditation" class="w-full h-56 object-cover">
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
+                                <div class="flex items-center gap-6">
+                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
+                                        <i class="fa-regular fa-heart"></i><span class="font-medium">24</span>
+                                    </button>
+                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
+                                        <i class="fa-regular fa-comment"></i><span class="font-medium">8</span>
+                                    </button>
+                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm">
+                                        <i class="fa-solid fa-share-nodes"></i><span class="font-medium">Share</span>
+                                    </button>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
+                            </div>
+                        </div>
+                        <div class="comment-expand bg-sangham-cream/50 border-t border-sangham-gold/5">
+                            <div class="p-5 space-y-4">
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="bg-white rounded-xl px-3 py-2">
+                                            <h5 class="font-semibold text-xs text-sangham-ink">Rahul Patil</h5>
+                                            <p class="text-xs text-sangham-ink-light mt-0.5">Beautiful reflection. This reminds me of the Dhammapada verse on mind cultivation.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden border border-sangham-gold/20 flex-shrink-0">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-1 relative">
+                                        <input type="text" placeholder="Write a comment..." class="w-full bg-white rounded-xl px-4 py-2.5 text-xs text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 pr-10">
+                                        <button class="absolute right-3 top-1/2 -translate-y-1/2 text-sangham-gold"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Post 2: Event -->
+                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="User" class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-sangham-ink text-sm">Rahul Patil</h4>
+                                        <p class="text-xs text-sangham-brown-light">Created an event · 4h ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
+                            </div>
+                            <div class="bg-gradient-to-r from-sangham-gold/10 to-sangham-gold/5 rounded-xl p-4 mb-4 border border-sangham-gold/10">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 bg-white rounded-xl p-3 text-center shadow-sm min-w-[60px]">
+                                        <div class="text-[10px] font-semibold text-sangham-gold uppercase tracking-wider">JUN</div>
+                                        <div class="text-xl font-bold text-sangham-ink">15</div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="font-serif font-semibold text-sangham-ink mb-1">Group Meditation &amp; Dhamma Talk</h3>
+                                        <div class="flex items-center gap-4 text-xs text-sangham-brown-light">
+                                            <span class="flex items-center gap-1"><i class="fa-regular fa-clock"></i> 6:00 AM — 8:00 AM</span>
+                                            <span class="flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Deekshabhoomi, Nagpur</span>
+                                        </div>
+                                    </div>
+                                    <button class="flex-shrink-0 px-4 py-2 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20">Join</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
+                                <div class="flex items-center gap-6">
+                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
+                                        <i class="fa-regular fa-heart"></i><span class="font-medium">18</span>
+                                    </button>
+                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
+                                        <i class="fa-regular fa-comment"></i><span class="font-medium">5</span>
+                                    </button>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Post 3: Community Update -->
+                    <article class="feed-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-sangham-gold/10 flex items-center justify-center border border-sangham-gold/20">
+                                        <i class="fa-solid fa-users text-sangham-gold"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-sangham-ink text-sm">Nagpur Navayana Sangha</h4>
+                                        <p class="text-xs text-sangham-brown-light">Community update · 8h ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-ink transition-colors"><i class="fa-solid fa-ellipsis"></i></button>
+                            </div>
+                            <p class="text-sangham-ink-light text-sm leading-relaxed mb-4">
+                                We are delighted to announce that our community has reached 50 members! 🎉<br><br>
+                                Special Dhamma discourse on <strong>"Practical Vipassana for Daily Life"</strong> this Sunday at 10 AM. All are welcome.
+                            </p>
+                            <div class="rounded-xl overflow-hidden mb-4">
+                                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&h=400&fit=crop" alt="Community" class="w-full h-48 object-cover">
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-sangham-cream-dark">
+                                <div class="flex items-center gap-6">
+                                    <button class="like-btn flex items-center gap-2 text-sangham-brown-light hover:text-red-500 transition-colors text-sm" onclick="homeLike(this)">
+                                        <i class="fa-regular fa-heart"></i><span class="font-medium">45</span>
+                                    </button>
+                                    <button class="flex items-center gap-2 text-sangham-brown-light hover:text-sangham-gold transition-colors text-sm" onclick="homeToggleComments(this)">
+                                        <i class="fa-regular fa-comment"></i><span class="font-medium">9</span>
+                                    </button>
+                                </div>
+                                <button class="text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark"></i></button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Load More -->
+                <div class="text-center pt-4">
+                    <button class="px-6 py-3 bg-white border border-sangham-gold/20 text-sangham-gold hover:bg-sangham-gold hover:text-white text-sm font-medium rounded-xl transition-all shadow-sm hover:shadow-md">
+                        Load More Activity
+                    </button>
+                </div>
+            </main>
+
+            <!-- RIGHT SIDEBAR (Sticky) -->
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-24 space-y-6">
+
+                    <!-- Daily Wisdom -->
+                    <div class="bg-gradient-to-br from-sangham-gold to-sangham-gold-dark rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i class="fa-solid fa-quote-left text-white/40 text-lg"></i>
+                                <span class="text-[10px] font-semibold uppercase tracking-widest opacity-70">Daily Wisdom</span>
+                            </div>
+                            <p class="font-serif text-sm leading-relaxed italic mb-4 opacity-95" id="home-sidebar-verse">Loading verse...</p>
+                            <div class="flex items-center gap-2">
+                                <button class="flex-1 py-2 bg-white/15 hover:bg-white/25 rounded-lg text-xs font-medium transition-colors" onclick="switchTab('learn');switchLearnTab('library')">Read More</button>
+                                <button class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-lg flex items-center justify-center transition-colors"><i class="fa-regular fa-bookmark text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trending Communities -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif font-semibold text-sangham-ink text-sm">Trending Communities</h3>
+                            <a href="#" onclick="switchTab('communities');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Explore</a>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 group cursor-pointer">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 border border-blue-100">
+                                    <i class="fa-solid fa-heart text-sm"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Mumbai Navayana Sangha</h4>
+                                    <p class="text-[10px] text-sangham-brown-light">1.2k members · Mumbai</p>
+                                </div>
+                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="flex items-center gap-3 group cursor-pointer">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600 border border-amber-100">
+                                    <i class="fa-solid fa-book-open text-sm"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Nagpur Buddhist Study</h4>
+                                    <p class="text-[10px] text-sangham-brown-light">856 members · Nagpur</p>
+                                </div>
+                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="flex items-center gap-3 group cursor-pointer">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center text-purple-600 border border-purple-100">
+                                    <i class="fa-solid fa-dharmachakra text-sm"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-medium text-sangham-ink text-xs truncate group-hover:text-sangham-gold transition-colors">Dhamma Daan Circle</h4>
+                                    <p class="text-[10px] text-sangham-brown-light">2.1k members · Global</p>
+                                </div>
+                                <button class="w-7 h-7 rounded-full bg-sangham-cream hover:bg-sangham-gold hover:text-white text-sangham-brown-light flex items-center justify-center transition-all text-[10px]"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Events -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-serif font-semibold text-sangham-ink text-sm">Upcoming Events</h3>
+                            <a href="#" onclick="switchTab('discover');switchDiscoverTab('events',document.querySelector('[onclick*=events]'));return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</a>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
+                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
+                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
+                                    <span class="text-sm font-bold text-sangham-ink leading-none">15</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sangham-ink text-xs">Group Meditation</h4>
+                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Deekshabhoomi, Nagpur · 6:00 AM</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
+                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
+                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
+                                    <span class="text-sm font-bold text-sangham-ink leading-none">18</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sangham-ink text-xs">Dhamma Talk: Right Livelihood</h4>
+                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Online · 7:00 PM IST</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3 p-3 bg-sangham-cream/50 rounded-xl hover:bg-sangham-cream transition-colors cursor-pointer">
+                                <div class="flex-shrink-0 w-10 h-10 bg-white rounded-lg flex flex-col items-center justify-center shadow-sm">
+                                    <span class="text-[9px] font-bold text-sangham-gold">JUN</span>
+                                    <span class="text-sm font-bold text-sangham-ink leading-none">22</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-sangham-ink text-xs">Pali Language Workshop</h4>
+                                    <p class="text-[10px] text-sangham-brown-light mt-0.5">Mumbai Center · 10:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center space-y-2">
+                        <div class="flex items-center justify-center gap-3 text-[10px] text-sangham-brown-light">
+                            <a href="#" class="hover:text-sangham-gold transition-colors">About</a>
+                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Privacy</a>
+                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Terms</a>
+                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Help</a>
+                        </div>
+                        <p class="text-[10px] text-sangham-brown-light/60">© 2026 Sangham. Sabba-dānaṃ dhamma-dānaṃ jināti.</p>
+                    </div>
+                </div>
+            </aside>
         </div>
-        <!-- #3 Communities Near You -->
-        <div class="home-section" id="home-community-section" style="display:none">
-          <div class="home-section-hd">
-            <span class="home-section-title">Communities Near You</span>
-            <button class="home-section-link" onclick="switchTab('communities')">See all</button>
-          </div>
-          <div class="suggest-scroll" id="home-community-suggestions"></div>
-        </div>
-        <!-- #4 Active Projects -->
-        <div class="home-section" id="home-projects-section" style="display:none">
-          <div class="home-section-hd">
-            <span class="home-section-title">Active Projects</span>
-            <button class="home-section-link" onclick="switchTab('discover');_openDiscoverProjects()">See all</button>
-          </div>
-          <div class="suggest-scroll" id="home-project-cards"></div>
-        </div>
-        <!-- #5 Upcoming Events -->
-        <div id="home-upcoming-events"></div>
-        <!-- #7 Continue Learning -->
-        <div class="home-section" id="home-continue-section" style="display:none">
-          <div class="home-section-hd">
-            <span class="home-section-title">Continue Learning</span>
-            <button class="home-section-link" onclick="switchTab('learn');switchLearnTab('library')">Library</button>
-          </div>
-          <div class="suggest-scroll" id="home-continue-learning"></div>
-        </div>
-        <!-- #7 Daily Wisdom -->
-        <div id="home-daily-verse"></div>
-        <div class="community-pulse" id="communityPulse" style="display:none"></div>
-        <!-- #8 Dhamma Daan Impact -->
-        <div id="home-daan-impact"></div>
-        <!-- #6 Active Discussions -->
-        <div id="home-feed-header" style="display:none;padding:var(--space-4) var(--space-4) var(--space-2)">
-          <h2 class="section-title" style="margin:0">Active Discussions</h2>
-        </div>
-        <div id="home-feed"></div>
-      </div>
+    </div>
+</div>
 
       <!-- DISCOVER TAB -->
       <div id="tab-discover" class="tab-panel">
@@ -1823,29 +2298,386 @@ round:var(--error-600)}
       </div>
 
       <!-- COMMUNITIES TAB -->
-      <div id="tab-communities" class="tab-panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:var(--space-4) var(--space-4) var(--space-2)">
-          <h2 class="section-title" style="margin:0" data-i18n="communities.title">Sanghas</h2>
-          <button class="btn btn-ghost btn-sm" id="create-sangha-btn" onclick="openCreateCommunity()" style="display:none" data-i18n="communities.new_sangha">+ New Sangha</button>
+      <div id="tab-communities" class="tab-panel bg-sangham-cream font-sans text-sangham-ink antialiased">
+        <!-- dynamic stubs (hidden; JS still populates/reads these) -->
+        <div id="mySanghasSection" style="display:none"><div id="mySanghasList"></div></div>
+        <button id="create-sangha-btn" style="display:none" onclick="openCreateCommunity()"></button>
+
+        <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT SIDEBAR -->
+            <aside class="hidden lg:block lg:col-span-3">
+              <div class="sticky top-24 space-y-6">
+                <!-- User Mini Profile -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20">
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-sangham-ink text-sm">Dhamma Seeker</h3>
+                      <p class="text-xs text-sangham-brown-light">@dhamma_practitioner</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm">12</div>
+                      <div class="text-[10px] text-sangham-brown-light">Communities</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm">248</div>
+                      <div class="text-[10px] text-sangham-brown-light">Connections</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm">1.2k</div>
+                      <div class="text-[10px] text-sangham-brown-light">Karma</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Quick Menu -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <nav class="space-y-1">
+                    <a href="#" onclick="switchTab('home');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
+                    </a>
+                    <a href="#" onclick="return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm">
+                      <i class="fa-solid fa-user-group w-5 text-center"></i>My Communities
+                    </a>
+                    <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Saved Teachings
+                    </a>
+                    <a href="#" onclick="switchTab('discover');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                    </a>
+                    <a href="#" onclick="openDhammaDaan&&openDhammaDaan();return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Dhamma Daan
+                    </a>
+                    <a href="#" onclick="openPanel('panel-settings');return false" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <i class="fa-solid fa-gear w-5 text-center text-sangham-brown-light"></i>Settings
+                    </a>
+                  </nav>
+                </div>
+                <!-- My Sanghas Mini List -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">My Sanghas</h4>
+                  <div class="space-y-2">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-sangham-gold/5 text-sangham-gold text-sm">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600">
+                        <i class="fa-solid fa-heart text-xs"></i>
+                      </div>
+                      <span class="font-medium text-xs">Nagpur Buddhist Study Circle</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600">
+                        <i class="fa-solid fa-dharmachakra text-xs"></i>
+                      </div>
+                      <span class="text-xs">Mumbai Navayana Sangha</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors">
+                      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center text-green-600">
+                        <i class="fa-solid fa-seedling text-xs"></i>
+                      </div>
+                      <span class="text-xs">Seed Events Org</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <!-- CENTER CONTENT -->
+            <main class="lg:col-span-9 space-y-6">
+              <!-- Page Header -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <h1 class="font-serif text-2xl font-bold text-sangham-ink">Sanghas</h1>
+                  <p class="text-sm text-sangham-brown-light mt-1">Discover and join communities that resonate with your practice</p>
+                </div>
+                <button class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white text-sm font-semibold rounded-xl shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-all" onclick="openCreateCommunity()">
+                  <i class="fa-solid fa-plus"></i><span>New Sangha</span>
+                </button>
+              </div>
+
+              <!-- Your Communities Section -->
+              <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest">Your Communities</h2>
+                  <a href="#" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium">Manage</a>
+                </div>
+                <div class="flex flex-wrap gap-2" id="comm-your-chips">
+                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-full text-sm font-medium shadow-md shadow-sangham-gold/20">
+                    <i class="fa-solid fa-heart text-xs"></i>
+                    <span>Nagpur Buddhist Study Circle</span>
+                    <button class="ml-1 w-5 h-5 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark text-[10px]"></i></button>
+                  </div>
+                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-sangham-cream text-sangham-ink rounded-full text-sm border border-sangham-gold/10 hover:border-sangham-gold/30 transition-colors cursor-pointer">
+                    <i class="fa-solid fa-dharmachakra text-sangham-gold text-xs"></i><span>Mumbai Navayana Sangha</span>
+                  </div>
+                  <div class="inline-flex items-center gap-2 px-4 py-2 bg-sangham-cream text-sangham-ink rounded-full text-sm border border-sangham-gold/10 hover:border-sangham-gold/30 transition-colors cursor-pointer">
+                    <i class="fa-solid fa-seedling text-sangham-gold text-xs"></i><span>Seed Events Org</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search & Filters -->
+              <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/5">
+                <div class="relative mb-4">
+                  <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sangham-brown-light"></i>
+                  <input type="text" id="commSearch" placeholder="Search communities, sanghas, temples, study groups..." data-i18n-ph="communities.search" oninput="debounceComm()"
+                    class="w-full bg-sangham-cream rounded-xl pl-11 pr-4 py-3 text-sm text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none search-focus transition-all">
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1" id="commFilters" style="touch-action:pan-x">
+                  <button class="filter-pill active px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap" onclick="filterCommunities(null,this)">All</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({tradition:'THERAVADA'},this)">Theravada</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({tradition:'MAHAYANA'},this)">Mahayana</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({tradition:'VAJRAYANA'},this)">Vajrayana</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'TEMPLE'},this)">Temples</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'AMBEDKARITE_SANGHA'},this)">Sanghas</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'STUDY_GROUP'},this)">Study Groups</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap">Near Me</button>
+                </div>
+              </div>
+
+              <!-- View Toggle & Sort -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm border border-sangham-gold/5" id="comm-view-toggle">
+                  <button class="px-4 py-2 bg-sangham-gold text-white text-xs font-medium rounded-lg shadow-sm" id="comm-grid-btn" onclick="commSetView('grid')">Grid</button>
+                  <button class="px-4 py-2 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" id="comm-list-btn" onclick="commSetView('list')">List</button>
+                  <button class="px-4 py-2 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors">Map</button>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-sangham-brown-light">Sort by:</span>
+                  <select class="bg-white border border-sangham-gold/10 rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none focus:border-sangham-gold/30 cursor-pointer">
+                    <option>Recommended</option><option>Nearest</option><option>Most Active</option><option>Newest</option><option>Largest</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Dynamic community list (populated by JS) + static preview cards -->
+              <div id="commList" class="comm-list"></div>
+
+              <!-- Static community grid (shown when commList is empty/loading) -->
+              <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="comm-static-grid">
+                <!-- Card 1: Joined -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-blue-400 to-blue-600 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+                          <i class="fa-solid fa-heart text-blue-500 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-blue-600">Joined</span>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Nagpur Buddhist Study Circle</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">A community dedicated to studying Buddhist scriptures, meditation practice, and Dhamma discussions in the Navayana tradition.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+42</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">856 members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span>
+                    </div>
+                    <button class="join-btn joined w-full py-2 rounded-xl text-xs font-semibold">Joined</button>
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-amber-400 to-orange-500 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
+                          <i class="fa-solid fa-dharmachakra text-amber-600 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-amber-600">Active</span>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Mumbai Navayana Sangha</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Mumbai, Maharashtra</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Weekly gatherings for meditation, Dhamma talks, and community building. Open to all practitioners of the Navayana path.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+1.1k</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">1.2k members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span>
+                    </div>
+                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-green-400 to-emerald-600 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
+                          <i class="fa-solid fa-seedling text-green-600 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-green-600">New</span>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Seed Events Org</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-globe text-[10px]"></i>India-wide</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Organizing retreats, workshops, and Dhamma events across India. Connecting practitioners with teachers and opportunities.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+230</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">234 members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-medium rounded-md">Events</span>
+                    </div>
+                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-purple-400 to-indigo-600 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center">
+                          <i class="fa-solid fa-vihara text-purple-600 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-purple-600">Popular</span>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Deekshabhoomi Pilgrims</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Nagpur, Maharashtra</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">For those who have taken refuge at Deekshabhoomi. Share experiences, plan visits, and connect with fellow pilgrims.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+3.2k</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">3.5k members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-medium rounded-md">Temple</span>
+                    </div>
+                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                  </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-rose-400 to-pink-600 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-rose-50 to-rose-100 flex items-center justify-center">
+                          <i class="fa-solid fa-hands-praying text-rose-600 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Theravada Study Group</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>Pune, Maharashtra</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Deep study of Pali Canon, Abhidhamma, and meditation techniques in the Theravada tradition. Weekly online sessions.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+156</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">412 members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[10px] font-medium rounded-md">Study Group</span>
+                    </div>
+                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                  </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/5 overflow-hidden">
+                  <div class="h-24 bg-gradient-to-br from-teal-400 to-cyan-600 relative">
+                    <div class="absolute inset-0 bg-black/10"></div>
+                    <div class="absolute -bottom-8 left-5">
+                      <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
+                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-teal-50 to-teal-100 flex items-center justify-center">
+                          <i class="fa-solid fa-om text-teal-600 text-xl"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absolute top-3 right-3">
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-teal-600">Online</span>
+                    </div>
+                  </div>
+                  <div class="pt-10 px-5 pb-5">
+                    <h3 class="font-semibold text-sangham-ink text-sm mb-0.5">Vipassana Meditators</h3>
+                    <p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-globe text-[10px]"></i>Global</p>
+                    <p class="text-xs text-sangham-brown-light leading-relaxed mb-4 line-clamp-2">Daily group sits, Dhamma sharing, and support for Vipassana practitioners. Open to all traditions and experience levels.</p>
+                    <div class="flex items-center justify-between mb-4">
+                      <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="w-6 h-6 rounded-full border-2 border-white object-cover member-avatar">
+                          <div class="w-6 h-6 rounded-full bg-sangham-cream border-2 border-white flex items-center justify-center text-[9px] font-bold text-sangham-brown">+5k</div>
+                        </div>
+                        <span class="text-[10px] text-sangham-brown-light">5.8k members</span>
+                      </div>
+                      <span class="px-2 py-0.5 bg-teal-50 text-teal-600 text-[10px] font-medium rounded-md">Mahayana</span>
+                    </div>
+                    <button class="join-btn w-full py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20">Join</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- List View (hidden by default) -->
+              <div class="hidden space-y-3" id="comm-list-view">
+                <div class="sangha-row bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5 flex items-center gap-4">
+                  <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0"><i class="fa-solid fa-heart text-lg"></i></div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Nagpur Buddhist Study Circle</h3><span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span></div>
+                    <p class="text-xs text-sangham-brown-light mt-0.5">Nagpur, Maharashtra · 856 members · Active 2h ago</p>
+                  </div>
+                  <button class="join-btn joined px-5 py-2 rounded-xl text-xs font-semibold flex-shrink-0">Joined</button>
+                </div>
+                <div class="sangha-row bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/5 flex items-center gap-4">
+                  <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0"><i class="fa-solid fa-dharmachakra text-lg"></i></div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Mumbai Navayana Sangha</h3><span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span></div>
+                    <p class="text-xs text-sangham-brown-light mt-0.5">Mumbai, Maharashtra · 1.2k members · Active now</p>
+                  </div>
+                  <button class="join-btn px-5 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 flex-shrink-0">Join</button>
+                </div>
+              </div>
+
+              <!-- Load More -->
+              <div class="text-center pt-4">
+                <button class="px-6 py-3 bg-white border border-sangham-gold/20 text-sangham-gold hover:bg-sangham-gold hover:text-white text-sm font-medium rounded-xl transition-all shadow-sm hover:shadow-md">Load More Communities</button>
+              </div>
+            </main>
+          </div>
         </div>
-        <div id="mySanghasSection" style="display:none;padding:0 var(--space-4) var(--space-2)">
-          <div style="font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider);margin-bottom:var(--space-2)">Your Communities</div>
-          <div id="mySanghasList" class="chip-scroll" style="gap:var(--space-2);padding-bottom:var(--space-2)"></div>
-        </div>
-        <div class="search-bar" style="margin:0 var(--space-4) var(--space-2)">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="commSearch" placeholder="Search communities..." data-i18n-ph="communities.search" oninput="debounceComm()">
-        </div>
-        <div class="chip-scroll comm-filter-bar" id="commFilters">
-          <button class="chip active" onclick="filterCommunities(null,this)">All</button>
-          <button class="chip" onclick="filterCommunities({tradition:'THERAVADA'},this)">Theravada</button>
-          <button class="chip" onclick="filterCommunities({tradition:'MAHAYANA'},this)">Mahayana</button>
-          <button class="chip" onclick="filterCommunities({tradition:'VAJRAYANA'},this)">Vajrayana</button>
-          <button class="chip" onclick="filterCommunities({category:'TEMPLE'},this)">Temples</button>
-          <button class="chip" onclick="filterCommunities({category:'AMBEDKARITE_SANGHA'},this)">Sanghas</button>
-          <button class="chip" onclick="filterCommunities({category:'STUDY_GROUP'},this)">Study Groups</button>
-        </div>
-        <div class="comm-list" id="commList"></div>
       </div>
 
       <!-- LEARN TAB -->
@@ -9130,6 +9962,151 @@ document.addEventListener('touchend', (e) => {
   if (state.token && state.user) {
     initApp();
   }
+})();
+
+// ============================================================
+//  HOME TAB HELPERS
+// ============================================================
+function homeLike(btn) {
+  const icon = btn.querySelector('i');
+  const count = btn.querySelector('span');
+  const liked = btn.classList.toggle('liked');
+  if (icon) { icon.classList.toggle('fa-regular', !liked); icon.classList.toggle('fa-solid', liked); }
+  if (count) { count.textContent = parseInt(count.textContent || '0') + (liked ? 1 : -1); }
+  if (liked) btn.style.color = '#ef4444'; else btn.style.color = '';
+}
+
+function homeToggleComments(btn) {
+  const article = btn.closest('article');
+  if (!article) return;
+  const box = article.querySelector('.comment-expand');
+  if (box) box.classList.toggle('open');
+}
+
+// Sidebar daily verse placeholder (replaced by real verse from API if available)
+(function() {
+  const verses = [
+    '"The mind is everything. What you think you become." — Buddha',
+    '"Peace comes from within. Do not seek it without." — Buddha',
+    '"In the sky, there is no distinction of east and west; people create distinctions out of their own minds." — Buddha',
+    '"He who envies others does not obtain peace of mind." — Buddha',
+    '"Even death is not to be feared by one who has lived wisely." — Buddha',
+  ];
+  const el = document.getElementById('home-sidebar-verse');
+  if (el) el.textContent = verses[Math.floor(Math.random() * verses.length)];
+})();
+
+// ============================================================
+//  COMMUNITIES TAB HELPERS
+// ============================================================
+function commSetView(mode) {
+  const grid = document.getElementById('comm-static-grid');
+  const list = document.getElementById('comm-list-view');
+  const gridBtn = document.getElementById('comm-grid-btn');
+  const listBtn = document.getElementById('comm-list-btn');
+  if (mode === 'grid') {
+    if (grid) grid.classList.remove('hidden');
+    if (list) list.classList.add('hidden');
+    if (gridBtn) { gridBtn.classList.add('bg-sangham-gold','text-white'); gridBtn.classList.remove('text-sangham-brown-light'); }
+    if (listBtn) { listBtn.classList.remove('bg-sangham-gold','text-white'); listBtn.classList.add('text-sangham-brown-light'); }
+  } else {
+    if (grid) grid.classList.add('hidden');
+    if (list) list.classList.remove('hidden');
+    if (listBtn) { listBtn.classList.add('bg-sangham-gold','text-white'); listBtn.classList.remove('text-sangham-brown-light'); }
+    if (gridBtn) { gridBtn.classList.remove('bg-sangham-gold','text-white'); gridBtn.classList.add('text-sangham-brown-light'); }
+  }
+}
+
+// Wire community join-btn toggles (delegated to handle dynamically added cards too)
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.join-btn');
+  if (!btn || !btn.closest('#tab-communities')) return;
+  const joined = btn.classList.toggle('joined');
+  btn.textContent = joined ? 'Joined' : 'Join';
+  if (joined) {
+    btn.classList.remove('bg-gradient-to-r','from-sangham-gold','to-sangham-gold-dark','text-white','shadow-md');
+  } else {
+    btn.classList.add('bg-gradient-to-r','from-sangham-gold','to-sangham-gold-dark','text-white','shadow-md');
+  }
+});
+
+// Hide static community grid when dynamic commList is populated
+(function() {
+  const commList = document.getElementById('commList');
+  if (!commList) return;
+  const obs = new MutationObserver(function() {
+    const hasContent = commList.children.length > 0;
+    const staticGrid = document.getElementById('comm-static-grid');
+    if (staticGrid) staticGrid.style.display = hasContent ? 'none' : '';
+  });
+  obs.observe(commList, { childList: true });
+})();
+
+// Animate community cards on scroll
+(function() {
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.community-card').forEach(function(card, i) {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'all 0.5s ease ' + (i * 0.08) + 's';
+    observer.observe(card);
+  });
+})();
+
+// ============================================================
+//  LANDING PAGE — THREE.JS PARTICLE SPHERE
+// ============================================================
+(function initLandingThreeJS() {
+  if (typeof THREE === 'undefined' || typeof gsap === 'undefined') return;
+  const container = document.getElementById('canvas-container');
+  if (!container) return;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(container.offsetWidth, container.offsetHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+
+  const geometry = new THREE.BufferGeometry();
+  const particles = 4000;
+  const positions = new Float32Array(particles * 3);
+  for (let i = 0; i < particles; i++) {
+    const theta = Math.acos(2 * Math.random() - 1);
+    const phi = Math.sqrt(particles * Math.PI) * theta;
+    const radius = 8;
+    positions[i * 3]     = radius * Math.sin(theta) * Math.cos(phi);
+    positions[i * 3 + 1] = radius * Math.sin(theta) * Math.sin(phi);
+    positions[i * 3 + 2] = radius * Math.cos(theta);
+  }
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const material = new THREE.PointsMaterial({ color: 0xc6863d, size: 0.04, transparent: true, opacity: 0.4 });
+  const mesh = new THREE.Points(geometry, material);
+  scene.add(mesh);
+  camera.position.z = 12;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    mesh.rotation.y += 0.001;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function() {
+    camera.aspect = container.offsetWidth / container.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
+  });
+
+  gsap.from('#view-landing nav, #view-landing main', { duration: 2.5, opacity: 0, ease: 'power2.inOut' });
 })();
 </script>
 </body>

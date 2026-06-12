@@ -89,14 +89,14 @@ app.use(helmet({
     directives: {
       defaultSrc:    ["'self'"],
       // Inline script block + onclick handlers + Socket.IO CDN
-      scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io', 'https://static.cloudflareinsights.com', 'https://checkout.razorpay.com'],
+      scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io', 'https://static.cloudflareinsights.com', 'https://checkout.razorpay.com', 'https://cdn.tailwindcss.com', 'https://cdnjs.cloudflare.com'],
       scriptSrcAttr: ["'unsafe-inline'"],
       // Inline <style> blocks + Google Fonts CSS
-      styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc:       ["'self'", 'https://fonts.gstatic.com'],
+      styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
+      fontSrc:       ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
       // Same-origin fetches + WebSocket (Socket.IO)
       connectSrc:    ["'self'", 'wss:', 'ws:'],
-      imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org'],
+      imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org', 'https://images.unsplash.com'],
       mediaSrc:      ["'self'", 'blob:'],
     },
   },
