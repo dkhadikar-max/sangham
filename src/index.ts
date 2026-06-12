@@ -93,9 +93,9 @@ app.use(helmet({
       scriptSrcAttr: ["'unsafe-inline'"],
       // Inline <style> blocks + Google Fonts CSS
       styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
-      fontSrc:       ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
-      // Same-origin fetches + WebSocket (Socket.IO)
-      connectSrc:    ["'self'", 'wss:', 'ws:'],
+      fontSrc:       ["'self'", 'data:', 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
+      // Same-origin fetches + WebSocket (Socket.IO) + socket.io source maps (devtools)
+      connectSrc:    ["'self'", 'wss:', 'ws:', 'https://cdn.socket.io'],
       imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org', 'https://images.unsplash.com'],
       mediaSrc:      ["'self'", 'blob:'],
     },

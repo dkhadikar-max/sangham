@@ -1499,7 +1499,7 @@ round:var(--error-600)}
       </div>
       <div class="input-group">
         <label data-i18n="auth.password">Password</label>
-        <input type="password" id="password" class="input" placeholder="••••••••" required>
+        <input type="password" id="password" class="input" placeholder="••••••••" autocomplete="current-password" required>
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%;margin-top:var(--space-2)" id="authBtn"><span id="authBtnText" data-i18n="auth.sign_in">Sign In</span></button>
     </form>
@@ -3557,6 +3557,8 @@ currentPartnerId: null,
 };
 let socket = null;
 let _pulseState = { reflections: -1, events: -1 };
+let _userHasInteracted = false;
+document.addEventListener('pointerdown', () => { _userHasInteracted = true; }, { once: true });
 
 // ============================================================
 //  PERSISTENCE
@@ -4123,7 +4125,7 @@ function switchTab(tab) {
   if (dsNav) dsNav.classList.add('active');
   state.currentTab = tab;
 
-  if (navigator.vibrate) navigator.vibrate(10);
+  if (navigator.vibrate && _userHasInteracted) navigator.vibrate(10);
 
   if (tab === 'home')        loadHome();
   if (tab === 'discover')    loadDiscover();
