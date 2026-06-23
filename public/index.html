@@ -374,7 +374,7 @@ round:var(--error-600)}
     .project-card-btn{padding:3px 8px;font-size:10px;font-weight:var(--weight-semibold);background:var(--saffron-500);color:white;border:none;border-radius:var(--radius-md);cursor:pointer;transition:background var(--duration-fast);flex-shrink:0}
     .project-card-btn:hover{background:var(--saffron-600)}
     /* Project browse list */
-    .project-list-item{display:flex;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-subtle);cursor:pointer;transition:background var(--duration-fast)}
+    .project-list-item{display:flex;gap:var(--space-3);padding:var(--space-3) var(--space-4);border:none;border-bottom:1px solid var(--border-subtle);cursor:pointer;transition:background var(--duration-fast);background:none;font-family:inherit;text-align:left;width:100%}
     .project-list-item:hover{background:var(--surface-elevated)}
     .project-list-icon{font-size:2rem;flex-shrink:0;line-height:1;padding-top:2px}
     .project-list-body{flex:1;min-width:0}
@@ -453,7 +453,7 @@ round:var(--error-600)}
     /* Person Card */
     .person-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-2xl);margin:0 var(--space-4) var(--space-3);padding:var(--space-4);display:flex;align-items:center;gap:var(--space-4);transition:all var(--duration-fast) var(--ease-out);animation:fadeInScale var(--duration-normal) var(--ease-out)}
     .person-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-3);transform:translateY(-2px)}
-    .person-info{flex:1;min-width:0}
+    .person-info{flex:1;min-width:0;border:none;background:none;cursor:pointer;font-family:inherit;text-align:left;padding:0}
     .person-name{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);display:flex;align-items:center;gap:var(--space-1)}
     .person-meta{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-1);display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
     .person-tradition{display:inline-flex;align-items:center;gap:var(--space-1)}
@@ -1097,7 +1097,7 @@ round:var(--error-600)}
     .gs-section-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-2)}
     .gs-section-title{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-wider)}
     .gs-see-all{font-size:var(--text-xs);color:var(--saffron-600);background:none;border:none;cursor:pointer;padding:0}
-    .gs-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;border-bottom:1px solid var(--border-subtle);cursor:pointer}
+    .gs-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) 0;border:none;border-bottom:1px solid var(--border-subtle);cursor:pointer;background:none;font-family:inherit;text-align:left;width:100%}
     .gs-row:last-child{border-bottom:none}
     .gs-row-icon{width:32px;height:32px;border-radius:50%;background:var(--surface-muted);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden}
     .gs-row-icon img{width:100%;height:100%;object-fit:cover}
@@ -5059,7 +5059,7 @@ async function loadDiscoverProjects(reset) {
       const skills   = (p.skillsNeeded || []).slice(0, 4).map(s => `<span class="project-card-skill">${escHtml(s)}</span>`).join('');
       const members  = p._count?.members ?? 0;
       const catLabel = (p.category || '').replace(/_/g, ' ');
-      return `<div class="project-list-item" onclick="openProjectDetail('${p.id}')">
+      return `<button type="button" class="project-list-item" onclick="openProjectDetail('${p.id}')">
         <div class="project-list-icon">${p.icon || '🤝'}</div>
         <div class="project-list-body">
           <div class="project-list-title">${escHtml(p.title)}</div>
@@ -5067,7 +5067,7 @@ async function loadDiscoverProjects(reset) {
           ${p.purpose ? `<div class="project-list-purpose">${escHtml(p.purpose)}</div>` : ''}
           ${skills ? `<div class="project-card-skills" style="margin-top:var(--space-2)">${skills}</div>` : ''}
         </div>
-      </div>`;
+      </button>`;
     }).join('');
   } catch(err) {
     el.innerHTML = `<p style="color:var(--text-tertiary);font-size:var(--text-sm);text-align:center;padding:var(--space-8) 0">${escHtml(err.message)}</p>`;
@@ -5517,7 +5517,7 @@ function renderEventCard(ev) {
     : ev.onlineUrl ? `🔗 ${t('discover.online')}`
     : ev.locationName ? `📍 ${t('discover.in_person')}` : '';
   const community = ev.association?.name ? escHtml(ev.association.name) : '';
-  return `<div class="event-card" onclick="openEventDetail('${ev.id}')">
+  return `<div class="event-card" role="button" tabindex="0" onclick="openEventDetail('${ev.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEventDetail('${ev.id}')}">`
     <div style="display:flex;gap:var(--space-2);align-items:center;margin-bottom:var(--space-1)">
       <div class="event-card-type">${typeLabel}</div>
       ${modeBadge ? `<div class="event-card-type" style="background:var(--surface-muted)">${modeBadge}</div>` : ''}
@@ -5760,25 +5760,25 @@ async function runGlobalSearch() {
     }
     el.innerHTML = [
       renderGsSection('People', people, q, p => `
-        <div class="gs-row" onclick="closePanel('panel-global-search');openProfile('${p.id}')">
+        <button type="button" class="gs-row" onclick="closePanel('panel-global-search');openProfile('${p.id}')">
           <div class="gs-row-icon">${p.profilePhoto ? `<img src="${escHtml(p.profilePhoto)}">` : escHtml((p.displayName||'?').charAt(0))}</div>
           <div><div class="gs-name">${escHtml(p.displayName||'')}</div><div class="gs-meta">${escHtml((p.traditions||[]).join(', '))}${p.city?' · '+escHtml(p.city):''}</div></div>
-        </div>`),
+        </button>`),
       renderGsSection('Communities', comms, q, c => `
-        <div class="gs-row" onclick="closePanel('panel-global-search');openCommunity('${c.id}')">
+        <button type="button" class="gs-row" onclick="closePanel('panel-global-search');openCommunity('${c.id}')">
           <div class="gs-row-icon" style="border-radius:var(--radius-lg)">🏛</div>
           <div><div class="gs-name">${escHtml(c.name||'')}</div><div class="gs-meta">${escHtml(c.city||c.country||'')}${c._count?.members?' · '+c._count.members+' members':''}</div></div>
-        </div>`),
+        </button>`),
       renderGsSection('Projects', projects, q, p => `
-        <div class="gs-row" onclick="closePanel('panel-global-search');openProjectDetail('${p.id}')">
+        <button type="button" class="gs-row" onclick="closePanel('panel-global-search');openProjectDetail('${p.id}')">
           <div class="gs-row-icon" style="border-radius:var(--radius-lg);font-size:1.1rem">${p.icon||'🤝'}</div>
           <div><div class="gs-name">${escHtml(p.title||'')}</div><div class="gs-meta">${escHtml((p.category||'').replace(/_/g,' '))} · ${p._count?.members??0} collaborators</div></div>
-        </div>`),
+        </button>`),
       renderGsSection('Events', events, q, ev => `
-        <div class="gs-row" onclick="closePanel('panel-global-search');openEventDetail('${ev.id}')">
+        <button type="button" class="gs-row" onclick="closePanel('panel-global-search');openEventDetail('${ev.id}')">
           <div class="gs-row-icon" style="border-radius:var(--radius-lg)">📅</div>
           <div><div class="gs-name">${escHtml(ev.title||'')}</div><div class="gs-meta">${timeAgo(ev.startsAt)} · ${escHtml(ev.locationName||'Online')}</div></div>
-        </div>`),
+        </button>`),
     ].filter(Boolean).join('');
   } catch(err) {
     el.innerHTML = `<div class="gs-empty">${t('discover.search_error')}</div>`;
@@ -5810,8 +5810,8 @@ function renderPersonCard(p, delay = 0, distance) {
   const langs      = (p.languages || []).slice(0, 3).join(', ');
 
   return `<div class="person-card" style="animation-delay:${delay}s">
-    <div class="avatar avatar-md" onclick="openProfile('${p.id}')">${avatar}</div>
-    <div class="person-info" onclick="openProfile('${p.id}')">
+    <button type="button" class="avatar avatar-md" onclick="openProfile('${p.id}')" style="border:none;background:none;cursor:pointer;padding:0;flex-shrink:0">${avatar}</button>
+    <button type="button" class="person-info" onclick="openProfile('${p.id}')" aria-label="View ${escHtml(p.displayName||'profile')}'s profile">
       <div class="person-name">${escHtml(p.displayName || 'Anonymous')} ${verifiedBadge}</div>
       <div class="person-meta">
         ${roleLabel ? `<span>${escHtml(roleLabel)}</span>` : ''}
@@ -5820,7 +5820,7 @@ function renderPersonCard(p, delay = 0, distance) {
       </div>
       ${langs ? `<div class="person-langs">${escHtml(langs)}</div>` : ''}
       ${tags ? `<div style="font-size:var(--text-2xs);color:var(--text-tertiary);margin-top:2px">${escHtml(tags)}</div>` : ''}
-    </div>
+    </button>
     ${!isMe ? `<div class="person-actions">
       <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openChat('${p.id}')">${t('common.message')}</button>
       <button class="btn btn-sm ${connected ? 'connected' : 'btn-primary'}" onclick="event.stopPropagation();followUser('${p.id}', this)">${connected ? t('common.connected') : t('common.connect')}</button>
@@ -7954,13 +7954,13 @@ async function loadProfileEvents(userId) {
           const typeLabel = (ev.eventType || '').replace(/_/g, ' ');
           const when = ev.startsAt ? new Date(ev.startsAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
           const isOrganiser = ev.organiserId === userId;
-          return `<div class="project-list-item" style="padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)" onclick="openEventDetail('${ev.id}')">
+          return `<button type="button" class="project-list-item" style="padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle)" onclick="openEventDetail('${ev.id}')">
             <div class="project-list-icon" style="font-size:1.5rem">${icon}</div>
             <div class="project-list-body">
               <div class="project-list-title">${escHtml(ev.title)}</div>
               <div class="project-list-meta">${escHtml(typeLabel)} · ${when}${isOrganiser ? ' · <span style="color:var(--saffron-600);font-weight:var(--weight-semibold)">Organiser</span>' : ' · Going'}</div>
             </div>
-          </div>`;
+          </button>`;
         }).join('')}
       </div>`;
   } catch { container.innerHTML = ''; }
@@ -8230,7 +8230,7 @@ function renderCommunityCard(a, delay = 0) {
   const catColor = Object.entries(catColorMap).find(([k]) => cat.includes(k))?.[1] || 'bg-sangham-cream text-sangham-brown';
   const loc = a.city || a.country || '';
   const locHtml = loc ? `<p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>${escHtml(loc)}</p>` : '';
-  return `<div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden cursor-pointer" style="animation-delay:${delay}s" onclick="openCommunity('${a.id}')">
+  return `<div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden cursor-pointer" role="button" tabindex="0" style="animation-delay:${delay}s" onclick="openCommunity('${a.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCommunity('${a.id}')}">
     <div class="h-24 bg-gradient-to-br ${ts.grad} relative">
       <div class="absolute inset-0 bg-black/10"></div>
       <div class="absolute -bottom-8 left-5">
