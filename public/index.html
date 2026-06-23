@@ -875,9 +875,9 @@ round:var(--error-600)}
     .module-toggle-row:last-child{border-bottom:none}
     .module-toggle-label{font-size:var(--text-sm);color:var(--text-primary);font-weight:var(--weight-medium)}
     .module-toggle-desc{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:2px}
-    .toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0}
+    .toggle-switch{position:relative;width:44px;height:40px;flex-shrink:0}
     .toggle-switch input{opacity:0;width:0;height:0;position:absolute}
-    .toggle-slider{position:absolute;inset:0;background:var(--border-default);border-radius:12px;cursor:pointer;transition:background var(--duration-fast) var(--ease-out)}
+    .toggle-slider{position:absolute;top:8px;left:0;right:0;bottom:8px;background:var(--border-default);border-radius:12px;cursor:pointer;transition:background var(--duration-fast) var(--ease-out)}
     .toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:white;border-radius:50%;transition:transform var(--duration-fast) var(--ease-out);box-shadow:0 1px 3px rgba(0,0,0,.2)}
     .toggle-switch input:checked + .toggle-slider{background:var(--saffron-500)}
     .toggle-switch input:checked + .toggle-slider:before{transform:translateX(20px)}
@@ -3438,10 +3438,10 @@ round:var(--error-600)}
           </div>
         </div>
         <!-- Legal -->
-        <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;margin-top:var(--space-4)">
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Privacy Policy</a>
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Terms of Service</a>
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary)">Help</a>
+        <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;margin-top:var(--space-4)">
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Privacy Policy</a>
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Terms of Service</a>
+          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Help</a>
         </div>
         <p style="text-align:center;font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-4);opacity:.5">Sangham v0.2.0</p>
       </div>
