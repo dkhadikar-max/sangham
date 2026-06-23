@@ -2677,8 +2677,10 @@ round:var(--error-600)}
 
             <!-- CENTER CONTENT -->
             <main class="lg:col-span-9 space-y-6">
+              <!-- Sticky search + tabs wrapper (mobile: sticks below app-header) -->
+              <div class="sticky top-0 z-10 bg-sangham-cream pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
               <!-- Search Bar -->
-              <div class="relative">
+              <div class="relative mb-3">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sangham-brown-light" style="pointer-events:none"></i>
                 <input type="text" id="learnSearch" placeholder="Search courses, texts, resources..." data-i18n-ph="learn.search" oninput="debounceLearn()"
                   class="w-full bg-white rounded-xl pl-11 pr-4 py-3.5 text-base text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/20 shadow-sm border border-sangham-gold/10 transition-all">
@@ -2693,6 +2695,7 @@ round:var(--error-600)}
                   <button class="comm-tab-btn whitespace-nowrap" onclick="switchLearnTab('library',this)" id="learn-tab-btn-library" data-i18n="learn.library">Library</button>
                 </div>
               </div>
+              </div><!-- /sticky search+tabs wrapper -->
               <!-- COURSES -->
               <div id="learn-tab-courses" class="comm-tab-panel active">
                 <div id="learn-continue-reading" style="display:none" class="mb-5">
@@ -5918,7 +5921,7 @@ async function loadLearnCourses(q) {
                 </div>
               </div>
               <div class="flex items-center gap-3 mt-3">
-                <button class="px-4 py-2 text-white text-xs font-semibold rounded-xl transition-colors shadow-md" style="background:#C79A3B" onclick="event.stopPropagation();openTextDetail('${id}')">Continue Reading</button>
+                <button class="px-4 py-2.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-md" style="background:#C79A3B;min-height:40px" onclick="event.stopPropagation();openTextDetail('${id}')">Continue Reading</button>
               </div>
             </div>
           </div>
@@ -8499,7 +8502,7 @@ function renderCourseCard(c) {
         </div>
         ${c.description ? `<p class="text-xs text-sangham-brown-light mt-2 line-clamp-1 leading-relaxed">${escHtml(c.description.slice(0,100))}</p>` : ''}
         <div class="flex items-center gap-3 mt-3">
-          <button class="px-4 py-1.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm" style="background:#C79A3B" onclick="event.stopPropagation();openCourse('${c.id}')">Start Course</button>
+          <button class="px-4 py-2.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm" style="background:#C79A3B;min-height:40px" onclick="event.stopPropagation();openCourse('${c.id}')">Start Course</button>
           <span class="text-[10px] text-sangham-brown-light">${c.language?.toUpperCase()||'EN'}</span>
         </div>
       </div>
@@ -8524,7 +8527,7 @@ function renderResourceCard(r) {
       <h4 class="font-medium text-sangham-ink text-sm truncate">${escHtml(r.title)}</h4>
       <p class="text-xs text-sangham-brown-light mt-0.5">${typeLabel}${r.creator ? ' · '+escHtml(r.creator) : ''}${dur ? ' · '+dur : ''}${r.language?.toUpperCase()||'EN'}</p>
     </div>
-    <button class="w-9 h-9 rounded-xl bg-sangham-cream flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors flex-shrink-0">
+    <button class="w-11 h-11 rounded-xl bg-sangham-cream flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors flex-shrink-0">
       <i class="fa-solid ${isPlayable ? 'fa-play' : 'fa-download'} text-sm"></i>
     </button>
   </div>`;
@@ -8562,7 +8565,7 @@ function renderCircleCard(c) {
     ${c.description ? `<p class="text-xs text-sangham-brown-light leading-relaxed mb-3">${escHtml(c.description.slice(0,110))}${c.description.length>110?'…':''}</p>` : ''}
     <div class="flex items-center justify-between">
       <span class="text-xs text-sangham-brown-light">By ${escHtml(c.facilitator?.displayName || t('roles.unknown'))}</span>
-      <button class="px-4 py-1.5 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm" style="background:#C79A3B" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">Join</button>
+      <button class="px-4 py-2.5 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm" style="background:#C79A3B;min-height:40px" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">Join</button>
     </div>
   </div>`;
 }
@@ -9131,7 +9134,7 @@ function renderSessionCard(s) {
       <h4 class="font-semibold text-sangham-ink text-sm truncate">${escHtml(s.title)}</h4>
       <p class="text-xs text-sangham-brown-light mt-0.5">By ${escHtml(host.displayName||'Unknown')} · ${isLive ? attendees+' watching' : timeAgo(s.scheduledAt)}${s.language ? ' · '+s.language.toUpperCase() : ''}</p>
     </div>
-    <button class="px-4 py-2 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm flex-shrink-0" style="background:#C79A3B" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">${isLive ? 'Watch' : 'RSVP'}</button>
+    <button class="px-4 py-2.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-sm flex-shrink-0" style="background:#C79A3B;min-height:40px" onclick="event.stopPropagation();showToast(t('common.coming_soon'),'info')">${isLive ? 'Watch' : 'RSVP'}</button>
   </div>`;
 }
 
