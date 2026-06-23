@@ -576,7 +576,7 @@ round:var(--error-600)}
     .header-nav-link:hover::after,.header-nav-link.active::after{width:100%}
     .header-icon .notification-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--error-500);border-radius:50%;border:2px solid var(--surface-elevated)}
     .header-notif-badge{position:absolute;top:-3px;right:-3px;background:var(--error-500);color:white;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--surface-bg);line-height:1;pointer-events:none}
-    .notif-item{display:flex;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border-subtle);cursor:pointer;border-radius:var(--radius-md);transition:background var(--duration-fast)}
+    .notif-item{display:flex;gap:var(--space-3);padding:var(--space-3) 0;background:none;border:none;border-bottom:1px solid var(--border-subtle);cursor:pointer;border-radius:var(--radius-md);transition:background var(--duration-fast);width:100%;text-align:left;font-family:var(--font-body)}
     .notif-item:hover{background:var(--surface-sunken)}
     .notif-item.unread{border-left:3px solid var(--saffron-500);padding-left:var(--space-2)}
     .notif-icon{width:36px;height:36px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
@@ -1161,7 +1161,7 @@ round:var(--error-600)}
     .pq-avatar-wrap img{width:100%;height:100%;object-fit:cover}
     .pq-hname{font-weight:var(--weight-semibold);color:var(--text-primary);font-size:var(--text-sm);line-height:1.3}
     .pq-hsub{font-size:var(--text-xs);color:var(--text-tertiary);margin-top:1px}
-    .pq-close{margin-left:auto;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);background:var(--surface-sunken);border:none;cursor:pointer;color:var(--text-tertiary);flex-shrink:0;transition:background var(--duration-fast) var(--ease-out)}
+    .pq-close{margin-left:auto;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);background:var(--surface-sunken);border:none;cursor:pointer;color:var(--text-tertiary);flex-shrink:0;transition:background var(--duration-fast) var(--ease-out)}
     .pq-close:hover{background:var(--surface-overlay);color:var(--text-primary)}
     .pq-nav{padding:var(--space-2) var(--space-2) var(--space-6)}
     .pq-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:var(--font-body);font-size:var(--text-sm);color:var(--text-primary);transition:background var(--duration-fast) var(--ease-out);min-height:44px}
@@ -7333,14 +7333,14 @@ async function loadNotifications() {
       else if (n.type === 'event_rsvp' && data.eventId) onclick = `openEventDetail('${data.eventId}')`;
       else if (n.type === 'project_join' && data.projectId) onclick = `openProjectDetail('${data.projectId}')`;
       const onclickAttr = onclick ? `onclick="markNotificationRead('${n.id}');closePanel('panel-notifications');${onclick}"` : `onclick="markNotificationRead('${n.id}')"`;
-      return `<div class="notif-item${unreadClass}" ${onclickAttr}>
+      return `<button type="button" class="notif-item${unreadClass}" ${onclickAttr}>
         <div class="notif-icon">${icon}</div>
         <div class="notif-body">
           <div class="notif-title">${escHtml(n.title)}</div>
           <div class="notif-text">${escHtml(n.body)}</div>
         </div>
         <div class="notif-time">${timeAgo(n.createdAt)}</div>
-      </div>`;
+      </button>`;
     }).join('');
     // Clear badge since panel is open
     const badge = document.getElementById('notifBadge');
