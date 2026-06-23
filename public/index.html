@@ -721,6 +721,7 @@ round:var(--error-600)}
       .btn-sm{min-height:40px}
       .chip{min-height:40px;display:inline-flex;align-items:center}
       .filter-pill{min-height:40px}
+      .feed-filter-pill{min-height:40px;display:inline-flex;align-items:center}
       .comm-tab-btn{min-height:44px}
     }
 
@@ -1944,15 +1945,15 @@ round:var(--error-600)}
                             <h2 class="font-serif text-lg font-semibold text-sangham-ink">People Near You</h2>
                             <p class="text-xs text-sangham-brown-light mt-0.5">Practitioners in Mumbai, Nagpur &amp; nearby</p>
                         </div>
-                        <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium">View All</a>
+                        <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-2 py-2 -my-2 rounded-lg">View All</a>
                     </div>
                     <div id="home-stories-strip" class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
-                        <div class="flex-shrink-0 flex flex-col items-center gap-1.5 cursor-pointer group">
+                        <button class="flex-shrink-0 flex flex-col items-center gap-1.5 group bg-transparent border-0 p-0" onclick="openCreatePost&&openCreatePost()" aria-label="Add to your story">
                             <div class="w-16 h-16 rounded-full bg-sangham-cream border-2 border-dashed border-sangham-gold/30 flex items-center justify-center group-hover:border-sangham-gold transition-colors">
                                 <i class="fa-solid fa-plus text-sangham-gold"></i>
                             </div>
                             <span class="text-[11px] text-sangham-brown-light">Add</span>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
@@ -1965,20 +1966,20 @@ round:var(--error-600)}
                                 class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()" readonly>
                             <div class="flex items-center justify-between mt-3">
                                 <div class="flex gap-2">
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-image text-sangham-gold"></i>
                                         <span>Photo</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-link text-sangham-gold"></i>
                                         <span>Link</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-quote-right text-sangham-gold"></i>
                                         <span>Quote</span>
                                     </button>
                                 </div>
-                                <button class="px-5 py-2 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20" onclick="openCreatePost&&openCreatePost()">
+                                <button class="px-5 py-2.5 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
                                     Post
                                 </button>
                             </div>
