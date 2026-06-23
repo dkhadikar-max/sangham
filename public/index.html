@@ -70,7 +70,7 @@
     .edu-search-wrap input{width:100%;padding:var(--space-3) var(--space-4) var(--space-3) 2.75rem;border-radius:var(--radius-2xl);border:1.5px solid var(--border-default);background:var(--surface-page);font-size:var(--text-base);color:var(--text-primary);outline:none;transition:border-color .2s}
     .edu-search-wrap input:focus{border-color:#C79A3B}
     .edu-search-wrap svg{position:absolute;left:var(--space-3);top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-tertiary);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
-    .edu-chips{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .edu-chips{display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:center}
     .edu-chip{padding:5px 14px;border-radius:9999px;background:rgba(199,154,59,.1);color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;border:1px solid rgba(199,154,59,.2);transition:all .2s}
     .edu-chip:hover{background:rgba(199,154,59,.2)}
     .edu-section{padding:var(--space-5) var(--space-4)}
@@ -724,6 +724,8 @@ round:var(--error-600)}
       .chip-toggle{min-height:40px;display:inline-flex;align-items:center}
       .filter-pill{min-height:40px}
       .feed-filter-pill{min-height:40px;display:inline-flex;align-items:center}
+      .edu-chip{min-height:40px;display:inline-flex;align-items:center}
+      .edu-tutor-btn{min-height:40px}
       .comm-tab-btn{min-height:44px}
     }
 
@@ -2810,13 +2812,13 @@ round:var(--error-600)}
               <input id="eduSearchInput" type="text" placeholder="e.g. AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
             </div>
             <div class="edu-chips">
-              <span class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Entrepreneurship')">Entrepreneurship</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Sales')">Sales</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Leadership')">Leadership</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Networking')">Networking</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Wealth')">Wealth</span>
-              <span class="edu-chip" onclick="submitEducateSearch('Buddhism')">Buddhism</span>
+              <button class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Entrepreneurship')">Entrepreneurship</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Sales')">Sales</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Leadership')">Leadership</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Networking')">Networking</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Wealth')">Wealth</button>
+              <button class="edu-chip" onclick="submitEducateSearch('Buddhism')">Buddhism</button>
             </div>
           </div>
 
@@ -2856,13 +2858,13 @@ round:var(--error-600)}
 
         <!-- Path detail view (vertical roadmap) -->
         <div id="edu-view-path" style="display:none">
-          <div style="padding:var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-            <button onclick="showEduLanding()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text-secondary)">
-              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+          <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
+            <button onclick="showEduLanding()" aria-label="Back to learning paths" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <div>
-              <div id="edu-path-title" style="font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary)"></div>
-              <div id="edu-path-tagline" style="font-size:var(--text-xs);color:var(--text-secondary)"></div>
+            <div style="flex:1;min-width:0">
+              <div id="edu-path-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+              <div id="edu-path-tagline" style="font-size:var(--text-xs);color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
             </div>
           </div>
           <div style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)">
@@ -2883,8 +2885,8 @@ round:var(--error-600)}
         <!-- Lesson view -->
         <div id="edu-view-lesson" style="display:none">
           <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-            <button id="edu-lesson-back-btn" onclick="backToEduPath()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text-secondary)">
-              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+            <button id="edu-lesson-back-btn" onclick="backToEduPath()" aria-label="Back to path" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             <div style="flex:1">
               <div id="edu-lesson-phase-label" style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;font-weight:600"></div>
@@ -2912,7 +2914,7 @@ round:var(--error-600)}
             <div class="edu-lesson-section" style="background:rgba(199,154,59,.04);border-color:rgba(199,154,59,.2)">
               <div class="edu-lesson-section-label">Action Task</div>
               <div id="edu-lesson-action" class="edu-lesson-section-body"></div>
-              <button id="edu-exercise-btn" onclick="markExerciseDone()" style="margin-top:var(--space-3);padding:6px 16px;border-radius:9999px;border:1.5px solid rgba(199,154,59,.4);background:transparent;color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(199,154,59,.1)'" onmouseout="this.style.background='transparent'">
+              <button id="edu-exercise-btn" onclick="markExerciseDone()" style="margin-top:var(--space-3);padding:10px 16px;min-height:40px;border-radius:9999px;border:1.5px solid rgba(199,154,59,.4);background:transparent;color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px" onmouseover="this.style.background='rgba(199,154,59,.1)'" onmouseout="this.style.background='transparent'">
                 ✓ I completed this exercise
               </button>
             </div>
