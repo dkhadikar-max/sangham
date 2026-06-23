@@ -61,7 +61,7 @@
     .text-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(199,154,59,.15)}
     .collection-card{transition:all .3s ease;cursor:pointer}
     .collection-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(0,0,0,.12)}
-    .learn-continue-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-6);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .learn-continue-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-6);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s cubic-bezier(.4,0,.2,1);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%;display:block}
     .learn-continue-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2)}
     /* ── Sangham Educate ─────────────────────────────────────── */
     .edu-hero{padding:var(--space-5) var(--space-4) var(--space-4);background:#fff;border-bottom:1px solid var(--border-default)}
@@ -352,7 +352,7 @@ round:var(--error-600)}
     .suggest-comm-btn{padding:4px 8px;font-size:10px;font-weight:var(--weight-semibold);background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border-default);border-radius:var(--radius-md);cursor:pointer;align-self:flex-start;transition:all var(--duration-fast)}
     .suggest-comm-btn:hover{background:var(--saffron-500);color:white;border-color:var(--saffron-500)}
     /* Continue Learning cards */
-    .continue-card{flex-shrink:0;width:190px;background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-2xl);overflow:hidden;cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .continue-card{flex-shrink:0;width:190px;background:var(--surface-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-2xl);overflow:hidden;cursor:pointer;transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
     .continue-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-2);border-color:var(--border-strong)}
     .continue-card-stripe{height:4px;flex-shrink:0}
     .continue-card-body{padding:var(--space-3)}
@@ -1208,7 +1208,7 @@ round:var(--error-600)}
     .lib-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}
     .lib-section-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:var(--tracking-widest)}
     /* Continue reading */
-    .lib-continue-card{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);background:var(--surface-elevated);border-radius:var(--radius-xl);border:1px solid var(--border-default);cursor:pointer;transition:all var(--duration-fast) var(--ease-out)}
+    .lib-continue-card{display:flex;gap:var(--space-3);align-items:center;padding:var(--space-3);background:var(--surface-elevated);border-radius:var(--radius-xl);border:1px solid var(--border-default);cursor:pointer;transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
     .lib-continue-card:hover{background:var(--surface-sunken);transform:translateY(-1px)}
     .lib-continue-card:active{transform:scale(0.98)}
     .lib-continue-mini-cover{width:44px;height:58px;border-radius:var(--radius-md);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
@@ -1220,7 +1220,7 @@ round:var(--error-600)}
     .lib-continue-pct{font-size:10px;color:var(--text-tertiary);margin-top:3px;text-align:right}
     /* Collection grid */
     .lib-coll-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3)}
-    .lib-coll-card{border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out);box-shadow:var(--shadow-2)}
+    .lib-coll-card{border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:transform var(--duration-fast) var(--ease-out),box-shadow var(--duration-fast) var(--ease-out);box-shadow:var(--shadow-2);border:none;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
     .lib-coll-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-4)}
     .lib-coll-card:active{transform:scale(0.97)}
     .lib-coll-cover{padding:var(--space-4) var(--space-3) var(--space-3);display:flex;flex-direction:column;align-items:center;gap:var(--space-1)}
@@ -1238,14 +1238,14 @@ round:var(--error-600)}
     /* Horizontal browse scroll */
     .lib-text-scroll{display:flex;gap:var(--space-3);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 0 var(--space-2);touch-action:pan-x}
     .lib-text-scroll::-webkit-scrollbar{display:none}
-    .lib-text-chip{flex-shrink:0;width:130px;scroll-snap-align:start;background:var(--surface-elevated);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out)}
+    .lib-text-chip{flex-shrink:0;width:130px;scroll-snap-align:start;background:var(--surface-elevated);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
     .lib-text-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
     .lib-text-chip-cover{height:80px;display:flex;align-items:center;justify-content:center;font-size:1.75rem}
     .lib-text-chip-body{padding:var(--space-2) var(--space-2) var(--space-3)}
     .lib-text-chip-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .lib-text-chip-lang{display:inline-block;background:var(--surface-sunken);font-size:9px;font-weight:var(--weight-bold);color:var(--text-tertiary);letter-spacing:.04em;padding:1px 5px;border-radius:99px;text-transform:uppercase;margin-top:var(--space-1)}
     /* Collection view */
-    .lib-breadcrumb{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);cursor:pointer;color:var(--saffron-600);font-size:var(--text-sm);font-weight:var(--weight-medium)}
+    .lib-breadcrumb{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);cursor:pointer;color:var(--saffron-600);font-size:var(--text-sm);font-weight:var(--weight-medium);border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;min-height:44px}
     .lib-breadcrumb svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
     .lib-coll-hero{border-radius:var(--radius-xl);padding:var(--space-5);margin:0 var(--space-4) var(--space-5);display:flex;gap:var(--space-4);align-items:flex-start}
     .lib-coll-hero-sym{font-size:2.75rem;flex-shrink:0;line-height:1;margin-top:2px}
@@ -1254,7 +1254,7 @@ round:var(--error-600)}
     .lib-coll-hero-tags{display:flex;gap:var(--space-2);flex-wrap:wrap}
     .lib-coll-hero-tag{background:rgba(255,255,255,.18);border-radius:99px;padding:2px 8px;font-size:10px;font-weight:var(--weight-medium);color:white}
     .lib-text-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-3);padding:0 var(--space-4)}
-    .lib-text-card{background:var(--surface-elevated);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-3) var(--space-3);cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out);display:flex;flex-direction:column;min-height:110px}
+    .lib-text-card{background:var(--surface-elevated);border-radius:var(--radius-xl);padding:var(--space-3) var(--space-3) var(--space-3);cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out);display:flex;flex-direction:column;min-height:110px;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
     .lib-text-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
     .lib-text-card:active{transform:scale(0.97)}
     .lib-text-card-sym{font-size:1.4rem;margin-bottom:var(--space-2);line-height:1}
@@ -1266,7 +1266,7 @@ round:var(--error-600)}
     /* ── Book cover image cards ─────────────────────────── */
     .lib-book-scroll{display:flex;gap:14px;overflow-x:auto;padding:2px var(--space-4) var(--space-2);-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x}
     .lib-book-scroll::-webkit-scrollbar{display:none}
-    .lib-book-card{flex-shrink:0;width:120px;cursor:pointer;scroll-snap-align:start;transition:transform var(--duration-fast) var(--ease-out)}
+    .lib-book-card{flex-shrink:0;width:120px;cursor:pointer;scroll-snap-align:start;transition:transform var(--duration-fast) var(--ease-out);border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;padding:0}
     .lib-book-card:hover{transform:translateY(-4px)}
     .lib-book-card:active{transform:scale(0.97)}
     .lib-book-cover-img{width:120px;height:176px;border-radius:var(--radius-lg);object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.18);background:var(--surface-sunken)}
@@ -1274,7 +1274,7 @@ round:var(--error-600)}
     .lib-book-card h4{font-size:12px;font-weight:var(--weight-semibold);color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
     .lib-book-card p{font-size:11px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     /* Featured book card */
-    .lib-featured{display:flex;background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;margin:0 var(--space-4) var(--space-5);box-shadow:var(--shadow-2);transition:all var(--duration-fast) var(--ease-out)}
+    .lib-featured{display:flex;background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;margin:0 var(--space-4) var(--space-5);box-shadow:var(--shadow-2);transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:calc(100% - 2*var(--space-4))}
     .lib-featured:hover{box-shadow:var(--shadow-4);transform:translateY(-2px)}
     .lib-featured:active{transform:scale(0.98)}
     .lib-featured-cover-img{width:90px;object-fit:cover;display:block;flex-shrink:0;min-height:140px}
@@ -2727,26 +2727,26 @@ round:var(--error-600)}
                   </button>
                 </div>
                 <div class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(72px,1fr))">
-                  <div class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default)" onclick="filterLearnResources('PDF')">
+                  <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('PDF')">
                     <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Documents</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">PDFs</p>
-                  </div>
-                  <div class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default)" onclick="filterLearnResources('YOUTUBE_VIDEO')">
+                  </button>
+                  <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('YOUTUBE_VIDEO')">
                     <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Videos</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">YouTube &amp; more</p>
-                  </div>
-                  <div class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default)" onclick="filterLearnResources('WORKSHOP_RECORDING')">
+                  </button>
+                  <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('WORKSHOP_RECORDING')">
                     <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Audio</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">Recordings</p>
-                  </div>
-                  <div class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default)" onclick="filterLearnResources('ARTICLE')">
+                  </button>
+                  <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('ARTICLE')">
                     <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-amber-500 text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Links</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">Articles &amp; more</p>
-                  </div>
+                  </button>
                 </div>
                 <div id="learnResources" class="space-y-3"></div>
               </div>
@@ -4812,7 +4812,7 @@ function loadHomeContinueLearning() {
   container.innerHTML = items.map(([textId, prog]) => {
     const color = _TRAD_HEX[prog.tradition] || _TRAD_HEX.OTHER;
     const pct   = prog.percent || 0;
-    return `<div class="continue-card" onclick="switchTab('learn');switchLearnTab('library');setTimeout(()=>openTextDetail('${textId}'),400)">
+    return `<button type="button" class="continue-card" onclick="switchTab('learn');switchLearnTab('library');setTimeout(()=>openTextDetail('${textId}'),400)">
       <div class="continue-card-stripe" style="background:${color}"></div>
       <div class="continue-card-body">
         <div class="continue-card-label">${escHtml(prog.tradition||'Library')}</div>
@@ -4821,9 +4821,9 @@ function loadHomeContinueLearning() {
           <div class="continue-card-prog"><div class="continue-card-prog-fill" style="width:${pct}%;background:${color}"></div></div>
           <span class="continue-card-pct">${pct}%</span>
         </div>
-        <button class="continue-card-action">${pct > 0 ? '→ Continue Reading' : '→ Start Reading'}</button>
+        <div class="continue-card-action" aria-hidden="true">${pct > 0 ? '→ Continue Reading' : '→ Start Reading'}</div>
       </div>
-    </div>`;
+    </button>`;
   }).join('');
 }
 
@@ -5912,7 +5912,7 @@ async function loadLearnCourses(q) {
         const grad = tradGrad[p.tradition] || 'from-sangham-navayana to-blue-700';
         const icon = tradIcon[p.tradition] || 'fa-book-open';
         const tradLabel = (p.tradition||'').charAt(0)+(p.tradition||'').slice(1).toLowerCase();
-        return `<div class="learn-continue-card" onclick="openTextDetail('${id}')">
+        return `<button type="button" class="learn-continue-card" onclick="openTextDetail('${id}')">
           <div class="flex items-start gap-4">
             <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${grad} flex items-center justify-center text-white shadow-md flex-shrink-0">
               <i class="fa-solid ${icon} text-xl"></i>
@@ -5931,11 +5931,11 @@ async function loadLearnCourses(q) {
                 </div>
               </div>
               <div class="flex items-center gap-3 mt-3">
-                <button class="px-4 py-2.5 text-white text-xs font-semibold rounded-xl transition-colors shadow-md" style="background:#C79A3B;min-height:40px" onclick="event.stopPropagation();openTextDetail('${id}')">Continue Reading</button>
+                <div aria-hidden="true" class="px-4 py-2.5 text-white text-xs font-semibold rounded-xl" style="background:#C79A3B;min-height:40px;display:inline-flex;align-items:center">Continue Reading</div>
               </div>
             </div>
           </div>
-        </div>`;
+        </button>`;
       }).join('');
       crSection.style.display = '';
     } else {
@@ -6140,14 +6140,14 @@ function _renderLibHome(root, cols, texts) {
           const coverEl = coverUrl
             ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(p.tradition)}" style="display:none">${libTradSym(p.tradition)}</div>`
             : `<div class="lib-continue-mini-cover ${libTradClass(p.tradition)}">${libTradSym(p.tradition)}</div>`;
-          return `<div class="lib-continue-card" onclick="openTextDetail('${id}')">
+          return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${id}')">
             ${coverEl}
             <div class="lib-continue-info">
               <div class="lib-continue-title">${escHtml(p.title)}</div>
               <div class="lib-continue-sub">${p.percent}% complete</div>
               <div class="lib-continue-progress"><div class="lib-continue-bar" style="width:${p.percent}%"></div></div>
             </div>
-          </div>`;
+          </button>`;
         }).join('')}
       </div>
     </div>` : '';
@@ -6155,7 +6155,7 @@ function _renderLibHome(root, cols, texts) {
   // Collections grid
   const collHtml = cols.map((c,i)=>{
     const langs=(c.languages||[]).map(l=>`<span style="background:rgba(255,255,255,.18);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:600;color:white">${libLangLabel(l)}</span>`).join(' ');
-    return `<div class="lib-coll-card" onclick="openLibraryCollection('${escHtml(c.id)}')" style="animation-delay:${i*.06}s">
+    return `<button type="button" class="lib-coll-card" onclick="openLibraryCollection('${escHtml(c.id)}')" style="animation-delay:${i*.06}s">
       <div class="lib-coll-cover ${libTradClass(c.tradition)}">
         <div class="lib-coll-sym">${libTradSym(c.tradition)}</div>
         <div class="lib-coll-trad">${escHtml(c.tradition)}</div>
@@ -6164,7 +6164,7 @@ function _renderLibHome(root, cols, texts) {
         <div class="lib-coll-name">${escHtml(c.name)}</div>
         <div class="lib-coll-count">${c._count?.texts||0} texts · ${langs||libLangLabel((c.languages||['en'])[0])}</div>
       </div>
-    </div>`;
+    </button>`;
   }).join('');
 
   // Featured card — use the first text that has a known cover, else first text overall
@@ -6176,7 +6176,7 @@ function _renderLibHome(root, cols, texts) {
       : `<div class="lib-featured-cover-fb ${libTradClass(featured.collection?.tradition)}">${libTradSym(featured.collection?.tradition)}</div>`;
     const readMins = Math.ceil((featured.segmentsTotal||0)*30/200);
     const readStr  = readMins < 60 ? `~${readMins} min` : `~${Math.floor(readMins/60)}h ${readMins%60}m`;
-    return `<div class="lib-featured" onclick="openTextDetail('${escHtml(featured.id)}')">
+    return `<button type="button" class="lib-featured" onclick="openTextDetail('${escHtml(featured.id)}')">
       ${coverEl}
       <div class="lib-featured-body">
         <div class="lib-featured-title">${escHtml(featured.title)}</div>
@@ -6188,16 +6188,16 @@ function _renderLibHome(root, cols, texts) {
           <span>🌐 ${libLangLabel(featured.language)}</span>
         </div>
       </div>
-    </div>`;
+    </button>`;
   })() : '';
 
   // Browse All Texts — horizontal scroll with real cover images
   const booksHtml = texts.map((tx,i)=>`
-    <div class="lib-book-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
+    <button type="button" class="lib-book-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
       ${_libCoverImgTag(tx, 'lib-book-cover')}
       <h4>${escHtml(tx.title)}</h4>
       <p>${escHtml(tx.author || libLangLabel(tx.language))}</p>
-    </div>`).join('');
+    </button>`).join('');
 
   root.innerHTML = `
     ${continueHtml}
@@ -6225,13 +6225,13 @@ async function _loadLibBookmarks() {
       <div class="lib-section-header"><span class="lib-section-title">Bookmarked</span></div>
       <div style="display:flex;flex-direction:column;gap:var(--space-2)">
         ${bm.map(tx=>`
-          <div class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
+          <button type="button" class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
             <div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}" style="border-radius:var(--radius-md)">${libTradSym(tx.collection?.tradition)}</div>
             <div class="lib-continue-info">
               <div class="lib-continue-title">${escHtml(tx.title)}</div>
               <div class="lib-continue-sub">${escHtml(tx.author||'')} · ${libLangLabel(tx.language)}</div>
             </div>
-          </div>`).join('')}
+          </button>`).join('')}
       </div>
     </div>`;
   } catch {}
@@ -6253,7 +6253,7 @@ async function openLibraryCollection(collId) {
     const coll = cols.find(c=>c.id===collId)||{};
     _renderCollView(root, coll, txData.data||txData||[]);
   } catch(err) {
-    root.innerHTML = `<div class="lib-breadcrumb" onclick="showLibraryHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections</div>`+renderEmptyState('learn');
+    root.innerHTML = `<button type="button" class="lib-breadcrumb" onclick="showLibraryHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections</button>`+renderEmptyState('learn');
   }
 }
 
@@ -6264,7 +6264,7 @@ function _renderCollView(root, coll, texts) {
   const langs=(coll.languages||[]).map(l=>`<span class="lib-coll-hero-tag">${libLangLabel(l)}</span>`).join('');
   const cards = texts.map((tx,i)=>{
     const pct=(progress[tx.id]?.percent)||0;
-    return `<div class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
+    return `<button type="button" class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
       <div class="lib-text-card-sym">${sym}</div>
       <div class="lib-text-card-title">${escHtml(tx.title)}</div>
       <div class="lib-text-card-meta">
@@ -6272,13 +6272,13 @@ function _renderCollView(root, coll, texts) {
         ${tx.author?`<span>${escHtml(tx.author.split(' ').pop())}</span>`:''}
       </div>
       ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
-    </div>`;
+    </button>`;
   }).join('');
 
   root.innerHTML = `
-    <div class="lib-breadcrumb" onclick="showLibraryHome()">
+    <button type="button" class="lib-breadcrumb" onclick="showLibraryHome()">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections
-    </div>
+    </button>
     <div class="lib-coll-hero ${tradClass}">
       <div class="lib-coll-hero-sym">${sym}</div>
       <div>
@@ -6314,15 +6314,15 @@ async function searchLibrary(q, tradition, collId) {
     const texts = data.data||data||[];
     const progress = libProgress();
     root.innerHTML = `
-      <div class="lib-breadcrumb" onclick="showLibraryHome()">
+      <button type="button" class="lib-breadcrumb" onclick="showLibraryHome()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> All Collections
-      </div>
+      </button>
       <div class="lib-section" style="margin-top:0">
         <div class="lib-section-header"><span class="lib-section-title">Results for "${escHtml(q)}"</span></div>
         ${texts.length ? `<div class="lib-text-grid">
           ${texts.map((tx,i)=>{
             const pct=progress[tx.id]?.percent||0;
-            return `<div class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
+            return `<button type="button" class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
               <div class="lib-text-card-sym">${libTradSym(tx.collection?.tradition)}</div>
               <div class="lib-text-card-title">${escHtml(tx.title)}</div>
               <div class="lib-text-card-meta">
@@ -6330,7 +6330,7 @@ async function searchLibrary(q, tradition, collId) {
                 ${tx.author?`<span>${escHtml(tx.author)}</span>`:''}
               </div>
               ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
-            </div>`;
+            </button>`;
           }).join('')}
         </div>` : renderEmptyState('learn')}
       </div>`;
@@ -9134,7 +9134,7 @@ function renderSessionCard(s) {
       <div class="text-[10px] text-sangham-brown-light">${d.toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit'})}</div>
     </div>`;
   })() : `<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center text-sangham-brown text-sm font-semibold">${avInner}</div>`;
-  return `<div class="session-card" onclick="openProfile('${host.id}')">
+  return `<div class="session-card" role="button" tabindex="0" onclick="openProfile('${host.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProfile('${host.id}')}">
     ${dateBlock}
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-2 mb-1 flex-wrap">
