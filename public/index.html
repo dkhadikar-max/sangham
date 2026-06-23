@@ -650,6 +650,24 @@ round:var(--error-600)}
       .tab-panel{padding-bottom:var(--space-6)}
     }
 
+    /* ── Mobile-specific overrides (< 640px) ──────────────────────────── */
+    @media(max-width:639px){
+      /* Tighter page padding on phone */
+      .app-header .max-w-7xl{padding:0 var(--space-3)}
+      /* Tabs with smaller padding */
+      #tab-home .pt-4,.tab-panel>div.pt-4{padding-top:var(--space-3)}
+      /* Feed filter pills: full-height touch targets */
+      .feed-filter-pill{padding:8px 14px!important}
+      /* Create post action row wraps on very small screens */
+      #tab-home .create-post-actions{flex-wrap:wrap;gap:var(--space-1)}
+      /* Card padding tighter on phone */
+      .rounded-2xl.p-5{padding:var(--space-4)!important}
+      /* Reduce hero text sizes */
+      .font-serif.text-2xl{font-size:var(--text-xl)}
+      /* Full-width section titles */
+      h2.text-lg,h1.text-2xl{font-size:var(--text-lg)}
+    }
+
     /* Create Post Panel */
     #panel-create{z-index:50}
 #panel-create .panel-content{padding:var(--space-4)}
@@ -1788,8 +1806,8 @@ round:var(--error-600)}
           </div>
           <span class="font-serif text-xl font-semibold text-sangham-ink tracking-tight">Sangham</span>
         </div>
-        <!-- Center: Navigation (hidden below md=768px) -->
-        <div class="hidden md:flex items-center gap-8">
+        <!-- Center: Navigation (hidden below lg=1024px — bottom nav covers smaller sizes) -->
+        <div class="hidden lg:flex items-center gap-8">
           <button id="header-nav-home" onclick="switchTab('home')" class="header-nav-link active flex items-center gap-2 text-sangham-gold font-medium text-sm transition-colors">
             <i class="fa-solid fa-house"></i><span>Home</span>
           </button>
@@ -2909,17 +2927,14 @@ round:var(--error-600)}
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span data-i18n="nav.discover">Discover</span>
       </button>
+      <span class="nav-spacer"></span>
       <button class="nav-item" onclick="switchTab('communities')" id="nav-communities" aria-label="Communities">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span data-i18n="communities.title">Sanghas</span>
       </button>
-      <button class="nav-item" onclick="switchTab('learn')" id="nav-learn" aria-label="Learn">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span data-i18n="nav.learn">Educate</span>
-      </button>
-      <button class="nav-item" onclick="switchTab('educate')" id="nav-educate" aria-label="Educate">
+      <button class="nav-item" onclick="switchTab('educate')" id="nav-educate" aria-label="Learn">
         <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-        <span>Educate</span>
+        <span>Learn</span>
       </button>
       <button class="nav-item" onclick="switchTab('chat')" id="nav-chat" aria-label="Chat">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -2927,6 +2942,9 @@ round:var(--error-600)}
         <span class="nav-badge" id="chatBadge" style="display:none"></span>
       </button>
     </nav>
+    <button class="nav-create" onclick="openCreatePost()" aria-label="Share reflection">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
 
     <div class="bottom-sheet-scrim" id="bottomSheetScrim" onclick="closeBottomSheet()"></div>
 
@@ -3853,7 +3871,7 @@ const WS_URL   = 'https://sangham.online';
 //  I18N ENGINE
 // ============================================================
 const LOCALE_EN = {
-  nav:{ home:'Home', discover:'Discover', communities:'Communities', learn:'Educate', chat:'Messages' },
+  nav:{ home:'Home', discover:'Discover', communities:'Communities', learn:'Library', chat:'Messages' },
   auth:{ welcome_back:'Welcome Back', continue_journey:'Continue your journey with Sangham.', sign_in:'Sign In', create_account:'Create Account', email_phone:'Email or Phone', password:'Password', full_name:'Full Name', full_name_placeholder:'e.g. Ananda', new_here:'New to Sangham?', have_account:'Already have an account?', passkey:'Sign in with Passkey', or:'or continue with', join:'Join Sangham', begin_journey:'Begin your journey of awakening.', identifier_ph:'Enter email or phone number' },
   onboarding:{ choose_language:'Choose Your Language', choose_language_sub:"Select the language you'd like to use Sangham in.", continue:'Continue', skip:'Skip', next:'Next →', back:'← Back', finish:'Finish', setting_up:'Setting up…', step_of:'Step {n} of 5', your_path:'Your Background', your_path_sub:'All traditions and backgrounds are welcome. Select what applies to you.', tradition_label:'Tradition (optional)', trad_theravada:'Theravada', trad_mahayana:'Mahayana / Zen', trad_vajrayana:'Vajrayana / Tibetan', trad_navayana:'Navayana / Ambedkarite', trad_multiple:'Multiple Traditions', trad_other:'Other / Secular', profession_label:'Your Profession', profession_search:'Select your profession…', profession_other_ph:'e.g. Yoga Instructor, NGO Director, CA', prof_student:'Student', prof_teacher:'Teacher', prof_researcher:'Researcher', prof_doctor:'Doctor', prof_engineer:'Engineer', prof_lawyer:'Lawyer', prof_business_owner:'Business Owner', prof_entrepreneur:'Entrepreneur', prof_artist:'Artist', prof_writer:'Writer', prof_activist:'Social Activist', prof_civil_servant:'Government Employee', prof_employee:'Private Sector Employee', prof_monk_nun:'Monk / Nun', prof_volunteer:'Volunteer', prof_other:'Other (write your own)', interests_label:'Your Interests', interests_sub:'Select topics that matter to you.', int_education:'Education', int_study:'Study', int_meditation:'Meditation', int_service:'Service', int_tech:'Technology', int_ai:'AI', int_entrepreneurship:'Entrepreneurship', int_social_change:'Social Change', int_leadership:'Leadership', int_language_learning:'Language Learning', int_translation:'Translation', int_writing:'Writing', int_art:'Art', int_research:'Research', int_volunteering:'Volunteering', where_are_you:'Where Are You?', where_sub:'Helps nearby people find you.', city:'City', city_placeholder:'e.g. Nagpur', country:'Country', country_placeholder:'Select country', spoken_lang_label:'Languages You Speak', purpose_title:'Why Are You Here?', purpose_sub:"We'll connect you with people, communities, and opportunities that match.", purpose_connections:'Connections', purpose_learning:'Learning', purpose_career:'Career & Growth', purpose_entrepreneurship:'Entrepreneurship & Technology', purpose_service:'Service & Impact', purpose_mindfulness:'Mindfulness & Practice', pur_meet_people:'Meet New People', pur_local_community:'Local Community', pur_discussion:'Discussion Groups', pur_networking:'Networking', pur_education:'Education', pur_courses:'Courses', pur_study_groups:'Study Groups', pur_research:'Research', pur_language_learning:'Language Learning', pur_skill_dev:'Skill Development', pur_career_guidance:'Career Guidance', pur_mentorship:'Mentorship', pur_leadership:'Leadership', pur_entrepreneurship:'Entrepreneurship', pur_startups:'Startups', pur_tech:'Technology', pur_ai:'AI', pur_projects:'Collaborative Projects', pur_volunteering:'Volunteering', pur_social_service:'Social Service', pur_ngo:'NGO Work', pur_community_dev:'Community Development', pur_meditation:'Meditation', pur_mindfulness:'Mindfulness', pur_buddhist_study:'Buddhist Study', pur_teacher_guidance:'Teacher Guidance' },
   discover:{ people:'People', events:'Events', search_people:'Search practitioners…', search_events:'Search events…', seeking:'Seeking:', language_filter:'Language:', anyone:'Anyone', verified_teachers:'🎓 Verified Teachers', post_intent:'+ Post Intent', all_types:'All Types', any:'Any', online:'Online', in_person:'In-Person', hybrid:'Hybrid', search_all:'Search all', no_people_title:'No practitioners found', no_people_text:'Try adjusting your filters or search terms.', clear_filters:'Clear Filters', browse_all:'Browse All', search_default:'Search across people, communities and events', search_no_results:'No results for "{q}"', search_error:'Unable to search. Try again.', no_events_error:'Unable to load events.', no_intents:'No intents yet', no_intents_text:'Be the first to post an intent', intents_error:'Unable to load intents.', no_teachers:'No verified teachers yet', teachers_error:'Unable to load teachers.' },
@@ -4528,7 +4546,8 @@ function switchTab(tab) {
   void targetPanel.offsetWidth;
   targetPanel.style.opacity = '1';
 
-  document.getElementById('nav-' + tab).classList.add('active');
+  const navEl = document.getElementById('nav-' + tab);
+  if (navEl) navEl.classList.add('active');
   const dsNav = document.getElementById('ds-nav-' + tab);
   if (dsNav) dsNav.classList.add('active');
   state.currentTab = tab;
