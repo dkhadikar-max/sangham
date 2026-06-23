@@ -719,7 +719,9 @@ round:var(--error-600)}
     /* Touch device tap-target overrides */
     @media(hover:none) and (pointer:coarse){
       .btn-sm{min-height:40px}
+      .btn-ghost{min-height:40px}
       .chip{min-height:40px;display:inline-flex;align-items:center}
+      .chip-toggle{min-height:40px;display:inline-flex;align-items:center}
       .filter-pill{min-height:40px}
       .feed-filter-pill{min-height:40px;display:inline-flex;align-items:center}
       .comm-tab-btn{min-height:44px}
@@ -8026,8 +8028,8 @@ function toggleEditProfile() {
     const TRAD_LABELS = { THERAVADA:'Theravada', MAHAYANA:'Mahayana', VAJRAYANA:'Vajrayana', NAVAYANA:'Navayana / Ambedkarite', MULTIPLE:'Multiple', OTHER:'Other' };
     const myTraditions = u.traditions || [];
     const tradCheckboxes = TRADITIONS.map(tr => `
-      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) 0;font-size:var(--text-sm);cursor:pointer">
-        <input type="checkbox" id="edit-trad-${tr}" value="${tr}" ${myTraditions.includes(tr) ? 'checked' : ''} style="width:16px;height:16px;accent-color:var(--saffron-500)">
+      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) 0;font-size:var(--text-sm);cursor:pointer">
+        <input type="checkbox" id="edit-trad-${tr}" value="${tr}" ${myTraditions.includes(tr) ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--saffron-500)">
         ${TRAD_LABELS[tr]}
       </label>`).join('');
 
@@ -8044,8 +8046,8 @@ function toggleEditProfile() {
     ];
     const myLangs = new Set(u.languages || []);
     const langCheckboxes = LANGS.map(l => `
-      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-1) 0;font-size:var(--text-sm);cursor:pointer">
-        <input type="checkbox" id="edit-lang-${l.code}" value="${l.code}" ${myLangs.has(l.code) ? 'checked' : ''} style="width:15px;height:15px;accent-color:var(--saffron-500)">
+      <label style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) 0;font-size:var(--text-sm);cursor:pointer">
+        <input type="checkbox" id="edit-lang-${l.code}" value="${l.code}" ${myLangs.has(l.code) ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--saffron-500)">
         ${l.label}
       </label>`).join('');
 
