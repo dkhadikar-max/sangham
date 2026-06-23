@@ -38,9 +38,10 @@
     .search-focus:focus{box-shadow:0 0 0 3px rgba(199,154,59,.15)}
     .member-avatar{transition:transform .2s ease}
     .member-avatar:hover{transform:scale(1.15);z-index:10}
-    .join-btn{transition:all .2s ease}
+    .join-btn{transition:all .2s ease;min-height:40px}
     .join-btn:hover{transform:scale(1.05)}
     .join-btn.joined{background:transparent;color:#C79A3B;border:1.5px solid #C79A3B}
+    .community-card .comm-icon-btn{min-width:44px;min-height:44px;width:44px;height:44px}
     .sangha-row{transition:all .2s ease}
     .sangha-row:hover{background:#F8F5EF}
     /* ── Educate tab — override old learn card styles ── */
@@ -456,9 +457,7 @@ round:var(--error-600)}
     .tradition-dot{display:inline-block;width:6px;height:6px;background:var(--saffron-500);border-radius:50%}
     .person-actions{display:flex;flex-direction:column;gap:var(--space-2)}
 
-    /* Community Card — new design handled entirely by Tailwind classes */
-    .community-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
-    .community-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2)}
+    /* Community Card — new design handled entirely by Tailwind classes (base defined in first <style> block) */
 
     /* Text Result Card */
     .text-result{border-left:3px solid var(--saffron-500);border-radius:0 var(--radius-md) var(--radius-md) 0;background:var(--surface-elevated);margin:0 var(--space-4) var(--space-3);padding:var(--space-4);cursor:pointer;transition:all var(--duration-fast) var(--ease-out);border-top:1px solid var(--border-default);border-right:1px solid var(--border-default);border-bottom:1px solid var(--border-default)}
@@ -2262,8 +2261,8 @@ round:var(--error-600)}
                   <h1 class="font-serif text-2xl font-bold text-sangham-ink">Sanghas</h1>
                   <p class="text-sm text-sangham-brown-light mt-1">Discover and join communities that resonate with your practice</p>
                 </div>
-                <button class="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white text-sm font-semibold rounded-xl shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-all" onclick="openCreateCommunity()">
-                  <i class="fa-solid fa-plus"></i><span>New Sangha</span>
+                <button class="flex items-center gap-2 px-3 py-2.5 sm:px-5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white text-sm font-semibold rounded-xl shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-all min-h-[44px]" onclick="openCreateCommunity()" style="background:linear-gradient(135deg,#C79A3B 0%,#B2872F 100%)">
+                  <i class="fa-solid fa-plus"></i><span class="hidden sm:inline">New Sangha</span>
                 </button>
               </div>
 
@@ -2291,20 +2290,20 @@ round:var(--error-600)}
                   <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'TEMPLE'},this)">Temples</button>
                   <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'AMBEDKARITE_SANGHA'},this)">Sanghas</button>
                   <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="filterCommunities({category:'STUDY_GROUP'},this)">Study Groups</button>
-                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap">Near Me</button>
+                  <button class="filter-pill px-4 py-2 bg-white text-sangham-brown-light rounded-full text-xs font-medium border border-sangham-gold/10 whitespace-nowrap" onclick="showToast('Location-based filter coming soon','info')">Near Me</button>
                 </div>
               </div>
 
               <!-- View Toggle & Sort -->
-              <div class="flex items-center justify-between">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div class="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm border border-sangham-gold/10" id="comm-view-toggle">
-                  <button class="px-4 py-2 bg-sangham-gold text-white text-xs font-medium rounded-lg shadow-sm" id="comm-grid-btn" onclick="commSetView('grid')">Grid</button>
-                  <button class="px-4 py-2 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" id="comm-list-btn" onclick="commSetView('list')">List</button>
-                  <button class="px-4 py-2 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors">Map</button>
+                  <button class="px-4 py-2.5 bg-sangham-gold text-white text-xs font-medium rounded-lg shadow-sm" id="comm-grid-btn" onclick="commSetView('grid')" style="min-height:40px">Grid</button>
+                  <button class="px-4 py-2.5 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" id="comm-list-btn" onclick="commSetView('list')" style="min-height:40px">List</button>
+                  <button class="px-4 py-2.5 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" style="min-height:40px">Map</button>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 sm:ml-auto">
                   <span class="text-xs text-sangham-brown-light">Sort by:</span>
-                  <select class="bg-white border border-sangham-gold/10 rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none focus:border-sangham-gold/30 cursor-pointer">
+                  <select class="bg-white border border-sangham-gold/10 rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none focus:border-sangham-gold/30 cursor-pointer" style="min-height:40px">
                     <option>Recommended</option><option>Nearest</option><option>Most Active</option><option>Newest</option><option>Largest</option>
                   </select>
                 </div>
@@ -2349,8 +2348,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn joined flex-1 py-2 rounded-xl text-xs font-semibold">Joined</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bell text-sm"></i></button>
+                      <button class="join-btn joined flex-1 py-2.5 rounded-xl text-xs font-semibold">Joined</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bell text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2388,8 +2387,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                      <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2426,8 +2425,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-medium rounded-md">Events</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                      <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2465,8 +2464,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-medium rounded-md">Temple</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                      <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2500,8 +2499,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[10px] font-medium rounded-md">Study Group</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                      <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2539,8 +2538,8 @@ round:var(--error-600)}
                       <span class="px-2 py-0.5 bg-teal-50 text-teal-600 text-[10px] font-medium rounded-md">Mahayana</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
-                      <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
+                      <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
+                      <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors"><i class="fa-regular fa-bookmark text-sm"></i></button>
                     </div>
                   </div>
                 </div>
@@ -2554,7 +2553,7 @@ round:var(--error-600)}
                     <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Nagpur Buddhist Study Circle</h3><span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span></div>
                     <p class="text-xs text-sangham-brown-light mt-0.5">Nagpur, Maharashtra · 856 members · Active 2h ago</p>
                   </div>
-                  <button class="join-btn joined px-5 py-2 rounded-xl text-xs font-semibold flex-shrink-0">Joined</button>
+                  <button class="join-btn joined px-5 py-2.5 rounded-xl text-xs font-semibold flex-shrink-0">Joined</button>
                 </div>
                 <div class="sangha-row bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10 flex items-center gap-4">
                   <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0"><i class="fa-solid fa-dharmachakra text-lg"></i></div>
@@ -2562,7 +2561,7 @@ round:var(--error-600)}
                     <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Mumbai Navayana Sangha</h3><span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span></div>
                     <p class="text-xs text-sangham-brown-light mt-0.5">Mumbai, Maharashtra · 1.2k members · Active now</p>
                   </div>
-                  <button class="join-btn px-5 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 flex-shrink-0">Join</button>
+                  <button class="join-btn px-5 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 flex-shrink-0">Join</button>
                 </div>
               </div>
 
@@ -8227,8 +8226,8 @@ function renderCommunityCard(a, delay = 0) {
         ${cat ? `<span class="px-2 py-0.5 ${catColor} text-[10px] font-medium rounded-md">${cat}</span>` : ''}
       </div>
       <div class="flex items-center gap-2">
-        <button class="join-btn flex-1 py-2 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg" onclick="event.stopPropagation();joinCommunityFromHome('${a.id}',this)">Join</button>
-        <button class="w-9 h-9 rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors" onclick="event.stopPropagation()"><i class="fa-regular fa-bookmark text-sm"></i></button>
+        <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg" onclick="event.stopPropagation();joinCommunityFromHome('${a.id}',this)">Join</button>
+        <button class="comm-icon-btn rounded-xl bg-sangham-cream hover:bg-sangham-gold/10 flex items-center justify-center text-sangham-brown-light hover:text-sangham-gold transition-colors" onclick="event.stopPropagation()"><i class="fa-regular fa-bookmark text-sm"></i></button>
       </div>
     </div>
   </div>`;
