@@ -64,7 +64,7 @@
     .learn-continue-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-6);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s cubic-bezier(.4,0,.2,1);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%;display:block}
     .learn-continue-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2)}
     /* ── Sangham Educate ─────────────────────────────────────── */
-    .edu-hero{padding:var(--space-5) var(--space-4) var(--space-4);background:#fff;border-bottom:1px solid var(--border-default)}
+    .edu-hero{padding:var(--space-5) var(--space-5) var(--space-4);background:var(--surface-elevated);border-radius:var(--radius-2xl);border:1px solid var(--border-default);margin-bottom:var(--space-4);box-shadow:0 4px 16px rgba(0,0,0,0.04)}
     .edu-hero-title{font-family:var(--font-serif);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.2;margin-bottom:var(--space-2)}
     .edu-search-wrap{position:relative;margin-bottom:var(--space-3)}
     .edu-search-wrap input{width:100%;padding:var(--space-3) var(--space-4) var(--space-3) 2.75rem;border-radius:var(--radius-2xl);border:1.5px solid var(--border-default);background:var(--surface-page);font-size:var(--text-base);color:var(--text-primary);outline:none;transition:border-color .2s}
@@ -73,33 +73,34 @@
     .edu-chips{display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:center}
     .edu-chip{padding:5px 14px;border-radius:9999px;background:rgba(199,154,59,.1);color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;border:1px solid rgba(199,154,59,.2);transition:all .2s}
     .edu-chip:hover{background:rgba(199,154,59,.2)}
-    .edu-section{padding:var(--space-5) var(--space-4)}
+    .edu-section{padding:var(--space-5) 0}
     .edu-section-title{font-family:var(--font-serif);font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-4)}
     .edu-path-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
     @media(max-width:420px){.edu-path-grid{grid-template-columns:1fr}}
-    .edu-path-card{background:#fff;border-radius:var(--radius-2xl);padding:var(--space-5);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);border:1px solid rgba(199,154,59,.08);transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:var(--space-2);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
+    @media(min-width:768px){.edu-path-grid{grid-template-columns:repeat(3,1fr)}}
+    .edu-path-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-5);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);border:1px solid rgba(199,154,59,.08);transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:var(--space-2);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
     .edu-path-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2);border-color:rgba(199,154,59,.3)}
     .edu-domain-badge{display:inline-block;font-size:10px;font-weight:var(--weight-semibold);letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:9999px;background:rgba(199,154,59,.12);color:#C79A3B}
     .edu-path-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.3}
     .edu-path-tagline{font-size:var(--text-xs);color:var(--text-secondary);line-height:1.4}
     .edu-path-meta{font-size:10px;color:var(--text-tertiary)}
-    .edu-progress-card{background:#fff;border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);border:1px solid rgba(199,154,59,.08);transition:all .3s ease;display:flex;flex-direction:column;gap:var(--space-2);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
+    .edu-progress-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.05);border:1px solid rgba(199,154,59,.08);transition:all .3s ease;display:flex;flex-direction:column;gap:var(--space-2);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
     .edu-progress-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(199,154,59,.2)}
     .edu-progress-bar-wrap{height:4px;background:var(--border-default);border-radius:9999px;overflow:hidden}
     .edu-progress-bar-fill{height:100%;background:linear-gradient(90deg,#C79A3B,#E7D2A1);border-radius:9999px;transition:width .4s ease}
-    .edu-tutor-card{background:#fff;border-radius:var(--radius-2xl);padding:var(--space-5);border:1px solid rgba(199,154,59,.15);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .edu-tutor-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-5);border:1px solid rgba(199,154,59,.15);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
     .edu-tutor-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-top:var(--space-3)}
     .edu-tutor-btn{padding:var(--space-2) var(--space-3);border-radius:var(--radius-xl);border:1.5px solid rgba(199,154,59,.3);background:var(--surface-page);color:var(--text-primary);font-size:var(--text-sm);font-weight:var(--weight-medium);cursor:pointer;transition:all .2s;text-align:left}
     .edu-tutor-btn:hover{border-color:#C79A3B;background:rgba(199,154,59,.06);color:#C79A3B}
     /* Path detail view */
-    .edu-roadmap{padding:var(--space-4)}
+    .edu-roadmap{padding:var(--space-4) 0}
     .edu-phase{margin-bottom:var(--space-5)}
     .edu-phase-header{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
     .edu-phase-dot{width:28px;height:28px;border-radius:50%;background:#C79A3B;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--text-xs);font-weight:var(--weight-bold);color:#fff}
     .edu-phase-dot.locked{background:var(--border-default)}
     .edu-phase-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)}
     .edu-phase-line{width:1px;background:var(--border-default);margin:0 13px;min-height:12px}
-    .edu-lesson-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:#fff;border-radius:var(--radius-xl);margin-bottom:var(--space-2);cursor:pointer;border:1px solid rgba(199,154,59,.08);transition:all .2s;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
+    .edu-lesson-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-elevated);border-radius:var(--radius-xl);margin-bottom:var(--space-2);cursor:pointer;border:1px solid rgba(199,154,59,.08);transition:all .2s;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
     .edu-lesson-locked{opacity:0.5;cursor:default}
     .edu-lesson-row:hover{border-color:rgba(199,154,59,.3);box-shadow:0 4px 12px rgba(199,154,59,.08)}
     .edu-lesson-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-default);flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -111,8 +112,8 @@
     .edu-exercise-btn:hover:not(:disabled){background:rgba(199,154,59,.1)}
     .edu-exercise-btn:disabled{cursor:default}
     /* Lesson view */
-    .edu-lesson-view{padding:var(--space-4)}
-    .edu-lesson-section{background:#fff;border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);margin-bottom:var(--space-3);border:1px solid rgba(199,154,59,.08)}
+    .edu-lesson-view{padding:var(--space-4) 0}
+    .edu-lesson-section{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);margin-bottom:var(--space-3);border:1px solid rgba(199,154,59,.08)}
     .edu-lesson-section-label{font-size:10px;font-weight:var(--weight-semibold);letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;margin-bottom:var(--space-2)}
     .edu-lesson-section-body{font-size:var(--text-sm);color:var(--text-primary);line-height:1.6}
     .edu-concept-tag{display:inline-block;padding:3px 10px;background:rgba(199,154,59,.08);border-radius:9999px;font-size:11px;color:var(--text-secondary);margin:2px;border:1px solid var(--border-default)}
@@ -2806,144 +2807,222 @@ round:var(--error-600)}
 
       <!-- ══ EDUCATE TAB ══════════════════════════════════════════════════════ -->
       <div id="tab-educate" class="tab-panel bg-sangham-cream font-sans text-sangham-ink antialiased">
-        <!-- Landing view -->
-        <div id="edu-view-landing">
-          <!-- Hero Search -->
-          <div class="edu-hero">
-            <div class="edu-hero-title">What would you like to learn today?</div>
-            <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4)">Choose a topic and get a structured learning path.</div>
-            <div class="edu-search-wrap">
-              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="eduSearchInput" type="text" placeholder="e.g. AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
-            </div>
-            <div class="edu-chips">
-              <button class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Entrepreneurship')">Entrepreneurship</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Sales')">Sales</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Leadership')">Leadership</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Networking')">Networking</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Wealth')">Wealth</button>
-              <button class="edu-chip" onclick="submitEducateSearch('Buddhism')">Buddhism</button>
-            </div>
-          </div>
+        <div class="pt-4 pb-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          <!-- Continue Learning (authenticated, has enrollments) -->
-          <div id="edu-continue-section" style="display:none">
-            <div class="edu-section">
-              <div class="edu-section-title">Continue Learning</div>
-              <div id="edu-continue-list" class="flex flex-col gap-3"></div>
-            </div>
-          </div>
-
-          <!-- Featured Learning Paths -->
-          <div class="edu-section">
-            <div class="edu-section-title">Featured Learning Paths</div>
-            <div id="edu-path-grid" class="edu-path-grid">
-              <div class="empty-state" style="grid-column:1/-1;padding:var(--space-8)"><div class="empty-state-text">Loading paths…</div></div>
-            </div>
-          </div>
-
-          <!-- AI Tutor Card -->
-          <div class="edu-section" style="padding-top:0">
-            <div class="edu-tutor-card">
-              <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2)">
-                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C79A3B,#E7D2A1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                  <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+            <!-- LEFT SIDEBAR -->
+            <aside class="hidden lg:block lg:col-span-3">
+              <div class="sticky top-24 space-y-6">
+                <!-- User Mini Profile -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="edu-lsb-avatar-wrap"></div>
+                    <div class="min-w-0">
+                      <h3 class="font-semibold text-sangham-ink text-sm truncate" id="edu-lsb-name">—</h3>
+                      <p class="text-xs text-sangham-brown-light truncate" id="edu-lsb-handle">@practitioner</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="edu-lsb-communities">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Communities</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="edu-lsb-connections">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Connections</div>
+                    </div>
+                    <div class="bg-sangham-cream rounded-lg p-2">
+                      <div class="font-bold text-sangham-ink text-sm" id="edu-lsb-karma">—</div>
+                      <div class="text-[10px] text-sangham-brown-light">Karma</div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)">AI Tutor</div>
-                  <div style="font-size:var(--text-xs);color:var(--text-secondary)">Context-aware learning companion</div>
+                <!-- Browse by Domain -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10">
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Browse</h4>
+                  <nav class="space-y-1">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left" onclick="showEduLanding()">
+                      <i class="fa-solid fa-graduation-cap w-5 text-center"></i>All Paths
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="submitEducateSearch('AI')">
+                      <i class="fa-solid fa-robot w-5 text-center text-sangham-brown-light"></i>AI &amp; Automation
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="submitEducateSearch('Entrepreneurship')">
+                      <i class="fa-solid fa-rocket w-5 text-center text-sangham-brown-light"></i>Entrepreneurship
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="submitEducateSearch('Leadership')">
+                      <i class="fa-solid fa-crown w-5 text-center text-sangham-brown-light"></i>Leadership
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="submitEducateSearch('Buddhism')">
+                      <i class="fa-solid fa-dharmachakra w-5 text-center text-sangham-brown-light"></i>Buddhism &amp; Meditation
+                    </button>
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('learn')">
+                      <i class="fa-solid fa-book-open w-5 text-center text-sangham-brown-light"></i>Library
+                    </button>
+                  </nav>
+                </div>
+                <!-- Progress Card -->
+                <div class="rounded-2xl p-5 text-white shadow-lg shadow-sangham-gold/20" style="background:linear-gradient(135deg,#C79A3B 0%,#B2872F 100%)">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-semibold text-sm">Your Progress</h4>
+                    <i class="fa-solid fa-chart-line" style="opacity:.6"></i>
+                  </div>
+                  <div id="edu-lsb-progress" class="space-y-3">
+                    <div class="text-xs" style="opacity:.9">Enroll in a path to track your progress here.</div>
+                  </div>
                 </div>
               </div>
-              <div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.5">Open any lesson to activate the AI Tutor. It explains concepts, quizzes you, creates exercises, and answers your questions — always grounded in the lesson content.</div>
-              <div id="edu-tutor-status" style="margin-top:var(--space-2);font-size:11px;color:var(--text-tertiary)"></div>
-            </div>
-          </div>
-        </div><!-- /edu-view-landing -->
+            </aside>
 
-        <!-- Path detail view (vertical roadmap) -->
-        <div id="edu-view-path" style="display:none">
-          <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-            <button onclick="showEduLanding()" aria-label="Back to learning paths" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
-              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div style="flex:1;min-width:0">
-              <div id="edu-path-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-              <div id="edu-path-tagline" style="font-size:var(--text-xs);color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-            </div>
-          </div>
-          <div style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)">
-            <div id="edu-path-progress-wrap" class="edu-progress-bar-wrap" style="flex:1"><div id="edu-path-progress-fill" class="edu-progress-bar-fill" style="width:0%"></div></div>
-            <span id="edu-path-pct" style="font-size:var(--text-xs);color:var(--text-secondary);flex-shrink:0">0%</span>
-            <button id="edu-path-enroll-btn" onclick="enrollInPath()" style="display:none" class="btn btn-primary btn-sm">Start Path</button>
-          </div>
-          <div id="edu-roadmap" class="edu-roadmap"></div>
-          <div id="edu-path-circle" style="display:none;margin:0 var(--space-4) var(--space-6)">
-            <div class="edu-tutor-card">
-              <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2)">Join the Learning Circle</div>
-              <div id="edu-circle-desc" style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-3)">Connect with other learners on this path — share insights, ask questions, and build together.</div>
-              <button onclick="openEduCircle()" class="btn btn-secondary btn-sm">Find Circle in Communities</button>
-            </div>
-          </div>
-        </div><!-- /edu-view-path -->
+            <!-- MAIN CONTENT -->
+            <main class="lg:col-span-9 space-y-4">
 
-        <!-- Lesson view -->
-        <div id="edu-view-lesson" style="display:none">
-          <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-            <button id="edu-lesson-back-btn" onclick="backToEduPath()" aria-label="Back to path" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
-              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div style="flex:1">
-              <div id="edu-lesson-phase-label" style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;font-weight:600"></div>
-              <div id="edu-lesson-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)"></div>
-            </div>
-            <span id="edu-lesson-duration" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0"></span>
+              <!-- Landing view -->
+              <div id="edu-view-landing">
+                <!-- Hero Search -->
+                <div class="edu-hero">
+                  <div class="edu-hero-title">What would you like to learn today?</div>
+                  <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4)">Choose a topic and get a structured learning path.</div>
+                  <div class="edu-search-wrap">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input id="eduSearchInput" type="text" placeholder="e.g. AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
+                  </div>
+                  <div class="edu-chips">
+                    <button class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Entrepreneurship')">Entrepreneurship</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Sales')">Sales</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Leadership')">Leadership</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Networking')">Networking</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Wealth')">Wealth</button>
+                    <button class="edu-chip" onclick="submitEducateSearch('Buddhism')">Buddhism</button>
+                  </div>
+                </div>
+
+                <!-- Continue Learning -->
+                <div id="edu-continue-section" style="display:none">
+                  <div class="edu-section">
+                    <div class="edu-section-title">Continue Learning</div>
+                    <div id="edu-continue-list" class="flex flex-col gap-3"></div>
+                  </div>
+                </div>
+
+                <!-- Featured Learning Paths -->
+                <div class="edu-section">
+                  <div class="edu-section-title">Featured Learning Paths</div>
+                  <div id="edu-path-grid" class="edu-path-grid">
+                    <div class="empty-state" style="grid-column:1/-1;padding:var(--space-8)"><div class="empty-state-text">Loading paths…</div></div>
+                  </div>
+                </div>
+
+                <!-- AI Tutor Card -->
+                <div class="edu-section" style="padding-top:0">
+                  <div class="edu-tutor-card">
+                    <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2)">
+                      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C79A3B,#E7D2A1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+                      </div>
+                      <div>
+                        <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)">AI Tutor</div>
+                        <div style="font-size:var(--text-xs);color:var(--text-secondary)">Context-aware learning companion</div>
+                      </div>
+                    </div>
+                    <div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.5">Open any lesson to activate the AI Tutor. It explains concepts, quizzes you, creates exercises, and answers your questions — always grounded in the lesson content.</div>
+                    <div id="edu-tutor-status" style="margin-top:var(--space-2);font-size:11px;color:var(--text-tertiary)"></div>
+                  </div>
+                </div>
+              </div><!-- /edu-view-landing -->
+
+              <!-- Path detail view -->
+              <div id="edu-view-path" style="display:none">
+                <div class="bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
+                  <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
+                    <button onclick="showEduLanding()" aria-label="Back to learning paths" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+                      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <div style="flex:1;min-width:0">
+                      <div id="edu-path-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+                      <div id="edu-path-tagline" style="font-size:var(--text-xs);color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+                    </div>
+                  </div>
+                  <div style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)">
+                    <div id="edu-path-progress-wrap" class="edu-progress-bar-wrap" style="flex:1"><div id="edu-path-progress-fill" class="edu-progress-bar-fill" style="width:0%"></div></div>
+                    <span id="edu-path-pct" style="font-size:var(--text-xs);color:var(--text-secondary);flex-shrink:0">0%</span>
+                    <button id="edu-path-enroll-btn" onclick="enrollInPath()" style="display:none" class="btn btn-primary btn-sm">Start Path</button>
+                  </div>
+                  <div id="edu-roadmap" class="edu-roadmap"></div>
+                  <div id="edu-path-circle" style="display:none;padding:0 var(--space-4) var(--space-6)">
+                    <div class="edu-tutor-card">
+                      <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2)">Join the Learning Circle</div>
+                      <div id="edu-circle-desc" style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-3)">Connect with other learners on this path — share insights, ask questions, and build together.</div>
+                      <button onclick="openEduCircle()" class="btn btn-secondary btn-sm">Find Circle in Communities</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /edu-view-path -->
+
+              <!-- Lesson view -->
+              <div id="edu-view-lesson" style="display:none">
+                <div class="bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
+                  <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
+                    <button id="edu-lesson-back-btn" onclick="backToEduPath()" aria-label="Back to path" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+                      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <div style="flex:1">
+                      <div id="edu-lesson-phase-label" style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;font-weight:600"></div>
+                      <div id="edu-lesson-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)"></div>
+                    </div>
+                    <span id="edu-lesson-duration" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0"></span>
+                  </div>
+                  <div class="edu-lesson-view">
+                    <!-- 1. Overview -->
+                    <div class="edu-lesson-section">
+                      <div class="edu-lesson-section-label">Overview</div>
+                      <div id="edu-lesson-overview" class="edu-lesson-section-body"></div>
+                    </div>
+                    <!-- 2. Concepts -->
+                    <div class="edu-lesson-section">
+                      <div class="edu-lesson-section-label">Core Concepts</div>
+                      <div id="edu-lesson-concepts" class="edu-lesson-section-body"></div>
+                    </div>
+                    <!-- 3. Real World Example -->
+                    <div class="edu-lesson-section">
+                      <div class="edu-lesson-section-label">Real World Example</div>
+                      <div id="edu-lesson-example" class="edu-lesson-section-body" style="color:var(--text-secondary)">Tap "Explain" to get a real-world example from the AI Tutor.</div>
+                    </div>
+                    <!-- 4. Action Task -->
+                    <div class="edu-lesson-section" style="background:rgba(199,154,59,.04);border-color:rgba(199,154,59,.2)">
+                      <div class="edu-lesson-section-label">Action Task</div>
+                      <div id="edu-lesson-action" class="edu-lesson-section-body"></div>
+                      <button id="edu-exercise-btn" class="edu-exercise-btn" onclick="markExerciseDone()">
+                        ✓ I completed this exercise
+                      </button>
+                    </div>
+                    <!-- 5. Reflection -->
+                    <div class="edu-lesson-section">
+                      <div class="edu-lesson-section-label">Reflection Question</div>
+                      <div id="edu-lesson-reflection" class="edu-lesson-section-body" style="font-style:italic"></div>
+                    </div>
+                    <!-- AI Tutor actions -->
+                    <div class="edu-tutor-card" style="margin-bottom:var(--space-4)">
+                      <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:4px">AI Tutor</div>
+                      <div style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-2)">Grounded in this lesson's content only. Factual claims are cited to frameworks; uncertain claims are flagged.</div>
+                      <div class="edu-tutor-actions">
+                        <button class="edu-tutor-btn" onclick="callEduTutor('explain')">💡 Explain</button>
+                        <button class="edu-tutor-btn" onclick="callEduTutor('quiz')">❓ Quiz Me</button>
+                        <button class="edu-tutor-btn" onclick="callEduTutor('exercise')">✏️ Exercise</button>
+                        <button class="edu-tutor-btn" onclick="callEduTutor('summarize')">📋 Summarize</button>
+                      </div>
+                      <div id="edu-tutor-response" style="display:none"></div>
+                    </div>
+                    <!-- Mark complete -->
+                    <button id="edu-complete-btn" onclick="completeEduLesson()" class="btn btn-primary" style="width:100%;margin-bottom:var(--space-6)">Mark Complete</button>
+                  </div>
+                </div>
+              </div><!-- /edu-view-lesson -->
+
+            </main>
           </div>
-          <div class="edu-lesson-view">
-            <!-- 1. Overview -->
-            <div class="edu-lesson-section">
-              <div class="edu-lesson-section-label">Overview</div>
-              <div id="edu-lesson-overview" class="edu-lesson-section-body"></div>
-            </div>
-            <!-- 2. Concepts -->
-            <div class="edu-lesson-section">
-              <div class="edu-lesson-section-label">Core Concepts</div>
-              <div id="edu-lesson-concepts" class="edu-lesson-section-body"></div>
-            </div>
-            <!-- 2. Real World Example (AI-generated) -->
-            <div class="edu-lesson-section">
-              <div class="edu-lesson-section-label">Real World Example</div>
-              <div id="edu-lesson-example" class="edu-lesson-section-body" style="color:var(--text-secondary)">Tap "Explain" to get a real-world example from the AI Tutor.</div>
-            </div>
-            <!-- 3. Action Task -->
-            <div class="edu-lesson-section" style="background:rgba(199,154,59,.04);border-color:rgba(199,154,59,.2)">
-              <div class="edu-lesson-section-label">Action Task</div>
-              <div id="edu-lesson-action" class="edu-lesson-section-body"></div>
-              <button id="edu-exercise-btn" class="edu-exercise-btn" onclick="markExerciseDone()">
-                ✓ I completed this exercise
-              </button>
-            </div>
-            <!-- 4. Reflection -->
-            <div class="edu-lesson-section">
-              <div class="edu-lesson-section-label">Reflection Question</div>
-              <div id="edu-lesson-reflection" class="edu-lesson-section-body" style="font-style:italic"></div>
-            </div>
-            <!-- AI Tutor actions -->
-            <div class="edu-tutor-card" style="margin-bottom:var(--space-4)">
-              <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:4px">AI Tutor</div>
-              <div style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-2)">Grounded in this lesson's content only. Factual claims are cited to frameworks; uncertain claims are flagged.</div>
-              <div class="edu-tutor-actions">
-                <button class="edu-tutor-btn" onclick="callEduTutor('explain')">💡 Explain</button>
-                <button class="edu-tutor-btn" onclick="callEduTutor('quiz')">❓ Quiz Me</button>
-                <button class="edu-tutor-btn" onclick="callEduTutor('exercise')">✏️ Exercise</button>
-                <button class="edu-tutor-btn" onclick="callEduTutor('summarize')">📋 Summarize</button>
-              </div>
-              <div id="edu-tutor-response" style="display:none"></div>
-            </div>
-            <!-- Complete lesson button -->
-            <button id="edu-complete-btn" onclick="completeEduLesson()" class="btn btn-primary" style="width:100%;margin-bottom:var(--space-6)">Mark Complete</button>
-          </div>
-        </div><!-- /edu-view-lesson -->
+        </div>
       </div><!-- /tab-educate -->
     </main>
     </div><!-- /.desktop-main-col -->
@@ -4483,7 +4562,7 @@ function _updateLeftSidebars() {
   const communities = fmt(u._count?.associations);
   const connections = fmt(u._count?.followers);
   const karma = fmt(u._count?.posts);
-  ['home','comm','learn'].forEach(prefix => {
+  ['home','comm','learn','edu'].forEach(prefix => {
     const wrap = document.getElementById(`${prefix}-lsb-avatar-wrap`);
     if (wrap) wrap.innerHTML = avatarHtml;
     const nameEl = document.getElementById(`${prefix}-lsb-name`);
@@ -4586,7 +4665,7 @@ function switchTab(tab) {
 
   // Hide desktop sidebar on tabs that have their own 3-col layout
   const dsSidebar = document.getElementById('desktopSidebar');
-  if (dsSidebar) dsSidebar.classList.toggle('tab-home-active', ['home','learn','communities'].includes(tab));
+  if (dsSidebar) dsSidebar.classList.toggle('tab-home-active', ['home','learn','communities','educate'].includes(tab));
 
   if (navigator.vibrate && _userHasInteracted) navigator.vibrate(10);
 
@@ -10837,8 +10916,10 @@ async function loadEducate() {
     try {
       const enrollments = await api('GET', '/educate/my-paths');
       renderEduContinue(enrollments);
+      _updateEduSidebarProgress(enrollments);
     } catch(_) {}
   }
+  _updateLeftSidebars();
 
   // Check AI tutor status
   try {
@@ -10905,6 +10986,28 @@ function renderEduContinue(enrollments) {
     </button>`;
   }).join('');
   section.style.display = '';
+}
+
+function _updateEduSidebarProgress(enrollments) {
+  const el = document.getElementById('edu-lsb-progress');
+  if (!el) return;
+  if (!enrollments || !enrollments.length) {
+    el.innerHTML = '<div class="text-xs" style="opacity:.9">Enroll in a path to track your progress here.</div>';
+    return;
+  }
+  el.innerHTML = enrollments.slice(0, 3).map(e => {
+    const path = e.path || {};
+    const pct = Math.round(e.percentComplete);
+    return `<div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;gap:4px">
+        <span style="opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${DOMAIN_ICONS[path.domain] || ''} ${escHtml(path.title)}</span>
+        <span style="opacity:.75;flex-shrink:0">${pct}%</span>
+      </div>
+      <div style="height:4px;background:rgba(255,255,255,.25);border-radius:2px">
+        <div style="height:100%;width:${pct}%;background:#fff;border-radius:2px;transition:width .3s"></div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function showEduLanding() {
