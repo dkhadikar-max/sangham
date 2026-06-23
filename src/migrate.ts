@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import * as fs     from 'fs';
 import * as path   from 'path';
 import * as crypto from 'crypto';
+import { seedEducatePaths } from './scripts/seedEducate';
 
 // Applies pending Prisma migrations without advisory locks.
 // prisma migrate deploy uses pg_advisory_lock which blocks indefinitely when
@@ -79,11 +80,19 @@ async function applyPendingMigrations(): Promise<void> {
   }
 }
 
+async function seedStaticContent(): Promise<void> {
+  const result = await seedEducatePaths();
+  if (result.seeded.length) console.log(`Seeded educate paths: ${result.seeded.join(', ')}`);
+  if (result.failed.length) console.warn(`Educate seed failed: ${result.failed.join(', ')}`);
+}
+
 async function main(): Promise<void> {
   const originalUrl = process.env.DATABASE_URL || '';
   console.log('Running database migrations...');
   await applyPendingMigrations();
   process.env.DATABASE_URL = originalUrl;
+  console.log('Seeding static content...');
+  await seedStaticContent();
   console.log('Starting server...');
   require('./index');
 }
