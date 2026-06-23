@@ -17,8 +17,8 @@
     /* ── sangham_homepage styles ── */
     .scrollbar-hide::-webkit-scrollbar{display:none}
     .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
-    .feed-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
-    .feed-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px -12px rgba(199,154,59,.25)}
+    .post-card.feed-card{border-radius:var(--radius-2xl);border:1px solid rgba(199,154,59,0.10);border-bottom:1px solid rgba(199,154,59,0.10);box-shadow:0 4px 16px rgba(0,0,0,0.04);transition:all .3s cubic-bezier(.4,0,.2,1)}
+    .post-card.feed-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px -12px rgba(199,154,59,.25);border-color:rgba(199,154,59,0.18)}
     .story-ring{background:linear-gradient(135deg,#C79A3B 0%,#E7D2A1 50%,#B2872F 100%);padding:2.5px;border-radius:50%}
     .story-ring-viewed{background:#E5DDD0}
     .pulse-dot{animation:shPulse 2s cubic-bezier(.4,0,.6,1) infinite}
@@ -142,7 +142,7 @@
       --warning-50: #FFFBEB; --warning-500: #C79A3B; --warning-600: #B2872F;
       --error-50: #FEF2F2; --error-500: #C75B5B; --error-600: #B04040;
       --info-50: #EFF6FF; --info-500: #3B82F6; --info-600: #2563EB;
-      --surface-bg: #F8F5EF; --surface-elevated: #FFFFFF; --surface-sunken: #EEE9DF;
+      --surface-bg: #F8F5EF; --surface-elevated: #FFFFFF; --surface-primary: #FFFFFF; --surface-sunken: #EEE9DF;
       --surface-overlay: rgba(47,42,36,0.04); --surface-scrim: rgba(47,42,36,0.48);
       --text-primary: #2F2A24; --text-secondary: #7A7268; --text-tertiary: #A59D92;
       --text-inverse: #FAFAF9; --text-accent: #C79A3B;
@@ -432,9 +432,9 @@ round:var(--error-600)}
     .disc-thread-link:hover{color:var(--saffron-700)}
     .disc-thread-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;flex-shrink:0}
     .disc-reply-bar{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-4) var(--space-4)}
-    .disc-reply-prompt{flex:1;background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-full);padding:var(--space-2) var(--space-4);font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer;transition:border-color var(--duration-fast);text-align:left;font-family:var(--font-body)}
+    .disc-reply-prompt{flex:1;background:var(--surface-sunken);border:1px solid var(--border-default);border-radius:var(--radius-full);padding:10px var(--space-4);font-size:var(--text-sm);color:var(--text-tertiary);cursor:pointer;transition:border-color var(--duration-fast);text-align:left;font-family:var(--font-body);min-height:40px}
     .disc-reply-prompt:hover{border-color:var(--saffron-300);color:var(--text-secondary)}
-    .post-more-btn{background:none;border:none;cursor:pointer;padding:var(--space-2);color:var(--text-tertiary);display:flex;align-items:center;border-radius:var(--radius-md);flex-shrink:0;transition:color var(--duration-fast)}
+    .post-more-btn{background:none;border:none;cursor:pointer;padding:var(--space-3) var(--space-2);color:var(--text-tertiary);display:flex;align-items:center;border-radius:var(--radius-md);flex-shrink:0;transition:color var(--duration-fast);min-height:44px;min-width:44px;justify-content:center}
     .post-more-btn:hover{color:var(--text-secondary)}
     /* Legacy post-action-btn kept for post-detail panel */
     .post-actions{display:flex;gap:0;border-top:1px solid var(--border-default);padding:var(--space-1) 0}
@@ -1960,15 +1960,15 @@ round:var(--error-600)}
                                 class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()" readonly>
                             <div class="flex items-center justify-between mt-3">
                                 <div class="flex gap-2">
-                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-image text-sangham-gold"></i>
                                         <span>Photo</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-link text-sangham-gold"></i>
                                         <span>Link</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:36px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-quote-right text-sangham-gold"></i>
                                         <span>Quote</span>
                                     </button>
