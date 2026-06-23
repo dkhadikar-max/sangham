@@ -1,0 +1,276 @@
+import { Router, Response } from 'express';
+import { prisma } from '../config/database';
+import { authenticate, AuthRequest } from '../middleware/auth';
+import { AppError } from '../middleware/errorHandler';
+import { env } from '../config/env';
+
+const router = Router();
+
+function isAIConfigured(): boolean {
+  return Boolean(env.ANTHROPIC_API_KEY);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function computeRepLevel(totalLessons: number, totalPaths: number): string {
+  if (totalPaths >= 3 && totalLessons >= 40) return 'MENTOR';
+  if (totalPaths >= 2 && totalLessons >= 20) return 'CONTRIBUTOR';
+  if (totalLessons >= 10) return 'PRACTITIONER';
+  if (totalLessons >= 3)  return 'LEARNER';
+  return 'EXPLORER';
+}
+
+async function refreshReputation(userId: string) {
+  const totalLessons = await prisma.educateLessonProgress.count({
+    where: { enrollment: { userId } },
+  });
+  const totalPaths = await prisma.educateEnrollment.count({
+    where: { userId, percentComplete: { gte: 100 } },
+  });
+  const totalExercises = await prisma.educateLessonProgress.count({
+    where: { enrollment: { userId }, exerciseDone: true },
+  });
+  const level = computeRepLevel(totalLessons, totalPaths) as 'EXPLORER' | 'LEARNER' | 'PRACTITIONER' | 'CONTRIBUTOR' | 'MENTOR';
+
+  await prisma.educateUserReputation.upsert({
+    where: { userId },
+    create: { userId, level, totalLessons, totalPaths, totalExercises },
+    update: { level, totalLessons, totalPaths, totalExercises },
+  });
+}
+
+// ── Routes ────────────────────────────────────────────────────────────────────
+
+// GET /educate/paths — all active paths
+router.get('/paths', async (_req: AuthRequest, res: Response): Promise<void> => {
+  const paths = await prisma.educatePath.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, slug: true, domain: true, title: true, tagline: true, description: true, circleTag: true, sortOrder: true, phases: true },
+  });
+  res.json(paths);
+});
+
+// GET /educate/paths/:slug — single path detail
+router.get('/paths/:slug', async (req: AuthRequest, res: Response): Promise<void> => {
+  const path = await prisma.educatePath.findUnique({
+    where: { slug: req.params.slug },
+  });
+  if (!path) throw new AppError('Path not found', 404);
+
+  let enrollment = null;
+  if (req.headers.authorization) {
+    try {
+      const { authenticate: auth } = await import('../middleware/auth');
+      // try to get userId from token without hard-requiring auth
+      const jwt = await import('jsonwebtoken');
+      const token = req.headers.authorization.split(' ')[1];
+      const payload = jwt.default.verify(token, env.JWT_SECRET) as { userId: string };
+      enrollment = await prisma.educateEnrollment.findUnique({
+        where: { userId_pathId: { userId: payload.userId, pathId: path.id } },
+        include: { lessonProgress: true },
+      });
+    } catch { /* unauthenticated — return path without enrollment */ }
+  }
+
+  res.json({ path, enrollment });
+});
+
+// GET /educate/my-paths — authenticated: user's active enrollments
+router.get('/my-paths', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const enrollments = await prisma.educateEnrollment.findMany({
+    where: { userId: req.user!.id },
+    orderBy: { lastActivityAt: 'desc' },
+    include: {
+      path: { select: { slug: true, title: true, tagline: true, domain: true, phases: true } },
+      lessonProgress: true,
+    },
+  });
+  res.json(enrollments);
+});
+
+// POST /educate/paths/:slug/enroll — enroll the authenticated user in a path
+router.post('/paths/:slug/enroll', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const path = await prisma.educatePath.findUnique({ where: { slug: req.params.slug } });
+  if (!path) throw new AppError('Path not found', 404);
+
+  const enrollment = await prisma.educateEnrollment.upsert({
+    where: { userId_pathId: { userId: req.user!.id, pathId: path.id } },
+    create: { userId: req.user!.id, pathId: path.id },
+    update: { lastActivityAt: new Date() },
+    include: { lessonProgress: true },
+  });
+  res.status(201).json(enrollment);
+});
+
+// POST /educate/enrollments/:id/lesson — mark lesson complete
+router.post('/enrollments/:id/lesson', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { lessonKey, exerciseDone } = req.body;
+  if (!lessonKey || typeof lessonKey !== 'string') throw new AppError('lessonKey required', 400);
+
+  const enrollment = await prisma.educateEnrollment.findUnique({
+    where: { id: req.params.id },
+    include: { path: true, lessonProgress: true },
+  });
+  if (!enrollment) throw new AppError('Enrollment not found', 404);
+  if (enrollment.userId !== req.user!.id) throw new AppError('Not your enrollment', 403);
+
+  await prisma.educateLessonProgress.upsert({
+    where: { enrollmentId_lessonKey: { enrollmentId: enrollment.id, lessonKey } },
+    create: { enrollmentId: enrollment.id, lessonKey, exerciseDone: !!exerciseDone },
+    update: { exerciseDone: !!exerciseDone },
+  });
+
+  // Recompute percent complete
+  const phases = enrollment.path.phases as unknown as { lessons: object[] }[];
+  const totalLessons = phases.reduce((sum, p) => sum + p.lessons.length, 0);
+  const completed = enrollment.lessonProgress.length + 1; // +1 for the one just completed
+  const percent = totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
+
+  // Identify current position from lessonKey
+  const [phaseStr, lessonStr] = lessonKey.split('.');
+  const phaseIdx = parseInt(phaseStr, 10);
+  const lessonIdx = parseInt(lessonStr, 10);
+
+  // Update enrollment progress and streak
+  const lastActivity = enrollment.lastActivityAt;
+  const today = new Date();
+  const daysSinceLast = Math.floor((today.getTime() - lastActivity.getTime()) / 86400000);
+  const newStreak = daysSinceLast <= 1 ? enrollment.streak + 1 : 1;
+
+  const updated = await prisma.educateEnrollment.update({
+    where: { id: enrollment.id },
+    data: {
+      currentPhase: phaseIdx,
+      currentLesson: lessonIdx + 1,
+      percentComplete: Math.min(percent, 100),
+      streak: newStreak,
+      lastActivityAt: new Date(),
+    },
+    include: { lessonProgress: true },
+  });
+
+  // Async reputation update (non-blocking)
+  refreshReputation(req.user!.id).catch(() => {});
+
+  res.json(updated);
+});
+
+// GET /educate/reputation — user's learning reputation
+router.get('/reputation', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const rep = await prisma.educateUserReputation.findUnique({
+    where: { userId: req.user!.id },
+  });
+  res.json(rep || { level: 'EXPLORER', totalLessons: 0, totalPaths: 0, totalExercises: 0, longestStreak: 0 });
+});
+
+// POST /educate/search — match query to relevant paths
+router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => {
+  const q = typeof req.query.q === 'string' ? req.query.q.toLowerCase().trim() : '';
+  if (!q) { res.json([]); return; }
+
+  const DOMAIN_KEYWORDS: Record<string, string[]> = {
+    AI_AUTOMATION:       ['ai', 'artificial intelligence', 'automation', 'prompt', 'chatgpt', 'claude', 'machine learning', 'agent'],
+    ENTREPRENEURSHIP:    ['entrepreneur', 'startup', 'business', 'founder', 'venture', 'idea', 'product', 'launch'],
+    SALES:               ['sales', 'selling', 'close', 'prospect', 'outreach', 'revenue', 'client', 'crm'],
+    LEADERSHIP:          ['leadership', 'leader', 'manage', 'team', 'strategy', 'ceo', 'executive', 'culture'],
+    NETWORKING:          ['networking', 'network', 'connection', 'relationship', 'referral', 'community'],
+    WEALTH_FUNDAMENTALS: ['wealth', 'money', 'finance', 'invest', 'saving', 'income', 'financial', 'stocks', 'mutual fund'],
+    BUDDHISM_MEDITATION: ['buddhism', 'buddhist', 'meditation', 'dharma', 'mindfulness', 'vipassana', 'metta', 'sangha', 'ambedkar'],
+  };
+
+  const matches = Object.entries(DOMAIN_KEYWORDS)
+    .filter(([, keywords]) => keywords.some(k => q.includes(k)))
+    .map(([domain]) => domain);
+
+  const paths = await prisma.educatePath.findMany({
+    where: {
+      isActive: true,
+      ...(matches.length ? { domain: { in: matches as any[] } } : {}),
+    },
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, slug: true, domain: true, title: true, tagline: true, phases: true },
+  });
+
+  // If no domain matched, return all paths
+  if (paths.length === 0) {
+    const all = await prisma.educatePath.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+      select: { id: true, slug: true, domain: true, title: true, tagline: true, phases: true },
+    });
+    res.json(all);
+    return;
+  }
+
+  res.json(paths);
+});
+
+// POST /educate/ai-tutor — context-aware AI lesson assistant
+router.post('/ai-tutor', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!isAIConfigured()) throw new AppError('AI Tutor is not yet available on this instance', 503);
+
+  const { action, pathSlug, phaseIndex, lessonIndex, lessonTitle, concepts, userQuestion } = req.body;
+  const validActions = ['explain', 'quiz', 'summarize', 'exercise', 'simplify'];
+  if (!action || !validActions.includes(action)) throw new AppError(`action must be one of: ${validActions.join(', ')}`, 400);
+  if (!pathSlug) throw new AppError('pathSlug required', 400);
+
+  const path = await prisma.educatePath.findUnique({ where: { slug: pathSlug } });
+  if (!path) throw new AppError('Path not found', 404);
+
+  const phases = path.phases as unknown as { title: string; lessons: { title: string; concepts: string[]; actionTask: string; reflection: string }[] }[];
+  const phase = phases[phaseIndex ?? 0];
+  const lesson = phase?.lessons[lessonIndex ?? 0];
+
+  const systemPrompt = `You are the Sangham Educate AI Tutor — a concise, accurate, and warm learning assistant.
+You are helping a learner on the "${path.title}" path.
+Current phase: "${phase?.title ?? 'Introduction'}".
+Current lesson: "${lesson?.title ?? lessonTitle ?? 'Introduction'}".
+Key concepts in this lesson: ${(lesson?.concepts ?? concepts ?? []).join(', ')}.
+
+Rules you must follow:
+1. Be concise. Aim for 150-250 words per response.
+2. Always distinguish facts from interpretation. Say "This is widely agreed..." or "Some practitioners believe..."
+3. If you are uncertain about something, say so. Never fabricate examples, statistics, or citations.
+4. Reference the lesson concepts when relevant. Don't invent new frameworks.
+5. For Buddhist content: cite traditions accurately (Theravada, Mahayana, Navayana/Ambedkarite). Respect all traditions.
+6. Never claim to be a guru, teacher, or authority. You are a learning companion.`;
+
+  const actionPrompts: Record<string, string> = {
+    explain:   `Explain the core idea of this lesson in plain language as if speaking to a smart beginner. Use one concrete, everyday example.`,
+    quiz:      `Create 3 short-answer questions that test understanding of this lesson's key concepts. After each question, provide the ideal answer in 1-2 sentences.`,
+    summarize: `Summarize this lesson in 5 bullet points. Each bullet should capture one essential insight a learner should remember.`,
+    exercise:  `Create one practical exercise the learner can do in the next 24 hours that will directly apply the concepts from this lesson. Be specific about the steps.`,
+    simplify:  userQuestion ? `The learner has a question: "${userQuestion}". Answer it simply and clearly, using an analogy if helpful.` : `Explain this lesson's most complex concept using the simplest possible language and a real-world analogy.`,
+  };
+
+  const userContent = actionPrompts[action];
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 512,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userContent }],
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    console.error('[Educate AI Tutor] Anthropic error:', err);
+    throw new AppError('AI Tutor temporarily unavailable', 502);
+  }
+
+  const data = await response.json() as { content: { text: string }[] };
+  const text = data.content?.[0]?.text ?? '';
+
+  res.json({ action, response: text });
+});
+
+export default router;

@@ -40,6 +40,7 @@ import courseRoutes       from './routes/courses';
 import studyCircleRoutes  from './routes/studyCircles';
 import discussionRoutes   from './routes/discussions';
 import notificationRoutes from './routes/notifications';
+import educateRoutes      from './routes/educate';
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -153,6 +154,7 @@ app.use(`${API}/study-circles`, studyCircleRoutes);
 app.use(`${API}/discussions`,   discussionRoutes);
 app.use(`${API}/notifications`, notificationRoutes);
 app.use(`${API}/uploads`,       uploadRoutes);
+app.use(`${API}/educate`,       educateRoutes);
 
 // ── Admin panel (separate route, before SPA fallback) ──────────────────────
 app.get('/admin', (_req, res) => {

@@ -47,6 +47,8 @@ export const env = {
 
   ELASTICSEARCH_URL: process.env.ELASTICSEARCH_URL || '',
 
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY || '',
+
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV === 'development',
 };

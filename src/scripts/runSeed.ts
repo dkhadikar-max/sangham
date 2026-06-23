@@ -2,6 +2,7 @@ import { prisma } from '../config/database';
 import { seedBuddhistTexts } from './seedLibrary';
 import { seedAmbedkarTexts } from './seedAmbedkar';
 import { seedAmbedkarTranslations } from './seedTranslations';
+import { seedEducatePaths } from './seedEducate';
 
 async function main() {
   console.log('[Seed] Connecting to database...');
@@ -24,6 +25,12 @@ async function main() {
   console.log(`[Seed] Seeded:  ${translations.seeded.join(', ') || 'none'}`);
   if (translations.failed.length) console.log(`[Seed] Failed:  ${translations.failed.join(', ')}`);
   console.log(`[Seed] Total:   ${translations.total} texts\n`);
+
+  console.log('[Seed] ── Educate Learning Paths ──');
+  const educate = await seedEducatePaths();
+  console.log(`[Seed] Seeded:  ${educate.seeded.join(', ') || 'none'}`);
+  if (educate.failed.length) console.log(`[Seed] Failed:  ${educate.failed.join(', ')}`);
+  console.log(`[Seed] Total:   ${educate.total} paths\n`);
 
   await prisma.$disconnect();
 }

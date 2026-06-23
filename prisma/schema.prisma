@@ -172,6 +172,8 @@ model User {
   studyCirclesFacilitated StudyCircle[]   @relation("StudyCircleFacilitator")
   studyCircleMemberships StudyCircleMember[]
   discussionPosts      DiscussionPost[]   @relation("DiscussionPostAuthor")
+  educateEnrollments   EducateEnrollment[]
+  educateReputation    EducateUserReputation?
 
   @@map("users")
 }
@@ -1151,4 +1153,92 @@ model TeacherVerification {
   user             User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("teacher_verifications")
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SANGHAM EDUCATE — Learning Path System
+// ═══════════════════════════════════════════════════════════════════════
+
+enum EducateDomain {
+  AI_AUTOMATION
+  ENTREPRENEURSHIP
+  SALES
+  LEADERSHIP
+  NETWORKING
+  WEALTH_FUNDAMENTALS
+  BUDDHISM_MEDITATION
+}
+
+enum EducateLevel {
+  EXPLORER
+  LEARNER
+  PRACTITIONER
+  CONTRIBUTOR
+  MENTOR
+}
+
+// Predefined learning paths — seeded, not user-created
+model EducatePath {
+  id          String        @id @default(uuid())
+  slug        String        @unique
+  domain      EducateDomain
+  title       String
+  tagline     String
+  description String        @db.Text
+  phases      Json          // Phase[] — predefined structure, AI fleshes out lessons
+  circleTag   String?       @map("circle_tag")   // Community search tag for linked Circle
+  isActive    Boolean       @default(true)        @map("is_active")
+  sortOrder   Int           @default(0)           @map("sort_order")
+  createdAt   DateTime      @default(now())       @map("created_at")
+
+  enrollments EducateEnrollment[]
+
+  @@map("educate_paths")
+}
+
+model EducateEnrollment {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  pathId          String    @map("path_id")
+  enrolledAt      DateTime  @default(now())      @map("enrolled_at")
+  lastActivityAt  DateTime  @default(now())      @map("last_activity_at")
+  currentPhase    Int       @default(0)           @map("current_phase")
+  currentLesson   Int       @default(0)           @map("current_lesson")
+  percentComplete Float     @default(0)           @map("percent_complete")
+  streak          Int       @default(0)
+
+  user            User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path            EducatePath            @relation(fields: [pathId], references: [id])
+  lessonProgress  EducateLessonProgress[]
+
+  @@unique([userId, pathId])
+  @@map("educate_enrollments")
+}
+
+model EducateLessonProgress {
+  id           String   @id @default(uuid())
+  enrollmentId String   @map("enrollment_id")
+  lessonKey    String   @map("lesson_key")    // "{phaseIdx}.{lessonIdx}" e.g. "0.2"
+  completedAt  DateTime @default(now())       @map("completed_at")
+  exerciseDone Boolean  @default(false)       @map("exercise_done")
+
+  enrollment   EducateEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, lessonKey])
+  @@map("educate_lesson_progress")
+}
+
+model EducateUserReputation {
+  id             String       @id @default(uuid())
+  userId         String       @unique @map("user_id")
+  level          EducateLevel @default(EXPLORER)
+  totalLessons   Int          @default(0)  @map("total_lessons")
+  totalPaths     Int          @default(0)  @map("total_paths")
+  totalExercises Int          @default(0)  @map("total_exercises")
+  longestStreak  Int          @default(0)  @map("longest_streak")
+  updatedAt      DateTime     @updatedAt   @map("updated_at")
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("educate_user_reputation")
 }

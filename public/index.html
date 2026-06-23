@@ -62,6 +62,57 @@
     .collection-card:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(0,0,0,.12)}
     .learn-continue-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-6);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s cubic-bezier(.4,0,.2,1)}
     .learn-continue-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2)}
+    /* ── Sangham Educate ─────────────────────────────────────── */
+    #tab-educate{background:var(--surface-page)}
+    .edu-hero{padding:var(--space-6) var(--space-4) var(--space-4);background:linear-gradient(135deg,var(--surface-elevated) 0%,rgba(199,154,59,.06) 100%);border-bottom:1px solid var(--border-default)}
+    .edu-hero-title{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.2;margin-bottom:var(--space-3)}
+    .edu-search-wrap{position:relative;margin-bottom:var(--space-3)}
+    .edu-search-wrap input{width:100%;padding:var(--space-3) var(--space-4) var(--space-3) 2.75rem;border-radius:var(--radius-2xl);border:1.5px solid var(--border-default);background:var(--surface-page);font-size:var(--text-base);color:var(--text-primary);outline:none;transition:border-color .2s}
+    .edu-search-wrap input:focus{border-color:#C79A3B}
+    .edu-search-wrap svg{position:absolute;left:var(--space-3);top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text-tertiary);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
+    .edu-chips{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .edu-chip{padding:5px 14px;border-radius:9999px;background:rgba(199,154,59,.1);color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;border:1px solid rgba(199,154,59,.2);transition:all .2s}
+    .edu-chip:hover{background:rgba(199,154,59,.2)}
+    .edu-section{padding:var(--space-5) var(--space-4)}
+    .edu-section-title{font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-4)}
+    .edu-path-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+    @media(max-width:420px){.edu-path-grid{grid-template-columns:1fr}}
+    .edu-path-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-5);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:var(--space-2)}
+    .edu-path-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px -12px rgba(199,154,59,.2);border-color:rgba(199,154,59,.3)}
+    .edu-domain-badge{display:inline-block;font-size:10px;font-weight:var(--weight-semibold);letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:9999px;background:rgba(199,154,59,.12);color:#C79A3B}
+    .edu-path-title{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.3}
+    .edu-path-tagline{font-size:var(--text-xs);color:var(--text-secondary);line-height:1.4}
+    .edu-path-meta{font-size:10px;color:var(--text-tertiary)}
+    .edu-progress-card{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid var(--border-default);transition:all .3s ease;display:flex;flex-direction:column;gap:var(--space-2)}
+    .edu-progress-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px rgba(199,154,59,.2)}
+    .edu-progress-bar-wrap{height:4px;background:var(--border-default);border-radius:9999px;overflow:hidden}
+    .edu-progress-bar-fill{height:100%;background:linear-gradient(90deg,#C79A3B,#E7D2A1);border-radius:9999px;transition:width .4s ease}
+    .edu-tutor-card{background:linear-gradient(135deg,var(--surface-elevated) 0%,rgba(199,154,59,.06) 100%);border-radius:var(--radius-2xl);padding:var(--space-5);border:1px solid rgba(199,154,59,.2);box-shadow:0 4px 16px rgba(0,0,0,0.04)}
+    .edu-tutor-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-top:var(--space-3)}
+    .edu-tutor-btn{padding:var(--space-2) var(--space-3);border-radius:var(--radius-xl);border:1.5px solid rgba(199,154,59,.3);background:var(--surface-page);color:var(--text-primary);font-size:var(--text-sm);font-weight:var(--weight-medium);cursor:pointer;transition:all .2s;text-align:left}
+    .edu-tutor-btn:hover{border-color:#C79A3B;background:rgba(199,154,59,.06);color:#C79A3B}
+    /* Path detail view */
+    .edu-roadmap{padding:var(--space-4)}
+    .edu-phase{margin-bottom:var(--space-5)}
+    .edu-phase-header{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
+    .edu-phase-dot{width:28px;height:28px;border-radius:50%;background:#C79A3B;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--text-xs);font-weight:var(--weight-bold);color:#fff}
+    .edu-phase-dot.locked{background:var(--border-default)}
+    .edu-phase-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)}
+    .edu-phase-line{width:1px;background:var(--border-default);margin:0 13px;min-height:12px}
+    .edu-lesson-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-elevated);border-radius:var(--radius-xl);margin-bottom:var(--space-2);cursor:pointer;border:1px solid var(--border-default);transition:all .2s}
+    .edu-lesson-row:hover{border-color:rgba(199,154,59,.3);box-shadow:0 4px 12px rgba(199,154,59,.08)}
+    .edu-lesson-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-default);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .edu-lesson-check.done{background:#C79A3B;border-color:#C79A3B}
+    .edu-lesson-check.done::after{content:'✓';font-size:10px;color:#fff;font-weight:700}
+    .edu-lesson-title{font-size:var(--text-sm);color:var(--text-primary);font-weight:var(--weight-medium)}
+    .edu-lesson-duration{font-size:10px;color:var(--text-tertiary);margin-left:auto}
+    /* Lesson view */
+    .edu-lesson-view{padding:var(--space-4)}
+    .edu-lesson-section{background:var(--surface-elevated);border-radius:var(--radius-2xl);padding:var(--space-4) var(--space-5);margin-bottom:var(--space-3);border:1px solid var(--border-default)}
+    .edu-lesson-section-label{font-size:10px;font-weight:var(--weight-semibold);letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;margin-bottom:var(--space-2)}
+    .edu-lesson-section-body{font-size:var(--text-sm);color:var(--text-primary);line-height:1.6}
+    .edu-concept-tag{display:inline-block;padding:3px 10px;background:rgba(199,154,59,.08);border-radius:9999px;font-size:11px;color:var(--text-secondary);margin:2px;border:1px solid var(--border-default)}
+    .edu-ai-response{background:rgba(199,154,59,.04);border-radius:var(--radius-xl);padding:var(--space-4);border:1px solid rgba(199,154,59,.15);font-size:var(--text-sm);color:var(--text-primary);line-height:1.7;white-space:pre-wrap;margin-top:var(--space-3)}
     /* legacy stubs — suppressed by new UI */
     #create-sangha-btn{display:none!important}
     #mySanghasSection{display:none!important}
@@ -1699,6 +1750,10 @@ round:var(--error-600)}
           <i class="fa-solid fa-book-open ds-nav-icon"></i>
           <span class="ds-label" data-i18n="nav.learn">Educate</span>
         </button>
+        <button class="ds-nav-item" id="ds-nav-educate" onclick="switchTab('educate')" data-tooltip="Learn">
+          <i class="fa-solid fa-graduation-cap ds-nav-icon"></i>
+          <span class="ds-label">Learn</span>
+        </button>
         <button class="ds-nav-item" id="ds-nav-chat" onclick="switchTab('chat')" data-tooltip="Messages">
           <i class="fa-solid fa-message ds-nav-icon"></i>
           <span class="ds-label" data-i18n="nav.chat">Messages</span>
@@ -1745,6 +1800,9 @@ round:var(--error-600)}
           </button>
           <button id="header-nav-learn" onclick="switchTab('learn');switchLearnTab('library')" class="header-nav-link flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
             <i class="fa-solid fa-book-open"></i><span>Library</span>
+          </button>
+          <button id="header-nav-educate" onclick="switchTab('educate')" class="header-nav-link flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
+            <i class="fa-solid fa-graduation-cap"></i><span>Learn</span>
           </button>
           <button id="header-nav-discover" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},200)" class="header-nav-link flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
             <i class="fa-solid fa-calendar-days"></i><span>Events</span>
@@ -2699,6 +2757,139 @@ round:var(--error-600)}
         </div>
         <div id="chatThreads"></div>
       </div>
+
+      <!-- ══ EDUCATE TAB ══════════════════════════════════════════════════════ -->
+      <div id="tab-educate" class="tab-panel">
+        <!-- Landing view -->
+        <div id="edu-view-landing">
+          <!-- Hero Search -->
+          <div class="edu-hero">
+            <div class="edu-hero-title">What would you like to learn today?</div>
+            <div class="edu-search-wrap">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="eduSearchInput" type="text" placeholder="Try: AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
+            </div>
+            <div class="edu-chips">
+              <span class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Entrepreneurship')">Entrepreneurship</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Sales')">Sales</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Leadership')">Leadership</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Networking')">Networking</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Wealth')">Wealth</span>
+              <span class="edu-chip" onclick="submitEducateSearch('Buddhism')">Buddhism</span>
+            </div>
+          </div>
+
+          <!-- Continue Learning (authenticated, has enrollments) -->
+          <div id="edu-continue-section" style="display:none">
+            <div class="edu-section">
+              <div class="edu-section-title">Continue Learning</div>
+              <div id="edu-continue-list" class="flex flex-col gap-3"></div>
+            </div>
+          </div>
+
+          <!-- Featured Learning Paths -->
+          <div class="edu-section">
+            <div class="edu-section-title">Featured Learning Paths</div>
+            <div id="edu-path-grid" class="edu-path-grid">
+              <div class="empty-state" style="grid-column:1/-1;padding:var(--space-8)"><div class="empty-state-text">Loading paths…</div></div>
+            </div>
+          </div>
+
+          <!-- AI Tutor Card -->
+          <div class="edu-section" style="padding-top:0">
+            <div class="edu-tutor-card">
+              <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2)">
+                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C79A3B,#E7D2A1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)">AI Tutor</div>
+                  <div style="font-size:var(--text-xs);color:var(--text-secondary)">Context-aware learning companion</div>
+                </div>
+              </div>
+              <div style="font-size:var(--text-sm);color:var(--text-secondary);line-height:1.5">Open any lesson to activate the AI Tutor. It explains concepts, quizzes you, creates exercises, and answers your questions — always grounded in the lesson content.</div>
+              <div id="edu-tutor-status" style="margin-top:var(--space-2);font-size:11px;color:var(--text-tertiary)"></div>
+            </div>
+          </div>
+        </div><!-- /edu-view-landing -->
+
+        <!-- Path detail view (vertical roadmap) -->
+        <div id="edu-view-path" style="display:none">
+          <div style="padding:var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
+            <button onclick="showEduLanding()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text-secondary)">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div>
+              <div id="edu-path-title" style="font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary)"></div>
+              <div id="edu-path-tagline" style="font-size:var(--text-xs);color:var(--text-secondary)"></div>
+            </div>
+          </div>
+          <div style="padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3)">
+            <div id="edu-path-progress-wrap" class="edu-progress-bar-wrap" style="flex:1"><div id="edu-path-progress-fill" class="edu-progress-bar-fill" style="width:0%"></div></div>
+            <span id="edu-path-pct" style="font-size:var(--text-xs);color:var(--text-secondary);flex-shrink:0">0%</span>
+            <button id="edu-path-enroll-btn" onclick="enrollInPath()" style="display:none" class="btn btn-primary btn-sm">Start Path</button>
+          </div>
+          <div id="edu-roadmap" class="edu-roadmap"></div>
+          <div id="edu-path-circle" style="display:none;margin:0 var(--space-4) var(--space-6)">
+            <div class="edu-tutor-card">
+              <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2)">Join the Learning Circle</div>
+              <div id="edu-circle-desc" style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-3)">Connect with other learners on this path — share insights, ask questions, and build together.</div>
+              <button onclick="openEduCircle()" class="btn btn-secondary btn-sm">Find Circle in Communities</button>
+            </div>
+          </div>
+        </div><!-- /edu-view-path -->
+
+        <!-- Lesson view -->
+        <div id="edu-view-lesson" style="display:none">
+          <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
+            <button id="edu-lesson-back-btn" onclick="backToEduPath()" style="background:none;border:none;cursor:pointer;padding:4px;color:var(--text-secondary)">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div style="flex:1">
+              <div id="edu-lesson-phase-label" style="font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#C79A3B;font-weight:600"></div>
+              <div id="edu-lesson-title" style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary)"></div>
+            </div>
+            <span id="edu-lesson-duration" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0"></span>
+          </div>
+          <div class="edu-lesson-view">
+            <!-- 1. Concepts -->
+            <div class="edu-lesson-section">
+              <div class="edu-lesson-section-label">Core Concepts</div>
+              <div id="edu-lesson-concepts" class="edu-lesson-section-body"></div>
+            </div>
+            <!-- 2. Real World Example (AI-generated) -->
+            <div class="edu-lesson-section">
+              <div class="edu-lesson-section-label">Real World Example</div>
+              <div id="edu-lesson-example" class="edu-lesson-section-body" style="color:var(--text-secondary)">Tap "Explain" to get a real-world example from the AI Tutor.</div>
+            </div>
+            <!-- 3. Action Task -->
+            <div class="edu-lesson-section" style="background:rgba(199,154,59,.04);border-color:rgba(199,154,59,.2)">
+              <div class="edu-lesson-section-label">Action Task</div>
+              <div id="edu-lesson-action" class="edu-lesson-section-body"></div>
+            </div>
+            <!-- 4. Reflection -->
+            <div class="edu-lesson-section">
+              <div class="edu-lesson-section-label">Reflection Question</div>
+              <div id="edu-lesson-reflection" class="edu-lesson-section-body" style="font-style:italic"></div>
+            </div>
+            <!-- AI Tutor actions -->
+            <div class="edu-tutor-card" style="margin-bottom:var(--space-4)">
+              <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:4px">AI Tutor</div>
+              <div style="font-size:var(--text-xs);color:var(--text-secondary);margin-bottom:var(--space-2)">Grounded in this lesson's content only. Factual claims are cited to frameworks; uncertain claims are flagged.</div>
+              <div class="edu-tutor-actions">
+                <button class="edu-tutor-btn" onclick="callEduTutor('explain')">💡 Explain</button>
+                <button class="edu-tutor-btn" onclick="callEduTutor('quiz')">❓ Quiz Me</button>
+                <button class="edu-tutor-btn" onclick="callEduTutor('exercise')">✏️ Exercise</button>
+                <button class="edu-tutor-btn" onclick="callEduTutor('summarize')">📋 Summarize</button>
+              </div>
+              <div id="edu-tutor-response" style="display:none"></div>
+            </div>
+            <!-- Complete lesson button -->
+            <button id="edu-complete-btn" onclick="completeEduLesson()" class="btn btn-primary" style="width:100%;margin-bottom:var(--space-6)">Mark Complete</button>
+          </div>
+        </div><!-- /edu-view-lesson -->
+      </div><!-- /tab-educate -->
     </main>
     </div><!-- /.desktop-main-col -->
 
@@ -2718,6 +2909,10 @@ round:var(--error-600)}
       <button class="nav-item" onclick="switchTab('learn')" id="nav-learn" aria-label="Learn">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span data-i18n="nav.learn">Educate</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('educate')" id="nav-educate" aria-label="Educate">
+        <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span>Learn</span>
       </button>
       <button class="nav-item" onclick="switchTab('chat')" id="nav-chat" aria-label="Chat">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -3731,6 +3926,7 @@ async function setLanguage(lang) {
       else if (_curTab === 'discover') loadDiscover();
       else if (_curTab === 'communities') { loadCommunities(); if (typeof loadMyCommunities === 'function') loadMyCommunities(); }
       else if (_curTab === 'learn') loadLearn();
+      else if (_curTab === 'educate') loadEducate();
     }
   }
   // Reload verse in new language if home tab is visible
@@ -4348,6 +4544,7 @@ function switchTab(tab) {
   if (tab === 'discover')    loadDiscover();
   if (tab === 'communities') { loadCommunities(); loadMyCommunities(); }
   if (tab === 'learn')       loadLearn();
+  if (tab === 'educate')     loadEducate();
   if (tab === 'chat')        loadChatThreads();
 }
 
@@ -10511,6 +10708,367 @@ document.addEventListener('click', function(e) {
     gsap.from('#view-landing nav, #view-landing main', { duration: 1.2, opacity: 0, ease: 'power2.inOut' });
   }
 })();
+
+// ============================================================
+//  SANGHAM EDUCATE
+// ============================================================
+
+const _edu = {
+  paths: [],         // all paths from API
+  currentPath: null, // { path, enrollment }
+  currentPhase: 0,
+  currentLesson: 0,
+  enrollmentId: null,
+  aiConfigured: null,
+};
+
+const DOMAIN_LABELS = {
+  AI_AUTOMATION:       'AI & Automation',
+  ENTREPRENEURSHIP:    'Entrepreneurship',
+  SALES:               'Sales',
+  LEADERSHIP:          'Leadership',
+  NETWORKING:          'Networking',
+  WEALTH_FUNDAMENTALS: 'Wealth',
+  BUDDHISM_MEDITATION: 'Buddhism',
+};
+
+async function loadEducate() {
+  showEduLanding();
+
+  // Load all paths
+  try {
+    _edu.paths = await api('GET', '/educate/paths');
+    renderEduPathGrid(_edu.paths);
+  } catch(e) {
+    document.getElementById('edu-path-grid').innerHTML =
+      '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-text">Could not load learning paths.</div></div>';
+  }
+
+  // Load user progress if authenticated
+  if (state.token) {
+    try {
+      const enrollments = await api('GET', '/educate/my-paths');
+      renderEduContinue(enrollments);
+    } catch(_) {}
+  }
+
+  // Check AI tutor status
+  try {
+    const r = await fetch('/api/v1/educate/ai-tutor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(state.token ? { Authorization: 'Bearer ' + state.token } : {}) },
+      body: JSON.stringify({ action: 'explain', pathSlug: 'ping' }),
+    });
+    _edu.aiConfigured = (r.status !== 503);
+  } catch(_) { _edu.aiConfigured = false; }
+
+  const statusEl = document.getElementById('edu-tutor-status');
+  if (statusEl) statusEl.textContent = _edu.aiConfigured
+    ? 'Available — open any lesson to activate.'
+    : 'Coming soon — AI Tutor activates once configured by the team.';
+}
+
+function renderEduPathGrid(paths) {
+  const grid = document.getElementById('edu-path-grid');
+  if (!grid) return;
+  if (!paths || !paths.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-text">No learning paths available yet.</div></div>';
+    return;
+  }
+  grid.innerHTML = paths.map(p => {
+    const phases = (p.phases || []);
+    const totalLessons = phases.reduce((s, ph) => s + (ph.lessons?.length || 0), 0);
+    return `<div class="edu-path-card" onclick="openEduPath('${escHtml(p.slug)}')">
+      <span class="edu-domain-badge">${escHtml(DOMAIN_LABELS[p.domain] || p.domain)}</span>
+      <div class="edu-path-title">${escHtml(p.title)}</div>
+      <div class="edu-path-tagline">${escHtml(p.tagline)}</div>
+      <div class="edu-path-meta">${phases.length} phases · ${totalLessons} lessons</div>
+    </div>`;
+  }).join('');
+}
+
+function renderEduContinue(enrollments) {
+  const section = document.getElementById('edu-continue-section');
+  const list = document.getElementById('edu-continue-list');
+  if (!section || !list || !enrollments || !enrollments.length) return;
+
+  list.innerHTML = enrollments.slice(0, 3).map(e => {
+    const path = e.path || {};
+    const phases = (path.phases || []);
+    const curPhase = phases[e.currentPhase] || {};
+    const curLesson = (curPhase.lessons || [])[e.currentLesson] || {};
+    const totalLessons = phases.reduce((s, ph) => s + (ph.lessons?.length || 0), 0);
+    const remaining = totalLessons - e.lessonProgress.length;
+    return `<div class="edu-progress-card" onclick="openEduPath('${escHtml(path.slug)}')">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2)">
+        <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)">${escHtml(path.title)}</div>
+        <span style="font-size:11px;color:#C79A3B;flex-shrink:0">${Math.round(e.percentComplete)}%</span>
+      </div>
+      <div class="edu-progress-bar-wrap"><div class="edu-progress-bar-fill" style="width:${Math.round(e.percentComplete)}%"></div></div>
+      <div style="font-size:var(--text-xs);color:var(--text-secondary)">${curLesson.title ? 'Next: ' + curLesson.title : 'Start your first lesson'}</div>
+      <div style="font-size:10px;color:var(--text-tertiary)">${remaining} lesson${remaining !== 1 ? 's' : ''} remaining · ${e.streak > 0 ? e.streak + ' day streak' : 'Start your streak'}</div>
+    </div>`;
+  }).join('');
+  section.style.display = '';
+}
+
+function showEduLanding() {
+  document.getElementById('edu-view-landing').style.display = '';
+  document.getElementById('edu-view-path').style.display = 'none';
+  document.getElementById('edu-view-lesson').style.display = 'none';
+}
+
+async function openEduPath(slug) {
+  document.getElementById('edu-view-landing').style.display = 'none';
+  document.getElementById('edu-view-path').style.display = '';
+  document.getElementById('edu-view-lesson').style.display = 'none';
+
+  const roadmapEl = document.getElementById('edu-roadmap');
+  roadmapEl.innerHTML = '<div class="spinner-center" style="padding:var(--space-8)"><div class="spinner spinner-lg"></div></div>';
+
+  try {
+    const data = await api('GET', '/educate/paths/' + slug);
+    _edu.currentPath = data;
+    renderEduPathView(data);
+  } catch(e) {
+    roadmapEl.innerHTML = '<div class="empty-state"><div class="empty-state-text">Could not load path.</div></div>';
+  }
+}
+
+function renderEduPathView(data) {
+  const { path, enrollment } = data;
+  _edu.enrollmentId = enrollment?.id || null;
+  const phases = (path.phases || []);
+
+  document.getElementById('edu-path-title').textContent = path.title;
+  document.getElementById('edu-path-tagline').textContent = path.tagline;
+
+  const pct = enrollment ? Math.round(enrollment.percentComplete) : 0;
+  document.getElementById('edu-path-progress-fill').style.width = pct + '%';
+  document.getElementById('edu-path-pct').textContent = pct + '%';
+
+  const enrollBtn = document.getElementById('edu-path-enroll-btn');
+  enrollBtn.style.display = (!enrollment && state.token) ? '' : 'none';
+  enrollBtn.dataset.slug = path.slug;
+
+  // Build completed set
+  const completed = new Set((enrollment?.lessonProgress || []).map(l => l.lessonKey));
+
+  // Circle link
+  const circleSection = document.getElementById('edu-path-circle');
+  if (path.circleTag) {
+    document.getElementById('edu-circle-desc').textContent =
+      `Connect with learners in the ${path.title} circle — discuss lessons, share insights, ask questions.`;
+    circleSection.dataset.tag = path.circleTag;
+    circleSection.style.display = '';
+  } else {
+    circleSection.style.display = 'none';
+  }
+
+  // Render vertical roadmap
+  const roadmapEl = document.getElementById('edu-roadmap');
+  roadmapEl.innerHTML = phases.map((phase, pi) => {
+    const lessons = phase.lessons || [];
+    const lessonRows = lessons.map((lesson, li) => {
+      const key = pi + '.' + li;
+      const done = completed.has(key);
+      const locked = !enrollment && li > 0;
+      return `<div class="edu-lesson-row${locked ? '' : ''}" onclick="${locked ? 'promptEduEnroll()' : 'openEduLesson(' + pi + ',' + li + ')'}">
+        <div class="edu-lesson-check${done ? ' done' : ''}"></div>
+        <div class="edu-lesson-title">${escHtml(lesson.title)}</div>
+        <div class="edu-lesson-duration">${lesson.duration} min</div>
+      </div>`;
+    }).join('');
+
+    const phaseComplete = lessons.every((_, li) => completed.has(pi + '.' + li));
+    return `<div class="edu-phase">
+      <div class="edu-phase-header">
+        <div class="edu-phase-dot${phaseComplete ? '' : (pi === 0 || completed.has((pi-1) + '.' + (phases[pi-1]?.lessons?.length - 1 || 0))) ? '' : ' locked'}">${pi + 1}</div>
+        <div class="edu-phase-title">${escHtml(phase.title)}</div>
+      </div>
+      <div style="padding-left:13px;border-left:1px solid var(--border-default);margin-left:13px;padding-bottom:var(--space-2)">
+        ${lessonRows}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openEduLesson(phaseIdx, lessonIdx) {
+  const path = _edu.currentPath?.path;
+  if (!path) return;
+  const phases = path.phases || [];
+  const phase = phases[phaseIdx];
+  const lesson = phase?.lessons[lessonIdx];
+  if (!lesson) return;
+
+  if (!_edu.enrollmentId && state.token) {
+    // Silently enroll on first open
+    api('POST', '/educate/paths/' + path.slug + '/enroll').then(e => {
+      _edu.enrollmentId = e.id;
+      if (_edu.currentPath) _edu.currentPath.enrollment = e;
+    }).catch(() => {});
+  }
+
+  _edu.currentPhase = phaseIdx;
+  _edu.currentLesson = lessonIdx;
+
+  document.getElementById('edu-view-landing').style.display = 'none';
+  document.getElementById('edu-view-path').style.display = 'none';
+  document.getElementById('edu-view-lesson').style.display = '';
+
+  document.getElementById('edu-lesson-phase-label').textContent = phase.title;
+  document.getElementById('edu-lesson-title').textContent = lesson.title;
+  document.getElementById('edu-lesson-duration').textContent = lesson.duration + ' min';
+
+  // Core concepts
+  const conceptsEl = document.getElementById('edu-lesson-concepts');
+  conceptsEl.innerHTML = (lesson.concepts || []).map(c => `<span class="edu-concept-tag">${escHtml(c)}</span>`).join(' ');
+
+  // Example placeholder
+  document.getElementById('edu-lesson-example').textContent = 'Tap "Explain" to get a real-world example from the AI Tutor.';
+
+  // Action task
+  document.getElementById('edu-lesson-action').textContent = lesson.actionTask || '';
+
+  // Reflection
+  document.getElementById('edu-lesson-reflection').textContent = lesson.reflection || '';
+
+  // Reset AI tutor panel
+  const responseEl = document.getElementById('edu-tutor-response');
+  responseEl.style.display = 'none';
+  responseEl.innerHTML = '';
+
+  // Mark complete button
+  const doneKey = phaseIdx + '.' + lessonIdx;
+  const completed = new Set((_edu.currentPath?.enrollment?.lessonProgress || []).map(l => l.lessonKey));
+  const completeBtn = document.getElementById('edu-complete-btn');
+  completeBtn.textContent = completed.has(doneKey) ? 'Completed ✓' : 'Mark Complete';
+  completeBtn.disabled = completed.has(doneKey);
+  completeBtn.style.opacity = completed.has(doneKey) ? '0.5' : '1';
+}
+
+function backToEduPath() {
+  document.getElementById('edu-view-lesson').style.display = 'none';
+  document.getElementById('edu-view-path').style.display = '';
+  // Re-render path with latest progress
+  if (_edu.currentPath) renderEduPathView(_edu.currentPath);
+}
+
+async function enrollInPath() {
+  if (!state.token) { showToast('Sign in to enroll in a learning path'); return; }
+  const slug = document.getElementById('edu-path-enroll-btn').dataset.slug;
+  try {
+    const enrollment = await api('POST', '/educate/paths/' + slug + '/enroll');
+    _edu.enrollmentId = enrollment.id;
+    if (_edu.currentPath) {
+      _edu.currentPath.enrollment = enrollment;
+      renderEduPathView(_edu.currentPath);
+    }
+    showToast('Enrolled! Start your first lesson.');
+  } catch(e) {
+    showToast('Could not enroll — please try again');
+  }
+}
+
+function promptEduEnroll() {
+  if (!state.token) { showToast('Sign in to start learning'); return; }
+  showToast('Enroll in this path to unlock all lessons');
+}
+
+async function completeEduLesson() {
+  if (!state.token) { showToast('Sign in to track your progress'); return; }
+  if (!_edu.enrollmentId) {
+    const slug = _edu.currentPath?.path?.slug;
+    if (!slug) return;
+    try {
+      const e = await api('POST', '/educate/paths/' + slug + '/enroll');
+      _edu.enrollmentId = e.id;
+      if (_edu.currentPath) _edu.currentPath.enrollment = e;
+    } catch(_) {}
+  }
+  if (!_edu.enrollmentId) return;
+
+  const lessonKey = _edu.currentPhase + '.' + _edu.currentLesson;
+  try {
+    const updated = await api('POST', '/educate/enrollments/' + _edu.enrollmentId + '/lesson', {
+      lessonKey, exerciseDone: false,
+    });
+    if (_edu.currentPath) _edu.currentPath.enrollment = updated;
+
+    const completeBtn = document.getElementById('edu-complete-btn');
+    completeBtn.textContent = 'Completed ✓';
+    completeBtn.disabled = true;
+    completeBtn.style.opacity = '0.5';
+    showToast('Lesson complete! Keep going.');
+  } catch(e) {
+    showToast('Could not save progress — please try again');
+  }
+}
+
+async function callEduTutor(action) {
+  if (!state.token) { showToast('Sign in to use the AI Tutor'); return; }
+  if (_edu.aiConfigured === false) {
+    showToast('AI Tutor is coming soon'); return;
+  }
+
+  const path = _edu.currentPath?.path;
+  if (!path) return;
+  const phases = path.phases || [];
+  const lesson = phases[_edu.currentPhase]?.lessons[_edu.currentLesson];
+
+  const responseEl = document.getElementById('edu-tutor-response');
+  responseEl.style.display = '';
+  responseEl.innerHTML = '<div class="edu-ai-response" style="color:var(--text-tertiary)">Thinking…</div>';
+
+  // If explain, also inject into example section
+  try {
+    const result = await api('POST', '/educate/ai-tutor', {
+      action,
+      pathSlug: path.slug,
+      phaseIndex: _edu.currentPhase,
+      lessonIndex: _edu.currentLesson,
+      lessonTitle: lesson?.title,
+      concepts: lesson?.concepts || [],
+    });
+    const text = result.response || '';
+    responseEl.innerHTML = `<div class="edu-ai-response">${escHtml(text)}</div>`;
+    if (action === 'explain') {
+      const exampleEl = document.getElementById('edu-lesson-example');
+      if (exampleEl) exampleEl.textContent = text;
+    }
+  } catch(e) {
+    responseEl.innerHTML = '<div class="edu-ai-response" style="color:var(--text-tertiary)">AI Tutor unavailable right now. Try again shortly.</div>';
+  }
+}
+
+let _eduSearchTimer = null;
+function onEducateSearch(q) {
+  clearTimeout(_eduSearchTimer);
+  if (!q.trim()) return;
+  _eduSearchTimer = setTimeout(() => submitEducateSearch(q), 400);
+}
+
+async function submitEducateSearch(q) {
+  if (!q || !q.trim()) return;
+  const grid = document.getElementById('edu-path-grid');
+  if (!grid) return;
+  try {
+    const paths = await api('GET', '/educate/search?q=' + encodeURIComponent(q.trim()));
+    renderEduPathGrid(paths);
+    document.getElementById('edu-path-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    renderEduPathGrid(_edu.paths); // fallback to all paths
+  }
+}
+
+function openEduCircle() {
+  const tag = document.getElementById('edu-path-circle')?.dataset.tag;
+  switchTab('communities');
+  if (tag) setTimeout(() => {
+    const searchInput = document.getElementById('communitySearchInput');
+    if (searchInput) { searchInput.value = tag; searchInput.dispatchEvent(new Event('input')); }
+  }, 300);
+}
 </script>
 </body>
 </html>
