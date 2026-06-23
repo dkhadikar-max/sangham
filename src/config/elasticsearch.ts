@@ -1,4 +1,5 @@
 import { env } from './env';
+import type { QueryDslQueryContainer } from '@elastic/elasticsearch/lib/api/types';
 
 export const ES_INDEX = 'sangham_library';
 
@@ -56,7 +57,7 @@ export async function searchEsLibrary(
   const client = getEsClient();
   if (!client) return null;
 
-  const must: unknown[] = [
+  const must: QueryDslQueryContainer[] = [
     {
       multi_match: {
         query,
@@ -67,7 +68,7 @@ export async function searchEsLibrary(
     },
   ];
 
-  const filter: unknown[] = [];
+  const filter: QueryDslQueryContainer[] = [];
   if (filters.tradition) filter.push({ term: { tradition: filters.tradition } });
   if (filters.language)  filter.push({ term: { language: filters.language } });
 
@@ -82,7 +83,7 @@ export async function searchEsLibrary(
     const total = typeof result.hits.total === 'number'
       ? result.hits.total
       : (result.hits.total as { value: number }).value;
-    return { ids: hits.map((h: { _id: string }) => h._id), total };
+    return { ids: hits.map(h => h._id!), total };
   } catch {
     return null;
   }
