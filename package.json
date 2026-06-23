@@ -11,6 +11,7 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "seed": "node dist/scripts/runSeed.js",
+    "seed:educate": "node dist/scripts/seedEducateOnly.js",
     "studio": "prisma studio",
     "lint": "eslint src --ext .ts"
   },
