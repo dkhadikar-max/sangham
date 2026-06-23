@@ -1,27 +1,34 @@
 -- Migration: Sangham Educate — Learning Path System
 -- Created: 2026-06-23
+-- All statements are idempotent (safe to re-run)
 
 -- Enums
-CREATE TYPE "EducateDomain" AS ENUM (
-  'AI_AUTOMATION',
-  'ENTREPRENEURSHIP',
-  'SALES',
-  'LEADERSHIP',
-  'NETWORKING',
-  'WEALTH_FUNDAMENTALS',
-  'BUDDHISM_MEDITATION'
-);
+DO $$ BEGIN
+  CREATE TYPE "EducateDomain" AS ENUM (
+    'AI_AUTOMATION',
+    'ENTREPRENEURSHIP',
+    'SALES',
+    'LEADERSHIP',
+    'NETWORKING',
+    'WEALTH_FUNDAMENTALS',
+    'BUDDHISM_MEDITATION'
+  );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "EducateLevel" AS ENUM (
-  'EXPLORER',
-  'LEARNER',
-  'PRACTITIONER',
-  'CONTRIBUTOR',
-  'MENTOR'
-);
+DO $$ BEGIN
+  CREATE TYPE "EducateLevel" AS ENUM (
+    'EXPLORER',
+    'LEARNER',
+    'PRACTITIONER',
+    'CONTRIBUTOR',
+    'MENTOR'
+  );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- Predefined learning paths (seeded, not user-created)
-CREATE TABLE "educate_paths" (
+CREATE TABLE IF NOT EXISTS "educate_paths" (
   "id"          TEXT              NOT NULL DEFAULT gen_random_uuid()::text,
   "slug"        TEXT              NOT NULL,
   "domain"      "EducateDomain"   NOT NULL,
@@ -38,7 +45,7 @@ CREATE TABLE "educate_paths" (
 );
 
 -- User enrollments in a learning path
-CREATE TABLE "educate_enrollments" (
+CREATE TABLE IF NOT EXISTS "educate_enrollments" (
   "id"               TEXT        NOT NULL DEFAULT gen_random_uuid()::text,
   "user_id"          TEXT        NOT NULL,
   "path_id"          TEXT        NOT NULL,
@@ -55,10 +62,10 @@ CREATE TABLE "educate_enrollments" (
   CONSTRAINT "educate_enrollments_path_id_fkey"
     FOREIGN KEY ("path_id") REFERENCES "educate_paths"("id") ON DELETE CASCADE
 );
-CREATE INDEX "educate_enrollments_user_id_idx" ON "educate_enrollments"("user_id");
+CREATE INDEX IF NOT EXISTS "educate_enrollments_user_id_idx" ON "educate_enrollments"("user_id");
 
 -- Per-lesson completion tracking
-CREATE TABLE "educate_lesson_progress" (
+CREATE TABLE IF NOT EXISTS "educate_lesson_progress" (
   "id"            TEXT        NOT NULL DEFAULT gen_random_uuid()::text,
   "enrollment_id" TEXT        NOT NULL,
   "lesson_key"    TEXT        NOT NULL,
@@ -69,18 +76,18 @@ CREATE TABLE "educate_lesson_progress" (
   CONSTRAINT "educate_lesson_progress_enrollment_id_fkey"
     FOREIGN KEY ("enrollment_id") REFERENCES "educate_enrollments"("id") ON DELETE CASCADE
 );
-CREATE INDEX "educate_lesson_progress_enrollment_id_idx" ON "educate_lesson_progress"("enrollment_id");
+CREATE INDEX IF NOT EXISTS "educate_lesson_progress_enrollment_id_idx" ON "educate_lesson_progress"("enrollment_id");
 
 -- User reputation in Educate
-CREATE TABLE "educate_user_reputation" (
-  "id"             TEXT           NOT NULL DEFAULT gen_random_uuid()::text,
-  "user_id"        TEXT           NOT NULL,
-  "level"          "EducateLevel" NOT NULL DEFAULT 'EXPLORER',
-  "total_lessons"  INTEGER        NOT NULL DEFAULT 0,
-  "total_paths"    INTEGER        NOT NULL DEFAULT 0,
-  "total_exercises" INTEGER       NOT NULL DEFAULT 0,
-  "longest_streak" INTEGER        NOT NULL DEFAULT 0,
-  "updated_at"     TIMESTAMPTZ    NOT NULL DEFAULT NOW(),
+CREATE TABLE IF NOT EXISTS "educate_user_reputation" (
+  "id"              TEXT           NOT NULL DEFAULT gen_random_uuid()::text,
+  "user_id"         TEXT           NOT NULL,
+  "level"           "EducateLevel" NOT NULL DEFAULT 'EXPLORER',
+  "total_lessons"   INTEGER        NOT NULL DEFAULT 0,
+  "total_paths"     INTEGER        NOT NULL DEFAULT 0,
+  "total_exercises" INTEGER        NOT NULL DEFAULT 0,
+  "longest_streak"  INTEGER        NOT NULL DEFAULT 0,
+  "updated_at"      TIMESTAMPTZ    NOT NULL DEFAULT NOW(),
   CONSTRAINT "educate_user_reputation_pkey" PRIMARY KEY ("id"),
   CONSTRAINT "educate_user_reputation_user_id_key" UNIQUE ("user_id"),
   CONSTRAINT "educate_user_reputation_user_id_fkey"
