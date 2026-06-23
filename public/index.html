@@ -5521,7 +5521,7 @@ function renderEventCard(ev) {
     : ev.onlineUrl ? `🔗 ${t('discover.online')}`
     : ev.locationName ? `📍 ${t('discover.in_person')}` : '';
   const community = ev.association?.name ? escHtml(ev.association.name) : '';
-  return `<div class="event-card" role="button" tabindex="0" onclick="openEventDetail('${ev.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEventDetail('${ev.id}')}">`
+  return `<div class="event-card" role="button" tabindex="0" onclick="openEventDetail('${ev.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openEventDetail('${ev.id}')}" >
     <div style="display:flex;gap:var(--space-2);align-items:center;margin-bottom:var(--space-1)">
       <div class="event-card-type">${typeLabel}</div>
       ${modeBadge ? `<div class="event-card-type" style="background:var(--surface-muted)">${modeBadge}</div>` : ''}
