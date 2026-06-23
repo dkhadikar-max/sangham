@@ -1,22 +1,46 @@
-import { execSync }  from 'child_process';
 import { PrismaClient } from '@prisma/client';
 import * as fs     from 'fs';
 import * as path   from 'path';
 import * as crypto from 'crypto';
 import { seedEducatePaths } from './scripts/seedEducate';
 
-// Applies pending Prisma migrations without advisory locks.
-// prisma migrate deploy uses pg_advisory_lock which blocks indefinitely when
-// a previous crashed deploy left a stale lock on a PgBouncer server connection.
-// prisma db execute runs raw SQL directly with no locking overhead.
-async function applyPendingMigrations(): Promise<void> {
-  const dbUrl  = process.env.DATABASE_URL || '';
-  const execUrl = dbUrl.replace('?pgbouncer=true', '');
+// Split a SQL file into individual executable statements.
+// Handles dollar-quoted blocks (DO $$ ... END $$;) correctly.
+function splitSqlStatements(sql: string): string[] {
+  const statements: string[] = [];
+  let current = '';
+  let inDollarQuote = false;
 
+  for (const line of sql.split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('--')) continue; // skip comment-only lines
+
+    current += line + '\n';
+
+    // Toggle dollar-quote state for each $$ on the line
+    const ddCount = (line.match(/\$\$/g) || []).length;
+    if (ddCount % 2 !== 0) inDollarQuote = !inDollarQuote;
+
+    // End of statement: semicolon at end of line, not inside a dollar-quote block
+    if (!inDollarQuote && trimmed.endsWith(';')) {
+      const stmt = current.trim();
+      if (stmt.length > 0) statements.push(stmt);
+      current = '';
+    }
+  }
+
+  const tail = current.trim();
+  if (tail.length > 0) statements.push(tail);
+
+  return statements.filter(s => s.length > 0);
+}
+
+async function applyPendingMigrations(): Promise<void> {
+  const dbUrl = process.env.DATABASE_URL || '';
   const prisma = new PrismaClient({ datasources: { db: { url: dbUrl } } });
 
   try {
-    // Ensure tracking table exists (Prisma normally creates this; safe to repeat)
+    // Ensure tracking table exists
     await prisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "_prisma_migrations" (
         "id"                  TEXT        NOT NULL,
@@ -31,13 +55,11 @@ async function applyPendingMigrations(): Promise<void> {
       )
     `);
 
-    // Fetch already-applied migration names
     const rows = await prisma.$queryRaw<{ migration_name: string }[]>`
       SELECT migration_name FROM "_prisma_migrations" WHERE finished_at IS NOT NULL
     `;
     const applied = new Set(rows.map(r => r.migration_name));
 
-    // Walk prisma/migrations in order
     const migDir = path.join(process.cwd(), 'prisma', 'migrations');
     const dirs = fs.readdirSync(migDir)
       .filter(f => !f.endsWith('.toml') && fs.statSync(path.join(migDir, f)).isDirectory())
@@ -56,13 +78,12 @@ async function applyPendingMigrations(): Promise<void> {
 
       console.log(`Applying: ${name}`);
 
-      // Execute SQL via pooler — no advisory locks
-      execSync(`npx prisma db execute --url "${execUrl}" --file "${sqlPath}"`, {
-        stdio:   'inherit',
-        timeout: 60_000,
-      });
+      // Execute each statement directly — no execSync, no npx, no shell
+      const statements = splitSqlStatements(sql);
+      for (const stmt of statements) {
+        await prisma.$executeRawUnsafe(stmt);
+      }
 
-      // Record as applied (skip if already recorded by a concurrent process)
       await prisma.$executeRawUnsafe(`
         INSERT INTO "_prisma_migrations"
           (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count)
@@ -87,10 +108,8 @@ async function seedStaticContent(): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const originalUrl = process.env.DATABASE_URL || '';
   console.log('Running database migrations...');
   await applyPendingMigrations();
-  process.env.DATABASE_URL = originalUrl;
   console.log('Seeding static content...');
   await seedStaticContent();
   console.log('Starting server...');
