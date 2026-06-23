@@ -851,7 +851,7 @@ round:var(--error-600)}
     .event-card-title{font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);line-height:1.4}
     .event-card-meta{font-size:var(--text-xs);color:var(--text-tertiary);display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center}
     .event-card-actions{display:flex;gap:var(--space-2);margin-top:var(--space-3)}
-    .event-rsvp-btn{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1.5px solid var(--border-default);background:none;cursor:pointer;font-family:var(--font-body);font-weight:var(--weight-medium);color:var(--text-secondary);transition:all var(--duration-fast) var(--ease-out)}
+    .event-rsvp-btn{font-size:var(--text-xs);padding:var(--space-2) var(--space-4);min-height:40px;border-radius:var(--radius-full);border:1.5px solid var(--border-default);background:none;cursor:pointer;font-family:var(--font-body);font-weight:var(--weight-medium);color:var(--text-secondary);transition:all var(--duration-fast) var(--ease-out);display:inline-flex;align-items:center;justify-content:center}
     .event-rsvp-btn:hover,.event-rsvp-btn.going{background:var(--saffron-500);border-color:var(--saffron-500);color:white}
     .session-card{background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:var(--space-4);margin-bottom:var(--space-3);display:flex;gap:var(--space-3)}
     .session-live-badge{display:inline-flex;align-items:center;gap:var(--space-1);background:var(--error-500);color:white;font-size:var(--text-2xs);font-weight:var(--weight-bold);padding:2px var(--space-2);border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:var(--tracking-wider)}
@@ -2090,8 +2090,8 @@ round:var(--error-600)}
           <button class="comm-tab-btn active" onclick="switchDiscoverTab('people',this)">People</button>
           <button class="comm-tab-btn" id="discover-tab-btn-events" onclick="switchDiscoverTab('events',this)">Events</button>
           <button class="comm-tab-btn discover-tab-projects" onclick="switchDiscoverTab('projects',this)">Projects</button>
-          <button class="nav-item" style="flex:0;padding:var(--space-2) var(--space-3);color:var(--text-secondary)" onclick="openGlobalSearch()" aria-label="Search all" title="Search all">
-            <svg viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <button class="header-icon" style="flex-shrink:0;margin-left:auto;border-radius:var(--radius-lg)" onclick="openGlobalSearch()" aria-label="Search all" title="Search all">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </button>
         </div>
         <div id="discover-tab-people" class="comm-tab-panel active">
