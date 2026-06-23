@@ -210,7 +210,7 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
 router.post('/ai-tutor', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   if (!isAIConfigured()) throw new AppError('AI Tutor is not yet available on this instance', 503);
 
-  const { action, pathSlug, phaseIndex, lessonIndex, lessonTitle, concepts, userQuestion } = req.body;
+  const { action, pathSlug, phaseIndex, lessonIndex, lessonTitle, concepts, userQuestion, completedLessons, percentComplete } = req.body;
   const validActions = ['explain', 'quiz', 'summarize', 'exercise', 'simplify'];
   if (!action || !validActions.includes(action)) throw new AppError(`action must be one of: ${validActions.join(', ')}`, 400);
   if (!pathSlug) throw new AppError('pathSlug required', 400);
@@ -218,23 +218,28 @@ router.post('/ai-tutor', authenticate, async (req: AuthRequest, res: Response): 
   const path = await prisma.educatePath.findUnique({ where: { slug: pathSlug } });
   if (!path) throw new AppError('Path not found', 404);
 
-  const phases = path.phases as unknown as { title: string; lessons: { title: string; concepts: string[]; actionTask: string; reflection: string }[] }[];
+  const phases = path.phases as unknown as { title: string; lessons: { title: string; overview?: string; concepts: string[]; actionTask: string; reflection: string }[] }[];
   const phase = phases[phaseIndex ?? 0];
   const lesson = phase?.lessons[lessonIndex ?? 0];
 
-  const systemPrompt = `You are the Sangham Educate AI Tutor — a concise, accurate, and warm learning assistant.
-You are helping a learner on the "${path.title}" path.
+  const completedCount = Array.isArray(completedLessons) ? completedLessons.length : 0;
+  const pct = typeof percentComplete === 'number' ? Math.round(percentComplete) : 0;
+
+  const systemPrompt = `You are the Sangham Educate AI Tutor — a concise, accurate, and warm learning companion.
+You are helping a learner on the "${path.title}" learning path.
 Current phase: "${phase?.title ?? 'Introduction'}".
 Current lesson: "${lesson?.title ?? lessonTitle ?? 'Introduction'}".
 Key concepts in this lesson: ${(lesson?.concepts ?? concepts ?? []).join(', ')}.
+Learner progress: ${completedCount} lesson${completedCount !== 1 ? 's' : ''} completed · ${pct}% of this path done.
 
-Rules you must follow:
+Rules you must follow without exception:
 1. Be concise. Aim for 150-250 words per response.
-2. Always distinguish facts from interpretation. Say "This is widely agreed..." or "Some practitioners believe..."
-3. If you are uncertain about something, say so. Never fabricate examples, statistics, or citations.
-4. Reference the lesson concepts when relevant. Don't invent new frameworks.
-5. For Buddhist content: cite traditions accurately (Theravada, Mahayana, Navayana/Ambedkarite). Respect all traditions.
-6. Never claim to be a guru, teacher, or authority. You are a learning companion.`;
+2. Distinguish facts from interpretation. Use phrases like "Research suggests..." or "Many practitioners find..." when appropriate.
+3. If you are uncertain, say so explicitly. Never fabricate statistics, citations, or examples.
+4. Stay grounded in this lesson's concepts. Do not invent frameworks not in the lesson.
+5. For Buddhist content: identify traditions accurately (Theravada, Mahayana, Vajrayana, Navayana/Ambedkarite).
+6. You are a learning companion, not a teacher, guru, or authority. Acknowledge learner autonomy.
+7. Acknowledge prior progress when relevant — this learner has already completed ${completedCount} lesson${completedCount !== 1 ? 's' : ''}.`;
 
   const actionPrompts: Record<string, string> = {
     explain:   `Explain the core idea of this lesson in plain language as if speaking to a smart beginner. Use one concrete, everyday example.`,

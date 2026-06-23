@@ -1750,9 +1750,9 @@ round:var(--error-600)}
           <i class="fa-solid fa-book-open ds-nav-icon"></i>
           <span class="ds-label" data-i18n="nav.learn">Educate</span>
         </button>
-        <button class="ds-nav-item" id="ds-nav-educate" onclick="switchTab('educate')" data-tooltip="Learn">
+        <button class="ds-nav-item" id="ds-nav-educate" onclick="switchTab('educate')" data-tooltip="Educate">
           <i class="fa-solid fa-graduation-cap ds-nav-icon"></i>
-          <span class="ds-label">Learn</span>
+          <span class="ds-label">Educate</span>
         </button>
         <button class="ds-nav-item" id="ds-nav-chat" onclick="switchTab('chat')" data-tooltip="Messages">
           <i class="fa-solid fa-message ds-nav-icon"></i>
@@ -1802,7 +1802,7 @@ round:var(--error-600)}
             <i class="fa-solid fa-book-open"></i><span>Library</span>
           </button>
           <button id="header-nav-educate" onclick="switchTab('educate')" class="header-nav-link flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
-            <i class="fa-solid fa-graduation-cap"></i><span>Learn</span>
+            <i class="fa-solid fa-graduation-cap"></i><span>Educate</span>
           </button>
           <button id="header-nav-discover" onclick="switchTab('discover');setTimeout(function(){var b=document.getElementById('discover-tab-btn-events');if(b)switchDiscoverTab('events',b)},200)" class="header-nav-link flex items-center gap-2 text-sangham-brown-light hover:text-sangham-ink font-medium text-sm transition-colors">
             <i class="fa-solid fa-calendar-days"></i><span>Events</span>
@@ -2765,9 +2765,10 @@ round:var(--error-600)}
           <!-- Hero Search -->
           <div class="edu-hero">
             <div class="edu-hero-title">What would you like to learn today?</div>
+            <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3)">Type a topic and get a learning roadmap built for you.</div>
             <div class="edu-search-wrap">
               <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="eduSearchInput" type="text" placeholder="Try: AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
+              <input id="eduSearchInput" type="text" placeholder="e.g. AI, Sales, Leadership, Entrepreneurship…" oninput="onEducateSearch(this.value)" onkeydown="if(event.key==='Enter')submitEducateSearch(this.value)" />
             </div>
             <div class="edu-chips">
               <span class="edu-chip" onclick="submitEducateSearch('AI')">AI &amp; Automation</span>
@@ -2853,7 +2854,12 @@ round:var(--error-600)}
             <span id="edu-lesson-duration" style="font-size:11px;color:var(--text-tertiary);flex-shrink:0"></span>
           </div>
           <div class="edu-lesson-view">
-            <!-- 1. Concepts -->
+            <!-- 1. Overview -->
+            <div class="edu-lesson-section">
+              <div class="edu-lesson-section-label">Overview</div>
+              <div id="edu-lesson-overview" class="edu-lesson-section-body"></div>
+            </div>
+            <!-- 2. Concepts -->
             <div class="edu-lesson-section">
               <div class="edu-lesson-section-label">Core Concepts</div>
               <div id="edu-lesson-concepts" class="edu-lesson-section-body"></div>
@@ -2867,6 +2873,9 @@ round:var(--error-600)}
             <div class="edu-lesson-section" style="background:rgba(199,154,59,.04);border-color:rgba(199,154,59,.2)">
               <div class="edu-lesson-section-label">Action Task</div>
               <div id="edu-lesson-action" class="edu-lesson-section-body"></div>
+              <button id="edu-exercise-btn" onclick="markExerciseDone()" style="margin-top:var(--space-3);padding:6px 16px;border-radius:9999px;border:1.5px solid rgba(199,154,59,.4);background:transparent;color:#C79A3B;font-size:var(--text-xs);font-weight:var(--weight-medium);cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(199,154,59,.1)'" onmouseout="this.style.background='transparent'">
+                ✓ I completed this exercise
+              </button>
             </div>
             <!-- 4. Reflection -->
             <div class="edu-lesson-section">
@@ -2912,7 +2921,7 @@ round:var(--error-600)}
       </button>
       <button class="nav-item" onclick="switchTab('educate')" id="nav-educate" aria-label="Educate">
         <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-        <span>Learn</span>
+        <span>Educate</span>
       </button>
       <button class="nav-item" onclick="switchTab('chat')" id="nav-chat" aria-label="Chat">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -10797,16 +10806,22 @@ function renderEduContinue(enrollments) {
     const phases = (path.phases || []);
     const curPhase = phases[e.currentPhase] || {};
     const curLesson = (curPhase.lessons || [])[e.currentLesson] || {};
-    const totalLessons = phases.reduce((s, ph) => s + (ph.lessons?.length || 0), 0);
-    const remaining = totalLessons - e.lessonProgress.length;
+    // Compute estimated time remaining from stored lesson durations
+    const completedKeys = new Set((e.lessonProgress || []).map(lp => lp.lessonKey));
+    const remainingMins = phases.flatMap((ph, pi) =>
+      (ph.lessons || []).map((l, li) => ({ key: `${pi}.${li}`, dur: l.duration || 10 }))
+    ).filter(l => !completedKeys.has(l.key)).reduce((s, l) => s + l.dur, 0);
+    const timeLabel = remainingMins >= 60
+      ? `${Math.floor(remainingMins / 60)}h ${remainingMins % 60}m left`
+      : `${remainingMins} min left`;
     return `<div class="edu-progress-card" onclick="openEduPath('${escHtml(path.slug)}')">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2)">
         <div style="font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--text-primary)">${escHtml(path.title)}</div>
         <span style="font-size:11px;color:#C79A3B;flex-shrink:0">${Math.round(e.percentComplete)}%</span>
       </div>
       <div class="edu-progress-bar-wrap"><div class="edu-progress-bar-fill" style="width:${Math.round(e.percentComplete)}%"></div></div>
-      <div style="font-size:var(--text-xs);color:var(--text-secondary)">${curLesson.title ? 'Next: ' + curLesson.title : 'Start your first lesson'}</div>
-      <div style="font-size:10px;color:var(--text-tertiary)">${remaining} lesson${remaining !== 1 ? 's' : ''} remaining · ${e.streak > 0 ? e.streak + ' day streak' : 'Start your streak'}</div>
+      <div style="font-size:var(--text-xs);color:var(--text-secondary)">${curLesson.title ? 'Next: ' + escHtml(curLesson.title) : 'Start your first lesson'}</div>
+      <div style="font-size:10px;color:var(--text-tertiary)">${timeLabel} · ${e.streak > 0 ? e.streak + ' day streak' : 'Start your streak'}</div>
     </div>`;
   }).join('');
   section.style.display = '';
@@ -10920,6 +10935,9 @@ function openEduLesson(phaseIdx, lessonIdx) {
   document.getElementById('edu-lesson-title').textContent = lesson.title;
   document.getElementById('edu-lesson-duration').textContent = lesson.duration + ' min';
 
+  // Overview
+  const overviewEl = document.getElementById('edu-lesson-overview');
+  if (overviewEl) overviewEl.textContent = lesson.overview || '';
   // Core concepts
   const conceptsEl = document.getElementById('edu-lesson-concepts');
   conceptsEl.innerHTML = (lesson.concepts || []).map(c => `<span class="edu-concept-tag">${escHtml(c)}</span>`).join(' ');
@@ -10941,10 +10959,29 @@ function openEduLesson(phaseIdx, lessonIdx) {
   // Mark complete button
   const doneKey = phaseIdx + '.' + lessonIdx;
   const completed = new Set((_edu.currentPath?.enrollment?.lessonProgress || []).map(l => l.lessonKey));
+  const isDone = completed.has(doneKey);
   const completeBtn = document.getElementById('edu-complete-btn');
-  completeBtn.textContent = completed.has(doneKey) ? 'Completed ✓' : 'Mark Complete';
-  completeBtn.disabled = completed.has(doneKey);
-  completeBtn.style.opacity = completed.has(doneKey) ? '0.5' : '1';
+  completeBtn.textContent = isDone ? 'Completed ✓' : 'Mark Complete';
+  completeBtn.disabled = isDone;
+  completeBtn.style.opacity = isDone ? '0.5' : '1';
+  // Reset exercise button
+  const exerciseBtn = document.getElementById('edu-exercise-btn');
+  const lessonProg = (_edu.currentPath?.enrollment?.lessonProgress || []).find(l => l.lessonKey === doneKey);
+  if (exerciseBtn) {
+    if (lessonProg?.exerciseDone) {
+      exerciseBtn.dataset.done = '1';
+      exerciseBtn.textContent = '✓ Exercise completed';
+      exerciseBtn.style.background = 'rgba(199,154,59,.15)';
+      exerciseBtn.style.borderColor = '#C79A3B';
+      exerciseBtn.disabled = true;
+    } else {
+      exerciseBtn.dataset.done = '0';
+      exerciseBtn.textContent = '✓ I completed this exercise';
+      exerciseBtn.style.background = 'transparent';
+      exerciseBtn.style.borderColor = 'rgba(199,154,59,.4)';
+      exerciseBtn.disabled = false;
+    }
+  }
 }
 
 function backToEduPath() {
@@ -10975,26 +11012,30 @@ function promptEduEnroll() {
   showToast('Enroll in this path to unlock all lessons');
 }
 
-async function completeEduLesson() {
-  if (!state.token) { showToast('Sign in to track your progress'); return; }
-  if (!_edu.enrollmentId) {
-    const slug = _edu.currentPath?.path?.slug;
-    if (!slug) return;
-    try {
-      const e = await api('POST', '/educate/paths/' + slug + '/enroll');
-      _edu.enrollmentId = e.id;
-      if (_edu.currentPath) _edu.currentPath.enrollment = e;
-    } catch(_) {}
-  }
-  if (!_edu.enrollmentId) return;
+async function _ensureEnrolled() {
+  if (_edu.enrollmentId) return true;
+  if (!state.token) { showToast('Sign in to track your progress'); return false; }
+  const slug = _edu.currentPath?.path?.slug;
+  if (!slug) return false;
+  try {
+    const e = await api('POST', '/educate/paths/' + slug + '/enroll');
+    _edu.enrollmentId = e.id;
+    if (_edu.currentPath) _edu.currentPath.enrollment = e;
+    return true;
+  } catch(_) { return false; }
+}
 
+async function completeEduLesson() {
+  if (!await _ensureEnrolled()) return;
   const lessonKey = _edu.currentPhase + '.' + _edu.currentLesson;
+  // Check if exercise was done (look at button state)
+  const exerciseBtn = document.getElementById('edu-exercise-btn');
+  const exerciseDone = exerciseBtn?.dataset.done === '1';
   try {
     const updated = await api('POST', '/educate/enrollments/' + _edu.enrollmentId + '/lesson', {
-      lessonKey, exerciseDone: false,
+      lessonKey, exerciseDone,
     });
     if (_edu.currentPath) _edu.currentPath.enrollment = updated;
-
     const completeBtn = document.getElementById('edu-complete-btn');
     completeBtn.textContent = 'Completed ✓';
     completeBtn.disabled = true;
@@ -11003,6 +11044,24 @@ async function completeEduLesson() {
   } catch(e) {
     showToast('Could not save progress — please try again');
   }
+}
+
+async function markExerciseDone() {
+  if (!await _ensureEnrolled()) return;
+  const exerciseBtn = document.getElementById('edu-exercise-btn');
+  if (!exerciseBtn) return;
+  exerciseBtn.dataset.done = '1';
+  exerciseBtn.textContent = '✓ Exercise completed';
+  exerciseBtn.style.background = 'rgba(199,154,59,.15)';
+  exerciseBtn.style.borderColor = '#C79A3B';
+  exerciseBtn.disabled = true;
+  // Persist immediately if lesson already complete
+  const lessonKey = _edu.currentPhase + '.' + _edu.currentLesson;
+  const completed = new Set((_edu.currentPath?.enrollment?.lessonProgress || []).map(l => l.lessonKey));
+  if (completed.has(lessonKey) && _edu.enrollmentId) {
+    api('POST', '/educate/enrollments/' + _edu.enrollmentId + '/lesson', { lessonKey, exerciseDone: true }).catch(() => {});
+  }
+  showToast('Exercise marked done!');
 }
 
 async function callEduTutor(action) {
@@ -11022,6 +11081,8 @@ async function callEduTutor(action) {
 
   // If explain, also inject into example section
   try {
+    const enrollment = _edu.currentPath?.enrollment;
+    const completedKeys = (enrollment?.lessonProgress || []).map(l => l.lessonKey);
     const result = await api('POST', '/educate/ai-tutor', {
       action,
       pathSlug: path.slug,
@@ -11029,6 +11090,8 @@ async function callEduTutor(action) {
       lessonIndex: _edu.currentLesson,
       lessonTitle: lesson?.title,
       concepts: lesson?.concepts || [],
+      completedLessons: completedKeys,
+      percentComplete: enrollment?.percentComplete ?? 0,
     });
     const text = result.response || '';
     responseEl.innerHTML = `<div class="edu-ai-response">${escHtml(text)}</div>`;
@@ -11054,10 +11117,13 @@ async function submitEducateSearch(q) {
   if (!grid) return;
   try {
     const paths = await api('GET', '/educate/search?q=' + encodeURIComponent(q.trim()));
+    const sectionTitle = document.querySelector('#edu-view-landing .edu-section .edu-section-title');
+    if (sectionTitle) sectionTitle.textContent = `Learning paths for "${q.trim()}"`;
     renderEduPathGrid(paths);
-    document.getElementById('edu-path-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelector('#edu-view-landing .edu-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('eduSearchInput').value = q.trim();
   } catch(e) {
-    renderEduPathGrid(_edu.paths); // fallback to all paths
+    renderEduPathGrid(_edu.paths);
   }
 }
 
