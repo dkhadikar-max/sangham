@@ -4,6 +4,7 @@ import { authenticate, AuthRequest } from '../middleware/auth';
 import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { redis, CACHE_TTL } from '../config/redis';
+import { searchEsLibrary, indexLibraryTexts, getEsClient, ES_INDEX } from '../config/elasticsearch';
 
 const router = Router();
 
@@ -11,19 +12,48 @@ const router = Router();
 router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => {
   const { q, collection, tradition, language } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
-
   const { collectionId } = req.query;
+
+  // ── Elasticsearch path (when ELASTICSEARCH_URL is configured) ─────────────
+  if (q && typeof q === 'string') {
+    const esResult = await searchEsLibrary(
+      q,
+      {
+        tradition: tradition as string | undefined,
+        language:  language  as string | undefined,
+        collectionId: collectionId as string | undefined,
+      },
+      limit,
+      skip,
+    );
+    if (esResult) {
+      const texts = await prisma.libraryText.findMany({
+        where: { id: { in: esResult.ids }, isSearchable: true },
+        select: {
+          id: true, title: true, author: true, translator: true, language: true,
+          licence: true, attribution: true, externalId: true,
+          collection: { select: { name: true, tradition: true } },
+        },
+      });
+      // Preserve ES ranking order
+      const ordered = esResult.ids.map(id => texts.find(t => t.id === id)).filter(Boolean);
+      const params = parsePagination(req.query as Record<string, unknown>);
+      res.json(paginatedResponse(ordered, esResult.total, params));
+      return;
+    }
+  }
+
+  // ── Postgres ILIKE fallback ───────────────────────────────────────────────
   const where: Record<string, unknown> = { isSearchable: true };
-  if (tradition) where.collection = { tradition };
-  if (language) where.language = language;
-  if (collectionId) where.collectionId = collectionId;                           // filter by exact collection UUID
+  if (tradition)   where.collection = { tradition };
+  if (language)    where.language = language;
+  if (collectionId) where.collectionId = collectionId;
   else if (collection) where.collection = { ...(where.collection as object), name: { contains: collection as string, mode: 'insensitive' } };
 
-  // Basic text search via Postgres ILIKE (Elasticsearch integration is a separate service)
   if (q) {
     where.OR = [
-      { title: { contains: q as string, mode: 'insensitive' } },
-      { author: { contains: q as string, mode: 'insensitive' } },
+      { title:      { contains: q as string, mode: 'insensitive' } },
+      { author:     { contains: q as string, mode: 'insensitive' } },
       { translator: { contains: q as string, mode: 'insensitive' } },
     ];
   }
@@ -295,6 +325,68 @@ router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response
     take: 30,
   });
   res.json(bookmarks.map((b: any) => b.text));
+});
+
+// POST /library/index — admin: index all library texts into Elasticsearch
+// No-op (200) when ELASTICSEARCH_URL is not configured.
+router.post('/index', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  if (req.user!.role !== 'ADMIN') throw new AppError('Admin only', 403);
+
+  const esClient = getEsClient();
+  if (!esClient) {
+    res.json({ message: 'Elasticsearch not configured — ELASTICSEARCH_URL not set', indexed: 0 });
+    return;
+  }
+
+  // Ensure index exists with mapping
+  const exists = await esClient.indices.exists({ index: ES_INDEX });
+  if (!exists) {
+    await esClient.indices.create({
+      index: ES_INDEX,
+      mappings: {
+        properties: {
+          title:     { type: 'text', analyzer: 'standard' },
+          author:    { type: 'text', analyzer: 'standard' },
+          content:   { type: 'text', analyzer: 'standard' },
+          tradition: { type: 'keyword' },
+          language:  { type: 'keyword' },
+        },
+      },
+    });
+  }
+
+  const BATCH = 100;
+  let offset = 0;
+  let indexed = 0;
+
+  for (;;) {
+    const texts = await prisma.libraryText.findMany({
+      where: { isSearchable: true },
+      take: BATCH,
+      skip: offset,
+      select: {
+        id: true, title: true, author: true, language: true,
+        segments: { select: { content: true }, take: 200, orderBy: { sequence: 'asc' } },
+        collection: { select: { tradition: true } },
+      },
+    });
+    if (texts.length === 0) break;
+
+    await indexLibraryTexts(texts.map(t => ({
+      id: t.id,
+      title: t.title,
+      author: t.author,
+      language: t.language,
+      tradition: t.collection?.tradition ?? null,
+      content: t.segments.map((s: { content: string }) => s.content).join('\n'),
+    })));
+
+    indexed += texts.length;
+    offset  += texts.length;
+    if (texts.length < BATCH) break;
+  }
+
+  res.json({ message: `Indexed ${indexed} texts into ${ES_INDEX}`, indexed });
 });
 
 export default router;

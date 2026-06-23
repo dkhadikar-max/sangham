@@ -3,7 +3,7 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest, requireTrustedOrAbove } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { SessionType, Tradition, SessionStatus, UserRole } from '@prisma/client';
-import { generateAgoraChannelName, getAgoraConfig } from '../utils/agora';
+import { generateAgoraChannelName, getAgoraConfig, generateRtcToken, isAgoraConfigured } from '../utils/agora';
 import { z } from 'zod';
 
 const router = Router();
@@ -21,6 +21,7 @@ const createSessionSchema = z.object({
 
 // POST /sessions
 router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!isAgoraConfigured()) throw new AppError('Live sessions are not yet available on this instance', 503);
   if (!requireTrustedOrAbove.includes(req.user!.role)) throw new AppError('Trusted member or above required', 403);
   const parsed = createSessionSchema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
@@ -75,7 +76,8 @@ router.post('/:id/start', authenticate, async (req: AuthRequest, res: Response):
     data: { status: SessionStatus.LIVE, startedAt: new Date() },
   });
   const agoraConfig = getAgoraConfig();
-  res.json({ session: updated, agora: { appId: agoraConfig.appId, channel: session.agoraChannel, role: 'host' } });
+  const token = generateRtcToken(session.agoraChannel, 0, 'host');
+  res.json({ session: updated, agora: { appId: agoraConfig.appId, channel: session.agoraChannel, role: 'host', token } });
 });
 
 // POST /sessions/:id/join  (viewer)
@@ -90,7 +92,8 @@ router.post('/:id/join', authenticate, async (req: AuthRequest, res: Response): 
     update: { joinedAt: new Date(), leftAt: null },
   });
   const agoraConfig = getAgoraConfig();
-  res.json({ agora: { appId: agoraConfig.appId, channel: session.agoraChannel, role: 'audience' } });
+  const token = generateRtcToken(session.agoraChannel, 0, 'audience');
+  res.json({ agora: { appId: agoraConfig.appId, channel: session.agoraChannel, role: 'audience', token } });
 });
 
 // POST /sessions/:id/end  (host only)
