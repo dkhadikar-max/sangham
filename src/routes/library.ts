@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { redis, CACHE_TTL } from '../config/redis';
 import { searchEsLibrary, indexLibraryTexts, getEsClient, ES_INDEX } from '../config/elasticsearch';
+import { UserRole } from '@prisma/client';
 
 const router = Router();
 
@@ -330,7 +331,7 @@ router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response
 // POST /library/index — admin: index all library texts into Elasticsearch
 // No-op (200) when ELASTICSEARCH_URL is not configured.
 router.post('/index', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
-  if (req.user!.role !== 'ADMIN') throw new AppError('Admin only', 403);
+  if (req.user!.role !== UserRole.SUPER_ADMIN) throw new AppError('Admin only', 403);
 
   const esClient = getEsClient();
   if (!esClient) {
