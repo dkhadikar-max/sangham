@@ -556,8 +556,7 @@ round:var(--error-600)}
     /* App Shell */
     #view-app{background-color:var(--stone-900);display:flex;justify-content:center;align-items:center;height:100svh;height:100dvh}
     .app-shell{width:100%;max-width:var(--max-content-width);height:100vh;height:100dvh;background-color:var(--surface-bg);position:relative;display:flex;flex-direction:column;overflow:hidden;transition:background-color var(--duration-normal) var(--ease-in-out)}
-    @media (min-width:481px){.app-shell{height:92vh;border-radius:var(--radius-2xl);box-shadow:var(--shadow-5)}}
-    .app-shell.tab-home-active{max-width:100%!important;height:100dvh!important;border-radius:0!important;box-shadow:none!important}
+    @media (min-width:481px){#view-app{align-items:stretch}.app-shell{height:100dvh;max-width:100%;border-radius:0;box-shadow:none}}
     .app-header{background:rgba(253,248,240,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:var(--space-3) var(--space-4);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-default);z-index:10;flex-shrink:0;padding-top:calc(var(--space-3) + var(--safe-area-top));transition:background-color var(--duration-normal) var(--ease-in-out)}
     [data-theme="dark"] .app-header{background:rgba(12,10,9,0.85)}
     .app-header-brand{font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--saffron-600);display:flex;align-items:center;gap:var(--space-2);letter-spacing:var(--tracking-tight)}
@@ -4539,12 +4538,9 @@ function switchTab(tab) {
     headerNav.classList.remove('text-sangham-brown-light');
   }
 
-  // These tabs embed their own left sidebar — hide the app sidebar to avoid double-panel
+  // Hide desktop sidebar on tabs that have their own 3-col layout
   const dsSidebar = document.getElementById('desktopSidebar');
   if (dsSidebar) dsSidebar.classList.toggle('tab-home-active', ['home','learn','communities'].includes(tab));
-  // Home tab uses its own 3-col layout — let it fill the full screen on all screen sizes
-  const appShell = document.querySelector('.app-shell');
-  if (appShell) appShell.classList.toggle('tab-home-active', tab === 'home');
 
   if (navigator.vibrate && _userHasInteracted) navigator.vibrate(10);
 
