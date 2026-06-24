@@ -121,16 +121,25 @@ router.post('/enrollments/:id/lesson', authenticate, async (req: AuthRequest, re
     update: { exerciseDone: !!exerciseDone },
   });
 
-  // Recompute percent complete
+  // Recount after upsert to avoid double-counting repeated completions
   const phases = enrollment.path.phases as unknown as { lessons: object[] }[];
   const totalLessons = phases.reduce((sum, p) => sum + p.lessons.length, 0);
-  const completed = enrollment.lessonProgress.length + 1; // +1 for the one just completed
-  const percent = totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
+  const completedCount = await prisma.educateLessonProgress.count({ where: { enrollmentId: enrollment.id } });
+  const percent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
-  // Identify current position from lessonKey
+  // Identify completed position from lessonKey
   const [phaseStr, lessonStr] = lessonKey.split('.');
   const phaseIdx = parseInt(phaseStr, 10);
   const lessonIdx = parseInt(lessonStr, 10);
+
+  // Advance to next lesson, carrying over to next phase when at the end
+  const currentPhaseLen = phases[phaseIdx]?.lessons?.length ?? 0;
+  let nextPhase = phaseIdx;
+  let nextLesson = lessonIdx + 1;
+  if (nextLesson >= currentPhaseLen) {
+    nextPhase = phaseIdx + 1;
+    nextLesson = 0;
+  }
 
   // Update enrollment progress and streak
   const lastActivity = enrollment.lastActivityAt;
@@ -141,8 +150,8 @@ router.post('/enrollments/:id/lesson', authenticate, async (req: AuthRequest, re
   const updated = await prisma.educateEnrollment.update({
     where: { id: enrollment.id },
     data: {
-      currentPhase: phaseIdx,
-      currentLesson: lessonIdx + 1,
+      currentPhase: nextPhase,
+      currentLesson: nextLesson,
       percentComplete: Math.min(percent, 100),
       streak: newStreak,
       lastActivityAt: new Date(),

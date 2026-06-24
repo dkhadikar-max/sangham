@@ -2910,7 +2910,7 @@ round:var(--error-600)}
 
                 <!-- Featured Learning Paths -->
                 <div class="edu-section">
-                  <div class="edu-section-title">Featured Learning Paths</div>
+                  <div class="edu-section-title" id="edu-path-grid-title">Featured Learning Paths</div>
                   <div id="edu-path-grid" class="edu-path-grid">
                     <div class="empty-state" style="grid-column:1/-1;padding:var(--space-8)"><div class="empty-state-text">Loading paths…</div></div>
                   </div>
@@ -3016,8 +3016,11 @@ round:var(--error-600)}
                       </div>
                       <div id="edu-tutor-response" style="display:none"></div>
                     </div>
-                    <!-- Mark complete -->
-                    <button id="edu-complete-btn" onclick="completeEduLesson()" class="btn btn-primary" style="width:100%;margin-bottom:var(--space-6)">Mark Complete</button>
+                    <!-- Mark complete + Next -->
+                    <div style="display:flex;gap:var(--space-3);margin-bottom:var(--space-6)">
+                      <button id="edu-complete-btn" onclick="completeEduLesson()" class="btn btn-primary" style="flex:1">Mark Complete</button>
+                      <button id="edu-next-btn" onclick="advanceEduLesson()" class="btn btn-secondary" style="display:none;flex:1">Next Lesson →</button>
+                    </div>
                   </div>
                 </div>
               </div><!-- /edu-view-lesson -->
@@ -11136,6 +11139,10 @@ function openEduLesson(phaseIdx, lessonIdx) {
   // Reflection
   document.getElementById('edu-lesson-reflection').textContent = lesson.reflection || '';
 
+  // Reset next button — only shown after completing this lesson
+  const nextBtnEl = document.getElementById('edu-next-btn');
+  if (nextBtnEl) nextBtnEl.style.display = 'none';
+
   // Reset AI tutor panel
   const responseEl = document.getElementById('edu-tutor-response');
   responseEl.style.display = 'none';
@@ -11225,9 +11232,30 @@ async function completeEduLesson() {
     completeBtn.textContent = 'Completed ✓';
     completeBtn.disabled = true;
     completeBtn.style.opacity = '0.5';
+    // Show Next Lesson button if there is one
+    const path = _edu.currentPath?.path;
+    const phases = path?.phases || [];
+    const nextBtnEl = document.getElementById('edu-next-btn');
+    const hasNext = phases[_edu.currentPhase]?.lessons[_edu.currentLesson + 1]
+      || phases[_edu.currentPhase + 1]?.lessons[0];
+    if (nextBtnEl) nextBtnEl.style.display = hasNext ? '' : 'none';
     showToast('Lesson complete! Keep going.');
   } catch(e) {
     showToast('Could not save progress — please try again');
+  }
+}
+
+function advanceEduLesson() {
+  const path = _edu.currentPath?.path;
+  if (!path) return;
+  const phases = path.phases || [];
+  const nextInPhase = phases[_edu.currentPhase]?.lessons[_edu.currentLesson + 1];
+  if (nextInPhase) {
+    openEduLesson(_edu.currentPhase, _edu.currentLesson + 1);
+  } else if (phases[_edu.currentPhase + 1]?.lessons[0]) {
+    openEduLesson(_edu.currentPhase + 1, 0);
+  } else {
+    backToEduPath();
   }
 }
 
@@ -11279,7 +11307,8 @@ async function callEduTutor(action) {
       percentComplete: enrollment?.percentComplete ?? 0,
     });
     const text = result.response || '';
-    responseEl.innerHTML = `<div class="edu-ai-response">${escHtml(text)}</div>`;
+    const formatted = escHtml(text).replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
+    responseEl.innerHTML = `<div class="edu-ai-response"><p>${formatted}</p></div>`;
     if (action === 'explain') {
       const exampleEl = document.getElementById('edu-lesson-example');
       if (exampleEl) exampleEl.textContent = text;
@@ -11292,7 +11321,13 @@ async function callEduTutor(action) {
 let _eduSearchTimer = null;
 function onEducateSearch(q) {
   clearTimeout(_eduSearchTimer);
-  if (!q.trim()) return;
+  if (!q.trim()) {
+    // Reset grid to full list when input is cleared
+    const titleEl = document.getElementById('edu-path-grid-title');
+    if (titleEl) titleEl.textContent = 'Featured Learning Paths';
+    renderEduPathGrid(_edu.paths);
+    return;
+  }
   _eduSearchTimer = setTimeout(() => submitEducateSearch(q), 400);
 }
 
@@ -11302,10 +11337,10 @@ async function submitEducateSearch(q) {
   if (!grid) return;
   try {
     const paths = await api('GET', '/educate/search?q=' + encodeURIComponent(q.trim()));
-    const sectionTitle = document.querySelector('#edu-view-landing .edu-section .edu-section-title');
-    if (sectionTitle) sectionTitle.textContent = `Learning paths for "${q.trim()}"`;
+    const titleEl = document.getElementById('edu-path-grid-title');
+    if (titleEl) titleEl.textContent = `Results for "${q.trim()}"`;
     renderEduPathGrid(paths);
-    document.querySelector('#edu-view-landing .edu-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('edu-path-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     document.getElementById('eduSearchInput').value = q.trim();
   } catch(e) {
     renderEduPathGrid(_edu.paths);
