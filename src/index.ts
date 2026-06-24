@@ -99,6 +99,7 @@ app.use(helmet({
       connectSrc:    ["'self'", 'wss:', 'ws:', 'https://cdn.socket.io'],
       imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org', 'https://images.unsplash.com', 'https://archive.org', 'https://books.google.com'],
       mediaSrc:      ["'self'", 'blob:'],
+      frameSrc:      ["'self'", 'https://drive.google.com'],
     },
   },
 }));

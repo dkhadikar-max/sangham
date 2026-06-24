@@ -2357,11 +2357,11 @@ round:var(--error-600)}
                 <div class="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm border border-sangham-gold/10" id="comm-view-toggle">
                   <button class="px-4 py-2.5 bg-sangham-gold text-white text-xs font-medium rounded-lg shadow-sm" id="comm-grid-btn" onclick="commSetView('grid')" style="min-height:44px">Grid</button>
                   <button class="px-4 py-2.5 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" id="comm-list-btn" onclick="commSetView('list')" style="min-height:44px">List</button>
-                  <button class="px-4 py-2.5 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" style="min-height:44px">Map</button>
+                  <button class="px-4 py-2.5 text-sangham-brown-light hover:text-sangham-ink text-xs font-medium rounded-lg transition-colors" style="min-height:44px" onclick="showToast(t('common.coming_soon'),'info')">Map</button>
                 </div>
                 <div class="flex items-center gap-2 sm:ml-auto">
                   <span class="text-xs text-sangham-brown-light">Sort by:</span>
-                  <select class="bg-white border border-sangham-gold/10 rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none focus:border-sangham-gold/30 cursor-pointer" style="min-height:44px">
+                  <select class="bg-white border border-sangham-gold/10 rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none focus:border-sangham-gold/30 cursor-pointer" style="min-height:44px" onchange="showToast(t('common.coming_soon'),'info');this.selectedIndex=0">
                     <option>Recommended</option><option>Nearest</option><option>Most Active</option><option>Newest</option><option>Largest</option>
                   </select>
                 </div>
@@ -4756,8 +4756,7 @@ function switchTab(tab) {
   if (tab === 'home') {
     _homeFeedFilter = 'all';
     document.querySelectorAll('.feed-filter-pill').forEach(b => {
-      const isAll = b.dataset.filter === 'all';
-      b.style.cssText = isAll ? 'background:#C79A3B;color:#fff;box-shadow:0 4px 12px -2px rgba(199,154,59,.35)' : '';
+      b.classList.toggle('active', b.dataset.filter === 'all');
     });
     loadHome();
   }
