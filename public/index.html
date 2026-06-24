@@ -1293,6 +1293,27 @@ round:var(--error-600)}
     .lib-grid-cover-fb{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
     .lib-grid-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;margin-bottom:2px}
     .lib-grid-card p{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* ── Write & Publish button ──────────────────────────────────── */
+    .lib-write-btn{display:flex;align-items:center;gap:10px;width:100%;padding:14px 20px;border:2px dashed var(--sangham-gold,#C79A3B);border-radius:var(--radius-xl);background:rgba(199,154,59,.06);color:var(--sangham-gold,#C79A3B);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;justify-content:center}
+    .lib-write-btn:hover{background:rgba(199,154,59,.12);border-style:solid}
+    /* ── Publish modal ───────────────────────────────────────────── */
+    .lib-publish-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0)}
+    @media(min-width:640px){.lib-publish-overlay{align-items:center;padding:var(--space-4)}}
+    .lib-publish-modal{background:var(--surface-elevated,#fff);border-radius:20px 20px 0 0;width:100%;max-width:640px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+    @media(min-width:640px){.lib-publish-modal{border-radius:20px}}
+    .lib-publish-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border-default)}
+    .lib-publish-head h2{font-size:16px;font-weight:700;color:var(--text-primary)}
+    .lib-publish-head button{width:32px;height:32px;border:none;background:none;cursor:pointer;color:var(--text-tertiary);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .lib-publish-head button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+    .lib-publish-body{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+    .lib-publish-field{display:flex;flex-direction:column;gap:6px}
+    .lib-publish-field label{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+    .lib-publish-field input,.lib-publish-field select,.lib-publish-field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border-default);border-radius:10px;font-size:15px;font-family:inherit;color:var(--text-primary);background:var(--surface-base,#fff);outline:none;transition:border-color .15s;box-sizing:border-box}
+    .lib-publish-field input:focus,.lib-publish-field select:focus,.lib-publish-field textarea:focus{border-color:var(--sangham-gold,#C79A3B)}
+    .lib-publish-field textarea{min-height:200px;resize:vertical;line-height:1.65;font-size:14px}
+    .lib-publish-footer{padding:16px 20px;border-top:1px solid var(--border-default);display:flex;gap:10px}
+    .lib-publish-footer .btn-ghost{flex:0 0 auto}
+    .lib-publish-footer .btn-primary{flex:1}
     /* Featured book card */
     .lib-featured{display:flex;background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;margin:0;box-shadow:var(--shadow-2);transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
     .lib-featured:hover{box-shadow:var(--shadow-4);transform:translateY(-2px)}
@@ -1305,7 +1326,7 @@ round:var(--error-600)}
     .lib-featured-excerpt{font-size:11px;line-height:1.5;color:var(--text-tertiary);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:var(--space-2)}
     .lib-featured-meta{font-size:10px;color:var(--text-tertiary);display:flex;gap:var(--space-3);flex-wrap:wrap}
     /* Reader book cover image */
-    .reader-cover-img{width:90px;height:132px;border-radius:8px;object-fit:cover;display:block;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,0.22)}
+    .reader-cover-img{width:160px;height:240px;border-radius:14px;object-fit:cover;display:block;margin:0 auto 24px;box-shadow:0 8px 32px rgba(0,0,0,0.24)}
     /* ═══════════════════════════════════════════════════════════════
        READER — World-class reading experience
        ═══════════════════════════════════════════════════════════════ */
@@ -1316,8 +1337,8 @@ round:var(--error-600)}
 
     /* ── Theme tokens ───────────────────────────────────────────── */
     .reader-panel{--rt-bg:#fff;--rt-text:#1a1a1a;--rt-muted:#6b7280;--rt-border:#dadce0;--rt-surface:#f8f9fa;--rt-accent:#2563EB;--rt-progress:#2563EB}
-    .reader-panel[data-reader-theme="sepia"]{--rt-bg:#F4ECD8;--rt-text:#433422;--rt-muted:#9E8E7E;--rt-border:#C8BDA8;--rt-surface:#E8DFC8;--rt-accent:#2563EB;--rt-progress:#2563EB}
-    .reader-panel[data-reader-theme="dark"]{--rt-bg:#1A1A1A;--rt-text:#E8E8E8;--rt-muted:#808080;--rt-border:#404040;--rt-surface:#2D2D2D;--rt-accent:#2563EB;--rt-progress:#2563EB}
+    .reader-panel[data-reader-theme="sepia"]{--rt-bg:#F4ECD8;--rt-text:#3D2B1F;--rt-muted:#8A7060;--rt-border:#C8BDA8;--rt-surface:#EBE0CA;--rt-accent:#C65D00;--rt-progress:#C65D00}
+    .reader-panel[data-reader-theme="dark"]{--rt-bg:#161618;--rt-text:#E4E4E7;--rt-muted:#71717A;--rt-border:#3F3F46;--rt-surface:#27272A;--rt-accent:#60A5FA;--rt-progress:#60A5FA}
 
     /* ── Collapsible header ─────────────────────────────────────── */
     .reader-header{position:relative;z-index:30;display:flex;align-items:center;gap:12px;padding:0 12px;height:52px;background:var(--rt-bg);border-bottom:1px solid var(--rt-border);flex-shrink:0;transition:transform .3s ease,opacity .3s ease}
@@ -1334,15 +1355,15 @@ round:var(--error-600)}
     .reader-icon-btn.active{color:var(--rt-accent)}
 
     /* ── Scroll container ───────────────────────────────────────── */
-    .reader-scroll{flex:1;overflow-y:auto;background:var(--rt-bg);-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+    .reader-scroll{flex:1;overflow-y:auto;background:var(--rt-bg);-webkit-overflow-scrolling:touch;scroll-behavior:smooth;overscroll-behavior:contain;scroll-padding-top:52px}
     .reader-scroll::-webkit-scrollbar{width:4px}
     .reader-scroll::-webkit-scrollbar-track{background:transparent}
     .reader-scroll::-webkit-scrollbar-thumb{background:var(--rt-border);border-radius:2px}
 
     /* ── Book info block (top of scroll) ────────────────────────── */
-    .reader-book-info{padding:24px 20px 16px;background:var(--rt-bg)}
-    .reader-band{height:90px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:20px}
-    .reader-book-title{font-size:20px;font-weight:700;color:var(--rt-text);line-height:1.25;margin-bottom:8px}
+    .reader-book-info{padding:32px 24px 20px;background:var(--rt-bg);text-align:center}
+    .reader-band{width:160px;height:240px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:4rem;margin:0 auto 24px;box-shadow:0 8px 32px rgba(0,0,0,0.22)}
+    .reader-book-title{font-size:22px;font-weight:700;color:var(--rt-text);line-height:1.25;margin-bottom:8px}
     .reader-book-byline{font-size:13px;color:var(--rt-muted);line-height:1.5;margin-bottom:12px}
     .reader-book-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
     .reader-book-stat{font-size:12px;color:var(--rt-muted)}
@@ -1356,17 +1377,17 @@ round:var(--error-600)}
 
     /* ── Content area ───────────────────────────────────────────── */
     .reader-content-area{
-      padding:20px 20px 120px;
+      padding:24px 22px 140px;
       font-size:var(--reader-fs, 17px);
-      line-height:var(--reader-lh, 1.8);
+      line-height:var(--reader-lh, 1.85);
       color:var(--rt-text);
       font-family:var(--reader-font, 'Georgia', serif);
       max-width:var(--reader-width, 68ch);
       margin:0 auto;
       transition:font-size .2s,line-height .2s;
     }
-    @media(min-width:768px){.reader-content-area{padding:32px 48px 140px}}
-    @media(min-width:1024px){.reader-content-area{padding:40px 64px 160px}}
+    @media(min-width:768px){.reader-content-area{padding:36px 48px 160px}}
+    @media(min-width:1024px){.reader-content-area{padding:44px 64px 180px}}
 
     /* ── Segments ───────────────────────────────────────────────── */
     .reader-seg{position:relative;margin-bottom:0}
@@ -6266,12 +6287,30 @@ const _BOOK_COVERS = {
   'gospel of buddha':                       'https://covers.openlibrary.org/b/isbn/9780812695458-L.jpg',
   'buddhism: its history':                  'https://covers.openlibrary.org/b/isbn/9780766185357-L.jpg',
   'buddhism its history':                   'https://covers.openlibrary.org/b/isbn/9780766185357-L.jpg',
+  // Phule & Shahu
+  'gulamgiri':                              'https://covers.openlibrary.org/b/isbn/9789388273282-L.jpg',
+  'sarvajanik satyadharma':                 'https://covers.openlibrary.org/b/isbn/9788171641918-L.jpg',
+  // Political classics
+  'communist manifesto':                    'https://covers.openlibrary.org/b/isbn/9780140447576-L.jpg',
+  'origin of the family':                   'https://covers.openlibrary.org/b/isbn/9780717803781-L.jpg',
+  'state and revolution':                   'https://covers.openlibrary.org/b/isbn/9780140184358-L.jpg',
+  'hind swaraj':                            'https://covers.openlibrary.org/b/isbn/9780521618397-L.jpg',
+  'souls of black folk':                    'https://covers.openlibrary.org/b/isbn/9780486280417-L.jpg',
+  'wretched of the earth':                  'https://covers.openlibrary.org/b/isbn/9780802141323-L.jpg',
+  'vindication of the rights of woman':     'https://covers.openlibrary.org/b/isbn/9780140433821-L.jpg',
+  'riddles in hinduism':                    'https://covers.openlibrary.org/b/isbn/9788177641393-L.jpg',
 };
 
 function libGetCoverUrl(text) {
+  // 1. Hardcoded ISBN / known cover map (title keyword match)
   const lower = (text.title || '').toLowerCase();
   const match = Object.keys(_BOOK_COVERS).find(k => lower.includes(k));
-  return match ? _BOOK_COVERS[match] : null;
+  if (match) return _BOOK_COVERS[match];
+  // 2. Extract archive.org identifier from sourceUrl → use archive.org thumbnail service
+  const src = text.sourceUrl || text.collection?.sourceUrl || '';
+  const archiveMatch = src.match(/archive\.org\/(?:details|download)\/([^/?#]+)/);
+  if (archiveMatch) return `https://archive.org/services/img/${archiveMatch[1]}`;
+  return null;
 }
 
 // Strips Pali prefix from sutta titles for compact card display.
@@ -6417,6 +6456,12 @@ function _renderLibHome(root, cols, texts) {
         <span style="font-size:12px;color:var(--text-tertiary)">${texts.length} texts</span>
       </div>
       <div class="lib-kindle-grid">${booksHtml}</div>
+    </div>
+    <div class="lib-section">
+      <button type="button" class="lib-write-btn" onclick="openLibraryPublishModal()" ${state.token?'':'title="Sign in to publish"'}>
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Write &amp; Publish Your Article or Book
+      </button>
     </div>
     <div id="lib-bookmarks-section"></div>`;
 
@@ -11484,6 +11529,83 @@ function openEduCircle() {
     const searchInput = document.getElementById('communitySearchInput');
     if (searchInput) { searchInput.value = tag; searchInput.dispatchEvent(new Event('input')); }
   }, 300);
+}
+
+// ── Library: Write & Publish ──────────────────────────────────
+function openLibraryPublishModal() {
+  if (!state.token) { showToast('Sign in to publish your writing'); switchTab('auth'); return; }
+  let overlay = document.getElementById('lib-publish-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'lib-publish-overlay';
+    overlay.className = 'lib-publish-overlay';
+    overlay.innerHTML = `
+      <div class="lib-publish-modal" role="dialog" aria-modal="true" aria-label="Publish your writing">
+        <div class="lib-publish-head">
+          <h2>Write &amp; Publish</h2>
+          <button onclick="closeLibraryPublishModal()" aria-label="Close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="lib-publish-body">
+          <div class="lib-publish-field">
+            <label for="lpub-title">Title</label>
+            <input id="lpub-title" type="text" placeholder="Your article or book title" maxlength="200" autocomplete="off">
+          </div>
+          <div class="lib-publish-field">
+            <label for="lpub-category">Type</label>
+            <select id="lpub-category">
+              <option value="ARTICLE">Article</option>
+              <option value="ESSAY">Essay</option>
+              <option value="SPEECH">Speech / Talk</option>
+              <option value="STORY">Story</option>
+              <option value="POEM">Poem</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+          <div class="lib-publish-field">
+            <label for="lpub-body">Content</label>
+            <textarea id="lpub-body" placeholder="Write your article or paste your text here. Separate paragraphs with a blank line." rows="12"></textarea>
+          </div>
+          <p style="font-size:11px;color:var(--text-tertiary);line-height:1.5">By publishing, you agree to share this under the <strong>CC BY</strong> licence — others may share and adapt with credit to you. Your display name will be shown as author.</p>
+        </div>
+        <div class="lib-publish-footer">
+          <button class="btn btn-ghost" onclick="closeLibraryPublishModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="_submitLibraryPublish()" id="lpub-submit-btn">Publish</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeLibraryPublishModal(); });
+  }
+  overlay.style.display = 'flex';
+  document.getElementById('lpub-title')?.focus();
+}
+
+function closeLibraryPublishModal() {
+  const overlay = document.getElementById('lib-publish-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+async function _submitLibraryPublish() {
+  const title  = document.getElementById('lpub-title')?.value?.trim();
+  const body   = document.getElementById('lpub-body')?.value?.trim();
+  const cat    = document.getElementById('lpub-category')?.value || 'ARTICLE';
+  const btn    = document.getElementById('lpub-submit-btn');
+
+  if (!title || title.length < 3) { showToast('Please enter a title (at least 3 characters)'); return; }
+  if (!body || body.length < 50)  { showToast('Please write at least 50 characters of content'); return; }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Publishing…'; }
+  try {
+    const result = await api('POST', '/library/submissions', { title, body, category: cat });
+    closeLibraryPublishModal();
+    showToast('Published! Opening your article…');
+    setTimeout(() => openTextDetail(result.id), 600);
+    // Clear fields
+    ['lpub-title','lpub-body'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  } catch(err) {
+    showToast(err.message || 'Could not publish — please try again');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Publish'; }
+  }
 }
 </script>
 </body>

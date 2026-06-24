@@ -4,6 +4,7 @@ import { seedAmbedkarTexts } from './seedAmbedkar';
 import { seedAmbedkarTranslations } from './seedTranslations';
 import { seedEducatePaths } from './seedEducate';
 import { seedMahayanaTexts } from './seedMahayana';
+import { seedPoliticalTexts } from './seedPolitical';
 
 async function main() {
   console.log('[Seed] Connecting to database...');
@@ -32,6 +33,12 @@ async function main() {
   console.log(`[Seed] Seeded:  ${mahayana.seeded.join(', ') || 'none'}`);
   if (mahayana.failed.length) console.log(`[Seed] Failed:  ${mahayana.failed.join(', ')}`);
   console.log(`[Seed] Total:   ${mahayana.total} texts\n`);
+
+  console.log('[Seed] ── Political, History & Social Justice ──');
+  const political = await seedPoliticalTexts();
+  console.log(`[Seed] Seeded:  ${political.seeded.join(', ') || 'none'}`);
+  if (political.failed.length) console.log(`[Seed] Failed:  ${political.failed.join(', ')}`);
+  console.log(`[Seed] Total:   ${political.total} texts\n`);
 
   console.log('[Seed] ── Educate Learning Paths ──');
   const educate = await seedEducatePaths();

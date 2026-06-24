@@ -328,6 +328,73 @@ router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response
   res.json(bookmarks.map((b: any) => b.text));
 });
 
+// POST /library/submissions — authenticated user publishes an article or short book
+router.post('/submissions', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { title, body, category } = req.body;
+  if (!title || typeof title !== 'string' || title.trim().length < 3)
+    throw new AppError('title is required (min 3 chars)', 400);
+  if (!body || typeof body !== 'string' || body.trim().length < 50)
+    throw new AppError('body is required (min 50 chars)', 400);
+
+  const validCategories = ['ESSAY', 'ARTICLE', 'STORY', 'POEM', 'SPEECH', 'OTHER'];
+  const cat = (typeof category === 'string' && validCategories.includes(category.toUpperCase()))
+    ? category.toUpperCase() : 'ARTICLE';
+
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    select: { displayName: true, email: true },
+  });
+  const authorName = user?.displayName || user?.email?.split('@')[0] || 'Anonymous';
+
+  // Auto-create the community writings collection (idempotent)
+  const collection = await prisma.libraryCollection.upsert({
+    where:  { slug: 'community-writings' },
+    create: {
+      slug:        'community-writings',
+      name:        'Community Writings',
+      tradition:   'MULTIPLE',
+      description: 'Articles, essays, speeches and reflections submitted by Sangham members.',
+      sourceUrl:   '',
+      licence:     'CC_BY',
+    },
+    update: {},
+  });
+
+  const text = await prisma.libraryText.create({
+    data: {
+      collectionId: collection.id,
+      externalId:   null,
+      title:        title.trim(),
+      author:       authorName,
+      language:     'en',
+      licence:      'CC_BY',
+      sourceUrl:    '',
+      attribution:  `${authorName} · Submitted via Sangham · CC BY`,
+      isSearchable: true,
+    },
+  });
+
+  // Split body into paragraphs and store as segments
+  const paragraphs = body
+    .split(/\n{2,}/)
+    .map((p: string) => p.replace(/[ \t]+/g, ' ').trim())
+    .filter((p: string) => p.length > 0);
+
+  if (paragraphs.length > 0) {
+    await prisma.librarySegment.createMany({
+      data: paragraphs.map((content: string, i: number) => ({
+        textId:     text.id,
+        segmentKey: `p${i}`,
+        content,
+        sequence:   i,
+        chapterRef: i === 0 ? cat : undefined,
+      })),
+    });
+  }
+
+  res.status(201).json({ id: text.id, title: text.title, author: text.author });
+});
+
 // POST /library/index — admin: index all library texts into Elasticsearch
 // No-op (200) when ELASTICSEARCH_URL is not configured.
 router.post('/index', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
