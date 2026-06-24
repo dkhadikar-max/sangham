@@ -294,6 +294,7 @@ model LibraryText {
   language     String             // ISO 639-1
   licence      ContentLicence
   sourceUrl    String             @map("source_url")
+  coverUrl     String?            @map("cover_url")
   attribution  String             // Full attribution string to display
   isSearchable Boolean            @default(true) @map("is_searchable")
   createdAt    DateTime           @default(now()) @map("created_at")

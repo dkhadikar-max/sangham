@@ -6307,11 +6307,13 @@ const _BOOK_COVERS = {
 };
 
 function libGetCoverUrl(text) {
-  // 1. Hardcoded ISBN / known cover map (title keyword match)
+  // 1. Database-stored cover (fetched from OpenLibrary at seed time)
+  if (text.coverUrl) return text.coverUrl;
+  // 2. Hardcoded ISBN / known cover map (title keyword match)
   const lower = (text.title || '').toLowerCase();
   const match = Object.keys(_BOOK_COVERS).find(k => lower.includes(k));
   if (match) return _BOOK_COVERS[match];
-  // 2. Extract archive.org identifier from sourceUrl → use archive.org thumbnail service
+  // 3. Extract archive.org identifier from sourceUrl → use archive.org thumbnail service
   const src = text.sourceUrl || text.collection?.sourceUrl || '';
   const archiveMatch = src.match(/archive\.org\/(?:details|download)\/([^/?#]+)/);
   if (archiveMatch) return `https://archive.org/services/img/${archiveMatch[1]}`;

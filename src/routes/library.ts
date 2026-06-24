@@ -32,8 +32,8 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
         where: { id: { in: esResult.ids }, isSearchable: true },
         select: {
           id: true, title: true, author: true, translator: true, language: true,
-          licence: true, attribution: true, externalId: true,
-          collection: { select: { name: true, tradition: true } },
+          licence: true, attribution: true, externalId: true, sourceUrl: true, coverUrl: true,
+          collection: { select: { name: true, tradition: true, sourceUrl: true } },
         },
       });
       // Preserve ES ranking order
@@ -64,8 +64,8 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
       where, take: limit, skip,
       select: {
         id: true, title: true, author: true, translator: true, language: true,
-        licence: true, attribution: true, externalId: true,
-        collection: { select: { name: true, tradition: true } },
+        licence: true, attribution: true, externalId: true, sourceUrl: true, coverUrl: true,
+        collection: { select: { name: true, tradition: true, sourceUrl: true } },
       },
     }),
     prisma.libraryText.count({ where }),
@@ -293,8 +293,8 @@ router.get('/my-reading', authenticate, async (req: AuthRequest, res: Response):
     include: {
       text: {
         select: {
-          id: true, title: true, author: true, language: true,
-          collection: { select: { name: true, tradition: true } },
+          id: true, title: true, author: true, language: true, sourceUrl: true, coverUrl: true,
+          collection: { select: { name: true, tradition: true, sourceUrl: true } },
         },
       },
     },
@@ -317,8 +317,8 @@ router.get('/my-bookmarks', authenticate, async (req: AuthRequest, res: Response
     include: {
       text: {
         select: {
-          id: true, title: true, author: true, language: true,
-          collection: { select: { name: true, tradition: true } },
+          id: true, title: true, author: true, language: true, sourceUrl: true, coverUrl: true,
+          collection: { select: { name: true, tradition: true, sourceUrl: true } },
         },
       },
     },
