@@ -515,6 +515,7 @@ round:var(--error-600)}
     .panel.active{display:flex}
     .panel.slide-up{animation:slideUp var(--duration-normal) var(--ease-out)}
     .panel-header{background:var(--surface-elevated);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);border-bottom:1px solid var(--border-default);flex-shrink:0;padding-top:calc(var(--space-3) + var(--safe-area-top))}
+    .bottom-sheet .panel-header{padding-top:var(--space-3)}
     .panel-back{width:44px;height:44px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all var(--duration-fast) var(--ease-out);border:none}
     .panel-back:hover{background:var(--surface-overlay)}
     .panel-back:active{transform:scale(0.9)}
@@ -569,8 +570,6 @@ round:var(--error-600)}
     @media (min-width:481px){#view-app{align-items:stretch}.app-shell{height:100dvh;max-width:100%;border-radius:0;box-shadow:none}}
     .app-header{background:rgba(253,248,240,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:var(--space-3) var(--space-4);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-default);z-index:10;flex-shrink:0;padding-top:calc(var(--space-3) + var(--safe-area-top));transition:background-color var(--duration-normal) var(--ease-in-out)}
     [data-theme="dark"] .app-header{background:rgba(12,10,9,0.85)}
-    .app-header-brand{font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--saffron-600);display:flex;align-items:center;gap:var(--space-2);letter-spacing:var(--tracking-tight)}
-    .app-header-brand svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
     .header-actions{display:flex;gap:var(--space-3);align-items:center}
     .header-icon{width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);transition:all var(--duration-fast) var(--ease-out);border:none;position:relative}
     .header-icon:hover{background:var(--surface-overlay);color:var(--saffron-600);transform:scale(1.05)}
@@ -1245,14 +1244,6 @@ round:var(--error-600)}
     .lib-trad-vajrayana{background:linear-gradient(145deg,#7f1d1d,#b91c1c);color:white}
     .lib-trad-multiple,.lib-trad-other{background:linear-gradient(145deg,#1f2937,#374151);color:white}
     /* Horizontal browse scroll */
-    .lib-text-scroll{display:flex;gap:var(--space-3);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 0 var(--space-2);touch-action:pan-x}
-    .lib-text-scroll::-webkit-scrollbar{display:none}
-    .lib-text-chip{flex-shrink:0;width:130px;scroll-snap-align:start;background:var(--surface-elevated);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;border:1px solid var(--border-default);transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left}
-    .lib-text-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
-    .lib-text-chip-cover{height:80px;display:flex;align-items:center;justify-content:center;font-size:1.75rem}
-    .lib-text-chip-body{padding:var(--space-2) var(--space-2) var(--space-3)}
-    .lib-text-chip-title{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .lib-text-chip-lang{display:inline-block;background:var(--surface-sunken);font-size:9px;font-weight:var(--weight-bold);color:var(--text-tertiary);letter-spacing:.04em;padding:1px 5px;border-radius:99px;text-transform:uppercase;margin-top:var(--space-1)}
     /* Collection view */
     .lib-breadcrumb{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);cursor:pointer;color:var(--saffron-600);font-size:var(--text-sm);font-weight:var(--weight-medium);border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;min-height:44px}
     .lib-breadcrumb svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
@@ -6274,7 +6265,7 @@ const _BOOK_COVERS = {
   'questions of king milinda':              'https://covers.openlibrary.org/b/isbn/9780404567019-L.jpg',
   'untouchables':                           'https://covers.openlibrary.org/b/isbn/9788177641574-L.jpg',
   'who were the shudras':                   'https://covers.openlibrary.org/b/isbn/9788177641357-L.jpg',
-  'riddles in hinduism':                    'https://covers.openlibrary.org/b/isbn/9788177640045-L.jpg',
+  'riddles in hinduism':                    'https://covers.openlibrary.org/b/isbn/9788177641393-L.jpg',
   'pakistan or the partition':              'https://covers.openlibrary.org/b/isbn/9788177640434-L.jpg',
   'what congress and gandhi':               'https://covers.openlibrary.org/b/isbn/9788177641011-L.jpg',
   '22 vows':                                'https://covers.openlibrary.org/b/isbn/9789352660704-L.jpg',
@@ -6299,7 +6290,20 @@ const _BOOK_COVERS = {
   'souls of black folk':                    'https://covers.openlibrary.org/b/isbn/9780486280417-L.jpg',
   'wretched of the earth':                  'https://covers.openlibrary.org/b/isbn/9780802141323-L.jpg',
   'vindication of the rights of woman':     'https://covers.openlibrary.org/b/isbn/9780140433821-L.jpg',
-  'riddles in hinduism':                    'https://covers.openlibrary.org/b/isbn/9788177641393-L.jpg',
+  // Dalit memoirs & testimonies
+  'ants among elephants':                   'https://covers.openlibrary.org/b/isbn/9780374537210-L.jpg',
+  'prisons we broke':                       'https://covers.openlibrary.org/b/isbn/9780195699340-L.jpg',
+  'growing up untouchable':                 'https://covers.openlibrary.org/b/isbn/9780742516335-L.jpg',
+  'weave of my life':                       'https://covers.openlibrary.org/b/isbn/9780231148436-L.jpg',
+  'coming out as dalit':                    'https://covers.openlibrary.org/b/isbn/9789381017579-L.jpg',
+  // Dalit scholarship & social justice
+  'caste matters':                          'https://covers.openlibrary.org/b/isbn/9780670091317-L.jpg',
+  'buffalo nationalism':                    'https://covers.openlibrary.org/b/isbn/9788189059606-L.jpg',
+  'post-hindu india':                       'https://covers.openlibrary.org/b/isbn/9788125036272-L.jpg',
+  'seeking begumpura':                      'https://covers.openlibrary.org/b/isbn/9780143063834-L.jpg',
+  'buddhism in india':                      'https://covers.openlibrary.org/b/isbn/9788178240824-L.jpg',
+  'dalits and the democratic revolution':   'https://covers.openlibrary.org/b/isbn/9780803992900-L.jpg',
+  'caste question':                         'https://covers.openlibrary.org/b/isbn/9780520257610-L.jpg',
 };
 
 function libGetCoverUrl(text) {
