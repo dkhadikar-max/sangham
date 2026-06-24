@@ -234,11 +234,11 @@
     .btn-lg{padding:var(--space-3) var(--space-8);font-size:var(--text-base);height:48px}
     .btn-xl{padding:var(--space-4) var(--space-10);font-size:var(--text-lg);height:56px}
     .btn-icon{width:44px;height:44px;padding:0;border-radius:var(--radius-full)}
-    .btn-icon svg{width:20px;height:20px}    /* Logo */    .logo{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:var(--weight-medium);color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:var(--space-3);letter-spacing:var(--tracking-tight)}
-    .logo-symbol{width:32px;height:32px;border:2px solid var(--saffron-500);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;transition:transform var(--duration-normal) var(--ease-spring)}
-    .logo-symbol::after{content:'';width:8px;height:8px;background:var(--saffron-500);border-radius:50%;transition:transform var(--duration-normal) var(--ease-spring)}
-    .logo:hover .logo-symbol{transform:rotate(180deg)}
-.logo:hover .logo-symbol::after{transform:scale(1.2)}
+    .btn-icon svg{width:20px;height:20px}    /* Logo */    .logo{font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:var(--space-3);letter-spacing:var(--tracking-tight)}
+    .logo-mark{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--saffron-400) 0%,var(--saffron-600) 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(199,154,59,0.28)}
+    .logo-mark i{color:#fff;font-size:14px;line-height:1}
+    .logo-mark-sm{width:26px;height:26px}
+    .logo-mark-sm i{font-size:11px}
 
     /* Spinner */
     .spinner{width:24px;height:24px;border:2.5px solid var(--border-default);border-top-color:var(--saffron-500);border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
@@ -1590,8 +1590,8 @@ round:var(--error-600)}
 
   <nav style="position:absolute;top:0;width:100%;padding:2rem;display:flex;justify-content:space-between;align-items:center;z-index:20;font-family:'Inter',sans-serif">
     <div class="flex items-center gap-4">
-      <div class="w-10 h-10 flex items-center justify-center opacity-90"><i class="fa-solid fa-dharmachakra text-2xl" style="color:#C79A3B"></i></div>
-      <span style="font-size:1.25rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase">Sangham</span>
+      <div class="logo-mark" style="width:36px;height:36px"><i class="fa-solid fa-dharmachakra" style="font-size:16px"></i></div>
+      <span style="font-family:var(--font-display);font-size:1.25rem;font-weight:600;letter-spacing:var(--tracking-tight);color:var(--text-primary)">Sangham</span>
     </div>
     <div class="hidden md:flex gap-8 text-xs uppercase tracking-[0.3em] opacity-60">
       <a href="#" style="text-decoration:none;color:inherit;transition:color .5s" onmouseover="this.style.color='#C79A3B'" onmouseout="this.style.color='inherit'">Approach</a>
@@ -1615,7 +1615,7 @@ round:var(--error-600)}
 <!-- VIEW: AUTH -->
 <div id="view-auth" class="view">
   <div class="auth-container">
-    <div class="logo" style="cursor:pointer;justify-content:center;" onclick="routeTo('view-landing')"><div class="logo-symbol"></div> Sangham</div>
+    <div class="logo" style="cursor:pointer;justify-content:center;" onclick="routeTo('view-landing')"><div class="logo-mark"><i class="fa-solid fa-dharmachakra"></i></div> Sangham</div>
     <h2 class="auth-title" id="authTitle" data-i18n="auth.welcome_back">Welcome Back</h2>
     <p class="auth-subtitle" id="authSubtitle" data-i18n="auth.continue_journey">Continue your journey with Sangham.</p>
     <div class="auth-error" id="authError"></div>
@@ -1650,7 +1650,7 @@ round:var(--error-600)}
 <div id="view-onboarding" class="view">
   <div class="onboard-shell">
     <div class="onboard-header">
-      <div class="logo" style="cursor:pointer" onclick="skipOnboarding()"><div class="logo-symbol"></div> Sangham</div>
+      <div class="logo" style="cursor:pointer" onclick="skipOnboarding()"><div class="logo-mark"><i class="fa-solid fa-dharmachakra"></i></div> Sangham</div>
       <button class="btn btn-ghost btn-sm" onclick="skipOnboarding()" data-i18n="onboarding.skip">Skip</button>
     </div>
     <div class="onboard-progress" id="ob-progress" style="display:none">
@@ -1797,8 +1797,8 @@ round:var(--error-600)}
     <aside class="desktop-sidebar" id="desktopSidebar">
       <!-- Brand -->
       <div class="ds-brand">
-        <i class="fa-solid fa-dharmachakra ds-nav-icon" style="color:#C79A3B;font-size:20px"></i>
-        <span class="ds-label" style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:#C79A3B;letter-spacing:var(--tracking-tight)">Sangham</span>
+        <div class="logo-mark logo-mark-sm"><i class="fa-solid fa-dharmachakra"></i></div>
+        <span class="ds-label" style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--text-primary);letter-spacing:var(--tracking-tight)">Sangham</span>
         <button class="ds-toggle-btn" onclick="toggleSidebar()" title="Toggle navigation" aria-label="Toggle navigation">
           <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
@@ -1857,10 +1857,8 @@ round:var(--error-600)}
       <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
         <!-- Left: Logo & Brand -->
         <div class="flex items-center gap-3 flex-shrink-0">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark flex items-center justify-center shadow-lg shadow-sangham-gold/20">
-            <i class="fa-solid fa-dharmachakra text-white text-sm"></i>
-          </div>
-          <span class="font-serif text-xl font-semibold text-sangham-ink tracking-tight">Sangham</span>
+          <div class="logo-mark"><i class="fa-solid fa-dharmachakra"></i></div>
+          <span style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:var(--weight-semibold);color:var(--text-primary);letter-spacing:var(--tracking-tight)">Sangham</span>
         </div>
         <!-- Center: Navigation (hidden below lg=1024px — bottom nav covers smaller sizes) -->
         <div class="hidden lg:flex items-center gap-8">
