@@ -281,7 +281,8 @@
     "passkey_coming_soon": "पासकी प्रमाणीकरण जल्द आ रहा है",
     "sign_in_bookmark": "बुकमार्क करने के लिए साइन इन करें",
     "group_chat_coming_soon": "ग्रुप चैट जल्द आ रहा है",
-    "session_scheduled": "सत्र निर्धारित हुआ!"
+    "session_scheduled": "सत्र निर्धारित हुआ!",
+    "language_updated": "भाषा अपडेट हुई"
   },
   "language": {
     "en": "English",
@@ -324,6 +325,7 @@
     "saved_resources": "सहेजे गए संसाधन",
     "language_prefs": "भाषा और प्राथमिकताएं",
     "verification": "सत्यापन स्थिति",
+    "toggle_theme": "थीम बदलें",
     "settings": "सेटिंग्स",
     "logout": "लॉग आउट"
   },
@@ -361,6 +363,26 @@
     "browse_circles": "मंडल देखें",
     "browse_projects": "परियोजनाएं देखें"
   },
+  "contributor": {
+    "dashboard_title": "योगदानकर्ता डैशबोर्ड",
+    "your_courses": "आपके पाठ्यक्रम",
+    "your_resources": "आपके संसाधन",
+    "your_circles": "आपके मंडल",
+    "no_courses": "अभी कोई पाठ्यक्रम नहीं। अपना पहला पाठ्यक्रम बनाएं।",
+    "no_resources": "अभी कोई संसाधन नहीं। कुछ उपयोगी साझा करें।",
+    "no_circles": "अभी कोई मंडल नहीं। एक अध्ययन समूह शुरू करें।",
+    "create_course": "+ पाठ्यक्रम बनाएं",
+    "upload_resource": "+ संसाधन अपलोड करें",
+    "start_circle": "+ मंडल शुरू करें",
+    "draft_badge": "मसौदा",
+    "published_badge": "प्रकाशित",
+    "contribution_score": "योगदान स्कोर",
+    "become_contributor": "योगदानकर्ता बनें",
+    "contributor_intro": "संघम समुदाय के साथ पाठ्यक्रम, संसाधन और अध्ययन मंडल साझा करें।",
+    "upload_first": "शुरू करने के लिए एक संसाधन अपलोड करें — कोई आवेदन आवश्यक नहीं।",
+    "status_none": "अभी योगदानकर्ता नहीं",
+    "status_active": "सक्रिय योगदानकर्ता"
+  },
   "forms": {
     "post_ph": "एक विचार, शिक्षा या प्रश्न साझा करें…",
     "comment_ph": "एक विचार जोड़ें…",
@@ -395,20 +417,9 @@
     "language": "भाषा",
     "account": "खाता"
   },
-  "profile_menu": {
-    "view_profile": "प्रोफ़ाइल देखें",
-    "edit_profile": "प्रोफ़ाइल संपादित करें",
-    "my_communities": "मेरे समुदाय",
-    "my_courses": "मेरे कोर्स",
-    "my_contributions": "मेरे योगदान",
-    "saved_resources": "सहेजे गए संसाधन",
-    "language_prefs": "भाषा और प्राथमिकताएं",
-    "verification": "सत्यापन स्थिति",
-    "toggle_theme": "थीम बदलें",
-    "settings": "सेटिंग्स",
-    "logout": "लॉग आउट"
-  },
-  "toast": {
-    "language_updated": "भाषा अपडेट हुई"
+  "sidebar": {
+    "menu": "मेनू",
+    "suggested_practitioners": "सुझाए गए साधक",
+    "todays_teaching": "आज की शिक्षा"
   }
 }

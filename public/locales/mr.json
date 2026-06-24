@@ -281,7 +281,8 @@
     "passkey_coming_soon": "पासकी प्रमाणीकरण लवकरच येत आहे",
     "sign_in_bookmark": "बुकमार्क करण्यासाठी साइन इन करा",
     "group_chat_coming_soon": "ग्रुप चॅट लवकरच येत आहे",
-    "session_scheduled": "सत्र नियोजित केले!"
+    "session_scheduled": "सत्र नियोजित केले!",
+    "language_updated": "भाषा अपडेट झाली"
   },
   "language": {
     "en": "English",
@@ -324,6 +325,7 @@
     "saved_resources": "जतन केलेले साधने",
     "language_prefs": "भाषा आणि प्राधान्ये",
     "verification": "सत्यापन स्थिती",
+    "toggle_theme": "थीम बदला",
     "settings": "सेटिंग्ज",
     "logout": "लॉग आउट"
   },
@@ -361,6 +363,26 @@
     "browse_circles": "मंडळे पहा",
     "browse_projects": "प्रकल्प पहा"
   },
+  "contributor": {
+    "dashboard_title": "योगदानकर्ता डॅशबोर्ड",
+    "your_courses": "तुमचे अभ्यासक्रम",
+    "your_resources": "तुमची साधने",
+    "your_circles": "तुमची मंडळे",
+    "no_courses": "अद्याप कोणतेही अभ्यासक्रम नाहीत. तुमचा पहिला अभ्यासक्रम तयार करा.",
+    "no_resources": "अद्याप कोणतीही साधने नाहीत. काहीतरी उपयुक्त सामायिक करा.",
+    "no_circles": "अद्याप कोणतेही मंडळ नाही. एक अभ्यास गट सुरू करा.",
+    "create_course": "+ अभ्यासक्रम तयार करा",
+    "upload_resource": "+ साधन अपलोड करा",
+    "start_circle": "+ मंडळ सुरू करा",
+    "draft_badge": "मसुदा",
+    "published_badge": "प्रकाशित",
+    "contribution_score": "योगदान गुण",
+    "become_contributor": "योगदानकर्ता व्हा",
+    "contributor_intro": "संघम समुदायासह अभ्यासक्रम, साधने आणि अभ्यास मंडळे सामायिक करा.",
+    "upload_first": "सुरुवात करण्यासाठी एक साधन अपलोड करा — कोणत्याही अर्जाची आवश्यकता नाही.",
+    "status_none": "अद्याप योगदानकर्ता नाही",
+    "status_active": "सक्रिय योगदानकर्ता"
+  },
   "forms": {
     "post_ph": "एक विचार, शिकवण किंवा प्रश्न सामायिक करा…",
     "comment_ph": "एक विचार जोडा…",
@@ -395,20 +417,9 @@
     "language": "भाषा",
     "account": "खाते"
   },
-  "profile_menu": {
-    "view_profile": "प्रोफाइल पहा",
-    "edit_profile": "प्रोफाइल संपादित करा",
-    "my_communities": "माझे समुदाय",
-    "my_courses": "माझे कोर्सेस",
-    "my_contributions": "माझे योगदान",
-    "saved_resources": "जतन केलेले साहित्य",
-    "language_prefs": "भाषा आणि प्राधान्ये",
-    "verification": "सत्यापन स्थिती",
-    "toggle_theme": "थीम बदला",
-    "settings": "सेटिंग्ज",
-    "logout": "लॉग आउट"
-  },
-  "toast": {
-    "language_updated": "भाषा अपडेट झाली"
+  "sidebar": {
+    "menu": "मेनू",
+    "suggested_practitioners": "सुचवलेले साधक",
+    "todays_teaching": "आजची शिकवण"
   }
 }

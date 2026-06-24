@@ -1934,7 +1934,7 @@ round:var(--error-600)}
                   </div>
                 </div>
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10">
-                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2" data-i18n="sidebar.menu">Menu</h4>
                   <nav class="space-y-1">
                     <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="home" onclick="switchTab('home')">
                       <i class="fa-solid fa-house w-5 text-center"></i>Home Feed
@@ -1942,7 +1942,7 @@ round:var(--error-600)}
                     <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="communities" onclick="switchTab('communities')">
                       <i class="fa-solid fa-user-group w-5 text-center"></i>My Communities
                     </button>
-                    <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="learn" onclick="switchTab('learn');switchLearnTab('library')">
+                    <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="learn" onclick="openLibraryBookmarks()">
                       <i class="fa-solid fa-book-bookmark w-5 text-center"></i>Saved Teachings
                     </button>
                     <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="discover" onclick="switchTab('discover')">
@@ -1982,16 +1982,16 @@ round:var(--error-600)}
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
                     <div class="flex items-center justify-between mb-4">
                         <div>
-                            <h2 class="font-serif text-lg font-semibold text-sangham-ink">Suggested Practitioners</h2>
+                            <h2 class="font-serif text-lg font-semibold text-sangham-ink" data-i18n="sidebar.suggested_practitioners">Suggested Practitioners</h2>
                         </div>
                         <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style="min-height:44px;display:inline-flex;align-items:center">View All</a>
                     </div>
                     <div id="home-stories-strip" class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
-                        <button class="flex-shrink-0 flex flex-col items-center gap-1.5 group bg-transparent border-0 p-0" onclick="openCreatePost&&openCreatePost()" aria-label="Add to your story">
+                        <button class="flex-shrink-0 flex flex-col items-center gap-1.5 group bg-transparent border-0 p-0" onclick="openCreatePost&&openCreatePost()" aria-label="Create a post">
                             <div class="w-16 h-16 rounded-full bg-sangham-cream border-2 border-dashed border-sangham-gold/30 flex items-center justify-center group-hover:border-sangham-gold transition-colors">
                                 <i class="fa-solid fa-plus text-sangham-gold"></i>
                             </div>
-                            <span class="text-[11px] text-sangham-brown-light">Add</span>
+                            <span class="text-[11px] text-sangham-brown-light">Post</span>
                         </button>
                     </div>
                 </div>
@@ -2059,7 +2059,7 @@ round:var(--error-600)}
                         <div class="relative z-10">
                             <div class="flex items-center gap-2 mb-3">
                                 <i class="fa-solid fa-quote-left text-lg" style="opacity:.5"></i>
-                                <span class="text-[10px] font-semibold uppercase tracking-widest" style="opacity:.9">Daily Wisdom</span>
+                                <span class="text-[10px] font-semibold uppercase tracking-widest" style="opacity:.9" data-i18n="home.daily_wisdom">Daily Wisdom</span>
                             </div>
                             <p class="font-serif text-sm leading-relaxed italic mb-2" style="opacity:.97" id="home-sidebar-verse">Loading verse...</p>
                             <div class="text-[10px] mb-4" style="opacity:.7" id="home-sidebar-verse-source"></div>
@@ -2073,7 +2073,7 @@ round:var(--error-600)}
                     <!-- Today's Teaching (library) -->
                     <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10" id="home-sidebar-teaching-card" style="display:none">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="font-serif font-semibold text-sangham-ink text-sm">Today's Teaching</h3>
+                            <h3 class="font-serif font-semibold text-sangham-ink text-sm" data-i18n="sidebar.todays_teaching">Today's Teaching</h3>
                             <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Library</a>
                         </div>
                         <div id="home-sidebar-teaching"></div>
@@ -2279,7 +2279,7 @@ round:var(--error-600)}
                   </div>
                 </div>
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10">
-                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2" data-i18n="sidebar.menu">Menu</h4>
                   <nav class="space-y-1">
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('home')">
                       <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
@@ -2287,7 +2287,7 @@ round:var(--error-600)}
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left">
                       <i class="fa-solid fa-user-group w-5 text-center"></i>My Communities
                     </button>
-                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('learn');switchLearnTab('library')">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openLibraryBookmarks()">
                       <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Saved Teachings
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
@@ -2662,7 +2662,7 @@ round:var(--error-600)}
                 </div>
                 <!-- Quick Menu -->
                 <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10">
-                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
+                  <h4 class="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2" data-i18n="sidebar.menu">Menu</h4>
                   <nav class="space-y-1">
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('home')">
                       <i class="fa-solid fa-house w-5 text-center text-sangham-brown-light"></i>Home Feed
@@ -2670,7 +2670,7 @@ round:var(--error-600)}
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('communities')">
                       <i class="fa-solid fa-user-group w-5 text-center text-sangham-brown-light"></i>My Communities
                     </button>
-                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left">
+                    <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-sangham-gold/5 text-sangham-gold font-medium text-sm w-full text-left" onclick="openLibraryBookmarks()">
                       <i class="fa-solid fa-book-bookmark w-5 text-center"></i>Saved Teachings
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
@@ -3985,7 +3985,7 @@ round:var(--error-600)}
           <div class="pq-icon">⭐</div><span class="pq-label" data-i18n="profile_menu.my_contributions">My Contributions</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn');setTimeout(()=>switchLearnTab('library'),200)">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openLibraryBookmarks()">
           <div class="pq-icon">🔖</div><span class="pq-label" data-i18n="profile_menu.saved_resources">Saved Resources</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -4046,6 +4046,7 @@ const LOCALE_EN = {
   contributor:{ dashboard_title:'Contributor Dashboard', your_courses:'Your Courses', your_resources:'Your Resources', your_circles:'Your Circles', no_courses:'No courses yet. Create your first course.', no_resources:'No resources yet. Share something useful.', no_circles:'No circles yet. Start a study group.', create_course:'+ Create Course', upload_resource:'+ Upload Resource', start_circle:'+ Start Circle', draft_badge:'Draft', published_badge:'Published', contribution_score:'Contribution Score', become_contributor:'Become a Contributor', contributor_intro:'Share courses, resources, and study circles with the Sangham community.', upload_first:'Upload a resource to get started — no application needed.', status_none:'Not a contributor yet', status_active:'Active Contributor' },
   roles:{ unknown:'Unknown', practitioner:'Practitioner', community:'Community', facilitated_by:'Facilitated by' },
   community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.', members:'members', collaborators:'collaborators', tab_overview:'Overview', tab_learning:'Learning', tab_projects:'Projects', tab_circles:'Circles', tab_contributors:'Contributors', upcoming_events:'Upcoming Events', study_circles:'Study Circles', active_projects:'Active Projects', join_circle:'Join Circle', leave_circle:'Leave Circle', join_project:'Join Project', leave_project:'Leave Project', browse_circles:'Browse Circles', browse_projects:'Browse Projects' },
+  sidebar:{ menu:'Menu', suggested_practitioners:'Suggested Practitioners', todays_teaching:"Today's Teaching" },
   forms:{ post_ph:'Share a thought, question, or insight…', comment_ph:'Add a comment…', message_ph:'Send a message…', search_ph:'Search people, communities, events…', community_name_ph:'e.g. Mumbai Dhamma Sangha', community_city_ph:'e.g. Mumbai', community_desc_ph:'What is this community about?', community_url_ph:'https://…', intent_title_ph:'e.g. Looking for a meditation partner', intent_desc_ph:"Tell practitioners what you're looking for…", session_title_ph:'e.g. Sunday Sutta Reading', teacher_credentials_ph:'e.g. Ordained in the Ajahn Chah lineage…', teacher_lineage_ph:'e.g. Soto Zen, Navayana Buddhist', teacher_statement_ph:'Describe your teaching practice and motivation…', event_title_ph:'e.g. Weekly Dhamma Talk', event_url_ph:'https://meet.google.com/…', event_location_ph:'e.g. Ambedkar Bhavan, Mumbai', course_title_ph:'e.g. Introduction to the Dhamma', course_desc_ph:'What will students learn?', resource_title_ph:'e.g. The Four Noble Truths — Lecture', resource_url_ph:'https://youtube.com/watch?v=… or PDF link', circle_topic_ph:'e.g. Reading the Dhammapada together', circle_desc_ph:'What will the circle focus on?', circle_sched_ph:'e.g. Every Sunday 10 AM IST', project_title_ph:'e.g. Pali Canon Translation Project', project_purpose_ph:'What is the core goal of this project?', project_skills_ph:'e.g. Pali, Translation, Research' },
 };
 
@@ -4834,22 +4835,49 @@ async function loadHome() {
   _loadHomeFeaturedReading();
   if (state.token) loadHomeSuggestedConnections();
   _updateLeftSidebars();
-  // Highlight today's day in Daily Practice tracker (0=Mon … 6=Sun)
+  // Weekly Activity tracker — persisted in localStorage, marks day when user visits while signed in
   (function() {
-    const jsDay = new Date().getDay(); // 0=Sun,1=Mon,...,6=Sat
-    const idx = jsDay === 0 ? 6 : jsDay - 1; // remap to M=0…S=6
+    if (!state.token) return;
+    const KEY = 'sangham_activity_days';
+    const jsDay = new Date().getDay(); // 0=Sun … 6=Sat
+    const todayIdx = jsDay === 0 ? 6 : jsDay - 1; // remap to M=0 … S=6
+    // Load stored active days; reset if week changed
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch {}
+    const weekStart = (() => {
+      const d = new Date(); d.setHours(0,0,0,0);
+      d.setDate(d.getDate() - todayIdx); // back to Monday
+      return d.toISOString().slice(0,10);
+    })();
+    if (stored.weekStart !== weekStart) stored = { weekStart, days: [] };
+    if (!stored.days) stored.days = [];
+    if (!stored.days.includes(todayIdx)) stored.days.push(todayIdx);
+    try { localStorage.setItem(KEY, JSON.stringify(stored)); } catch {}
+    const activeDays = new Set(stored.days);
+    const streak = stored.days.length;
     for (let i = 0; i < 7; i++) {
       const el = document.getElementById('practice-day-' + i);
       if (!el) continue;
-      if (i === idx) {
+      if (i === todayIdx) {
         el.style.background = 'rgba(255,255,255,0.92)';
         el.style.color = '#C79A3B';
         el.style.fontWeight = '700';
+      } else if (activeDays.has(i)) {
+        el.style.background = 'rgba(255,255,255,0.55)';
+        el.style.color = 'rgba(199,154,59,0.8)';
+        el.style.fontWeight = '600';
       } else {
         el.style.background = 'rgba(255,255,255,0.2)';
         el.style.color = '';
         el.style.fontWeight = '';
       }
+    }
+    const streakEl = document.getElementById('practice-streak-text');
+    if (streakEl) {
+      streakEl.textContent = streak >= 7 ? 'Perfect week! 🙏' :
+        streak >= 5 ? `${streak}-day streak — keep going!` :
+        streak >= 2 ? `${streak} days active this week` :
+        'Day 1 — great start!';
     }
   })();
   const container = document.getElementById('home-feed');
@@ -6507,6 +6535,60 @@ async function _loadLibBookmarks() {
       </div>
     </div>`;
   } catch {}
+}
+
+// ============================================================
+//  LIBRARY — Level 1b: Bookmarks view
+// ============================================================
+async function openLibraryBookmarks() {
+  if (!state.token) { showToast(t('toast.sign_in_bookmark'), 'info'); return; }
+  // Prevent loadLearnLibrary from firing and overwriting our view
+  _learnTabLoaded.library = true;
+  _lib.view = 'bookmarks';
+  switchTab('learn');
+  setTimeout(() => {
+    switchLearnTab('library');
+    const root = document.getElementById('learn-tab-library');
+    if (!root) return;
+    root.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
+    api('GET', '/library/my-bookmarks').then(bm => {
+      if (!root) return;
+      if (!bm || !bm.length) {
+        root.innerHTML = `<button type="button" class="lib-breadcrumb" onclick="showLibraryHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Library</button>
+          <div style="padding:var(--space-6);text-align:center;color:var(--text-muted)">
+            <div style="font-size:2rem;margin-bottom:var(--space-3)">🔖</div>
+            <div style="font-weight:600;margin-bottom:var(--space-1)">No saved teachings yet</div>
+            <div style="font-size:.875rem">Open any text and tap the bookmark icon to save it here.</div>
+          </div>`;
+        return;
+      }
+      root.innerHTML = `
+        <button type="button" class="lib-breadcrumb" onclick="showLibraryHome()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Library
+        </button>
+        <div class="lib-section">
+          <div class="lib-section-header"><span class="lib-section-title">Saved Teachings</span></div>
+          <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+            ${bm.map(tx => {
+              const coverUrl = libGetCoverUrl(tx);
+              const coverEl = coverUrl
+                ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}" style="display:none">${libTradSym(tx.collection?.tradition)}</div>`
+                : `<div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>`;
+              return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
+                ${coverEl}
+                <div class="lib-continue-info">
+                  <div class="lib-continue-title">${escHtml(tx.title)}</div>
+                  <div class="lib-continue-sub">${escHtml(tx.author || '')} · ${libLangLabel(tx.language)}</div>
+                </div>
+              </button>`;
+            }).join('')}
+          </div>
+        </div>
+        <div style="height:var(--space-8)"></div>`;
+    }).catch(() => {
+      root.innerHTML = `<button type="button" class="lib-breadcrumb" onclick="showLibraryHome()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Library</button>` + renderEmptyState('learn');
+    });
+  }, 200);
 }
 
 // ============================================================
