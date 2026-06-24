@@ -35,6 +35,8 @@
     .filter-pill{transition:all .2s ease}
     .filter-pill.active{background:linear-gradient(135deg,#C79A3B 0%,#B2872F 100%);color:white;box-shadow:0 4px 12px rgba(199,154,59,.3)}
     .filter-pill:not(.active):hover{background:#E7D2A1;color:#2F2A24}
+    .feed-filter-pill.active{background:#C79A3B;color:#fff;box-shadow:0 4px 12px -2px rgba(199,154,59,.35);border-color:#C79A3B}
+    .feed-filter-pill:not(.active):hover{background:#F5EDD9;border-color:rgba(199,154,59,.3)}
     .search-focus:focus{box-shadow:0 0 0 3px rgba(199,154,59,.15)}
     .member-avatar{transition:transform .2s ease}
     .member-avatar:hover{transform:scale(1.15);z-index:10}
@@ -667,6 +669,7 @@ round:var(--error-600)}
       #tab-home .pt-4,.tab-panel>div.pt-4{padding-top:var(--space-3)}
       /* Feed filter pills: full-height touch targets */
       .feed-filter-pill{padding:8px 14px!important}
+      .feed-filter-pill.active{background:#C79A3B!important;color:#fff!important;box-shadow:0 4px 12px -2px rgba(199,154,59,.35)!important;border-color:#C79A3B!important}
       /* Create post action row wraps on very small screens */
       #tab-home .create-post-actions{flex-wrap:wrap;gap:var(--space-1)}
       /* Card padding tighter on phone */
@@ -2028,7 +2031,7 @@ round:var(--error-600)}
 
                 <!-- Feed Filters -->
                 <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide" style="touch-action:pan-x">
-                    <button class="feed-filter-pill px-4 py-2 text-xs font-medium rounded-full whitespace-nowrap transition-colors border border-transparent" data-filter="all" onclick="setFeedFilter('all',this)" style="background:#C79A3B;color:#fff;box-shadow:0 4px 12px -2px rgba(199,154,59,.35)">All Activity</button>
+                    <button class="feed-filter-pill active px-4 py-2 text-xs font-medium rounded-full whitespace-nowrap transition-colors border border-transparent" data-filter="all" onclick="setFeedFilter('all',this)">All Activity</button>
                     <button class="feed-filter-pill px-4 py-2 bg-white text-sangham-brown-light text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors" data-filter="communities" onclick="setFeedFilter('communities',this)">My Communities</button>
                     <button class="feed-filter-pill px-4 py-2 bg-white text-sangham-brown-light text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors" data-filter="connections" onclick="setFeedFilter('connections',this)">Connections</button>
                     <button class="feed-filter-pill px-4 py-2 bg-white text-sangham-brown-light text-xs font-medium rounded-full border border-sangham-gold/10 whitespace-nowrap transition-colors" data-filter="teachings" onclick="setFeedFilter('teachings',this)">Teachings</button>
@@ -2370,17 +2373,17 @@ round:var(--error-600)}
               <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" id="comm-static-grid">
                 <!-- Card 1: Joined -->
                 <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
-                  <div class="h-24 bg-gradient-to-br from-blue-400 to-blue-600 relative">
+                  <div class="h-24 bg-gradient-to-br from-sangham-gold to-sangham-gold-dark relative">
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="absolute -bottom-8 left-5">
                       <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
-                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-                          <i class="fa-solid fa-heart text-blue-500 text-xl"></i>
+                        <div class="w-full h-full rounded-xl bg-sangham-cream flex items-center justify-center">
+                          <i class="fa-solid fa-dharmachakra text-sangham-gold text-xl"></i>
                         </div>
                       </div>
                     </div>
                     <div class="absolute top-3 right-3">
-                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-blue-600">Joined</span>
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-sangham-gold">Joined</span>
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
@@ -2399,7 +2402,7 @@ round:var(--error-600)}
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">856 members</span>
                       </div>
-                      <span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span>
+                      <span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Study Group</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <button class="join-btn joined flex-1 py-2.5 rounded-xl text-xs font-semibold">Joined</button>
@@ -2409,17 +2412,17 @@ round:var(--error-600)}
                 </div>
                 <!-- Card 2 -->
                 <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
-                  <div class="h-24 bg-gradient-to-br from-amber-400 to-orange-500 relative">
+                  <div class="h-24 bg-gradient-to-br from-sangham-gold to-sangham-gold-dark relative">
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="absolute -bottom-8 left-5">
                       <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
-                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center">
-                          <i class="fa-solid fa-dharmachakra text-amber-600 text-xl"></i>
+                        <div class="w-full h-full rounded-xl bg-sangham-cream flex items-center justify-center">
+                          <i class="fa-solid fa-dharmachakra text-sangham-gold text-xl"></i>
                         </div>
                       </div>
                     </div>
                     <div class="absolute top-3 right-3">
-                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-amber-600">Active</span>
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-sangham-gold">Active</span>
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
@@ -2438,7 +2441,7 @@ round:var(--error-600)}
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">1.2k members</span>
                       </div>
-                      <span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span>
+                      <span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Sangha</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
@@ -2448,17 +2451,17 @@ round:var(--error-600)}
                 </div>
                 <!-- Card 3 -->
                 <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
-                  <div class="h-24 bg-gradient-to-br from-green-400 to-emerald-600 relative">
+                  <div class="h-24 bg-gradient-to-br from-sangham-gold to-sangham-gold-dark relative">
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="absolute -bottom-8 left-5">
                       <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
-                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
-                          <i class="fa-solid fa-seedling text-green-600 text-xl"></i>
+                        <div class="w-full h-full rounded-xl bg-sangham-cream flex items-center justify-center">
+                          <i class="fa-solid fa-seedling text-sangham-gold text-xl"></i>
                         </div>
                       </div>
                     </div>
                     <div class="absolute top-3 right-3">
-                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-green-600">New</span>
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-sangham-gold">New</span>
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
@@ -2476,7 +2479,7 @@ round:var(--error-600)}
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">234 members</span>
                       </div>
-                      <span class="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-medium rounded-md">Events</span>
+                      <span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Events</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
@@ -2486,17 +2489,17 @@ round:var(--error-600)}
                 </div>
                 <!-- Card 4 -->
                 <div class="community-card bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
-                  <div class="h-24 bg-gradient-to-br from-purple-400 to-indigo-600 relative">
+                  <div class="h-24 bg-gradient-to-br from-sangham-gold to-sangham-gold-dark relative">
                     <div class="absolute inset-0 bg-black/10"></div>
                     <div class="absolute -bottom-8 left-5">
                       <div class="w-16 h-16 rounded-2xl bg-white p-1 shadow-lg">
-                        <div class="w-full h-full rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 flex items-center justify-center">
-                          <i class="fa-solid fa-vihara text-purple-600 text-xl"></i>
+                        <div class="w-full h-full rounded-xl bg-sangham-cream flex items-center justify-center">
+                          <i class="fa-solid fa-vihara text-sangham-gold text-xl"></i>
                         </div>
                       </div>
                     </div>
                     <div class="absolute top-3 right-3">
-                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-purple-600">Popular</span>
+                      <span class="px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-[10px] font-semibold text-sangham-gold">Popular</span>
                     </div>
                   </div>
                   <div class="pt-10 px-5 pb-5">
@@ -2515,7 +2518,7 @@ round:var(--error-600)}
                         </div>
                         <span class="text-[10px] text-sangham-brown-light">3.5k members</span>
                       </div>
-                      <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-medium rounded-md">Temple</span>
+                      <span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Temple</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <button class="join-btn flex-1 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 hover:shadow-lg">Join</button>
@@ -2602,9 +2605,9 @@ round:var(--error-600)}
               <!-- List View (hidden by default) -->
               <div class="hidden space-y-3" id="comm-list-view">
                 <div class="sangha-row bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10 flex items-center gap-4">
-                  <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0"><i class="fa-solid fa-heart text-lg"></i></div>
+                  <div class="w-14 h-14 rounded-xl bg-sangham-cream flex items-center justify-center text-sangham-gold flex-shrink-0"><i class="fa-solid fa-dharmachakra text-lg"></i></div>
                   <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Nagpur Buddhist Study Circle</h3><span class="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded-md">Study Group</span></div>
+                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Nagpur Buddhist Study Circle</h3><span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Study Group</span></div>
                     <p class="text-xs text-sangham-brown-light mt-0.5">Nagpur, Maharashtra · 856 members · Active 2h ago</p>
                   </div>
                   <button class="join-btn joined px-5 py-2.5 rounded-xl text-xs font-semibold flex-shrink-0">Joined</button>
@@ -2612,7 +2615,7 @@ round:var(--error-600)}
                 <div class="sangha-row bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10 flex items-center gap-4">
                   <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 flex items-center justify-center text-amber-600 flex-shrink-0"><i class="fa-solid fa-dharmachakra text-lg"></i></div>
                   <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Mumbai Navayana Sangha</h3><span class="px-2 py-0.5 bg-amber-50 text-amber-600 text-[10px] font-medium rounded-md">Sangha</span></div>
+                    <div class="flex items-center gap-2"><h3 class="font-semibold text-sangham-ink text-sm">Mumbai Navayana Sangha</h3><span class="px-2 py-0.5 bg-sangham-cream text-sangham-brown-light text-[10px] font-medium rounded-md">Sangha</span></div>
                     <p class="text-xs text-sangham-brown-light mt-0.5">Mumbai, Maharashtra · 1.2k members · Active now</p>
                   </div>
                   <button class="join-btn px-5 py-2.5 bg-gradient-to-r from-sangham-gold to-sangham-gold-dark text-white rounded-xl text-xs font-semibold shadow-md shadow-sangham-gold/20 flex-shrink-0">Join</button>
@@ -2766,22 +2769,22 @@ round:var(--error-600)}
                 </div>
                 <div class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(72px,1fr))">
                   <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('PDF')">
-                    <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-red-500 text-lg"></i></div>
+                    <div class="w-10 h-10 rounded-xl bg-sangham-cream flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-file-pdf text-sangham-gold text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Documents</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">PDFs</p>
                   </button>
                   <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('YOUTUBE_VIDEO')">
-                    <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-purple-500 text-lg"></i></div>
+                    <div class="w-10 h-10 rounded-xl bg-sangham-cream flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-video text-sangham-gold text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Videos</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">YouTube &amp; more</p>
                   </button>
                   <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('WORKSHOP_RECORDING')">
-                    <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-green-500 text-lg"></i></div>
+                    <div class="w-10 h-10 rounded-xl bg-sangham-cream flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-headphones text-sangham-gold text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Audio</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">Recordings</p>
                   </button>
                   <button type="button" class="bg-white rounded-2xl p-3 shadow-sm text-center cursor-pointer hover:shadow-md transition-all" style="border:1px solid var(--border-default);-webkit-appearance:none;appearance:none;font-family:inherit;width:100%" onclick="filterLearnResources('ARTICLE')">
-                    <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-amber-500 text-lg"></i></div>
+                    <div class="w-10 h-10 rounded-xl bg-sangham-cream flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-link text-sangham-gold text-lg"></i></div>
                     <h4 class="font-medium text-sangham-ink text-xs">Links</h4>
                     <p class="text-[10px] text-sangham-brown-light mt-0.5">Articles &amp; more</p>
                   </button>
@@ -4109,7 +4112,7 @@ async function setLanguage(lang) {
       if (_curTab === 'home') loadHome();
       else if (_curTab === 'discover') loadDiscover();
       else if (_curTab === 'communities') { loadCommunities(); if (typeof loadMyCommunities === 'function') loadMyCommunities(); }
-      else if (_curTab === 'learn') loadLearn();
+      else if (_curTab === 'learn') { _learnTabLoaded = {}; loadLearn(); }
       else if (_curTab === 'educate') loadEducate();
     }
   }
@@ -4817,8 +4820,7 @@ const _HOME_FEED_LIMIT = 20;
 function setFeedFilter(filter, el) {
   _homeFeedFilter = filter;
   document.querySelectorAll('.feed-filter-pill').forEach(b => {
-    const active = b.dataset.filter === filter;
-    b.style.cssText = active ? 'background:#C79A3B;color:#fff;box-shadow:0 4px 12px -2px rgba(199,154,59,.35)' : '';
+    b.classList.toggle('active', b.dataset.filter === filter);
   });
   loadHome();
 }
@@ -8604,8 +8606,8 @@ function renderCommunityCard(a, delay = 0) {
     MAHAYANA:  { grad:'from-amber-400 to-orange-500', iclr:'text-amber-600', ibg:'from-amber-50 to-amber-100', icon:'fa-dharmachakra' },
     VAJRAYANA: { grad:'from-purple-400 to-indigo-600', iclr:'text-purple-600', ibg:'from-purple-50 to-purple-100', icon:'fa-bell' },
   };
-  const ts = tradStyle[a.tradition] || { grad:'from-blue-400 to-blue-600', iclr:'text-blue-500', ibg:'from-blue-50 to-blue-100', icon:'fa-heart' };
-  const catColorMap = { 'Temple':'bg-amber-50 text-amber-600','Sangha':'bg-amber-50 text-amber-600','Study Group':'bg-blue-50 text-blue-600','Events':'bg-green-50 text-green-600','Ambedkarite':'bg-orange-50 text-orange-600' };
+  const ts = tradStyle[a.tradition] || { grad:'from-amber-400 to-yellow-600', iclr:'text-sangham-gold', ibg:'from-sangham-cream to-sangham-cream', icon:'fa-heart' };
+  const catColorMap = { 'Temple':'bg-sangham-cream text-sangham-brown-light','Sangha':'bg-sangham-cream text-sangham-brown-light','Study Group':'bg-sangham-cream text-sangham-brown-light','Events':'bg-sangham-cream text-sangham-brown-light','Ambedkarite':'bg-sangham-cream text-sangham-brown-light' };
   const catColor = Object.entries(catColorMap).find(([k]) => cat.includes(k))?.[1] || 'bg-sangham-cream text-sangham-brown';
   const loc = a.city || a.country || '';
   const locHtml = loc ? `<p class="text-xs text-sangham-brown-light flex items-center gap-1 mb-2"><i class="fa-solid fa-location-dot text-[10px]"></i>${escHtml(loc)}</p>` : '';
