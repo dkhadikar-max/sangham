@@ -388,5 +388,27 @@
     "project_title_ph": "जैसे: पालि कैनन अनुवाद परियोजना",
     "project_purpose_ph": "इस परियोजना का मुख्य लक्ष्य क्या है?",
     "project_skills_ph": "जैसे: पालि, अनुवाद, शोध"
+  },
+  "settings": {
+    "appearance": "दिखावट",
+    "dark_mode": "डार्क मोड",
+    "language": "भाषा",
+    "account": "खाता"
+  },
+  "profile_menu": {
+    "view_profile": "प्रोफ़ाइल देखें",
+    "edit_profile": "प्रोफ़ाइल संपादित करें",
+    "my_communities": "मेरे समुदाय",
+    "my_courses": "मेरे कोर्स",
+    "my_contributions": "मेरे योगदान",
+    "saved_resources": "सहेजे गए संसाधन",
+    "language_prefs": "भाषा और प्राथमिकताएं",
+    "verification": "सत्यापन स्थिति",
+    "toggle_theme": "थीम बदलें",
+    "settings": "सेटिंग्स",
+    "logout": "लॉग आउट"
+  },
+  "toast": {
+    "language_updated": "भाषा अपडेट हुई"
   }
 }

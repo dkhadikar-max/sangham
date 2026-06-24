@@ -388,5 +388,27 @@
     "project_title_ph": "उदा. पालि कॅनन भाषांतर प्रकल्प",
     "project_purpose_ph": "या प्रकल्पाचे मुख्य उद्दिष्ट काय आहे?",
     "project_skills_ph": "उदा. पालि, भाषांतर, संशोधन"
+  },
+  "settings": {
+    "appearance": "देखावा",
+    "dark_mode": "डार्क मोड",
+    "language": "भाषा",
+    "account": "खाते"
+  },
+  "profile_menu": {
+    "view_profile": "प्रोफाइल पहा",
+    "edit_profile": "प्रोफाइल संपादित करा",
+    "my_communities": "माझे समुदाय",
+    "my_courses": "माझे कोर्सेस",
+    "my_contributions": "माझे योगदान",
+    "saved_resources": "जतन केलेले साहित्य",
+    "language_prefs": "भाषा आणि प्राधान्ये",
+    "verification": "सत्यापन स्थिती",
+    "toggle_theme": "थीम बदला",
+    "settings": "सेटिंग्ज",
+    "logout": "लॉग आउट"
+  },
+  "toast": {
+    "language_updated": "भाषा अपडेट झाली"
   }
 }

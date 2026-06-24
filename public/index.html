@@ -1872,7 +1872,7 @@ round:var(--error-600)}
         </div>
         <!-- Right: Actions -->
         <div class="flex items-center gap-3 flex-shrink-0">
-          <button class="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown" onclick="switchTab('discover')" title="Search" aria-label="Search">
+          <button class="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown" onclick="openGlobalSearch()" title="Search" aria-label="Search">
             <i class="fa-solid fa-magnifying-glass text-sm"></i>
           </button>
           <button class="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown relative" id="notifBellBtn" onclick="openNotifications()" title="Notifications" aria-label="Notifications">
@@ -1946,7 +1946,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-book-bookmark w-5 text-center"></i>Saved Teachings
                     </button>
                     <button class="lsb-menu-btn flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" data-menu="discover" onclick="switchTab('discover')">
-                      <i class="fa-solid fa-map-location-dot w-5 text-center"></i>People Near Me
+                      <i class="fa-solid fa-compass w-5 text-center"></i>Discover People
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm w-full text-left transition-colors hover:bg-sangham-cream text-sangham-ink-light" onclick="openDhammaDaan()">
                       <i class="fa-solid fa-hand-holding-heart w-5 text-center"></i>Contribute
@@ -1982,8 +1982,7 @@ round:var(--error-600)}
                 <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
                     <div class="flex items-center justify-between mb-4">
                         <div>
-                            <h2 class="font-serif text-lg font-semibold text-sangham-ink">People Near You</h2>
-                            <p class="text-xs text-sangham-brown-light mt-0.5">Practitioners in Mumbai, Nagpur &amp; nearby</p>
+                            <h2 class="font-serif text-lg font-semibold text-sangham-ink">Suggested Practitioners</h2>
                         </div>
                         <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style="min-height:44px;display:inline-flex;align-items:center">View All</a>
                     </div>
@@ -2002,8 +2001,8 @@ round:var(--error-600)}
                     <div class="flex gap-3">
                         <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center" id="home-create-post-avatar"></div>
                         <div class="flex-1">
-                            <input type="text" placeholder="Share your thoughts, questions, or insights..."
-                                class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()" readonly>
+                            <button type="button" onclick="openCreatePost&&openCreatePost()"
+                                class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-left transition-all hover:bg-sangham-cream-dark" style="border:none;cursor:text;font-family:inherit;min-height:48px;color:rgba(139,115,85,0.6)">Share your thoughts, questions, or insights…</button>
                             <div class="flex items-center justify-between mt-3">
                                 <div class="flex gap-2">
                                     <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:44px" onclick="openCreatePost&&openCreatePost()">
@@ -2066,7 +2065,7 @@ round:var(--error-600)}
                             <div class="text-[10px] mb-4" style="opacity:.7" id="home-sidebar-verse-source"></div>
                             <div class="flex items-center gap-2">
                                 <button class="flex-1 py-2 rounded-lg text-xs font-medium transition-colors" style="background:rgba(255,255,255,0.18)" onclick="switchTab('learn');switchLearnTab('library')">Read More</button>
-                                <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors" style="background:rgba(255,255,255,0.18)"><i class="fa-regular fa-bookmark text-xs"></i></button>
+                                <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors" style="background:rgba(255,255,255,0.18)" onclick="bookmarkVerse()" aria-label="Bookmark verse"><i class="fa-regular fa-bookmark text-xs"></i></button>
                             </div>
                         </div>
                     </div>
@@ -2121,10 +2120,10 @@ round:var(--error-600)}
                     <!-- Footer -->
                     <div class="text-center space-y-2">
                         <div class="flex items-center justify-center gap-3 text-[10px] text-sangham-brown-light">
-                            <a href="#" class="hover:text-sangham-gold transition-colors">About</a>
-                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Privacy</a>
-                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Terms</a>
-                            <span>·</span><a href="#" class="hover:text-sangham-gold transition-colors">Help</a>
+                            <a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" class="hover:text-sangham-gold transition-colors">About</a>
+                            <span>·</span><a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" class="hover:text-sangham-gold transition-colors">Privacy</a>
+                            <span>·</span><a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" class="hover:text-sangham-gold transition-colors">Terms</a>
+                            <span>·</span><a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" class="hover:text-sangham-gold transition-colors">Help</a>
                         </div>
                         <p class="text-[10px] text-sangham-brown-light/60">© 2026 Sangham</p>
                     </div>
@@ -2292,7 +2291,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-book-bookmark w-5 text-center text-sangham-brown-light"></i>Saved Teachings
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
-                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                      <i class="fa-solid fa-compass w-5 text-center text-sangham-brown-light"></i>Discover People
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
                       <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Contribute
@@ -2326,7 +2325,7 @@ round:var(--error-600)}
               <div class="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
                 <div class="flex items-center justify-between mb-4">
                   <h2 class="text-xs font-bold text-sangham-brown-light uppercase tracking-widest">Your Communities</h2>
-                  <a href="#" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-2 rounded-lg" style="min-height:44px;display:inline-flex;align-items:center">Manage</a>
+                  <button class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-2 rounded-lg" style="min-height:44px;display:inline-flex;align-items:center;background:none;border:none;cursor:pointer" onclick="switchTab('communities')">Manage</button>
                 </div>
                 <div class="flex flex-wrap gap-2" id="comm-your-chips"></div>
               </div>
@@ -2675,7 +2674,7 @@ round:var(--error-600)}
                       <i class="fa-solid fa-book-bookmark w-5 text-center"></i>Saved Teachings
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="switchTab('discover')">
-                      <i class="fa-solid fa-map-location-dot w-5 text-center text-sangham-brown-light"></i>People Near Me
+                      <i class="fa-solid fa-compass w-5 text-center text-sangham-brown-light"></i>Discover People
                     </button>
                     <button class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left" onclick="openDhammaDaan()">
                       <i class="fa-solid fa-hand-holding-heart w-5 text-center text-sangham-brown-light"></i>Contribute
@@ -3522,11 +3521,11 @@ round:var(--error-600)}
       <div class="panel-content" style="padding:var(--space-4)">
         <!-- Appearance -->
         <div style="margin-bottom:var(--space-5)">
-          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Appearance</p>
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)" data-i18n="settings.appearance">Appearance</p>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle)">
             <div style="display:flex;align-items:center;gap:var(--space-3)">
               <i class="fa-solid fa-moon" style="color:var(--text-secondary);width:18px;text-align:center"></i>
-              <span style="font-size:var(--text-sm);color:var(--text-primary)">Dark Mode</span>
+              <span style="font-size:var(--text-sm);color:var(--text-primary)" data-i18n="settings.dark_mode">Dark Mode</span>
             </div>
             <label class="toggle-switch">
               <input type="checkbox" id="settings-theme-toggle" onchange="toggleTheme();this.checked=state.theme==='dark'">
@@ -3536,19 +3535,19 @@ round:var(--error-600)}
         </div>
         <!-- Language -->
         <div style="margin-bottom:var(--space-5)">
-          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Language</p>
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)" data-i18n="settings.language">Language</p>
           <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-            <button onclick="setLanguage('en');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+            <button onclick="setLanguage('en');saveSession();showToast(t('toast.language_updated'),'success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
               <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
               <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">English</span>
               <i class="fa-solid fa-check settings-lang-check" data-lang="en" style="color:var(--saffron-500)"></i>
             </button>
-            <button onclick="setLanguage('hi');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+            <button onclick="setLanguage('hi');saveSession();showToast(t('toast.language_updated'),'success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
               <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
               <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">हिन्दी</span>
               <i class="fa-solid fa-check settings-lang-check" data-lang="hi" style="color:var(--saffron-500)"></i>
             </button>
-            <button onclick="setLanguage('mr');saveSession();showToast('Language updated','success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
+            <button onclick="setLanguage('mr');saveSession();showToast(t('toast.language_updated'),'success');_syncSettingsState()" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
               <i class="fa-solid fa-language" style="color:var(--text-secondary);width:18px;text-align:center"></i>
               <span style="font-size:var(--text-sm);color:var(--text-primary);flex:1">मराठी</span>
               <i class="fa-solid fa-check settings-lang-check" data-lang="mr" style="color:var(--saffron-500)"></i>
@@ -3557,7 +3556,7 @@ round:var(--error-600)}
         </div>
         <!-- Account -->
         <div style="margin-bottom:var(--space-5)">
-          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)">Account</p>
+          <p style="font-size:10px;font-weight:var(--weight-semibold);color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-3)" data-i18n="settings.account">Account</p>
           <div style="display:flex;flex-direction:column;gap:var(--space-2)">
             <button onclick="closePanel('panel-settings');if(state.user)openProfile(state.user.id)" style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--surface-primary);border-radius:var(--radius-xl);border:1px solid var(--border-subtle);text-align:left;cursor:pointer;width:100%">
               <i class="fa-solid fa-user-pen" style="color:var(--text-secondary);width:18px;text-align:center"></i>
@@ -3577,9 +3576,9 @@ round:var(--error-600)}
         </div>
         <!-- Legal -->
         <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;margin-top:var(--space-4)">
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Privacy Policy</a>
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Terms of Service</a>
-          <a href="#" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Help</a>
+          <a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Privacy Policy</a>
+          <a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Terms of Service</a>
+          <a href="#" onclick="showToast(t('common.coming_soon'),'info');return false" style="font-size:var(--text-xs);color:var(--text-tertiary);padding:11px 8px;display:inline-block">Help</a>
         </div>
         <p style="text-align:center;font-size:var(--text-xs);color:var(--text-tertiary);margin-top:var(--space-4);opacity:.5">Sangham v0.2.0</p>
       </div>
@@ -3978,7 +3977,7 @@ round:var(--error-600)}
           <div class="pq-icon">🏘️</div><span class="pq-label" data-i18n="profile_menu.my_communities">My Communities</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();openContributorDashboard()">
+        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn');setTimeout(()=>switchLearnTab('courses'),200)">
           <div class="pq-icon">📚</div><span class="pq-label" data-i18n="profile_menu.my_courses">My Courses</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -3986,24 +3985,24 @@ round:var(--error-600)}
           <div class="pq-icon">⭐</div><span class="pq-label" data-i18n="profile_menu.my_contributions">My Contributions</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();openContributorDashboard()">
+        <button class="pq-item" onclick="closeProfileQuickPanel();switchTab('learn');setTimeout(()=>switchLearnTab('library'),200)">
           <div class="pq-icon">🔖</div><span class="pq-label" data-i18n="profile_menu.saved_resources">Saved Resources</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="pq-divider"></div>
-        <button class="pq-item" onclick="closeProfileQuickPanel();openProfile(state.user?.id)">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openPanel('panel-settings')">
           <div class="pq-icon">🌐</div><span class="pq-label" data-i18n="profile_menu.language_prefs">Language & Preferences</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();openVerifStatus()">
+        <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
           <div class="pq-icon">✅</div><span class="pq-label" data-i18n="profile_menu.verification">Verification Status</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="pq-item" onclick="toggleTheme()">
-          <div class="pq-icon" id="pqThemeIcon">🌙</div><span class="pq-label">Toggle Theme</span>
+          <div class="pq-icon" id="pqThemeIcon">🌙</div><span class="pq-label" data-i18n="profile_menu.toggle_theme">Toggle Theme</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
-        <button class="pq-item" onclick="closeProfileQuickPanel();showToast(t('common.coming_soon'),'info')">
+        <button class="pq-item" onclick="closeProfileQuickPanel();openPanel('panel-settings')">
           <div class="pq-icon">⚙️</div><span class="pq-label" data-i18n="profile_menu.settings">Settings</span>
           <svg class="pq-chevron" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
@@ -4038,11 +4037,12 @@ const LOCALE_EN = {
   events:{ going:'Going', maybe:'Maybe', all_types:'All Types', retreats:'Retreats', talks:'Talks', seminars:'Seminars', gatherings:'Gatherings', diksha:'Diksha', ambedkar_jayanti:'Ambedkar Jayanti', no_events:'No upcoming events', load_error:'Unable to load events.', organised_by:'Organised by', spots_taken:'spots taken', going_count:'going', add_event:'+ Event', loading:'Loading event…' },
   profile:{ my_profile:'My Profile', profile:'Profile', edit_profile:'Edit Profile', apply_teacher:'🎓 Apply for Teacher Badge', support:'🙏 Contribute to Sangham', language_label:'App Language', change_language:'Change Language', no_posts:'No posts yet.' },
   common:{ save:'Save', cancel:'Cancel', submit:'Submit', edit:'Edit', delete:'Delete', connect:'Connect', connected:'Connected', message:'Msg', next:'Next', back:'Back', skip:'Skip', finish:'Finish', post:'Post', loading:'Loading…', close:'Close', your_feed:'Your Feed', section_communities:'Communities', join:'Join', leave:'Leave', try_again:'Try Again', creating:'Creating…', posting:'Posting…', submitting:'Submitting…', processing:'Processing…', scheduling:'Scheduling…', adding:'Adding…', coming_soon:'Coming soon', lessons:'Lessons', no_lessons:'No lessons yet.', lesson_one:'lesson', lesson_many:'lessons', all_courses:'All Courses', no_related_courses:'No related courses yet.', no_related_content:'No related learning content yet.', course:'Course', study_circle:'Study Circle', project:'Project' },
-  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only verified teachers and trusted members can host sessions.', copied:'Copied!', reflection_added:'Reflection added', posted_to_sangham:'Posted to Sangham', write_something_first:'Write something first', left_circle:'Left study circle', joined_circle:'Joined study circle!', left_project:'Left project', joined_project:'Joined project!', left_community:'Left community', joined_community:'Joined community!', community_created:'Sangha created!', event_created:'Event created!', course_created:'Course created!', resource_added:'Resource added!', circle_created:'Study circle created!', project_created:'Project created!', verse_bookmarked:'Verse bookmarked', text_bookmarked:'Text bookmarked', verse_copied:'Verse copied to clipboard', application_submitted:"Application submitted! We'll review within 7 days.", dhamma_daan_received:'Thank you! Your contribution has been received. 🙏', passkey_coming_soon:'Passkey authentication coming soon', sign_in_bookmark:'Sign in to bookmark', group_chat_coming_soon:'Group chat coming soon', session_scheduled:'Session scheduled!' },
+  toast:{ sign_in_rsvp:'Sign in to RSVP', going:"You're going!", maybe:'Marked as maybe', settings_saved:'Settings saved', profile_updated:'Profile updated', intent_posted:'Intent posted', connected:'Connected!', session_role_required:'Only verified teachers and trusted members can host sessions.', copied:'Copied!', reflection_added:'Reflection added', posted_to_sangham:'Posted to Sangham', write_something_first:'Write something first', left_circle:'Left study circle', joined_circle:'Joined study circle!', left_project:'Left project', joined_project:'Joined project!', left_community:'Left community', joined_community:'Joined community!', community_created:'Sangha created!', event_created:'Event created!', course_created:'Course created!', resource_added:'Resource added!', circle_created:'Study circle created!', project_created:'Project created!', verse_bookmarked:'Verse bookmarked', text_bookmarked:'Text bookmarked', verse_copied:'Verse copied to clipboard', application_submitted:"Application submitted! We'll review within 7 days.", dhamma_daan_received:'Thank you! Your contribution has been received. 🙏', passkey_coming_soon:'Passkey authentication coming soon', sign_in_bookmark:'Sign in to bookmark', group_chat_coming_soon:'Group chat coming soon', session_scheduled:'Session scheduled!', language_updated:'Language updated' },
   language:{ en:'English', hi:'हिन्दी', mr:'मराठी' },
+  settings:{ appearance:'Appearance', dark_mode:'Dark Mode', language:'Language', account:'Account' },
   home:{ your_feed:'Your Feed', empty_title:'Your feed is empty', empty_text:'Be the first to start a conversation.', error_title:'Unable to load', error_text:'Something went wrong. Please try again.', share_reflection:'Share a Post', first_reflection:'Be the first to share something.', start_conversation:'Start the conversation', start_conversation_text:'Send a kind message to begin.', daily_wisdom:'Daily Wisdom', read_more:'Read More', show_less:'Show Less', save_verse:'Save', verse_dismissed:'Dismissed for today.', verse_restore:'Restore' },
   feed:{ like:'Like', reply:'Reply', message:'Message', save:'Save', reply_one:'reply', reply_many:'replies', join_discussion:'Join the discussion', write_reply:'Write a reply…' },
-  profile_menu:{ view_profile:'View Profile', edit_profile:'Edit Profile', my_communities:'My Communities', my_courses:'My Courses', my_contributions:'My Contributions', contributor_dashboard:'Contributor Dashboard', saved_resources:'Saved Resources', language_prefs:'Language & Preferences', verification:'Verification Status', settings:'Settings', logout:'Logout' },
+  profile_menu:{ view_profile:'View Profile', edit_profile:'Edit Profile', my_communities:'My Communities', my_courses:'My Courses', my_contributions:'My Contributions', contributor_dashboard:'Contributor Dashboard', saved_resources:'Saved Resources', language_prefs:'Language & Preferences', verification:'Verification Status', toggle_theme:'Toggle Theme', settings:'Settings', logout:'Logout' },
   contributor:{ dashboard_title:'Contributor Dashboard', your_courses:'Your Courses', your_resources:'Your Resources', your_circles:'Your Circles', no_courses:'No courses yet. Create your first course.', no_resources:'No resources yet. Share something useful.', no_circles:'No circles yet. Start a study group.', create_course:'+ Create Course', upload_resource:'+ Upload Resource', start_circle:'+ Start Circle', draft_badge:'Draft', published_badge:'Published', contribution_score:'Contribution Score', become_contributor:'Become a Contributor', contributor_intro:'Share courses, resources, and study circles with the Sangham community.', upload_first:'Upload a resource to get started — no application needed.', status_none:'Not a contributor yet', status_active:'Active Contributor' },
   roles:{ unknown:'Unknown', practitioner:'Practitioner', community:'Community', facilitated_by:'Facilitated by' },
   community:{ no_events:'No upcoming events.', no_members:'No members yet.', no_content:'No learning content yet. Be the first to add a course or resource.', content_error:'Unable to load learning content.', no_projects:'No active projects yet.', projects_error:'Unable to load projects.', no_circles:'No study circles yet.', circles_error:'Unable to load study circles.', no_contributions:'No contribution scores recorded yet.', contributions_error:'Unable to load contributors.', members:'members', collaborators:'collaborators', tab_overview:'Overview', tab_learning:'Learning', tab_projects:'Projects', tab_circles:'Circles', tab_contributors:'Contributors', upcoming_events:'Upcoming Events', study_circles:'Study Circles', active_projects:'Active Projects', join_circle:'Join Circle', leave_circle:'Leave Circle', join_project:'Join Project', leave_project:'Leave Project', browse_circles:'Browse Circles', browse_projects:'Browse Projects' },
@@ -4169,6 +4169,10 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
   saveSession();
   showToast(state.theme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled', 'success');
+  const icon = document.getElementById('pqThemeIcon');
+  if (icon) icon.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  const toggle = document.getElementById('settings-theme-toggle');
+  if (toggle) toggle.checked = state.theme === 'dark';
 }
 
 function initTheme() {
