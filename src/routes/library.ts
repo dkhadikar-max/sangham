@@ -65,13 +65,15 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
       select: {
         id: true, title: true, author: true, translator: true, language: true,
         licence: true, attribution: true, externalId: true, sourceUrl: true, coverUrl: true,
+        _count: { select: { segments: true } },
         collection: { select: { name: true, tradition: true, sourceUrl: true } },
       },
     }),
     prisma.libraryText.count({ where }),
   ]);
   const params = parsePagination(req.query as Record<string, unknown>);
-  res.json(paginatedResponse(texts, total, params));
+  const mapped = texts.map((t: any) => ({ ...t, segmentsTotal: t._count?.segments ?? 0, _count: undefined }));
+  res.json(paginatedResponse(mapped, total, params));
 });
 
 // GET /library/texts/:id?segOffset=0&segLimit=100
