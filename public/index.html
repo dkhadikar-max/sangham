@@ -1272,16 +1272,27 @@ round:var(--error-600)}
     .lib-text-card-lang{background:var(--surface-sunken);padding:1px 5px;border-radius:99px;font-weight:var(--weight-medium)}
     .lib-text-card-prog{height:2px;background:var(--border-default);border-radius:1px;margin-top:var(--space-2);overflow:hidden}
     .lib-text-card-progfill{height:100%;background:var(--saffron-500);border-radius:1px}
-    /* ── Book cover image cards ─────────────────────────── */
+    /* ── Book cover image cards (horizontal carousel, used in collection detail) ── */
     .lib-book-scroll{display:flex;gap:14px;overflow-x:auto;padding:2px var(--space-4) var(--space-2);-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x}
     .lib-book-scroll::-webkit-scrollbar{display:none}
-    .lib-book-card{flex-shrink:0;width:120px;cursor:pointer;scroll-snap-align:start;transition:transform var(--duration-fast) var(--ease-out);border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;padding:0}
+    .lib-book-card{flex-shrink:0;width:110px;cursor:pointer;scroll-snap-align:start;transition:transform var(--duration-fast) var(--ease-out);border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;padding:0}
     .lib-book-card:hover{transform:translateY(-4px)}
     .lib-book-card:active{transform:scale(0.97)}
-    .lib-book-cover-img{width:120px;height:176px;border-radius:var(--radius-lg);object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.18);background:var(--surface-sunken)}
-    .lib-book-cover-fb{width:120px;height:176px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
-    .lib-book-card h4{font-size:12px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;line-height:1.35;margin-bottom:3px;min-height:32px}
-    .lib-book-card p{font-size:11px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lib-book-cover-img{width:110px;height:162px;border-radius:var(--radius-lg);object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.18);background:var(--surface-sunken)}
+    .lib-book-cover-fb{width:110px;height:162px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+    .lib-book-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;line-height:1.35;margin-bottom:3px;min-height:28px}
+    .lib-book-card p{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* ── Kindle-style grid (Browse All — used on Library home) ── */
+    .lib-kindle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);padding:0 var(--space-4) var(--space-4)}
+    @media(min-width:480px){.lib-kindle-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(min-width:768px){.lib-kindle-grid{grid-template-columns:repeat(5,1fr)}}
+    .lib-grid-card{cursor:pointer;border:none;background:none;-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;padding:0;width:100%;transition:transform var(--duration-fast) var(--ease-out)}
+    .lib-grid-card:hover{transform:translateY(-3px)}
+    .lib-grid-card:active{transform:scale(0.96)}
+    .lib-grid-cover-img{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);object-fit:cover;display:block;margin-bottom:6px;box-shadow:0 3px 10px rgba(0,0,0,0.18);background:var(--surface-sunken)}
+    .lib-grid-cover-fb{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+    .lib-grid-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;margin-bottom:2px}
+    .lib-grid-card p{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     /* Featured book card */
     .lib-featured{display:flex;background:var(--surface-elevated);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;margin:0;box-shadow:var(--shadow-2);transition:all var(--duration-fast) var(--ease-out);-webkit-appearance:none;appearance:none;font-family:inherit;text-align:left;width:100%}
     .lib-featured:hover{box-shadow:var(--shadow-4);transform:translateY(-2px)}
@@ -2047,6 +2058,15 @@ round:var(--error-600)}
                                 <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors" style="background:rgba(255,255,255,0.18)"><i class="fa-regular fa-bookmark text-xs"></i></button>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Today's Teaching (library) -->
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10" id="home-sidebar-teaching-card" style="display:none">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-serif font-semibold text-sangham-ink text-sm">Today's Teaching</h3>
+                            <a href="#" onclick="switchTab('learn');switchLearnTab('library');return false" class="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Library</a>
+                        </div>
+                        <div id="home-sidebar-teaching"></div>
                     </div>
 
                     <!-- Trending Communities (live data) -->
@@ -3329,6 +3349,14 @@ round:var(--error-600)}
                 <button class="rspacing-btn" data-spacing="compact" onclick="setReaderSpacing('compact')">Compact</button>
                 <button class="rspacing-btn active" data-spacing="comfortable" onclick="setReaderSpacing('comfortable')">Comfortable</button>
                 <button class="rspacing-btn" data-spacing="relaxed" onclick="setReaderSpacing('relaxed')">Relaxed</button>
+              </div>
+            </div>
+            <div class="rsetting-group">
+              <div class="rsetting-label">Font Family</div>
+              <div class="rsetting-fonts">
+                <button class="rfont-btn active" data-font="serif" onclick="setReaderFont('serif')" style="font-family:'Georgia',serif">Serif</button>
+                <button class="rfont-btn" data-font="sans" onclick="setReaderFont('sans')" style="font-family:'Inter',sans-serif">Sans</button>
+                <button class="rfont-btn" data-font="mono" onclick="setReaderFont('mono')" style="font-family:'Courier New',monospace">Mono</button>
               </div>
             </div>
             <div class="rsetting-divider"></div>
@@ -4786,6 +4814,7 @@ async function loadHome() {
   loadDailyVerse();
   loadHomeSidebarTrending();
   loadHomeSidebarEvents();
+  _loadHomeFeaturedReading();
   if (state.token) loadHomeSuggestedConnections();
   _updateLeftSidebars();
   // Highlight today's day in Daily Practice tracker (0=Mon … 6=Sun)
@@ -5264,6 +5293,49 @@ function _verseFallbackHtml() {
     </div>
     <button class="verse-fallback-btn" onclick="localStorage.removeItem('sangham_verse_dismissed');loadDailyVerse()">${t('home.verse_restore')}</button>
   </div>`;
+}
+
+// ── Today's Teaching sidebar widget ─────────────────────────
+// Picks the daily-verse text (if any) or a random library text and
+// renders a compact reading card in the right sidebar.
+async function _loadHomeFeaturedReading() {
+  const card = document.getElementById('home-sidebar-teaching-card');
+  const el   = document.getElementById('home-sidebar-teaching');
+  if (!card || !el) return;
+  try {
+    // Reuse the daily verse endpoint to get a relevant text
+    const verse = await api('GET', `/library/daily-verse?lang=${encodeURIComponent(_lang||'en')}`).catch(()=>null);
+    let text = null;
+    if (verse?.textId) {
+      text = await api('GET', `/library/texts/${verse.textId}?segOffset=0&segLimit=1`).catch(()=>null);
+    }
+    if (!text) {
+      // Fallback: fetch first text from library
+      const txData = await api('GET', '/library/search?limit=1').catch(()=>null);
+      const list = txData?.data || txData || [];
+      text = list[0] || null;
+    }
+    if (!text) return;
+    const readMins = Math.ceil((text.segmentsTotal||30)*30/200);
+    const readStr  = readMins < 60 ? `~${readMins} min` : `~${Math.floor(readMins/60)}h`;
+    const shortTitle = _libShortTitle ? _libShortTitle(text.title) : text.title;
+    const trad = text.collection?.tradition;
+    const sym  = typeof libTradSym !== 'undefined' ? libTradSym(trad) : '📖';
+    const cls  = typeof libTradClass !== 'undefined' ? libTradClass(trad) : '';
+    el.innerHTML = `
+      <button type="button" onclick="switchTab('learn');switchLearnTab('library');setTimeout(()=>openTextDetail('${escHtml(text.id)}'),400)" style="width:100%;border:none;background:none;padding:0;cursor:pointer;text-align:left;font-family:inherit">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div class="${cls}" style="width:36px;height:52px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.12)">${sym}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:600;color:var(--sangham-ink,#2F2A24);line-height:1.3;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escHtml(shortTitle)}</div>
+            <div style="font-size:10px;color:#9E8E7E">${text.translator||text.author||''}</div>
+            <div style="font-size:10px;color:#C79A3B;font-weight:600;margin-top:4px">${readStr} read →</div>
+          </div>
+        </div>
+        ${verse?.content ? `<p style="font-size:11px;color:#6b7280;font-style:italic;line-height:1.5;margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">"${escHtml(verse.content.slice(0,180))}"</p>` : ''}
+      </button>`;
+    card.style.display = '';
+  } catch { /* silently skip if library not seeded */ }
 }
 
 function renderPostCard(post, full, delay = 0) {
@@ -6187,6 +6259,13 @@ const _BOOK_COVERS = {
   'waiting for a visa':                     'https://covers.openlibrary.org/b/isbn/9789352663750-L.jpg',
   'emancipation of the untouchables':       'https://covers.openlibrary.org/b/isbn/9788177640625-L.jpg',
   'in my own words':                        'https://covers.openlibrary.org/b/isbn/9789351186489-L.jpg',
+  'heart of prajna':                        'https://covers.openlibrary.org/b/isbn/9780877739111-L.jpg',
+  'prajnaparamita':                         'https://covers.openlibrary.org/b/isbn/9780877739111-L.jpg',
+  'diamond cutter':                         'https://covers.openlibrary.org/b/isbn/9781930485006-L.jpg',
+  'vajracchedika':                          'https://covers.openlibrary.org/b/isbn/9781930485006-L.jpg',
+  'gospel of buddha':                       'https://covers.openlibrary.org/b/isbn/9780812695458-L.jpg',
+  'buddhism: its history':                  'https://covers.openlibrary.org/b/isbn/9780766185357-L.jpg',
+  'buddhism its history':                   'https://covers.openlibrary.org/b/isbn/9780766185357-L.jpg',
 };
 
 function libGetCoverUrl(text) {
@@ -6305,13 +6384,18 @@ function _renderLibHome(root, cols, texts) {
     </button>`;
   })() : '';
 
-  // Browse All Texts — horizontal scroll with real cover images
-  const booksHtml = texts.map((tx,i)=>`
-    <button type="button" class="lib-book-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.03}s">
-      ${_libCoverImgTag(tx, 'lib-book-cover')}
+  // Browse All Texts — Kindle-style grid
+  const booksHtml = texts.map((tx,i)=>{
+    const coverUrl = libGetCoverUrl(tx);
+    const coverEl = coverUrl
+      ? `<img class="lib-grid-cover-img" src="${escHtml(coverUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-grid-cover-fb ${libTradClass(tx.collection?.tradition)}" style="display:none">${libTradSym(tx.collection?.tradition)}</div>`
+      : `<div class="lib-grid-cover-fb ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>`;
+    return `<button type="button" class="lib-grid-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.02}s">
+      ${coverEl}
       <h4>${escHtml(_libShortTitle(tx.title))}</h4>
       <p>${escHtml(tx.translator || tx.author || libLangLabel(tx.language))}</p>
-    </button>`).join('');
+    </button>`;
+  }).join('');
 
   root.innerHTML = `
     ${continueHtml}
@@ -6322,18 +6406,18 @@ function _renderLibHome(root, cols, texts) {
       </div>
       <div class="lib-coll-grid">${collHtml}</div>
     </div>
-    <div class="lib-section">
-      <div class="lib-section-header">
-        <span class="lib-section-title">Browse All Texts</span>
-        <span style="font-size:12px;color:var(--text-tertiary)">${texts.length} texts</span>
-      </div>
-      <div class="lib-book-scroll">${booksHtml}</div>
-    </div>
     ${featuredHtml ? `
     <div class="lib-section">
       <div class="lib-section-header"><span class="lib-section-title">Featured</span></div>
       ${featuredHtml}
     </div>` : ''}
+    <div class="lib-section">
+      <div class="lib-section-header">
+        <span class="lib-section-title">All Texts</span>
+        <span style="font-size:12px;color:var(--text-tertiary)">${texts.length} texts</span>
+      </div>
+      <div class="lib-kindle-grid">${booksHtml}</div>
+    </div>
     <div id="lib-bookmarks-section"></div>`;
 
   if (state.token) _loadLibBookmarks();
@@ -6486,21 +6570,27 @@ function _applyReaderSettings(s) {
   // Width — ch values from spec §8.3
   const w = {narrow:'60ch',comfortable:'70ch',wide:'80ch'}[s.width||'comfortable']||'70ch';
   panel.style.setProperty('--reader-width', w);
-  // Font family: determined by content script (data-script), not user toggle
+  // Font family: user can choose serif/sans/mono; script detection sets the base serif
   const script = _detectScript(_lib.currentLang||'en');
-  const fontMap = {
+  const scriptSerif = {
     latin:"'Source Serif 4','Georgia','Times New Roman',serif",
     devanagari:"'Noto Serif Devanagari','Kohinoor Devanagari','Mangal',serif",
     telugu:"'Noto Serif Telugu','Ramabhadra',serif",
     tamil:"'Noto Serif Tamil','Latha',serif"
   };
-  panel.style.setProperty('--reader-font', fontMap[script]||fontMap.latin);
+  const userFontMap = {
+    serif: scriptSerif[script]||scriptSerif.latin,
+    sans:  "'Inter','Helvetica Neue',Arial,sans-serif",
+    mono:  "'Courier New','Courier',monospace",
+  };
+  panel.style.setProperty('--reader-font', userFontMap[s.font||'serif']);
   // Update settings UI
   const fd = document.getElementById('rsetting-font-display');
   if (fd) fd.textContent = (s.fontSize||16)+'px';
   document.querySelectorAll('[data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===s.theme));
   document.querySelectorAll('[data-spacing]').forEach(b=>b.classList.toggle('active',b.dataset.spacing===s.spacing));
   document.querySelectorAll('[data-width]').forEach(b=>b.classList.toggle('active',b.dataset.width===s.width));
+  document.querySelectorAll('[data-font]').forEach(b=>b.classList.toggle('active',b.dataset.font===(s.font||'serif')));
   // Preferences checkboxes
   const pchk = (id, val) => { const el=document.getElementById(id); if(el) el.checked=!!val; };
   pchk('rpref-autohide', s.autoHideHeader!==false);

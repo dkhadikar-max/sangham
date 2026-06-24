@@ -3,6 +3,7 @@ import { seedBuddhistTexts } from './seedLibrary';
 import { seedAmbedkarTexts } from './seedAmbedkar';
 import { seedAmbedkarTranslations } from './seedTranslations';
 import { seedEducatePaths } from './seedEducate';
+import { seedMahayanaTexts } from './seedMahayana';
 
 async function main() {
   console.log('[Seed] Connecting to database...');
@@ -25,6 +26,12 @@ async function main() {
   console.log(`[Seed] Seeded:  ${translations.seeded.join(', ') || 'none'}`);
   if (translations.failed.length) console.log(`[Seed] Failed:  ${translations.failed.join(', ')}`);
   console.log(`[Seed] Total:   ${translations.total} texts\n`);
+
+  console.log('[Seed] ── Mahāyāna & Early Buddhist Writings ──');
+  const mahayana = await seedMahayanaTexts();
+  console.log(`[Seed] Seeded:  ${mahayana.seeded.join(', ') || 'none'}`);
+  if (mahayana.failed.length) console.log(`[Seed] Failed:  ${mahayana.failed.join(', ')}`);
+  console.log(`[Seed] Total:   ${mahayana.total} texts\n`);
 
   console.log('[Seed] ── Educate Learning Paths ──');
   const educate = await seedEducatePaths();

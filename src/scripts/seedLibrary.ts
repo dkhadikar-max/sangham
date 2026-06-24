@@ -57,6 +57,29 @@ const SUTTAS: SuttaSpec[] = [
   // Additional Aṅguttara Nikāya
   { id: 'an4.67',  title: 'Kesi Sutta — To Kesi the Horsetrainer',                               path: `${BASE}/an/an4/an4.67_translation-en-sujato.json` },
   { id: 'an11.2',  title: 'Cetanākaraṇīya Sutta — Intentional Actions',                          path: `${BASE}/an/an11/an11.2_translation-en-sujato.json` },
+
+  // More Dīgha Nikāya
+  { id: 'dn3',     title: 'Ambaṭṭha Sutta — With Ambaṭṭha',                                      path: `${BASE}/dn/dn3_translation-en-sujato.json` },
+  { id: 'dn10',    title: 'Subha Sutta — With Subha',                                             path: `${BASE}/dn/dn10_translation-en-sujato.json` },
+  { id: 'dn15',    title: 'Mahānidāna Sutta — The Great Discourse on Causation',                  path: `${BASE}/dn/dn15_translation-en-sujato.json` },
+  { id: 'dn31',    title: 'Sigālovāda Sutta — Advice to Sigāla',                                  path: `${BASE}/dn/dn31_translation-en-sujato.json` },
+
+  // More Majjhima Nikāya
+  { id: 'mn2',     title: 'Sabbāsava Sutta — All the Taints',                                     path: `${BASE}/mn/mn2_translation-en-sujato.json` },
+  { id: 'mn8',     title: 'Sallekha Sutta — The Expunge',                                         path: `${BASE}/mn/mn8_translation-en-sujato.json` },
+  { id: 'mn9',     title: 'Sammādiṭṭhi Sutta — Right View',                                       path: `${BASE}/mn/mn9_translation-en-sujato.json` },
+  { id: 'mn44',    title: 'Cūḷavedalla Sutta — The Shorter Set of Questions and Answers',         path: `${BASE}/mn/mn44_translation-en-sujato.json` },
+  { id: 'mn117',   title: 'Mahācattārīsaka Sutta — The Great Forty',                              path: `${BASE}/mn/mn117_translation-en-sujato.json` },
+  { id: 'mn121',   title: 'Cūḷasuññata Sutta — The Shorter Discourse on Emptiness',               path: `${BASE}/mn/mn121_translation-en-sujato.json` },
+
+  // More Saṁyutta Nikāya
+  { id: 'sn1.1',   title: 'Ogha Sutta — The Flood',                                               path: `${BASE}/sn/sn1/sn1.1_translation-en-sujato.json` },
+  { id: 'sn22.90', title: 'Channa Sutta — With Channa',                                           path: `${BASE}/sn/sn22/sn22.90_translation-en-sujato.json` },
+  { id: 'sn45.8',  title: 'Vibhaṅga Sutta — Analysis of the Eightfold Path',                     path: `${BASE}/sn/sn45/sn45.8_translation-en-sujato.json` },
+  { id: 'sn47.9',  title: 'Gilāna Sutta — Sick',                                                  path: `${BASE}/sn/sn47/sn47.9_translation-en-sujato.json` },
+
+  // Khuddaka Nikāya — additional
+  { id: 'ud1.10',  title: 'Bāhiya Sutta — About Bāhiya',                                          path: `${BASE}/kn/ud/vagga1/ud1.10_translation-en-sujato.json` },
 ];
 
 export async function seedBuddhistTexts(): Promise<{ seeded: string[]; failed: string[]; total: number }> {
