@@ -515,7 +515,7 @@ round:var(--error-600)}
     .panel.active{display:flex}
     .panel.slide-up{animation:slideUp var(--duration-normal) var(--ease-out)}
     .panel-header{background:var(--surface-elevated);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);border-bottom:1px solid var(--border-default);flex-shrink:0;padding-top:calc(var(--space-3) + var(--safe-area-top))}
-    .panel-back{width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all var(--duration-fast) var(--ease-out);border:none}
+    .panel-back{width:44px;height:44px;border-radius:50%;background:var(--surface-sunken);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all var(--duration-fast) var(--ease-out);border:none}
     .panel-back:hover{background:var(--surface-overlay)}
     .panel-back:active{transform:scale(0.9)}
     .panel-back svg{width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:1.5}
@@ -723,11 +723,13 @@ round:var(--error-600)}
     .touch-manipulation{touch-action:manipulation}
     /* Touch device tap-target overrides */
     @media(hover:none) and (pointer:coarse){
-      .btn-sm{min-height:40px}
-      .btn-ghost{min-height:40px}
-      .chip{min-height:40px;display:inline-flex;align-items:center}
-      .chip-toggle{min-height:40px;display:inline-flex;align-items:center}
-      .filter-pill{min-height:40px}
+      .btn-sm{min-height:44px}
+      .btn-ghost{min-height:44px}
+      .btn-primary{min-height:44px}
+      .chip{min-height:44px;display:inline-flex;align-items:center}
+      .chip-toggle{min-height:44px;display:inline-flex;align-items:center}
+      .filter-pill{min-height:44px}
+      .link-btn{min-height:44px;display:inline-flex;align-items:center}
       .feed-filter-pill{min-height:44px;display:inline-flex;align-items:center}
       .disc-btn{min-height:44px}
       .disc-save{min-height:44px;min-width:44px}
@@ -736,7 +738,7 @@ round:var(--error-600)}
       .edu-tutor-btn{min-height:44px}
       .edu-exercise-btn{min-height:44px}
       .edu-lesson-row{min-height:52px}
-      .post-type-chip{min-height:40px;display:inline-flex;align-items:center}
+      .post-type-chip{min-height:44px;display:inline-flex;align-items:center}
       .comm-tab-btn{min-height:44px}
     }
 
