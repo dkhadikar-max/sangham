@@ -693,7 +693,7 @@ round:var(--error-600)}
     #postContent:focus{border-color:var(--saffron-400);box-shadow:0 0 0 3px var(--saffron-100);background:var(--surface-elevated)}
     #postContent::placeholder{color:var(--text-tertiary)}
     .post-media-actions{display:flex;gap:var(--space-3);margin-top:var(--space-4);padding:var(--space-3) 0;border-top:1px solid var(--border-default)}
-    .media-action-btn{width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-tertiary);transition:all var(--duration-fast) var(--ease-out)}
+    .media-action-btn{width:44px;height:44px;border-radius:50%;background:var(--surface-sunken);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-tertiary);transition:all var(--duration-fast) var(--ease-out)}
     .media-action-btn:hover{background:var(--saffron-50);color:var(--saffron-600);transform:scale(1.1)}
     .media-action-btn:active{transform:scale(0.95)}
     .media-action-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5}
@@ -728,7 +728,10 @@ round:var(--error-600)}
       .chip{min-height:40px;display:inline-flex;align-items:center}
       .chip-toggle{min-height:40px;display:inline-flex;align-items:center}
       .filter-pill{min-height:40px}
-      .feed-filter-pill{min-height:40px;display:inline-flex;align-items:center}
+      .feed-filter-pill{min-height:44px;display:inline-flex;align-items:center}
+      .disc-btn{min-height:44px}
+      .disc-save{min-height:44px;min-width:44px}
+      .disc-reply-prompt{min-height:44px}
       .edu-chip{min-height:44px;display:inline-flex;align-items:center}
       .edu-tutor-btn{min-height:44px}
       .edu-exercise-btn{min-height:44px}
@@ -1957,7 +1960,7 @@ round:var(--error-600)}
                             <h2 class="font-serif text-lg font-semibold text-sangham-ink">People Near You</h2>
                             <p class="text-xs text-sangham-brown-light mt-0.5">Practitioners in Mumbai, Nagpur &amp; nearby</p>
                         </div>
-                        <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-2 py-2 -my-2 rounded-lg">View All</a>
+                        <a href="#" onclick="switchTab('discover');return false" class="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style="min-height:44px;display:inline-flex;align-items:center">View All</a>
                     </div>
                     <div id="home-stories-strip" class="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style="touch-action:pan-x">
                         <button class="flex-shrink-0 flex flex-col items-center gap-1.5 group bg-transparent border-0 p-0" onclick="openCreatePost&&openCreatePost()" aria-label="Add to your story">
@@ -1978,20 +1981,20 @@ round:var(--error-600)}
                                 class="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-sangham-ink placeholder-sangham-brown-light/60 focus:outline-none focus:ring-2 focus:ring-sangham-gold/30 transition-all" onclick="openCreatePost&&openCreatePost()" readonly>
                             <div class="flex items-center justify-between mt-3">
                                 <div class="flex gap-2">
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:44px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-image text-sangham-gold"></i>
                                         <span>Photo</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:44px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-link text-sangham-gold"></i>
                                         <span>Link</span>
                                     </button>
-                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
+                                    <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style="min-height:44px" onclick="openCreatePost&&openCreatePost()">
                                         <i class="fa-solid fa-quote-right text-sangham-gold"></i>
                                         <span>Quote</span>
                                     </button>
                                 </div>
-                                <button class="px-5 py-2.5 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20" style="min-height:40px" onclick="openCreatePost&&openCreatePost()">
+                                <button class="px-5 py-2.5 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20" style="min-height:44px" onclick="openCreatePost&&openCreatePost()">
                                     Post
                                 </button>
                             </div>
