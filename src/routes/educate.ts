@@ -3,11 +3,81 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { env } from '../config/env';
+import { aiTutorLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
 function isAIConfigured(): boolean {
-  return Boolean(env.ANTHROPIC_API_KEY);
+  return Boolean(env.GEMINI_API_KEY || env.ANTHROPIC_API_KEY);
+}
+
+// ── AI provider ───────────────────────────────────────────────────────────────
+
+async function callAI(systemPrompt: string, userContent: string): Promise<string> {
+  // Primary: Gemini 2.0 Flash — free tier (1,500 req/day, 1M tokens/day)
+  if (env.GEMINI_API_KEY) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: systemPrompt }] },
+            contents: [{ role: 'user', parts: [{ text: userContent }] }],
+            generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
+          }),
+        },
+      );
+      if (res.ok) {
+        const data = await res.json() as { candidates?: { content: { parts: { text: string }[] } }[] };
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+        if (text) return text;
+      }
+    } catch { /* fall through to Anthropic */ }
+  }
+
+  // Fallback: Anthropic Haiku with prompt caching
+  if (!env.ANTHROPIC_API_KEY) throw new AppError('AI Tutor temporarily unavailable', 502);
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-beta': 'prompt-caching-2024-07-31',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 512,
+      system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+      messages: [{ role: 'user', content: userContent }],
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    console.error('[AI Tutor] Anthropic error:', err);
+    throw new AppError('AI Tutor temporarily unavailable', 502);
+  }
+  const data = await res.json() as { content: { text: string }[] };
+  return data.content?.[0]?.text ?? '';
+}
+
+// ── Response cache (in-memory, resets on deploy, warms in ~1 week) ────────────
+
+const _aiCache = new Map<string, { r: string; t: number }>();
+const AI_CACHE_TTL = 24 * 3_600_000; // 24 h
+
+function _getCached(key: string): string | null {
+  const e = _aiCache.get(key);
+  if (!e) return null;
+  if (Date.now() - e.t > AI_CACHE_TTL) { _aiCache.delete(key); return null; }
+  return e.r;
+}
+function _setCached(key: string, r: string): void {
+  if (_aiCache.size > 2000) _aiCache.clear(); // safety cap
+  _aiCache.set(key, { r, t: Date.now() });
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -216,7 +286,7 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
 });
 
 // POST /educate/ai-tutor — context-aware AI lesson assistant
-router.post('/ai-tutor', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+router.post('/ai-tutor', authenticate, aiTutorLimiter, async (req: AuthRequest, res: Response): Promise<void> => {
   if (!isAIConfigured()) throw new AppError('AI Tutor is not yet available on this instance', 503);
 
   const { action, pathSlug, phaseIndex, lessonIndex, lessonTitle, concepts, userQuestion, completedLessons, percentComplete } = req.body;
@@ -260,29 +330,14 @@ Rules you must follow without exception:
 
   const userContent = actionPrompts[action];
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 512,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userContent }],
-    }),
-  });
+  // Static actions are the same for every user on the same lesson — cache them.
+  // 'simplify' has the user's own question in it, so it is never cached.
+  const isCacheable = action !== 'simplify';
+  const cacheKey = `${pathSlug}:${phaseIndex ?? 0}:${lessonIndex ?? 0}:${action}`;
+  const cached = isCacheable ? _getCached(cacheKey) : null;
 
-  if (!response.ok) {
-    const err = await response.text();
-    console.error('[Educate AI Tutor] Anthropic error:', err);
-    throw new AppError('AI Tutor temporarily unavailable', 502);
-  }
-
-  const data = await response.json() as { content: { text: string }[] };
-  const text = data.content?.[0]?.text ?? '';
+  const text = cached ?? await callAI(systemPrompt, userContent);
+  if (isCacheable && !cached) _setCached(cacheKey, text);
 
   res.json({ action, response: text });
 });

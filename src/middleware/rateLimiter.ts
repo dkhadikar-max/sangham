@@ -20,3 +20,12 @@ export const publicLimiter = rateLimit({
   max: 20,
   message: { error: 'Rate limit exceeded for public endpoints.' },
 });
+
+export const aiTutorLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 20,
+  keyGenerator: (req: any) => req.user?.id || req.ip || 'unknown',
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'AI Tutor limit reached — please wait before asking again.' },
+});
