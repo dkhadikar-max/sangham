@@ -3112,6 +3112,9 @@ round:var(--error-600)}
     <div class="bottom-sheet" id="bottomSheetCreate">
       <div class="bottom-sheet-handle"></div>
       <div class="panel-header" style="border-bottom:none">
+        <button onclick="closeBottomSheet()" aria-label="Close" style="width:36px;height:36px;border-radius:50%;border:none;background:var(--surface-sunken);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--text-secondary);fill:none;stroke-width:2.5;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
         <div class="panel-title">Share with Sangham</div>
         <button class="btn btn-primary btn-sm" onclick="submitPost()" id="submitPostBtn">Post</button>
       </div>
@@ -11463,9 +11466,10 @@ async function callEduTutor(action) {
   const phases = path.phases || [];
   const lesson = phases[_edu.currentPhase]?.lessons[_edu.currentLesson];
 
+  const _closeTutorBtn = `<div style="display:flex;justify-content:flex-end;margin-bottom:4px"><button onclick="document.getElementById('edu-tutor-response').style.display='none'" aria-label="Close" style="width:28px;height:28px;border-radius:50%;border:none;background:var(--surface-sunken);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.65"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--text-secondary);fill:none;stroke-width:2.5;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`;
   const responseEl = document.getElementById('edu-tutor-response');
   responseEl.style.display = '';
-  responseEl.innerHTML = '<div class="edu-ai-response" style="color:var(--text-tertiary)">Thinking…</div>';
+  responseEl.innerHTML = _closeTutorBtn + '<div class="edu-ai-response" style="color:var(--text-tertiary)">Thinking…</div>';
 
   // If explain, also inject into example section
   try {
@@ -11483,13 +11487,13 @@ async function callEduTutor(action) {
     });
     const text = result.response || '';
     const formatted = escHtml(text).replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
-    responseEl.innerHTML = `<div class="edu-ai-response"><p>${formatted}</p></div>`;
+    responseEl.innerHTML = _closeTutorBtn + `<div class="edu-ai-response"><p>${formatted}</p></div>`;
     if (action === 'explain') {
       const exampleEl = document.getElementById('edu-lesson-example');
       if (exampleEl) exampleEl.textContent = text;
     }
   } catch(e) {
-    responseEl.innerHTML = '<div class="edu-ai-response" style="color:var(--text-tertiary)">AI Tutor unavailable right now. Try again shortly.</div>';
+    responseEl.innerHTML = _closeTutorBtn + '<div class="edu-ai-response" style="color:var(--text-tertiary)">AI Tutor unavailable right now. Try again shortly.</div>';
   }
 }
 
