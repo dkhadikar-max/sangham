@@ -4,6 +4,7 @@ import { authenticate, AuthRequest, requireRole } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { AssociationCategory, Tradition, UserRole } from '@prisma/client';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ const createAssocSchema = z.object({
 // POST /associations
 router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const parsed = createAssocSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   const assoc = await prisma.association.create({ data: parsed.data });
 

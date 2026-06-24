@@ -5,6 +5,7 @@ import { signToken, signRefreshToken } from '../utils/jwt';
 import { authLimiter } from '../middleware/rateLimiter';
 import { AppError } from '../middleware/errorHandler';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 
 const router = Router();
 
@@ -37,7 +38,7 @@ const loginSchema = z.object({
 // POST /auth/register
 router.post('/register', authLimiter, async (req: Request, res: Response): Promise<void> => {
   const parsed = registerSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
   const { email, phone, password, displayName, country } = parsed.data;
 
   const existing = await prisma.user.findFirst({
@@ -75,7 +76,7 @@ router.post('/register', authLimiter, async (req: Request, res: Response): Promi
 // POST /auth/login
 router.post('/login', authLimiter, async (req: Request, res: Response): Promise<void> => {
   const parsed = loginSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
   const { email, phone, password } = parsed.data;
 
   const raw = await prisma.user.findFirst({

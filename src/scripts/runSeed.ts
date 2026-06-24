@@ -5,6 +5,7 @@ import { seedAmbedkarTranslations } from './seedTranslations';
 import { seedEducatePaths } from './seedEducate';
 import { seedMahayanaTexts } from './seedMahayana';
 import { seedPoliticalTexts } from './seedPolitical';
+import { seedDalitLiterature } from './seedDalitLiterature';
 
 async function main() {
   console.log('[Seed] Connecting to database...');
@@ -45,6 +46,12 @@ async function main() {
   console.log(`[Seed] Seeded:  ${educate.seeded.join(', ') || 'none'}`);
   if (educate.failed.length) console.log(`[Seed] Failed:  ${educate.failed.join(', ')}`);
   console.log(`[Seed] Total:   ${educate.total} paths\n`);
+
+  console.log('[Seed] ── Dalit Literature & Social Justice Library ──');
+  const dalit = await seedDalitLiterature();
+  console.log(`[Seed] Seeded:  ${dalit.seeded.join(', ') || 'none'}`);
+  if (dalit.failed.length) console.log(`[Seed] Failed:  ${dalit.failed.join(', ')}`);
+  console.log(`[Seed] Total:   ${dalit.total} texts\n`);
 
   await prisma.$disconnect();
 }

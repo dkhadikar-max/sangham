@@ -5,6 +5,7 @@ import { AppError } from '../middleware/errorHandler';
 import { SessionType, Tradition, SessionStatus, UserRole } from '@prisma/client';
 import { generateAgoraChannelName, getAgoraConfig, generateRtcToken, isAgoraConfigured } from '../utils/agora';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
   if (!isAgoraConfigured()) throw new AppError('Live sessions are not yet available on this instance', 503);
   if (!requireTrustedOrAbove.includes(req.user!.role)) throw new AppError('Trusted member or above required', 403);
   const parsed = createSessionSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   const session = await prisma.liveSession.create({
     data: {

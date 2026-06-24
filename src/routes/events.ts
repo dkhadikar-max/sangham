@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { EventType, RsvpStatus, Tradition } from '@prisma/client';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 import { createNotification } from '../utils/notify';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env';
@@ -33,7 +34,7 @@ const createEventSchema = z.object({
 router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   if (!requireTrustedOrAbove.includes(req.user!.role)) throw new AppError('Trusted member or above required', 403);
   const parsed = createEventSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   const event = await prisma.event.create({
     data: {

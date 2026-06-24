@@ -7,6 +7,7 @@ import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { VisibilityLevel, MessagingPermission, LocationVisibility, ProfessionalTag } from '@prisma/client';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 
 const router = Router();
 
@@ -39,7 +40,7 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response): Promise<v
 // PUT /privacy — update privacy settings
 router.put('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const parsed = privacySchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   const settings = await prisma.privacySettings.upsert({
     where: { userId: req.user!.id },
@@ -52,7 +53,7 @@ router.put('/', authenticate, async (req: AuthRequest, res: Response): Promise<v
 // PUT /privacy/location — update fuzzy location
 router.put('/location', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const parsed = locationSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   // Snap to 0.1-degree grid (≈11km precision) — never store exact
   const snappedLat = parsed.data.gridLat ? Math.round(parsed.data.gridLat * 10) / 10 : undefined;

@@ -5,6 +5,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { PostType, Tradition } from '@prisma/client';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 import { createNotification } from '../utils/notify';
 
 const router = Router();
@@ -21,7 +22,7 @@ const createPostSchema = z.object({
 // POST /posts
 router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const parsed = createPostSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
   if (!parsed.data.content && parsed.data.mediaUrls.length === 0 && !parsed.data.linkUrl) {
     throw new AppError('Post must have content, media, or a link', 400);
   }

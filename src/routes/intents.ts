@@ -9,6 +9,7 @@ import { parsePagination, paginatedResponse } from '../utils/pagination';
 import { AppError } from '../middleware/errorHandler';
 import { IntentCategory, IntentStatus, IntentScope, VisibilityLevel } from '@prisma/client';
 import { z } from 'zod';
+import { zodMessage } from '../utils/zodError';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const createIntentSchema = z.object({
 // POST /intents — create an intent
 router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const parsed = createIntentSchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
 
   // Max 3 open intents per user
   const openCount = await prisma.intent.count({
