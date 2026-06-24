@@ -729,8 +729,10 @@ round:var(--error-600)}
       .chip-toggle{min-height:40px;display:inline-flex;align-items:center}
       .filter-pill{min-height:40px}
       .feed-filter-pill{min-height:40px;display:inline-flex;align-items:center}
-      .edu-chip{min-height:40px;display:inline-flex;align-items:center}
-      .edu-tutor-btn{min-height:40px}
+      .edu-chip{min-height:44px;display:inline-flex;align-items:center}
+      .edu-tutor-btn{min-height:44px}
+      .edu-exercise-btn{min-height:44px}
+      .edu-lesson-row{min-height:52px}
       .post-type-chip{min-height:40px;display:inline-flex;align-items:center}
       .comm-tab-btn{min-height:44px}
     }
@@ -2936,7 +2938,7 @@ round:var(--error-600)}
               <div id="edu-view-path" style="display:none">
                 <div class="bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
                   <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-                    <button onclick="showEduLanding()" aria-label="Back to learning paths" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+                    <button onclick="showEduLanding()" aria-label="Back to learning paths" style="width:44px;height:44px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
                       <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
                     </button>
                     <div style="flex:1;min-width:0">
@@ -2964,7 +2966,7 @@ round:var(--error-600)}
               <div id="edu-view-lesson" style="display:none">
                 <div class="bg-white rounded-2xl shadow-sm border border-sangham-gold/10 overflow-hidden">
                   <div style="padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--border-default);display:flex;align-items:center;gap:var(--space-3)">
-                    <button id="edu-lesson-back-btn" onclick="backToEduPath()" aria-label="Back to path" style="width:40px;height:40px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
+                    <button id="edu-lesson-back-btn" onclick="backToEduPath()" aria-label="Back to path" style="width:44px;height:44px;border-radius:50%;background:var(--surface-sunken);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--duration-fast)">
                       <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--text-secondary);fill:none;stroke-width:2;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
                     </button>
                     <div style="flex:1">
@@ -3032,9 +3034,9 @@ round:var(--error-600)}
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span data-i18n="nav.home">Home</span>
       </button>
-      <button class="nav-item" onclick="switchTab('discover')" id="nav-discover" aria-label="Discover">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span data-i18n="nav.discover">Discover</span>
+      <button class="nav-item" onclick="switchTab('educate')" id="nav-educate" aria-label="Educate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span>Educate</span>
       </button>
       <span class="nav-spacer"></span>
       <button class="nav-item" onclick="switchTab('communities')" id="nav-communities" aria-label="Communities">
