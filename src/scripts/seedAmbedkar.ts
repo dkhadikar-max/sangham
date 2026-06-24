@@ -234,6 +234,100 @@ const TEXTS: TextSpec[] = [
     description:
       "A foundational work by the Tamil scholar and social reformer Pokala Lakshmi Narasu. Read and annotated by Dr. Ambedkar, it profoundly influenced his turn to Buddhism and is one of the earliest modern Indian Buddhist texts.",
   },
+  {
+    id: 'ambedkar-castes-in-india',
+    title: 'Castes in India: Their Mechanism, Genesis and Development',
+    author: 'B. R. Ambedkar',
+    year: '1916',
+    archiveIds: [
+      'castes-in-india-ambedkar',
+      'ambedkar-castes-in-india-1916',
+      'in.ernet.dli.2015.71655',
+    ],
+    sourceUrl: 'https://archive.org/search?query=castes+in+india+ambedkar+1916',
+    description:
+      "Ambedkar's landmark 1916 paper delivered at an anthropology seminar at Columbia University — the earliest systematic analysis of the caste system from a sociological perspective. Foundational to all his later work.",
+  },
+  {
+    id: 'ambedkar-what-congress-gandhi',
+    title: 'What Congress and Gandhi Have Done to the Untouchables',
+    author: 'B. R. Ambedkar',
+    year: '1945',
+    archiveIds: [
+      'WhatCongressAndGandhiHaveDoneToTheUntouchables',
+      'what-congress-gandhi-done-untouchables',
+      'ambedkar-congress-gandhi-untouchables',
+    ],
+    sourceUrl: 'https://archive.org/details/WhatCongressAndGandhiHaveDoneToTheUntouchables',
+    description:
+      "A detailed critique of the Indian National Congress and Mahatma Gandhi's policies toward Dalit communities. Ambedkar argues that mainstream Indian nationalism actively obstructed the social emancipation of Untouchables.",
+  },
+  {
+    id: 'ambedkar-pakistan-partition',
+    title: 'Pakistan or the Partition of India',
+    author: 'B. R. Ambedkar',
+    year: '1940',
+    archiveIds: [
+      'PakistanOrThePartitionOfIndia',
+      'pakistan-or-partition-ambedkar',
+      'ambedkar-pakistan-partition',
+    ],
+    sourceUrl: 'https://archive.org/details/PakistanOrThePartitionOfIndia',
+    description:
+      "Ambedkar's analysis of the Muslim League's demand for a separate state, examining constitutional, historical, and social dimensions of partition. A landmark work in understanding the political circumstances of Indian independence.",
+  },
+  {
+    id: 'ambedkar-waiting-for-visa',
+    title: 'Waiting for a Visa',
+    author: 'B. R. Ambedkar',
+    year: '1935',
+    hardcoded: `WAITING FOR A VISA
+
+By Dr. B. R. Ambedkar
+
+Preface: This autobiographical account, written in the 1930s, records several instances of caste discrimination that Ambedkar personally witnessed or experienced. It stands as a first-person testament to the lived reality of untouchability.
+
+---
+
+INCIDENT NO. 1 — KOREGAON (1901)
+
+My father was in the Army and was posted at Koregaon. My mother had died. My father had left us in the charge of our aunt at Dapoli, a village in the Ratnagiri District of the then Bombay Presidency.
+
+When I was a child of about 9, my father sent a letter calling me and my brother and my sister to come to Koregaon to join him. We decided to go. I do not know whether it was ignorance or indifference on the part of my aunt that she did not accompany us to see us safely through the journey.
+
+Anyway, we children started alone. We reached Masur by train. From Masur to Koregaon we had to travel by bullock cart. That was the only mode of conveyance available.
+
+When we reached Masur, it was already getting dark. The bullock cart drivers at Masur refused to carry us to Koregaon. The reason they gave was that we were untouchables and if they allowed us to sit in the cart, they would have to get their carts washed — which would be an expensive affair.
+
+We children did not know what to do. At last we arranged with a cart driver that he should take us to Koregaon. We agreed to pay him more than the usual rates and also agreed that we ourselves would drive the cart while he walked alongside. The driver agreed, and we started.
+
+---
+
+INCIDENT NO. 2 — BARODA (1916)
+
+After my return from America I joined the service of the Baroda State. I occupied a responsible position in the Civil Service of the State.
+
+On the very first day I tried to find lodgings. I went to several hotels and boarding houses but was refused accommodation because I was an untouchable. I went about the town all day long, unable to find lodging, hungry and tired.
+
+At last I went to the Parsi inn. The Parsi innkeeper refused to let me stay for fear that if Hindus knew he had allowed an untouchable to stay they would boycott his inn.
+
+I then sent a telegram to the Maharaja explaining my plight. The Maharaja's secretary telegraphed back asking me to go to the Inspection Bungalow as a temporary arrangement.
+
+Living in this bungalow, I felt as though I was leading the life of an outcast in the very city where I had come to serve as a civil servant. The thought came to me: Is there no way out?
+
+---
+
+CONCLUSION
+
+These incidents show that untouchability is not a matter of temples or wells or particular places. It is a general social condition in which untouchables cannot lead the life of ordinary human beings.
+
+The untouchable is the product of a system that is designed to segregate, humiliate, and dehumanise. This is the reality of caste. Until this system is destroyed, no amount of patchwork reform will suffice.
+
+Social reformation and political freedom must go together. The emancipation of the untouchables cannot be left to the mercy of caste Hindus. It must come through the organized effort of the untouchables themselves.`,
+    sourceUrl: 'https://www.ambedkar.org/ambcd/41A.Waiting%20for%20a%20Visa.htm',
+    description:
+      "Ambedkar's autobiographical account of caste discrimination — recording personal incidents of exclusion from hotels, inns, and transport. A first-person testament to the lived reality of untouchability in early 20th-century India.",
+  },
 ];
 
 // ---------------------------------------------------------------------------

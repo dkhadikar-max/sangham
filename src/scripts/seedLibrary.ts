@@ -39,6 +39,24 @@ const SUTTAS: SuttaSpec[] = [
   { id: 'snp2.1',  title: 'Ratana Sutta — The Jewel Discourse',                                  path: `${BASE}/kn/snp/vagga2/snp2.1_translation-en-sujato.json` },
   { id: 'snp2.4',  title: 'Maṅgala Sutta — The Highest Blessings',                               path: `${BASE}/kn/snp/vagga2/snp2.4_translation-en-sujato.json` },
   { id: 'dhp1-20', title: 'Dhammapada — The Path of Dhamma (Chapters 1–2)',                      path: `${BASE}/kn/dhp/dhp1-20_translation-en-sujato.json` },
+
+  // Additional Majjhima Nikāya
+  { id: 'mn22',    title: 'Alagaddūpama Sutta — The Snake Simile',                               path: `${BASE}/mn/mn22_translation-en-sujato.json` },
+  { id: 'mn63',    title: 'Cūḷamāluṅkya Sutta — The Shorter Discourse to Māluṅkya',             path: `${BASE}/mn/mn63_translation-en-sujato.json` },
+  { id: 'mn72',    title: 'Aggivacchagotta Sutta — To Vacchagotta on Fire',                      path: `${BASE}/mn/mn72_translation-en-sujato.json` },
+  { id: 'mn131',   title: 'Bhaddekaratta Sutta — One Fine Night',                                path: `${BASE}/mn/mn131_translation-en-sujato.json` },
+
+  // Additional Dīgha Nikāya
+  { id: 'dn1',     title: 'Brahmajāla Sutta — The Brahmā Net',                                   path: `${BASE}/dn/dn1_translation-en-sujato.json` },
+  { id: 'dn9',     title: 'Poṭṭhapāda Sutta — About Poṭṭhapāda',                                path: `${BASE}/dn/dn9_translation-en-sujato.json` },
+
+  // Additional Saṁyutta Nikāya
+  { id: 'sn22.22', title: 'Bhāra Sutta — The Burden',                                            path: `${BASE}/sn/sn22/sn22.22_translation-en-sujato.json` },
+  { id: 'sn12.15', title: 'Kaccānagotta Sutta — To Kaccānagotta',                                path: `${BASE}/sn/sn12/sn12.15_translation-en-sujato.json` },
+
+  // Additional Aṅguttara Nikāya
+  { id: 'an4.67',  title: 'Kesi Sutta — To Kesi the Horsetrainer',                               path: `${BASE}/an/an4/an4.67_translation-en-sujato.json` },
+  { id: 'an11.2',  title: 'Cetanākaraṇīya Sutta — Intentional Actions',                          path: `${BASE}/an/an11/an11.2_translation-en-sujato.json` },
 ];
 
 export async function seedBuddhistTexts(): Promise<{ seeded: string[]; failed: string[]; total: number }> {
