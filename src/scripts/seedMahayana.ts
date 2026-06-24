@@ -144,7 +144,7 @@ export async function seedMahayanaTexts(): Promise<{ seeded: string[]; failed: s
           author:       spec.author,
           translator:   spec.author.startsWith('Trans.') ? spec.author.replace('Trans. ', '') : undefined,
           language:     'en',
-          licence:      'Public Domain',
+          licence:      'PUBLIC_DOMAIN',
           sourceUrl:    spec.archiveIds[0] ? `https://archive.org/details/${spec.archiveIds[0]}` : '',
           attribution:  `${spec.author} (${spec.year}) — Public Domain via Archive.org`,
         },
