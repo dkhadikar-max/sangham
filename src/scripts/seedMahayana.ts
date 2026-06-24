@@ -118,7 +118,7 @@ export async function seedMahayanaTexts(): Promise<{ seeded: string[]; failed: s
       tradition:   'MAHAYANA',
       description: 'Heart Sūtra, Diamond Sūtra, and early Western compilations of Buddhist teachings. Public domain translations.',
       sourceUrl:   'https://archive.org',
-      licence:     'Public Domain',
+      licence:     'PUBLIC_DOMAIN',
     },
     update: {},
   });
