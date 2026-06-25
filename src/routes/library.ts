@@ -409,14 +409,14 @@ async function callLibraryAI(systemPrompt: string, userContent: string): Promise
   if (env.GEMINI_API_KEY) {
     try {
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
         {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
             system_instruction: { parts: [{ text: systemPrompt }] },
             contents: [{ role: 'user', parts: [{ text: userContent }] }],
-            generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
+            generationConfig: { maxOutputTokens: 1024, temperature: 0.7 },
           }),
         },
       );
