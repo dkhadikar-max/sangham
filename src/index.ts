@@ -47,7 +47,8 @@ const allowedOrigins = [
   'http://localhost:4000',
   'https://sangham.online',
   'https://www.sangham.online',
-  ...(process.env.CLIENT_ORIGIN ? [process.env.CLIENT_ORIGIN] : []),
+  'https://app.sangham.online',
+  ...(process.env.CLIENT_ORIGIN ? process.env.CLIENT_ORIGIN.split(',').map(o => o.trim()) : []),
 ];
 
 const app = express();
