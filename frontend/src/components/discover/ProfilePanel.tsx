@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { UserProfile, FeedPost, Tradition } from '@/types'
 import { useUserProfile, useUserPosts, useSaveProfile } from '@/hooks/useProfile'
 import { useFollowUser, useUnfollowUser } from '@/hooks/useDiscover'
@@ -32,7 +32,8 @@ function tradClass(traditions: Tradition[]) {
 }
 
 function initials(name: string) {
-  return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase()
+  if (!name) return '?'
+  return name.split(' ').filter(Boolean).map((w) => w[0]).join('').slice(0, 2).toUpperCase()
 }
 
 function PostList({ posts }: { posts: FeedPost[] }) {
@@ -188,6 +189,10 @@ export function ProfilePanel({ userId, onClose }: Props) {
   const [editing, setEditing] = useState(false)
 
   const isOwnProfile = user?.id === userId
+
+  useEffect(() => {
+    if (profile) setFollowing(profile.isFollowing ?? false)
+  }, [profile?.id, profile?.isFollowing])
 
   function handleFollow() {
     if (!token) { showToast('Sign in to follow people', 'info'); return }

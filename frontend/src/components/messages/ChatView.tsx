@@ -42,10 +42,11 @@ export function ChatView({ conversation, onBack }: Props) {
     deriveKey(secret).then(k => { cryptoKeyRef.current = k })
   }, [conversation.id, user])
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom only when the newest message changes (not when loading older ones)
+  const lastMsgId = allMessages[allMessages.length - 1]?.id
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [allMessages.length])
+  }, [lastMsgId])
 
   // Real-time handler
   const handleRealtime = useCallback(async (msg: Message) => {
@@ -87,6 +88,9 @@ export function ChatView({ conversation, onBack }: Props) {
     setLocalMessages(prev => [...prev, optimistic])
 
     send.mutate({ conversationId: conversation.id, content: finalContent, type, mediaUrl, encrypted }, {
+      onSuccess: () => {
+        setLocalMessages(prev => prev.filter(m => m.id !== optimistic.id))
+      },
       onError: () => {
         setLocalMessages(prev => prev.filter(m => m.id !== optimistic.id))
         showToast('Failed to send message', 'error')

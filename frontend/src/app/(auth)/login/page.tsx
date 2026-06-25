@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api/client'
 import { useAuthStore } from '@/stores/auth'
+import { useUiStore } from '@/stores/ui'
 import type { User } from '@/types'
 
 interface AuthResponse {
@@ -15,6 +16,7 @@ interface AuthResponse {
 export default function LoginPage() {
   const router = useRouter()
   const { setAuth } = useAuthStore()
+  const { showToast } = useUiStore()
   const [isLoginMode, setIsLoginMode] = useState(true)
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
@@ -101,7 +103,7 @@ export default function LoginPage() {
         <button
           className="passkey-btn"
           type="button"
-          onClick={() => alert('Passkey sign-in coming soon.')}
+          onClick={() => showToast('Passkey sign-in — coming soon', 'info')}
         >
           <svg
             width="20"

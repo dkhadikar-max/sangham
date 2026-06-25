@@ -963,6 +963,11 @@ textarea.input { resize:vertical; min-height:80px; }
 @media (min-width: 640px) {
   .messages-empty-desktop { display: flex; }
 }
+/* Hide sidebar on mobile when a chat is open; keep visible on desktop */
+.messages-sidebar-mobile-hidden { display: none; }
+@media (min-width: 640px) {
+  .messages-sidebar-mobile-hidden { display: flex; }
+}
 
 /* Conversation list */
 .conv-list-header { display:flex; align-items:center; justify-content:space-between; padding:var(--space-4); border-bottom:1px solid var(--border-subtle); flex-shrink:0; }

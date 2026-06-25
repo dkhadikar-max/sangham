@@ -1,6 +1,7 @@
 'use client'
 
 import { useUiStore } from '@/stores/ui'
+import { useConversations } from '@/hooks/useMessages'
 import type { Tab } from '@/types'
 
 interface NavItem {
@@ -65,6 +66,8 @@ const NAV_ITEMS: NavItem[] = [
 
 export function BottomNav() {
   const { activeTab, setTab } = useUiStore()
+  const { data: conversations = [] } = useConversations()
+  const totalUnread = conversations.reduce((sum, c) => sum + (c.unreadCount ?? 0), 0)
 
   return (
     <nav
@@ -110,9 +113,15 @@ export function BottomNav() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                position: 'relative',
               }}
             >
               {item.icon}
+              {item.id === 'messages' && totalUnread > 0 && (
+                <span style={{ position:'absolute', top:-4, right:-4, background:'var(--saffron-500)', color:'white', fontSize:9, fontWeight:700, borderRadius:'var(--radius-full)', minWidth:14, height:14, display:'flex', alignItems:'center', justifyContent:'center', padding:'0 3px' }}>
+                  {totalUnread > 99 ? '99+' : totalUnread}
+                </span>
+              )}
             </span>
             <span
               style={{

@@ -6,14 +6,15 @@ import { Avatar } from '@/components/ui/Avatar'
 import type { Tab } from '@/types'
 
 export function AppHeader() {
-  const { activeTab, setTab } = useUiStore()
+  const { activeTab, setTab, showToast } = useUiStore()
   const { user } = useAuthStore()
 
   const navItems: { id: Tab; icon: string; label: string }[] = [
     { id: 'home',        icon: 'fa-house',          label: 'Home' },
     { id: 'communities', icon: 'fa-users',           label: 'Communities' },
-    { id: 'learn',       icon: 'fa-book-open',       label: 'Library' },
+    { id: 'learn',       icon: 'fa-book-open',       label: 'Learn' },
     { id: 'discover',    icon: 'fa-calendar-days',   label: 'Events' },
+    { id: 'messages',    icon: 'fa-comment-dots',    label: 'Messages' },
   ]
 
   return (
@@ -47,18 +48,21 @@ export function AppHeader() {
         <button
           className="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown"
           aria-label="Search"
+          onClick={() => showToast('Search — coming soon', 'info')}
         >
           <i className="fa-solid fa-magnifying-glass text-sm" />
         </button>
         <button
           className="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown relative"
           aria-label="Notifications"
+          onClick={() => showToast('Notifications — coming soon', 'info')}
         >
           <i className="fa-regular fa-bell text-sm" />
         </button>
         <button
           className="w-10 h-10 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark text-white flex items-center justify-center shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-shadow"
           aria-label="Share reflection"
+          onClick={() => showToast('Share Reflection — coming soon', 'info')}
         >
           <i className="fa-solid fa-plus text-sm" />
         </button>

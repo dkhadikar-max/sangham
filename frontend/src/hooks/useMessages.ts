@@ -7,7 +7,7 @@ import type { Conversation, Message } from '@/types'
 import { io, Socket } from 'socket.io-client'
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? ''
-const SOCKET_URL = API.replace('/api/v1', '')
+const SOCKET_URL = (() => { try { return new URL(API).origin } catch { return '' } })()
 
 // ── Singleton socket ──────────────────────────────────────────
 let _socket: Socket | null = null

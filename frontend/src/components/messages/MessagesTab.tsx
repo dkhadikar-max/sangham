@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { ConversationList } from './ConversationList'
 import { ChatView } from './ChatView'
-import { useConversations, useCreateConversation } from '@/hooks/useMessages'
+import { useConversations } from '@/hooks/useMessages'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import type { Conversation } from '@/types'
@@ -13,8 +13,6 @@ export function MessagesTab() {
   const { showToast } = useUiStore()
   const { data: conversations = [], isLoading } = useConversations()
   const [activeConvId, setActiveConvId] = useState<string | null>(null)
-  const createConv = useCreateConversation()
-
   const activeConv = conversations.find(c => c.id === activeConvId) ?? null
 
   function handleNewChat() {
@@ -33,16 +31,7 @@ export function MessagesTab() {
   return (
     <div style={{ display:'flex', height:'100%', overflow:'hidden' }}>
       {/* Conversation list — always visible on desktop, hidden on mobile when chat open */}
-      <div style={{
-        width: activeConv ? '0' : '100%',
-        minWidth: activeConv ? 0 : '100%',
-        overflow: 'hidden',
-        transition: 'width var(--duration-normal)',
-        // On larger screens, always show sidebar
-        flex: '0 0 auto',
-      }}
-        className="messages-sidebar"
-      >
+      <div className={`messages-sidebar${activeConv ? ' messages-sidebar-mobile-hidden' : ''}`}>
         <ConversationList
           conversations={conversations}
           activeId={activeConvId}
@@ -66,7 +55,7 @@ export function MessagesTab() {
       {!activeConv && (
         <div
           className="messages-empty-desktop"
-          style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'var(--space-4)', color:'var(--text-tertiary)' }}
+          style={{ flex:1, alignItems:'center', justifyContent:'center', flexDirection:'column', gap:'var(--space-4)', color:'var(--text-tertiary)' }}
         >
           <i className="fa-regular fa-comment-dots" style={{ fontSize:48, opacity:.3 }} />
           <p style={{ fontSize:'var(--text-sm)' }}>Select a conversation</p>

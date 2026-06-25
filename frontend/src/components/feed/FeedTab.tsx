@@ -13,6 +13,8 @@ import {
   useSuggestedConnections,
   useSidebarEvents,
 } from '@/hooks/useFeed'
+import { useMyAssociations } from '@/hooks/useCommunities'
+import { useUserProfile } from '@/hooks/useProfile'
 import { api } from '@/lib/api/client'
 import type { FeedPost } from '@/types'
 
@@ -84,9 +86,13 @@ function WeeklyActivity() {
 
 function LeftSidebar() {
   const { user } = useAuthStore()
-  const { setTab } = useUiStore()
+  const { setTab, showToast } = useUiStore()
+  const { data: myAssociations = [] } = useMyAssociations()
+  const { data: myProfile } = useUserProfile(user?.id ?? null)
   const handle = user?.username ? `@${user.username}` : '@practitioner'
-  const initials = (user?.displayName ?? 'U').charAt(0).toUpperCase()
+  const initial = (user?.displayName ?? 'U').charAt(0).toUpperCase()
+  const commCount = myAssociations.length
+  const connCount = myProfile?.followersCount ?? null
 
   return (
     <div className="sticky top-24 space-y-6">
@@ -97,15 +103,15 @@ function LeftSidebar() {
             {user?.profilePhoto
               // eslint-disable-next-line @next/next/no-img-element
               ? <img src={user.profilePhoto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              : <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--saffron-600)' }}>{initials}</span>}
+              : <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--saffron-600)' }}>{initial}</span>}
           </div>
           <div className="min-w-0">
             <h3 className="font-semibold text-sangham-ink text-sm truncate">{user?.displayName ?? '—'}</h3>
             <p className="text-xs text-sangham-brown-light truncate">{handle}</p>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-2 text-center">
-          {[['—', 'Communities'], ['—', 'Connections'], ['—', 'Karma']].map(([val, lbl]) => (
+        <div className="grid grid-cols-2 gap-2 text-center">
+          {[[String(commCount), 'Communities'], [connCount !== null ? String(connCount) : '—', 'Connections']].map(([val, lbl]) => (
             <div key={lbl} className="bg-sangham-cream rounded-lg p-2">
               <div className="font-bold text-sangham-ink text-sm">{val}</div>
               <div className="text-[10px] text-sangham-brown-light">{lbl}</div>
@@ -123,8 +129,8 @@ function LeftSidebar() {
             { icon: 'fa-user-group',     label: 'My Communities',   action: () => setTab('communities') },
             { icon: 'fa-book-bookmark',  label: 'Saved Teachings',  action: () => setTab('learn') },
             { icon: 'fa-compass',        label: 'Discover People',  action: () => setTab('discover') },
-            { icon: 'fa-hand-holding-heart', label: 'Contribute',   action: () => {} },
-            { icon: 'fa-gear',           label: 'Settings',         action: () => {} },
+            { icon: 'fa-hand-holding-heart', label: 'Contribute',   action: () => showToast('Contribute — coming soon', 'info') },
+            { icon: 'fa-gear',           label: 'Settings',         action: () => showToast('Settings — coming soon', 'info') },
           ].map(({ icon, label, action }) => (
             <button
               key={label}

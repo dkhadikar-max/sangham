@@ -73,7 +73,7 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat,
         {conversations.map(conv => {
           const other = conv.participants.find(p => p.id !== user?.id)
           const name = conv.name ?? other?.displayName ?? 'Unknown'
-          const preview = conv.lastMessage?.content ?? ''
+          const preview = conv.lastMessage?.encrypted ? '🔒 Encrypted message' : (conv.lastMessage?.content ?? '')
           const isActive = conv.id === activeId
           return (
             <button

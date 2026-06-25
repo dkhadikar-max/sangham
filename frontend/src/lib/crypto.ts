@@ -24,7 +24,9 @@ export async function encryptMessage(key: CryptoKey, plaintext: string): Promise
   const combined = new Uint8Array(iv.byteLength + ct.byteLength)
   combined.set(iv, 0)
   combined.set(new Uint8Array(ct), iv.byteLength)
-  return btoa(String.fromCharCode(...combined))
+  let binary = ''
+  for (let i = 0; i < combined.length; i++) binary += String.fromCharCode(combined[i])
+  return btoa(binary)
 }
 
 export async function decryptMessage(key: CryptoKey, ciphertext: string): Promise<string> {
@@ -54,8 +56,9 @@ export async function getOrCreateKeypair(): Promise<{ publicKeyB64: string; priv
   const kp = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveKey'])
   const pub = await crypto.subtle.exportKey('spki', kp.publicKey)
   const priv = await crypto.subtle.exportKey('pkcs8', kp.privateKey)
-  const pubB64 = btoa(String.fromCharCode(...new Uint8Array(pub)))
-  const privB64 = btoa(String.fromCharCode(...new Uint8Array(priv)))
+  const toB64 = (buf: ArrayBuffer) => { const a = new Uint8Array(buf); let s = ''; for (let i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s) }
+  const pubB64 = toB64(pub)
+  const privB64 = toB64(priv)
   localStorage.setItem(KEY_STORAGE, JSON.stringify({ pub: pubB64, priv: privB64 }))
   return { publicKeyB64: pubB64, privateKey: kp.privateKey }
 }
