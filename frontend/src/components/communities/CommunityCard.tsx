@@ -22,14 +22,15 @@ function tradStyle(tradition?: string | null) {
 interface Props {
   a: AssociationSummary
   onOpen: () => void
+  isMember?: boolean
 }
 
-export function CommunityCard({ a, onOpen }: Props) {
+export function CommunityCard({ a, onOpen, isMember = false }: Props) {
   const ts = tradStyle(a.tradition)
   const { token } = useAuthStore()
   const { showToast } = useUiStore()
   const join = useJoinAssociationDirect()
-  const [joined, setJoined] = useState(false)
+  const [joined, setJoined] = useState(isMember)
   const cat = (a.category ?? '').replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
   const loc = a.city || a.country || ''
   const memberCount = a._count?.members ?? 0

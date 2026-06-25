@@ -57,7 +57,7 @@ function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: As
       </div>
       {a.events?.length ? (
         a.events.map((ev) => (
-          <button key={ev.id} type="button" className="comm-card" style={{ margin: '0 0 var(--space-2)', display: 'block' }}>
+          <button key={ev.id} type="button" className="comm-card" style={{ margin: '0 0 var(--space-2)', display: 'block' }} onClick={() => showToast('Event details — coming soon', 'info')}>
             <div className="comm-card-name">{ev.title}</div>
             <div className="comm-card-meta"><span>📅 {fmtDate(ev.startsAt)}</span></div>
           </button>
@@ -369,7 +369,7 @@ export function CommunityDetail({ assocId, onClose }: Props) {
                 {(assoc.city || assoc.country) && <span>{assoc.city || ''}{assoc.country ? (assoc.city ? ', ' : '') + assoc.country : ''}</span>}
                 <span>{assoc._count?.members ?? 0} members</span>
                 {assoc.website && (
-                  <a href={assoc.website} target="_blank" rel="noopener" style={{ color: 'var(--saffron-600)' }}>
+                  <a href={assoc.website.startsWith('http') ? assoc.website : `https://${assoc.website}`} target="_blank" rel="noopener" style={{ color: 'var(--saffron-600)' }}>
                     {assoc.website}
                   </a>
                 )}

@@ -10,14 +10,14 @@ const router = Router();
 
 const createAssocSchema = z.object({
   name: z.string().min(2).max(200),
-  country: z.string().length(2),
-  city: z.string().optional(),
+  country: z.string().min(1).max(100),
+  city: z.string().max(100).optional(),
   tradition: z.nativeEnum(Tradition),
   category: z.nativeEnum(AssociationCategory),
   parentId: z.string().uuid().optional(),
   legalRegNumber: z.string().optional(),
   description: z.string().max(3000).optional(),
-  website: z.string().url().optional(),
+  website: z.string().max(500).optional(),
 });
 
 // POST /associations

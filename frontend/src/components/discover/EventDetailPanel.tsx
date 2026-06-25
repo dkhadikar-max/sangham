@@ -41,7 +41,7 @@ export function EventDetailPanel({ event, onClose, onOpenProfile }: Props) {
     })
   }
 
-  const typeColor = typeColors[event.type] ?? 'var(--saffron-600)'
+  const typeColor = typeColors[event.type] ?? '#C79A3B'
   const modeLabel = event.mode === 'ONLINE' ? 'Online' : event.mode === 'IN_PERSON' ? 'In Person' : 'Hybrid'
   const loc = event.mode === 'ONLINE' ? 'Online' : (event.location ?? 'Location TBD')
 

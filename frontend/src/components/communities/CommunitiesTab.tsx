@@ -91,7 +91,7 @@ export function CommunitiesTab() {
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-center">
                   <div className="bg-sangham-cream rounded-lg p-2">
-                    <div className="font-bold text-sangham-ink text-sm">{commCount || '—'}</div>
+                    <div className="font-bold text-sangham-ink text-sm">{token ? commCount : '—'}</div>
                     <div style={{ fontSize: 10 }} className="text-sangham-brown-light">Communities</div>
                   </div>
                   <div className="bg-sangham-cream rounded-lg p-2">
@@ -297,7 +297,7 @@ export function CommunitiesTab() {
             ) : (
               <div className={`comm-list ${commView === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5' : 'flex flex-col gap-3'}`}>
                 {associations.map((a) => (
-                  <CommunityCard key={a.id} a={a} onOpen={() => setDetailId(a.id)} />
+                  <CommunityCard key={a.id} a={a} onOpen={() => setDetailId(a.id)} isMember={myAssociations.some(m => m.id === a.id)} />
                 ))}
               </div>
             )}

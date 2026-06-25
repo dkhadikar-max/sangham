@@ -5,38 +5,31 @@ import { useAuthStore } from '@/stores/auth'
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
+// Matches backend liveSession model
 export interface SessionItem {
   id: string
-  topic: string
+  title: string
   description: string | null
-  mode: 'ONLINE' | 'IN_PERSON' | 'HYBRID'
-  startsAt: string
-  durationMinutes: number
+  sessionType: 'DHARMA_TALK' | 'GUIDED_MEDITATION' | 'SUTTA_STUDY' | 'QA' | 'CEREMONY' | 'TELECAST'
+  traditionTag: string | null
   language: string
-  maxParticipants: number | null
-  location: string | null
-  meetingUrl: string | null
-  photoUrl: string | null
-  rules: string | null
+  scheduledAt: string
+  status: 'SCHEDULED' | 'LIVE' | 'ENDED' | 'CANCELLED'
+  maxViewers: number
+  rsvpRequired: boolean
   hostId: string
-  host: { id: string; displayName: string; profilePhoto: string | null }
-  circleId: string | null
-  _count: { participants: number }
-  isParticipant?: boolean
+  host: { id: string; displayName: string; profilePhoto: string | null; isVerifiedClergy: boolean }
+  _count: { attendees: number }
 }
 
 export interface SessionFilter {
-  q?: string
-  mode?: string
-  mine?: boolean
+  type?: string
 }
 
 async function fetchSessions(filter: SessionFilter, token: string | null): Promise<SessionItem[]> {
-  const params = new URLSearchParams({ limit: '20' })
-  if (filter.q) params.set('q', filter.q)
-  if (filter.mode && filter.mode !== 'ANY') params.set('mode', filter.mode)
-  const endpoint = filter.mine ? `${API}/sessions/mine` : `${API}/sessions`
-  const res = await fetch(`${endpoint}?${params}`, {
+  const params = new URLSearchParams()
+  if (filter.type) params.set('type', filter.type)
+  const res = await fetch(`${API}/sessions?${params}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   })
   if (!res.ok) throw new Error('Failed to load sessions')
@@ -63,23 +56,8 @@ export function useJoinSession() {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       })
-      if (!res.ok) throw new Error('Failed to join session')
+      if (!res.ok) throw new Error('Failed to register for session')
       return res.json()
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['sessions'] }),
-  })
-}
-
-export function useLeaveSession() {
-  const { token } = useAuthStore()
-  const qc = useQueryClient()
-  return useMutation({
-    mutationFn: async (sessionId: string) => {
-      const res = await fetch(`${API}/sessions/${sessionId}/join`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      if (!res.ok) throw new Error('Failed to leave session')
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['sessions'] }),
   })
