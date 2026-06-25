@@ -114,9 +114,9 @@ export function SessionsView() {
   })
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ padding: '0 var(--space-4) var(--space-8)' }}>
       {/* Header */}
-      <div style={{ padding: 'var(--space-4)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+      <div style={{ padding: 'var(--space-4) 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--text-primary)' }}>Live Sessions</h2>
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)', marginTop: 2 }}>Dharma talks, guided meditation, and live teachings</p>
@@ -131,7 +131,7 @@ export function SessionsView() {
       </div>
 
       {/* Filter */}
-      <div style={{ padding: '0 var(--space-4) var(--space-3)', flexShrink: 0 }}>
+      <div style={{ marginBottom: 'var(--space-3)' }}>
         <select
           className="input"
           value={typeFilter}
@@ -146,7 +146,7 @@ export function SessionsView() {
       </div>
 
       {/* List */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '0 var(--space-4) var(--space-8)' }}>
+      <div>
         {isLoading && (
           <div className="spinner-center"><div className="spinner" /></div>
         )}

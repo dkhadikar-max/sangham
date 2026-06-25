@@ -10,6 +10,7 @@ import {
   useLibraryMoreSegments,
   useBookmarkText,
   useAICompanion,
+  useCreateHighlight,
 } from '@/hooks/useLibrary'
 import { libTradSym, libTradClass, libLangLabel, libGetCoverUrl, libShortTitle, libReadingMins, timeAgo } from '@/lib/library-utils'
 import type { TextSegment } from '@/types'
@@ -125,6 +126,8 @@ export function TextReader() {
   const bookmarkMut = useBookmarkText()
   const aiMut = useAICompanion()
 
+  const createHighlight = useCreateHighlight()
+
   const [extraSegs, setExtraSegs] = useState<TextSegment[]>([])
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
@@ -136,6 +139,7 @@ export function TextReader() {
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [aiResult, setAiResult] = useState<{ label: string; text: string } | null>(null)
   const [tocFilter, setTocFilter] = useState('')
+  const [selMenu, setSelMenu] = useState<{ x: number; y: number; text: string; segmentId: string | null } | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const allSegs = [...(textDetail?.segments ?? []), ...extraSegs]
@@ -219,6 +223,34 @@ export function TextReader() {
     } catch {
       setAiResult({ label: labels[action] ?? action, text: 'Could not generate response. Please try again.' })
     }
+  }
+
+  const handleMouseUp = useCallback(() => {
+    const sel = window.getSelection()
+    if (!sel || sel.isCollapsed || !sel.rangeCount) { setSelMenu(null); return }
+    const text = sel.toString().trim()
+    if (text.length < 3) { setSelMenu(null); return }
+    const range = sel.getRangeAt(0)
+    const rect = range.getBoundingClientRect()
+    let node: Node | null = sel.anchorNode
+    let segmentId: string | null = null
+    while (node) {
+      if (node instanceof Element) {
+        const id = node.getAttribute('data-seg-id')
+        if (id) { segmentId = id; break }
+      }
+      node = node.parentElement
+    }
+    setSelMenu({ x: rect.left + rect.width / 2, y: rect.top, text, segmentId })
+  }, [])
+
+  const handleHighlight = async (color: string) => {
+    if (!selMenu || !textId || !selMenu.segmentId) return
+    try {
+      await createHighlight.mutateAsync({ textId, segmentId: selMenu.segmentId, selectedText: selMenu.text, color })
+    } catch { /* best-effort */ }
+    setSelMenu(null)
+    window.getSelection()?.removeAllRanges()
   }
 
   const jumpToTOC = (entry: TOCEntry) => {
@@ -434,7 +466,7 @@ export function TextReader() {
 
           {/* Content */}
           {textDetail && (
-            <div className="reader-content-area" id="reader-content-area">
+            <div className="reader-content-area" id="reader-content-area" onMouseUp={handleMouseUp}>
               <SegmentList segs={allSegs} highlights={highlights} />
             </div>
           )}
@@ -560,6 +592,41 @@ export function TextReader() {
         <button className="rctrl-btn" onClick={() => stepFontSize(2)} aria-label="Larger font">A+</button>
         <button className="rctrl-btn" onClick={() => setFocusModeLocal((o) => !o)} aria-label="Focus mode">⛶</button>
       </div>
+
+      {/* Selection highlight toolbar */}
+      {selMenu && (
+        <div
+          style={{
+            position: 'fixed',
+            left: selMenu.x,
+            top: selMenu.y - 44,
+            transform: 'translateX(-50%)',
+            background: '#1a1a1a',
+            borderRadius: 8,
+            padding: '6px 10px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            zIndex: 300,
+            boxShadow: '0 4px 16px rgba(0,0,0,0.35)',
+            pointerEvents: 'auto',
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <span style={{ fontSize: 11, color: '#aaa', marginRight: 2 }}>Highlight</span>
+          {(['#FEF08A', '#BBF7D0', '#BAE6FD', '#FCA5A5'] as const).map((color) => (
+            <button
+              key={color}
+              onClick={() => handleHighlight(color)}
+              style={{ width: 18, height: 18, borderRadius: '50%', background: color, border: '2px solid rgba(255,255,255,0.3)', cursor: 'pointer', padding: 0 }}
+            />
+          ))}
+          <button
+            onClick={() => { setSelMenu(null); window.getSelection()?.removeAllRanges() }}
+            style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 14, padding: '0 2px', lineHeight: 1 }}
+          >✕</button>
+        </div>
+      )}
 
       {/* Desktop floating controls */}
       <div className="reader-float-controls" id="reader-float-controls">

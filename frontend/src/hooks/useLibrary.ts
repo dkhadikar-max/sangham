@@ -109,10 +109,22 @@ export function useBookmarkText() {
   return useMutation({
     mutationFn: ({ textId, bookmark }: { textId: string; bookmark: boolean }) =>
       bookmark
-        ? api.post<void>(`/library/texts/${textId}/bookmark`, {}, token ?? undefined)
-        : api.delete<void>(`/library/texts/${textId}/bookmark`, token ?? undefined),
+        ? api.post<void>(`/library/texts/${textId}/bookmarks`, {}, token ?? undefined)
+        : api.delete<void>(`/library/texts/${textId}/bookmarks`, token ?? undefined),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['library-bookmarks'] })
+    },
+  })
+}
+
+export function useCreateHighlight() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ textId, segmentId, selectedText, color }: { textId: string; segmentId: string; selectedText: string; color: string }) =>
+      api.post<{ id: string }>('/library/highlights', { textId, segmentId, selectedText, color }, token ?? undefined),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['library-highlights', vars.textId] })
     },
   })
 }

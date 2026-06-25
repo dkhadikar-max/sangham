@@ -6,6 +6,8 @@ import { AppError } from '../middleware/errorHandler';
 import { redis, CACHE_TTL } from '../config/redis';
 import { searchEsLibrary, indexLibraryTexts, getEsClient, ES_INDEX } from '../config/elasticsearch';
 import { UserRole } from '@prisma/client';
+import { env } from '../config/env';
+import { aiTutorLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
@@ -399,6 +401,85 @@ router.post('/submissions', authenticate, async (req: AuthRequest, res: Response
   }
 
   res.status(201).json({ id: text.id, title: text.title, author: text.author });
+});
+
+// ── Library AI companion ───────────────────────────────────────────────────────
+
+async function callLibraryAI(systemPrompt: string, userContent: string): Promise<string> {
+  if (env.GEMINI_API_KEY) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: systemPrompt }] },
+            contents: [{ role: 'user', parts: [{ text: userContent }] }],
+            generationConfig: { maxOutputTokens: 512, temperature: 0.7 },
+          }),
+        },
+      );
+      if (res.ok) {
+        const data = await res.json() as { candidates?: { content: { parts: { text: string }[] } }[] };
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+        if (text) return text;
+      }
+    } catch { /* fall through to Anthropic */ }
+  }
+  if (!env.ANTHROPIC_API_KEY) throw new AppError('AI companion temporarily unavailable', 502);
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 512,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userContent }],
+    }),
+  });
+  if (!res.ok) throw new AppError('AI companion temporarily unavailable', 502);
+  const data = await res.json() as { content: { text: string }[] };
+  return data.content?.[0]?.text ?? '';
+}
+
+const ACTION_PROMPTS: Record<string, string> = {
+  explain:   'You are a knowledgeable Dharma teacher. Explain the selected passage clearly and concisely in 2-3 paragraphs. Use accessible language.',
+  summarize: 'You are a Dharma scholar. Summarize the key teaching in 3-5 bullet points. Be concise and precise.',
+  example:   'You are a practical Dharma teacher. Provide 1-2 concrete modern-day examples of how this teaching applies to everyday life.',
+  context:   'You are a Buddhist/Dharmic historian. Explain the historical and traditional context of this passage in 2-3 paragraphs.',
+};
+
+// POST /library/texts/:id/ai
+router.post('/texts/:id/ai', authenticate, aiTutorLimiter, async (req: AuthRequest, res: Response): Promise<void> => {
+  const { action, passage } = req.body;
+  if (!action || typeof action !== 'string') throw new AppError('action is required', 400);
+
+  const systemPrompt = ACTION_PROMPTS[action] ?? ACTION_PROMPTS.explain;
+
+  const text = await prisma.libraryText.findUnique({
+    where: { id: req.params.id },
+    select: {
+      title: true,
+      author: true,
+      collection: { select: { name: true, tradition: true } },
+      segments: { select: { content: true }, take: 5, orderBy: { sequence: 'asc' } },
+    },
+  });
+  if (!text) throw new AppError('Text not found', 404);
+
+  const contextLines = [
+    `Text: "${text.title}"${text.author ? ` by ${text.author}` : ''}`,
+    text.collection?.name ? `Collection: ${text.collection.name}` : '',
+    passage ? `\nSelected passage:\n"${passage}"` : `\nOpening passage:\n"${text.segments.map((s: { content: string }) => s.content).join(' ').slice(0, 600)}"`,
+  ].filter(Boolean).join('\n');
+
+  const result = await callLibraryAI(systemPrompt, contextLines);
+  res.json({ result });
 });
 
 // POST /library/index — admin: index all library texts into Elasticsearch

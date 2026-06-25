@@ -28,7 +28,7 @@ export function LearnTab() {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+    <div>
       {/* Sticky header: search + tabs */}
       <div
         style={{
@@ -41,7 +41,6 @@ export function LearnTab() {
           display: 'flex',
           flexDirection: 'column',
           gap: 'var(--space-2)',
-          flexShrink: 0,
         }}
       >
         {/* Search bar */}
@@ -98,24 +97,12 @@ export function LearnTab() {
         </div>
       </div>
 
-      {/* Tab panels */}
-      <div style={{ flex: 1, overflowY: 'auto' }}>
-        <div className={`comm-tab-panel${activeTab === 'courses' ? ' active' : ''}`}>
-          <PlaceholderTab label="Courses" />
-        </div>
-        <div className={`comm-tab-panel${activeTab === 'resources' ? ' active' : ''}`}>
-          <PlaceholderTab label="Resources" />
-        </div>
-        <div className={`comm-tab-panel${activeTab === 'circles' ? ' active' : ''}`}>
-          <PlaceholderTab label="Circles" />
-        </div>
-        <div className={`comm-tab-panel${activeTab === 'sessions' ? ' active' : ''}`}>
-          <SessionsView />
-        </div>
-        <div className={`comm-tab-panel${activeTab === 'library' ? ' active' : ''}`}>
-          <LibraryView searchQuery={activeTab === 'library' ? searchQuery : ''} />
-        </div>
-      </div>
+      {/* Tab content — rendered naturally; .tab-panel handles scroll */}
+      {activeTab === 'courses'   && <PlaceholderTab label="Courses" />}
+      {activeTab === 'resources' && <PlaceholderTab label="Resources" />}
+      {activeTab === 'circles'   && <PlaceholderTab label="Circles" />}
+      {activeTab === 'sessions'  && <SessionsView />}
+      {activeTab === 'library'   && <LibraryView searchQuery={searchQuery} />}
     </div>
   )
 }
