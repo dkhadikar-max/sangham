@@ -3474,7 +3474,7 @@ round:var(--error-600)}
         <button class="rann-color" style="background:#DDA0DD" onclick="createHighlight('#DDA0DD')" title="Purple — personal resonance" aria-label="Highlight purple"></button>
         <div class="rann-sep"></div>
         <button class="rann-ai" onclick="_readerAIAction('explain')" title="Explain selection">Explain</button>
-        <button class="rann-ai" onclick="_readerAIAction('summarize')" title="Summarize selection">Sum</button>
+        <button class="rann-ai" onclick="_readerAIAction('summarize')" title="Summarize selection">Summarize</button>
         <div class="rann-sep"></div>
         <button class="rann-action" onclick="addAnnotationNote()" title="Add note (N)" aria-label="Add note">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -7316,6 +7316,16 @@ function _renderReaderAIPanel() {
 
 async function _readerAIAction(action) {
   const sel = window.getSelection()?.toString().trim();
+  // Switch to AI tab (renders reader-ai-result in DOM) and open panel on mobile
+  switchReaderPanel('ai');
+  if (window.innerWidth < 1024) {
+    const rp = document.getElementById('reader-right-panel');
+    const bd = document.getElementById('reader-right-bd');
+    if (rp && !rp.classList.contains('mobile-open')) {
+      rp.classList.add('mobile-open');
+      bd?.classList.add('visible');
+    }
+  }
   const resultEl = document.getElementById('reader-ai-result');
   if (!resultEl) return;
   if (!sel) {
