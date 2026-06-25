@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { LibraryView } from '@/components/library/LibraryView'
 import { SessionsView } from '@/components/learn/SessionsView'
+import { CoursesView } from '@/components/learn/CoursesView'
 import type { LearnSubTab } from '@/types'
 
 const TABS: { id: LearnSubTab; label: string }[] = [
@@ -97,8 +98,8 @@ export function LearnTab() {
         </div>
       </div>
 
-      {/* Tab content — rendered naturally; .tab-panel handles scroll */}
-      {activeTab === 'courses'   && <PlaceholderTab label="Courses" />}
+      {/* Tab content — rendered naturally; page scrolls */}
+      {activeTab === 'courses'   && <CoursesView searchQuery={searchQuery} />}
       {activeTab === 'resources' && <PlaceholderTab label="Resources" />}
       {activeTab === 'circles'   && <PlaceholderTab label="Circles" />}
       {activeTab === 'sessions'  && <SessionsView />}
