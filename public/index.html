@@ -1343,9 +1343,9 @@ round:var(--error-600)}
     #panel-text .panel-header{display:none} /* replaced by reader-header */
 
     /* ── Theme tokens ───────────────────────────────────────────── */
-    .reader-panel{--rt-bg:#fff;--rt-text:#1a1a1a;--rt-muted:#6b7280;--rt-border:#dadce0;--rt-surface:#f8f9fa;--rt-accent:#2563EB;--rt-progress:#2563EB}
+    .reader-panel{--rt-bg:#FEFCF8;--rt-text:#1a1a1a;--rt-muted:#6b7280;--rt-border:#E8E0D0;--rt-surface:#F5EDD9;--rt-accent:#C79A3B;--rt-progress:#C79A3B}
     .reader-panel[data-reader-theme="sepia"]{--rt-bg:#F4ECD8;--rt-text:#3D2B1F;--rt-muted:#8A7060;--rt-border:#C8BDA8;--rt-surface:#EBE0CA;--rt-accent:#C65D00;--rt-progress:#C65D00}
-    .reader-panel[data-reader-theme="dark"]{--rt-bg:#161618;--rt-text:#E4E4E7;--rt-muted:#71717A;--rt-border:#3F3F46;--rt-surface:#27272A;--rt-accent:#60A5FA;--rt-progress:#60A5FA}
+    .reader-panel[data-reader-theme="dark"]{--rt-bg:#161618;--rt-text:#E4E4E7;--rt-muted:#71717A;--rt-border:#3F3F46;--rt-surface:#27272A;--rt-accent:#D4AF6A;--rt-progress:#D4AF6A}
 
     /* ── Collapsible header ─────────────────────────────────────── */
     .reader-header{position:relative;z-index:30;display:flex;align-items:center;gap:12px;padding:0 12px;height:52px;background:var(--rt-bg);border-bottom:1px solid var(--rt-border);flex-shrink:0;transition:transform .3s ease,opacity .3s ease}
@@ -1539,15 +1539,63 @@ round:var(--error-600)}
     .hl-tooltip{position:absolute;top:-36px;left:50%;transform:translateX(-50%);background:var(--rt-text);color:var(--rt-bg);padding:4px 10px;border-radius:6px;font-size:11px;white-space:nowrap;pointer-events:none;z-index:55}
     .hl-tooltip::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--rt-text);border-bottom:none}
 
-    /* ── Desktop mini-TOC (left sidebar) ───────────────────────── */
-    @media(min-width:1024px){
-      .reader-body-wrap{display:flex;flex:1;overflow:hidden;min-height:0}
-      .reader-mini-toc{width:220px;flex-shrink:0;overflow-y:auto;border-right:1px solid var(--rt-border);padding:16px 0;background:var(--rt-bg)}
-      .reader-mini-toc-item{display:block;width:100%;text-align:left;padding:7px 16px;border:none;background:transparent;cursor:pointer;font-size:12px;color:var(--rt-muted);font-family:inherit;border-left:2px solid transparent;transition:all .15s;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-      .reader-mini-toc-item:hover{background:var(--rt-surface);color:var(--rt-text)}
-      .reader-mini-toc-item.active{color:var(--rt-accent);border-left-color:var(--rt-accent)}
-      .reader-scroll{flex:1}
-    }
+    /* ── 3-column reader layout ─────────────────────────────────── */
+    .reader-body-wrap{display:flex;flex:1;overflow:hidden;min-height:0;position:relative}
+    /* Left panel — TOC + stats */
+    .reader-left-panel{width:240px;flex-shrink:0;display:flex;flex-direction:column;background:var(--rt-bg);border-right:1px solid var(--rt-border);overflow:hidden;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    @media(max-width:1023px){.reader-left-panel{position:absolute;top:0;left:0;bottom:0;z-index:50;transform:translateX(-100%)}}
+    .reader-left-panel.mobile-open{transform:translateX(0)}
+    .reader-left-bd{display:none;position:absolute;inset:0;z-index:49;background:rgba(0,0,0,.4)}
+    .reader-left-panel.mobile-open~.reader-left-bd{display:block}
+    .reader-lp-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--rt-border);flex-shrink:0}
+    .reader-lp-title{font-size:13px;font-weight:700;color:var(--rt-text);text-transform:uppercase;letter-spacing:.06em}
+    .reader-lp-close{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:none;background:transparent;cursor:pointer;border-radius:6px;color:var(--rt-muted);font-size:18px;line-height:1}
+    .reader-lp-close:hover{background:var(--rt-surface)}
+    .reader-lp-stats{border-top:1px solid var(--rt-border);padding:12px 16px;flex-shrink:0;display:flex;flex-direction:column;gap:8px}
+    .reader-lp-stat-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--rt-muted)}
+    .reader-lp-stat-val{font-weight:700;color:var(--rt-text)}
+    .reader-lp-streak{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--rt-accent);font-weight:600}
+    /* Right panel — AI + Notes + Community */
+    .reader-right-panel{width:272px;flex-shrink:0;display:flex;flex-direction:column;background:var(--rt-bg);border-left:1px solid var(--rt-border);overflow:hidden;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    @media(max-width:1023px){.reader-right-panel{position:absolute;top:0;right:0;bottom:0;z-index:50;transform:translateX(100%)}}
+    .reader-right-panel.mobile-open{transform:translateX(0)}
+    .reader-right-bd{display:none;position:absolute;inset:0;z-index:49;background:rgba(0,0,0,.4)}
+    .reader-right-panel.mobile-open~.reader-right-bd{display:block}
+    .reader-rp-head{display:flex;align-items:center;border-bottom:1px solid var(--rt-border);flex-shrink:0;gap:0;padding:0 8px 0 0}
+    .reader-rp-tabs{display:flex;flex:1;overflow:hidden}
+    .reader-rp-tab{flex:1;padding:12px 4px;border:none;background:transparent;font-size:11px;font-weight:600;color:var(--rt-muted);cursor:pointer;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s;white-space:nowrap}
+    .reader-rp-tab:hover{color:var(--rt-text)}
+    .reader-rp-tab.active{color:var(--rt-accent);border-bottom-color:var(--rt-accent)}
+    .reader-rp-body{flex:1;overflow-y:auto;padding:16px}
+    /* AI panel */
+    .reader-ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+    .reader-ai-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 10px;border:1px solid var(--rt-border);border-radius:10px;background:var(--rt-surface);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;color:var(--rt-text)}
+    .reader-ai-card:hover{border-color:var(--rt-accent);background:color-mix(in srgb,var(--rt-accent) 6%,var(--rt-surface))}
+    .reader-ai-card-icon{font-size:18px;line-height:1}
+    .reader-ai-card-label{font-size:11px;font-weight:700;color:var(--rt-text)}
+    .reader-ai-card-desc{font-size:10px;color:var(--rt-muted);line-height:1.3}
+    .reader-ai-result{background:var(--rt-surface);border:1px solid var(--rt-border);border-radius:10px;padding:14px;font-size:13px;color:var(--rt-text);line-height:1.65;margin-top:8px}
+    .reader-ai-result-label{font-size:10px;font-weight:700;color:var(--rt-accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+    /* Notes panel */
+    .reader-notes-list{display:flex;flex-direction:column;gap:10px}
+    .reader-note-item{padding:10px 12px;background:var(--rt-surface);border-radius:8px;border-left:3px solid var(--rt-accent)}
+    .reader-note-item-text{font-size:12px;color:var(--rt-text);line-height:1.5;font-style:italic}
+    .reader-note-item-meta{font-size:10px;color:var(--rt-muted);margin-top:4px}
+    /* Community panel */
+    .reader-circle-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--rt-border);cursor:pointer}
+    .reader-circle-item:last-child{border-bottom:none}
+    .reader-circle-avatar{width:34px;height:34px;border-radius:50%;background:var(--rt-surface);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:1px solid var(--rt-border)}
+    .reader-circle-name{font-size:12px;font-weight:600;color:var(--rt-text);line-height:1.3}
+    .reader-circle-meta{font-size:10px;color:var(--rt-muted)}
+    /* Right panel button in header */
+    .reader-rp-toggle-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:none;background:transparent;cursor:pointer;color:var(--rt-text);transition:background .15s;flex-shrink:0}
+    .reader-rp-toggle-btn:hover{background:var(--rt-surface)}
+    .reader-rp-toggle-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75}
+    /* AI action buttons in annotation toolbar */
+    .rann-ai{display:flex;align-items:center;justify-content:center;height:28px;padding:0 8px;border:1px solid var(--rt-border);background:color-mix(in srgb,var(--rt-accent) 10%,var(--rt-bg));cursor:pointer;border-radius:6px;color:var(--rt-accent);font-size:10px;font-weight:700;font-family:inherit;transition:all .15s;white-space:nowrap}
+    .rann-ai:hover{background:color-mix(in srgb,var(--rt-accent) 20%,var(--rt-bg));border-color:var(--rt-accent)}
+    /* Float controls hidden on desktop when right panel is visible */
+    @media(min-width:1024px){.reader-float-controls{display:none!important}}
 
     /* Segments legacy aliases (keep for library home cards) */
     .lib-seg-text{color:var(--text-primary)}
@@ -3254,12 +3302,29 @@ round:var(--error-600)}
           <button class="reader-icon-btn" id="reader-settings-btn" onclick="toggleReaderSettings()" title="Settings (Ctrl+,)" aria-label="Reading settings">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
+          <button class="reader-rp-toggle-btn" id="reader-right-btn" onclick="toggleReaderRight()" title="AI · Notes · Community" aria-label="Toggle AI panel">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </button>
         </div>
       </div>
 
-      <!-- Desktop: mini-TOC sidebar + scroll; Mobile: scroll only -->
+      <!-- 3-column reading layout: Left TOC | Center scroll | Right AI+Notes+Community -->
       <div class="reader-body-wrap">
-        <div class="reader-mini-toc" id="reader-mini-toc" style="display:none"></div>
+        <!-- Left panel: TOC + Reading Stats -->
+        <aside class="reader-left-panel" id="reader-left-panel">
+          <div class="reader-lp-head">
+            <span class="reader-lp-title">Contents</span>
+            <button class="reader-lp-close" onclick="toggleReaderTOC()" aria-label="Close">×</button>
+          </div>
+          <div class="reader-toc-search" style="padding:8px 12px;border-bottom:1px solid var(--rt-border);flex-shrink:0">
+            <input type="search" id="reader-toc-search-input" placeholder="Filter sections…" oninput="_filterTOC(this.value)" aria-label="Filter sections" style="width:100%;padding:7px 10px;border:1px solid var(--rt-border);border-radius:8px;background:var(--rt-surface);color:var(--rt-text);font-size:16px;font-family:inherit;outline:none">
+          </div>
+          <div class="reader-toc-list" id="reader-toc-list" style="flex:1;overflow-y:auto;padding:8px 0">
+            <div style="padding:16px;font-size:13px;color:var(--rt-muted)">No chapters detected</div>
+          </div>
+          <div class="reader-lp-stats" id="reader-lp-stats"></div>
+        </aside>
+        <div class="reader-left-bd" id="reader-left-bd" onclick="toggleReaderTOC()"></div>
 
         <!-- Main scroll area -->
         <div class="reader-scroll" id="reader-scroll">
@@ -3267,6 +3332,20 @@ round:var(--error-600)}
             <div class="spinner-center"><div class="spinner spinner-lg"></div></div>
           </div>
         </div>
+
+        <!-- Right panel: AI · Notes · Community -->
+        <aside class="reader-right-panel" id="reader-right-panel">
+          <div class="reader-rp-head">
+            <div class="reader-rp-tabs" id="reader-rp-tabs">
+              <button class="reader-rp-tab active" data-rp-tab="ai" onclick="switchReaderPanel('ai')">✨ AI</button>
+              <button class="reader-rp-tab" data-rp-tab="notes" onclick="switchReaderPanel('notes')">Notes</button>
+              <button class="reader-rp-tab" data-rp-tab="community" onclick="switchReaderPanel('community')">Community</button>
+            </div>
+            <button class="reader-lp-close" onclick="toggleReaderRight()" aria-label="Close">×</button>
+          </div>
+          <div class="reader-rp-body" id="reader-rp-body"></div>
+        </aside>
+        <div class="reader-right-bd" id="reader-right-bd" onclick="toggleReaderRight()"></div>
       </div>
 
       <!-- Fixed progress + info footer -->
@@ -3316,24 +3395,6 @@ round:var(--error-600)}
           <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="15" y2="18"/></svg>
         </button>
         <button class="rfloat-btn" onclick="toggleFocusMode()" title="Focus mode (F)">⛶</button>
-      </div>
-
-      <!-- TOC Drawer (slide from left) -->
-      <div class="reader-toc-overlay" id="reader-toc-overlay" onclick="_tocOverlayClick(event)">
-        <div class="reader-toc-drawer">
-          <div class="reader-toc-head">
-            <span class="reader-toc-title">Contents</span>
-            <button class="reader-toc-close" onclick="toggleReaderTOC()" aria-label="Close">
-              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
-          <div class="reader-toc-search">
-            <input type="search" id="reader-toc-search-input" placeholder="Filter sections…" oninput="_filterTOC(this.value)" aria-label="Filter sections">
-          </div>
-          <div class="reader-toc-list" id="reader-toc-list">
-            <div style="padding:16px;font-size:13px;color:var(--rt-muted)">No chapters detected</div>
-          </div>
-        </div>
       </div>
 
       <!-- Settings Drawer -->
@@ -3420,6 +3481,9 @@ round:var(--error-600)}
         <button class="rann-color" style="background:#87CEEB" onclick="createHighlight('#87CEEB')" title="Blue — reference" aria-label="Highlight blue"></button>
         <button class="rann-color" style="background:#FFB6C1" onclick="createHighlight('#FFB6C1')" title="Pink — question / unclear" aria-label="Highlight pink"></button>
         <button class="rann-color" style="background:#DDA0DD" onclick="createHighlight('#DDA0DD')" title="Purple — personal resonance" aria-label="Highlight purple"></button>
+        <div class="rann-sep"></div>
+        <button class="rann-ai" onclick="_readerAIAction('explain')" title="Explain selection">Explain</button>
+        <button class="rann-ai" onclick="_readerAIAction('summarize')" title="Summarize selection">Sum</button>
         <div class="rann-sep"></div>
         <button class="rann-action" onclick="addAnnotationNote()" title="Add note (N)" aria-label="Add note">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -6947,8 +7011,10 @@ async function openTextDetail(textId) {
       }).catch(()=>{});
     }
 
-    // Desktop mini-TOC
-    _renderMiniTOC();
+    // Init left panel stats + right AI panel + record session
+    _renderReaderLeftStats(text, pct);
+    _renderReaderAIPanel();
+    _recordReadingSession();
 
     // Restore scroll position if we have server progress
     if (serverProgress?.currentSegment > 0 && _lib.segTotal > 0) {
@@ -7092,6 +7158,8 @@ function _updateProgressDisplay(pct) {
     }
     tooltip.textContent = (secLabel ? secLabel.slice(0,28)+'… · ' : '') + Math.round(pct)+'%';
   }
+  // Update left panel stats
+  if (document.getElementById('reader-lp-stats')) _renderReaderLeftStats(null, pct);
 }
 
 function _saveProgress(pct) {
@@ -7128,7 +7196,6 @@ async function loadMoreSegments(textId) {
         }
       });
       _renderReaderTOC();
-      _renderMiniTOC();
     }
     _lib.segOffset += segs.length;
     if (btn) {
@@ -7157,15 +7224,7 @@ function _renderReaderTOC() {
     </button>`).join('');
 }
 
-function _renderMiniTOC() {
-  const mini = document.getElementById('reader-mini-toc');
-  if (!mini) return;
-  if (!_lib.toc.length || window.innerWidth < 1024) { mini.style.display='none'; return; }
-  mini.style.display = 'block';
-  mini.innerHTML = `<div style="padding:12px 16px 8px;font-size:10px;font-weight:700;color:var(--rt-muted);text-transform:uppercase;letter-spacing:.06em">Contents</div>` +
-    _lib.toc.map((tc,i)=>`
-      <button class="reader-mini-toc-item" onclick="jumpToTOCSection(${i})" data-mini-toc-idx="${i}">${escHtml(tc.label)}</button>`).join('');
-}
+function _renderMiniTOC() { /* replaced by left panel TOC */ }
 
 function _updateActiveTOCItem() {
   if (!_lib.toc.length) return;
@@ -7184,10 +7243,6 @@ function _updateActiveTOCItem() {
     const head = heads[idx];
     if (head) b.classList.toggle('completed', head.offsetTop < scrollTop - 40 && idx !== activeIdx);
   });
-  document.querySelectorAll('[data-mini-toc-idx]').forEach(b => {
-    const idx = +b.dataset.miniTocIdx;
-    b.classList.toggle('active', idx === activeIdx);
-  });
   // Update header section label
   const secEl = document.getElementById('reader-header-section');
   if (secEl && _lib.toc[activeIdx]) secEl.textContent = _lib.toc[activeIdx].label;
@@ -7196,23 +7251,184 @@ function _updateActiveTOCItem() {
 function jumpToTOCSection(idx) {
   const tc = _lib.toc[idx];
   if (!tc) return;
-  // Find the chapter heading
   const heads = document.querySelectorAll('.reader-chapter-head');
   if (heads[idx]) {
     const scroll = document.getElementById('reader-scroll');
     if (scroll) scroll.scrollTo({top: heads[idx].offsetTop - 60, behavior:'smooth'});
   }
-  toggleReaderTOC(); // close drawer after jump
+  if (window.innerWidth < 1024) toggleReaderTOC(); // close only on mobile
 }
 
 function toggleReaderTOC() {
-  document.getElementById('reader-toc-overlay')?.classList.toggle('open');
-  // Reset search filter on open
+  const lp = document.getElementById('reader-left-panel');
+  if (!lp) return;
+  const isMobile = window.innerWidth < 1024;
+  if (isMobile) {
+    lp.classList.toggle('mobile-open');
+  }
   const si = document.getElementById('reader-toc-search-input');
-  if (si) { si.value=''; _filterTOC(''); }
+  if (si && lp.classList.contains('mobile-open')) { si.value=''; _filterTOC(''); }
 }
-function _tocOverlayClick(e) {
-  if (e.target === document.getElementById('reader-toc-overlay')) toggleReaderTOC();
+function _tocOverlayClick(e) { /* backdrop handled inline */ }
+
+// ── Right panel (AI · Notes · Community) ─────────────────────
+function toggleReaderRight() {
+  const rp = document.getElementById('reader-right-panel');
+  if (!rp) return;
+  if (window.innerWidth < 1024) {
+    rp.classList.toggle('mobile-open');
+  }
+}
+
+function _openReaderRight(tab) {
+  const rp = document.getElementById('reader-right-panel');
+  if (!rp) return;
+  if (window.innerWidth < 1024) rp.classList.add('mobile-open');
+  switchReaderPanel(tab);
+}
+
+function switchReaderPanel(tab) {
+  document.querySelectorAll('.reader-rp-tab').forEach(b => b.classList.toggle('active', b.dataset.rpTab === tab));
+  const body = document.getElementById('reader-rp-body');
+  if (!body) return;
+  if (tab === 'ai') _renderReaderAIPanel();
+  else if (tab === 'notes') _renderReaderNotesPanel();
+  else if (tab === 'community') _renderReaderCommunityPanel();
+}
+
+function _renderReaderAIPanel() {
+  const body = document.getElementById('reader-rp-body');
+  if (!body) return;
+  const sel = window.getSelection()?.toString().trim() || '';
+  const selHint = sel ? `<div style="font-size:11px;color:var(--rt-muted);margin-bottom:12px;padding:8px 10px;background:var(--rt-surface);border-radius:8px;font-style:italic;border-left:2px solid var(--rt-accent)">"${escHtml(sel.slice(0,120))}${sel.length>120?'…':''}"</div>` : '';
+  body.innerHTML = `
+    ${selHint}
+    <div class="reader-ai-grid">
+      <button class="reader-ai-card" onclick="_readerAIAction('explain')">
+        <span class="reader-ai-card-icon">💡</span>
+        <span class="reader-ai-card-label">Explain</span>
+        <span class="reader-ai-card-desc">Break down complex ideas</span>
+      </button>
+      <button class="reader-ai-card" onclick="_readerAIAction('summarize')">
+        <span class="reader-ai-card-icon">📝</span>
+        <span class="reader-ai-card-label">Summarize</span>
+        <span class="reader-ai-card-desc">Key points at a glance</span>
+      </button>
+      <button class="reader-ai-card" onclick="_readerAIAction('example')">
+        <span class="reader-ai-card-icon">🌱</span>
+        <span class="reader-ai-card-label">Give Example</span>
+        <span class="reader-ai-card-desc">Real-world illustration</span>
+      </button>
+      <button class="reader-ai-card" onclick="_readerAIAction('question')">
+        <span class="reader-ai-card-icon">🙏</span>
+        <span class="reader-ai-card-label">Ask AI</span>
+        <span class="reader-ai-card-desc">Deepen understanding</span>
+      </button>
+    </div>
+    <div id="reader-ai-result"></div>`;
+}
+
+async function _readerAIAction(action) {
+  const sel = window.getSelection()?.toString().trim();
+  const resultEl = document.getElementById('reader-ai-result');
+  if (!resultEl) return;
+  if (!sel) {
+    resultEl.innerHTML = `<div class="reader-ai-result"><div class="reader-ai-result-label">Tip</div>Select some text first, then click an action.</div>`;
+    return;
+  }
+  resultEl.innerHTML = `<div class="reader-ai-result"><div class="reader-ai-result-label">${escHtml(action)}</div><div style="color:var(--rt-muted);font-size:12px">Thinking…</div></div>`;
+  try {
+    const res = await api('POST', `/library/texts/${_lib.currentTextId}/ai`, { action, selectedText: sel });
+    resultEl.innerHTML = `<div class="reader-ai-result"><div class="reader-ai-result-label">${escHtml(action)}</div>${escHtml(res.result||res.message||'')}</div>`;
+  } catch {
+    resultEl.innerHTML = `<div class="reader-ai-result"><div class="reader-ai-result-label">AI Companion</div><span style="color:var(--rt-muted)">AI responses are coming soon. Select a passage and check back later — we're building this feature thoughtfully.</span></div>`;
+  }
+}
+
+function _renderReaderNotesPanel() {
+  const body = document.getElementById('reader-rp-body');
+  if (!body) return;
+  const highlights = _lib.highlights || [];
+  if (!highlights.length) {
+    body.innerHTML = `<div style="text-align:center;padding:32px 16px;color:var(--rt-muted);font-size:13px">
+      <div style="font-size:2rem;margin-bottom:12px">📌</div>
+      <div>No highlights yet.</div>
+      <div style="margin-top:6px;font-size:11px">Select text and tap a colour to start highlighting.</div>
+    </div>`;
+    return;
+  }
+  body.innerHTML = `<div class="reader-notes-list">${highlights.map(h=>`
+    <div class="reader-note-item" style="border-left-color:${escHtml(h.color||'var(--rt-accent)')}">
+      <div class="reader-note-item-text">"${escHtml((h.selectedText||'').slice(0,200))}"</div>
+      ${h.note ? `<div class="reader-note-item-meta">${escHtml(h.note)}</div>` : ''}
+    </div>`).join('')}</div>`;
+}
+
+async function _renderReaderCommunityPanel() {
+  const body = document.getElementById('reader-rp-body');
+  if (!body) return;
+  body.innerHTML = `<div style="color:var(--rt-muted);font-size:12px;text-align:center;padding:24px 0">Loading circles…</div>`;
+  try {
+    const circles = await api('GET', '/study-circles?limit=6');
+    const items = (circles.circles || circles || []).slice(0,6);
+    if (!items.length) {
+      body.innerHTML = `<div style="text-align:center;padding:32px 16px;color:var(--rt-muted);font-size:13px"><div style="font-size:2rem;margin-bottom:12px">🧘</div>No study circles yet.</div>`;
+      return;
+    }
+    body.innerHTML = `<div style="font-size:11px;color:var(--rt-muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Study Circles</div>` +
+      items.map(c=>`
+        <div class="reader-circle-item" onclick="openCommunityDetail('${escHtml(c.id)}')">
+          <div class="reader-circle-avatar">${(c.name||'?').charAt(0).toUpperCase()}</div>
+          <div>
+            <div class="reader-circle-name">${escHtml(c.name||'')}</div>
+            <div class="reader-circle-meta">${(c._count?.members||0)} members</div>
+          </div>
+        </div>`).join('');
+  } catch {
+    body.innerHTML = `<div style="color:var(--rt-muted);font-size:12px;text-align:center;padding:24px 0">Could not load circles.</div>`;
+  }
+}
+
+// ── Left panel reading stats ──────────────────────────────────
+function _renderReaderLeftStats(text, pct) {
+  const el = document.getElementById('reader-lp-stats');
+  if (!el) return;
+  const streak = _calcStreak();
+  const segsRead = Math.round((_lib.segTotal||0) * pct/100);
+  const minsLeft = Math.max(0, Math.ceil(Math.max(0,(_lib.segTotal||0) - segsRead) * 30/200));
+  el.innerHTML = `
+    <div class="reader-lp-stat-row"><span>Progress</span><span class="reader-lp-stat-val">${Math.round(pct)}%</span></div>
+    <div class="reader-lp-stat-row"><span>Time left</span><span class="reader-lp-stat-val">${minsLeft>0?(minsLeft<60?minsLeft+'m':Math.floor(minsLeft/60)+'h '+minsLeft%60+'m'):'Done'}</span></div>
+    ${streak>0?`<div class="reader-lp-streak">🔥 ${streak}-day streak</div>`:''}`;
+}
+
+function _calcStreak() {
+  try {
+    const sessions = JSON.parse(localStorage.getItem('lib_reading_sessions')||'[]');
+    if (!sessions.length) return 0;
+    const today = new Date().toISOString().slice(0,10);
+    let streak = 0; let checkDate = today;
+    const set = new Set(sessions);
+    while (set.has(checkDate)) {
+      streak++;
+      const d = new Date(checkDate);
+      d.setDate(d.getDate()-1);
+      checkDate = d.toISOString().slice(0,10);
+    }
+    return streak;
+  } catch { return 0; }
+}
+
+function _recordReadingSession() {
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const sessions = JSON.parse(localStorage.getItem('lib_reading_sessions')||'[]');
+    if (!sessions.includes(today)) {
+      sessions.push(today);
+      if (sessions.length > 365) sessions.splice(0, sessions.length-365);
+      localStorage.setItem('lib_reading_sessions', JSON.stringify(sessions));
+    }
+  } catch {}
 }
 
 function navReaderSection(dir) {
@@ -7313,7 +7529,8 @@ function _readerKeyHandler(e) {
       if (!ctrl) { e.preventDefault(); toggleFocusMode(); }
       break;
     case 'Escape':
-      if (document.getElementById('reader-toc-overlay')?.classList.contains('open')) { toggleReaderTOC(); e.stopPropagation(); }
+      if (document.getElementById('reader-left-panel')?.classList.contains('mobile-open')) { toggleReaderTOC(); e.stopPropagation(); }
+      else if (document.getElementById('reader-right-panel')?.classList.contains('mobile-open')) { toggleReaderRight(); e.stopPropagation(); }
       else if (document.getElementById('reader-settings-overlay')?.classList.contains('open')) { toggleReaderSettings(); e.stopPropagation(); }
       else if (panel.classList.contains('focus-mode')) { toggleFocusMode(); e.stopPropagation(); }
       break;
@@ -7377,7 +7594,8 @@ function _readerClose() {
   const scroll = document.getElementById('reader-scroll');
   if (scroll) scroll.removeEventListener('scroll', _onReaderScroll);
   // Close any open overlays
-  document.getElementById('reader-toc-overlay')?.classList.remove('open');
+  document.getElementById('reader-left-panel')?.classList.remove('mobile-open');
+  document.getElementById('reader-right-panel')?.classList.remove('mobile-open');
   document.getElementById('reader-settings-overlay')?.classList.remove('open');
   document.getElementById('panel-text')?.classList.remove('focus-mode');
   closePanel('panel-text');
