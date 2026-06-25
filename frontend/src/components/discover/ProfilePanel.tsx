@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { UserProfile, FeedPost, Tradition } from '@/types'
-import { useUserProfile, useUserPosts, useSaveProfile } from '@/hooks/useProfile'
+import { useUserProfile, useUserPosts, useSaveProfile, useUploadAvatar } from '@/hooks/useProfile'
 import { useFollowUser, useUnfollowUser } from '@/hooks/useDiscover'
 import { useUserParticipations } from '@/hooks/useParticipations'
 import { useAuthStore } from '@/stores/auth'
@@ -184,6 +184,8 @@ export function ProfilePanel({ userId, onClose }: Props) {
   const follow = useFollowUser()
   const unfollow = useUnfollowUser()
   const saveProfile = useSaveProfile()
+  const uploadAvatar = useUploadAvatar()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [activeTab, setActiveTab] = useState<PanelTab>('posts')
   const [following, setFollowing] = useState(false)
   const [editing, setEditing] = useState(false)
@@ -208,6 +210,16 @@ export function ProfilePanel({ userId, onClose }: Props) {
       onSuccess: () => { showToast('Profile saved', 'success'); setEditing(false) },
       onError: (e) => showToast((e as Error).message, 'error'),
     })
+  }
+
+  function handleAvatarFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    uploadAvatar.mutate(file, {
+      onSuccess: () => showToast('Photo updated', 'success'),
+      onError: () => showToast('Upload failed', 'error'),
+    })
+    e.target.value = ''
   }
 
   return (
@@ -235,10 +247,38 @@ export function ProfilePanel({ userId, onClose }: Props) {
             {/* Cover */}
             <div className={`profile-cover ${tradClass(profile.traditions)}`}>
               {profile.coverPhoto && <img src={profile.coverPhoto} alt="" />}
-              <div className="profile-avatar-wrap">
+              <div className="profile-avatar-wrap" style={{ position: 'relative', display: 'inline-block' }}>
                 {profile.profilePhoto
                   ? <img src={profile.profilePhoto} alt={profile.displayName} />
                   : <span>{initials(profile.displayName)}</span>}
+                {isOwnProfile && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadAvatar.isPending}
+                      aria-label="Change profile photo"
+                      style={{
+                        position: 'absolute', bottom: 0, right: 0,
+                        width: 28, height: 28, borderRadius: '50%',
+                        background: 'var(--saffron-500)', border: '2px solid white',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', color: 'white',
+                      }}
+                    >
+                      {uploadAvatar.isPending
+                        ? <i className="fa-solid fa-spinner fa-spin" style={{ fontSize: 11 }} />
+                        : <i className="fa-solid fa-camera" style={{ fontSize: 11 }} />}
+                    </button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      onChange={handleAvatarFileChange}
+                    />
+                  </>
+                )}
               </div>
             </div>
 

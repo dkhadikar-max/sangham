@@ -55,7 +55,6 @@ export function PostCard({ post, onReply, onMessage }: PostCardProps) {
 
   const tradTags = post.traditionTags ?? []
   const role = fmtRole(author.role ?? '')
-  const myInitials = (user?.displayName ?? 'Y').charAt(0).toUpperCase()
 
   return (
     <div className="post-card feed-card">
@@ -158,11 +157,7 @@ export function PostCard({ post, onReply, onMessage }: PostCardProps) {
       {/* Reply bar */}
       {user && (
         <div className="disc-reply-bar">
-          <div className="avatar avatar-sm" style={{ flexShrink: 0 }}>
-            {user.profilePhoto
-              ? <img src={user.profilePhoto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-              : myInitials}
-          </div>
+          <Avatar src={user.profilePhoto} name={user.displayName} size="sm" />
           <button className="disc-reply-prompt" onClick={() => onReply?.(post.id)}>
             Write a reply…
           </button>

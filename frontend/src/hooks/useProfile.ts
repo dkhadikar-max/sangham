@@ -6,6 +6,28 @@ import type { UserProfile, FeedPost, EventItem, DiscoverProject } from '@/types'
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
+export function useUploadAvatar() {
+  const { token, updateUser } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const form = new FormData()
+      form.append('file', file)
+      const res = await fetch(`${API}/uploads/avatar`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: form,
+      })
+      if (!res.ok) throw new Error('Upload failed')
+      return res.json() as Promise<{ url: string }>
+    },
+    onSuccess: (data) => {
+      updateUser({ profilePhoto: data.url })
+      qc.invalidateQueries({ queryKey: ['user-profile'] })
+    },
+  })
+}
+
 async function fetchProfile(userId: string, token: string | null): Promise<UserProfile> {
   const res = await fetch(`${API}/users/${userId}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},

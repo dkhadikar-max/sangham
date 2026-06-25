@@ -90,7 +90,6 @@ function LeftSidebar() {
   const { data: myAssociations = [] } = useMyAssociations()
   const { data: myProfile } = useUserProfile(user?.id ?? null)
   const handle = user?.username ? `@${user.username}` : '@practitioner'
-  const initial = (user?.displayName ?? 'U').charAt(0).toUpperCase()
   const commCount = myAssociations.length
   const connCount = myProfile?.followersCount ?? null
 
@@ -99,12 +98,7 @@ function LeftSidebar() {
       {/* Profile card */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center">
-            {user?.profilePhoto
-              // eslint-disable-next-line @next/next/no-img-element
-              ? <img src={user.profilePhoto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              : <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--saffron-600)' }}>{initial}</span>}
-          </div>
+          <Avatar src={user?.profilePhoto ?? null} name={user?.displayName} size="md" />
           <div className="min-w-0">
             <h3 className="font-semibold text-sangham-ink text-sm truncate">{user?.displayName ?? '—'}</h3>
             <p className="text-xs text-sangham-brown-light truncate">{handle}</p>
@@ -366,12 +360,7 @@ function CenterFeed() {
       {user && (
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
           <div className="flex gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-sangham-gold/20 flex-shrink-0 bg-sangham-cream flex items-center justify-center">
-              {user.profilePhoto
-                // eslint-disable-next-line @next/next/no-img-element
-                ? <img src={user.profilePhoto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                : <span style={{ fontWeight: 600, color: 'var(--saffron-600)' }}>{(user.displayName ?? 'U').charAt(0)}</span>}
-            </div>
+            <Avatar src={user.profilePhoto ?? null} name={user.displayName} size="sm" />
             <div className="flex-1">
               <button
                 type="button"
