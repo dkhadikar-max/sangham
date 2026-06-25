@@ -108,8 +108,8 @@ export function BottomNav() {
           >
             <span
               style={{
-                width: 22,
-                height: 22,
+                width: 24,
+                height: 24,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -125,9 +125,9 @@ export function BottomNav() {
             </span>
             <span
               style={{
-                fontSize: '9px',
-                fontWeight: isActive ? 600 : 400,
-                letterSpacing: '0.02em',
+                fontSize: '11px',
+                fontWeight: isActive ? 600 : 500,
+                letterSpacing: '0.01em',
               }}
             >
               {item.label}

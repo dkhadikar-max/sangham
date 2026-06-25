@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useUserProfile } from '@/hooks/useProfile'
 import { CreateSanghaModal } from '@/components/create/CreateSanghaModal'
+import { Avatar } from '@/components/ui/Avatar'
 
 type CommView = 'grid' | 'list'
 
@@ -63,7 +64,6 @@ export function CommunitiesTab() {
   }
 
   const { data: myProfile } = useUserProfile(user?.id ?? null)
-  const userInitial = user ? (user.displayName || '?').charAt(0).toUpperCase() : '?'
   const commCount = myAssociations.length
   const connectionsCount = myProfile?.followersCount ?? null
 
@@ -78,12 +78,7 @@ export function CommunitiesTab() {
               {/* Profile card */}
               <div className="bg-white rounded-2xl p-5 shadow-sm" style={{ border: '1px solid rgba(199,154,59,0.1)' }}>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-sangham-cream flex items-center justify-center" style={{ border: '2px solid rgba(199,154,59,0.2)' }}>
-                    {user?.profilePhoto
-                      ? <img src={user.profilePhoto} alt="" className="w-full h-full object-cover" />
-                      : <span className="font-semibold text-sangham-ink">{userInitial}</span>
-                    }
-                  </div>
+                  <Avatar src={user?.profilePhoto ?? null} name={user?.displayName} size="md" />
                   <div className="min-w-0">
                     <h3 className="font-semibold text-sangham-ink text-sm truncate">{user?.displayName ?? '—'}</h3>
                     <p className="text-xs text-sangham-brown-light truncate">@{user?.username ?? 'practitioner'}</p>

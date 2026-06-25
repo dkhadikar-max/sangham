@@ -31,70 +31,34 @@ export function LearnTab() {
   return (
     <div>
       {/* Sticky header: search + tabs */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          background: 'var(--surface-bg)',
-          paddingBottom: 'var(--space-2)',
-          paddingTop: 'var(--space-1)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'var(--space-2)',
-        }}
-      >
-        {/* Search bar */}
-        <div style={{ position: 'relative', margin: '0 var(--space-4)' }}>
-          <i
-            className="fa-solid fa-magnifying-glass"
-            style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-tertiary)', fontSize: 14 }}
-          />
-          <input
-            type="text"
-            placeholder="Search courses, texts, resources…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              background: 'white',
-              borderRadius: 'var(--radius-xl)',
-              padding: '14px 16px 14px 44px',
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-primary)',
-              border: '1px solid rgba(199,154,59,0.1)',
-              outline: 'none',
-              boxShadow: 'var(--shadow-1)',
-              boxSizing: 'border-box',
-            }}
-          />
+      <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--surface-bg)', display: 'flex', flexDirection: 'column' }}>
+        {/* Search bar — uses standard .search-bar class */}
+        <div style={{ padding: 'var(--space-3) var(--space-4) var(--space-2)' }}>
+          <div className="search-bar">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" /></svg>
+            <input
+              type="text"
+              placeholder="Search courses, texts, resources…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* Tab nav */}
+        {/* Tab strip — simple border-bottom, no card wrapper */}
         <div
-          style={{
-            background: 'white',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '0 var(--space-5)',
-            boxShadow: 'var(--shadow-1)',
-            border: '1px solid rgba(199,154,59,0.1)',
-            margin: '0 var(--space-4)',
-          }}
+          style={{ display: 'flex', overflowX: 'auto', borderBottom: '1px solid var(--border-subtle)', paddingLeft: 'var(--space-2)', touchAction: 'pan-x' }}
+          className="scrollbar-hide"
         >
-          <div
-            style={{ display: 'flex', alignItems: 'center', overflowX: 'auto', gap: '1.5rem', touchAction: 'pan-x' }}
-            className="scrollbar-hide"
-          >
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                className={`comm-tab-btn${activeTab === tab.id ? ' active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              className={`comm-tab-btn${activeTab === tab.id ? ' active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
