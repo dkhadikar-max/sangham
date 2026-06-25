@@ -59,12 +59,16 @@ router.get('/search', async (req: AuthRequest, res: Response): Promise<void> => 
     ];
   }
 
+  const sort = req.query.sort as string | undefined;
+  const orderBy = sort === 'recent' ? { createdAt: 'desc' as const } : { title: 'asc' as const };
+
   const [texts, total] = await Promise.all([
     prisma.libraryText.findMany({
-      where, take: limit, skip,
+      where, take: limit, skip, orderBy,
       select: {
         id: true, title: true, author: true, translator: true, language: true,
         licence: true, attribution: true, externalId: true, sourceUrl: true, coverUrl: true,
+        createdAt: true,
         _count: { select: { segments: true } },
         collection: { select: { name: true, tradition: true, sourceUrl: true } },
       },

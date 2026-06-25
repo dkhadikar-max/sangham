@@ -1262,7 +1262,7 @@ round:var(--error-600)}
     .lib-text-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3)}
     .lib-text-card:active{transform:scale(0.97)}
     .lib-text-card-sym{font-size:1.4rem;margin-bottom:var(--space-2);line-height:1}
-    .lib-text-card .lib-text-card-sym{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:2rem;margin-bottom:var(--space-2)}
+    .lib-text-card .lib-text-card-sym{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px 8px 8px;margin-bottom:var(--space-2)}
     .lib-text-card-title{font-size:var(--text-xs);font-weight:var(--weight-semibold);color:var(--text-primary);flex:1;line-height:1.4}
     .lib-text-card-meta{font-size:10px;color:var(--text-tertiary);margin-top:var(--space-2);display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
     .lib-text-card-lang{background:var(--surface-sunken);padding:1px 5px;border-radius:99px;font-weight:var(--weight-medium)}
@@ -1275,7 +1275,7 @@ round:var(--error-600)}
     .lib-book-card:hover{transform:translateY(-4px)}
     .lib-book-card:active{transform:scale(0.97)}
     .lib-book-cover-img{width:110px;height:162px;border-radius:var(--radius-lg);object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,0.18);background:var(--surface-sunken)}
-    .lib-book-cover-fb{width:110px;height:162px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12)}
+    .lib-book-cover-fb{width:110px;height:162px;border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 8px 8px;margin-bottom:8px;box-shadow:0 3px 10px rgba(0,0,0,0.18);gap:0}
     .lib-book-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;line-height:1.35;margin-bottom:3px;min-height:28px}
     .lib-book-card p{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     /* ── Kindle-style grid (Browse All — used on Library home) ── */
@@ -1286,9 +1286,20 @@ round:var(--error-600)}
     .lib-grid-card:hover{transform:translateY(-3px)}
     .lib-grid-card:active{transform:scale(0.96)}
     .lib-grid-cover-img{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);object-fit:cover;display:block;margin-bottom:6px;box-shadow:0 3px 10px rgba(0,0,0,0.18);background:var(--surface-sunken)}
-    .lib-grid-cover-fb{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin-bottom:6px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
-    .lib-grid-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;margin-bottom:2px}
-    .lib-grid-card p{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lib-grid-cover-fb{width:100%;aspect-ratio:2/3;border-radius:var(--radius-md);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px 8px 8px;margin-bottom:6px;box-shadow:0 3px 10px rgba(0,0,0,0.18);gap:0;position:relative}
+    .lib-cover-sym-wrap{flex:1;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
+    .lib-cover-title-line{font-size:7.5px;font-weight:700;line-height:1.3;color:rgba(255,255,255,.95);text-align:center;padding:0 3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;width:100%}
+    .lib-cover-brand-line{font-size:6px;letter-spacing:.1em;text-transform:uppercase;opacity:.5;color:white;margin-top:5px;text-align:center;flex-shrink:0}
+    .lib-grid-card h4{font-size:11px;font-weight:var(--weight-semibold);color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;margin-bottom:1px}
+    .lib-grid-card .lib-card-author{font-size:10px;color:var(--text-tertiary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:3px}
+    .lib-card-badge{display:inline-block;font-size:7px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 5px;border-radius:99px;line-height:1.6}
+    .lib-badge-theravada{background:#fef3c7;color:#92400e}
+    .lib-badge-navayana{background:#dbeafe;color:#1e3a8a}
+    .lib-badge-mahayana{background:#ede9fe;color:#4c1d95}
+    .lib-badge-vajrayana{background:#fee2e2;color:#7f1d1d}
+    .lib-badge-multiple,.lib-badge-other{background:#f3f4f6;color:#374151}
+    /* Horizontal recently-added row reuses lib-book-scroll + lib-book-card */
+    /* lib-book-cover-fb layout consolidated above */
     /* ── Write & Publish button ──────────────────────────────────── */
     .lib-write-btn{display:flex;align-items:center;gap:10px;width:100%;padding:14px 20px;border:2px dashed var(--sangham-gold,#C79A3B);border-radius:var(--radius-xl);background:rgba(199,154,59,.06);color:var(--sangham-gold,#C79A3B);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;justify-content:center}
     .lib-write-btn:hover{background:rgba(199,154,59,.12);border-style:solid}
@@ -6411,51 +6422,119 @@ async function loadLearnLibrary() {
   if (_learnTabLoaded.library) return;
   root.innerHTML = '<div class="spinner-center"><div class="spinner spinner-lg"></div></div>';
   try {
-    const [cols, txData] = await Promise.all([
+    const [cols, txData, recentData] = await Promise.all([
       api('GET','/library/collections'),
       api('GET','/library/search?limit=24'),
+      api('GET','/library/search?limit=8&sort=recent'),
     ]);
     _learnTabLoaded.library = true;
     _lib.view = 'home';
-    _renderLibHome(root, cols, txData.data||txData||[]);
+    _renderLibHome(root, cols, txData.data||txData||[], recentData.data||recentData||[]);
   } catch(err) {
     root.innerHTML = renderEmptyState('learn');
   }
 }
 
-function _renderLibHome(root, cols, texts) {
+function _renderLibHome(root, cols, texts, recentTexts) {
+  recentTexts = recentTexts || [];
   const progress = libProgress();
   const inProgress = Object.entries(progress)
     .filter(([,p])=>p.percent>0&&p.percent<100)
     .sort(([,a],[,b])=>b.lastRead-a.lastRead).slice(0,3);
 
-  // Continue Reading — use cover image if available
+  // ── Shared card builders ─────────────────────────────────────
+  function _fbCover(sym, tc, title) {
+    return `<div class="lib-cover-sym-wrap">${sym}</div><div class="lib-cover-title-line">${escHtml(title)}</div><div class="lib-cover-brand-line">Sangham</div>`;
+  }
+  function _gridCard(tx, i) {
+    const coverUrl = libGetCoverUrl(tx);
+    const sym = libTradSym(tx.collection?.tradition);
+    const tc  = libTradClass(tx.collection?.tradition);
+    const tradKey = (tx.collection?.tradition||'other').toLowerCase();
+    const fb = _fbCover(sym, tc, _libShortTitle(tx.title));
+    const coverEl = coverUrl
+      ? `<img class="lib-grid-cover-img" src="${escHtml(coverUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-grid-cover-fb ${tc}" style="display:none">${fb}</div>`
+      : `<div class="lib-grid-cover-fb ${tc}">${fb}</div>`;
+    const author = tx.translator || tx.author || '';
+    const pct = progress[tx.id]?.percent || 0;
+    return `<button type="button" class="lib-grid-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.02}s">
+      ${coverEl}
+      <h4>${escHtml(_libShortTitle(tx.title))}</h4>
+      ${author ? `<div class="lib-card-author">${escHtml(author)}</div>` : ''}
+      <span class="lib-card-badge lib-badge-${tradKey}">${_LIB_TRAD_LABELS[tx.collection?.tradition]||'Text'}</span>
+      ${pct>0?`<div class="lib-text-card-prog" style="margin-top:4px"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
+    </button>`;
+  }
+  function _bookCard(tx) {
+    const coverUrl = libGetCoverUrl(tx);
+    const sym = libTradSym(tx.collection?.tradition);
+    const tc  = libTradClass(tx.collection?.tradition);
+    const fb = `<div class="lib-cover-sym-wrap" style="font-size:2rem">${sym}</div><div class="lib-cover-title-line" style="font-size:7px">${escHtml(_libShortTitle(tx.title))}</div><div class="lib-cover-brand-line">Sangham</div>`;
+    const coverEl = coverUrl
+      ? `<img class="lib-book-cover-img" src="${escHtml(coverUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-book-cover-fb ${tc}" style="display:none">${fb}</div>`
+      : `<div class="lib-book-cover-fb ${tc}">${fb}</div>`;
+    const author = tx.translator || tx.author || '';
+    return `<button type="button" class="lib-book-card" onclick="openTextDetail('${escHtml(tx.id)}')">
+      ${coverEl}
+      <h4>${escHtml(_libShortTitle(tx.title))}</h4>
+      <p>${escHtml(author)}</p>
+    </button>`;
+  }
+
+  // ── Continue Reading ─────────────────────────────────────────
   const continueHtml = inProgress.length ? `
     <div class="lib-section">
       <div class="lib-section-header"><span class="lib-section-title">Continue Reading</span></div>
       <div style="display:flex;flex-direction:column;gap:var(--space-2)">
         ${inProgress.map(([id,p])=>{
-          const textObj = texts.find(t=>t.id===id) || {title:p.title, collection:{tradition:p.tradition}};
+          const textObj = texts.find(t=>t.id===id)||{title:p.title,collection:{tradition:p.tradition}};
           const coverUrl = libGetCoverUrl(textObj);
+          const sym = libTradSym(p.tradition);
+          const tc  = libTradClass(p.tradition);
+          const lastStr = p.lastRead ? timeAgo(new Date(p.lastRead).toISOString()) : '';
           const coverEl = coverUrl
-            ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(p.tradition)}" style="display:none">${libTradSym(p.tradition)}</div>`
-            : `<div class="lib-continue-mini-cover ${libTradClass(p.tradition)}">${libTradSym(p.tradition)}</div>`;
+            ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:52px;height:70px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.18)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${tc}" style="display:none;width:52px;height:70px">${sym}</div>`
+            : `<div class="lib-continue-mini-cover ${tc}" style="width:52px;height:70px">${sym}</div>`;
           return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${id}')">
             ${coverEl}
             <div class="lib-continue-info">
               <div class="lib-continue-title">${escHtml(p.title)}</div>
-              <div class="lib-continue-sub">${p.percent}% complete</div>
+              <div class="lib-continue-sub">${lastStr?lastStr+' · ':''}${p.percent}% complete</div>
               <div class="lib-continue-progress"><div class="lib-continue-bar" style="width:${p.percent}%"></div></div>
             </div>
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--saffron-500);fill:none;stroke-width:2;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
           </button>`;
         }).join('')}
       </div>
     </div>` : '';
 
-  // Collections grid
-  const collHtml = cols.map((c,i)=>{
-    const tradLabel = _LIB_TRAD_LABELS[c.tradition] || c.tradition;
-    const langs=(c.languages||[]).map(l=>`<span style="background:rgba(255,255,255,.18);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:600;color:white">${libLangLabel(l)}</span>`).join(' ');
+  // ── Recently Added ───────────────────────────────────────────
+  const recentHtml = recentTexts.length ? `
+    <div class="lib-section">
+      <div class="lib-section-header"><span class="lib-section-title">Recently Added</span></div>
+      <div class="lib-book-scroll">${recentTexts.map(_bookCard).join('')}</div>
+    </div>` : '';
+
+  // ── Recommended (same tradition as most-recent reading) ──────
+  let recommendedHtml = '';
+  if (inProgress.length) {
+    const primaryTrad = inProgress[0][1].tradition;
+    const readIds = new Set(inProgress.map(([id])=>id));
+    const recs = texts.filter(t=>t.collection?.tradition===primaryTrad&&!readIds.has(t.id)).slice(0,8);
+    if (recs.length >= 2) {
+      const tradLabel = _LIB_TRAD_LABELS[primaryTrad]||'Related';
+      recommendedHtml = `
+        <div class="lib-section">
+          <div class="lib-section-header"><span class="lib-section-title">More ${escHtml(tradLabel)} Texts</span></div>
+          <div class="lib-book-scroll">${recs.map(_bookCard).join('')}</div>
+        </div>`;
+    }
+  }
+
+  // ── Collections ──────────────────────────────────────────────
+  const collHtml = cols.map(c=>{
+    const tradLabel = _LIB_TRAD_LABELS[c.tradition]||c.tradition;
+    const langs = (c.languages||[]).map(l=>`<span style="background:rgba(255,255,255,.18);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:600;color:white">${libLangLabel(l)}</span>`).join(' ');
     return `<button type="button" class="lib-coll-card" onclick="openLibraryCollection('${escHtml(c.id)}')">
       <div class="lib-coll-cover ${libTradClass(c.tradition)}">
         <div class="lib-coll-sym">${libTradSym(c.tradition)}</div>
@@ -6468,48 +6547,13 @@ function _renderLibHome(root, cols, texts) {
     </button>`;
   }).join('');
 
-  // Featured card — use the first text that has a known cover, else first text overall
-  const featured = texts.find(t=>libGetCoverUrl(t)) || texts[0];
-  const featuredHtml = featured ? (() => {
-    const coverUrl = libGetCoverUrl(featured);
-    const coverEl = coverUrl
-      ? `<img class="lib-featured-cover-img" src="${escHtml(coverUrl)}" alt="${escHtml(featured.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-featured-cover-fb ${libTradClass(featured.collection?.tradition)}" style="display:none">${libTradSym(featured.collection?.tradition)}</div>`
-      : `<div class="lib-featured-cover-fb ${libTradClass(featured.collection?.tradition)}">${libTradSym(featured.collection?.tradition)}</div>`;
-    const readMins = Math.ceil((featured.segmentsTotal||0)*30/200);
-    const readStr  = readMins < 60 ? `~${readMins} min` : `~${Math.floor(readMins/60)}h ${readMins%60}m`;
-    return `<button type="button" class="lib-featured" onclick="openTextDetail('${escHtml(featured.id)}')">
-      ${coverEl}
-      <div class="lib-featured-body">
-        <div class="lib-featured-title">${escHtml(featured.title)}</div>
-        ${featured.author ? `<div class="lib-featured-author">${escHtml(featured.author)}</div>` : ''}
-        ${featured.description ? `<div class="lib-featured-excerpt">${escHtml(featured.description.slice(0,160))}${featured.description.length>160?'…':''}</div>` : ''}
-        <div class="lib-featured-meta">
-          ${readMins>0?`<span>⏱ ${readStr}</span>`:''}
-          ${featured.segmentsTotal?`<span>📄 ${featured.segmentsTotal.toLocaleString()} passages</span>`:''}
-          <span>🌐 ${libLangLabel(featured.language)}</span>
-        </div>
-      </div>
-    </button>`;
-  })() : '';
-
-  // Browse All Texts — Kindle-style grid
-  const booksHtml = texts.map((tx,i)=>{
-    const coverUrl = libGetCoverUrl(tx);
-    const _sym = libTradSym(tx.collection?.tradition);
-    const _tc = libTradClass(tx.collection?.tradition);
-    const _fbInner = `<div style="text-align:center;padding:6px 4px"><div style="font-size:1.5rem;margin-bottom:5px">${_sym}</div><div style="font-size:8px;font-weight:700;line-height:1.25;opacity:.92;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">${escHtml(_libShortTitle(tx.title))}</div></div>`;
-    const coverEl = coverUrl
-      ? `<img class="lib-grid-cover-img" src="${escHtml(coverUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-grid-cover-fb ${_tc}" style="display:none">${_fbInner}</div>`
-      : `<div class="lib-grid-cover-fb ${_tc}">${_fbInner}</div>`;
-    return `<button type="button" class="lib-grid-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.02}s">
-      ${coverEl}
-      <h4>${escHtml(_libShortTitle(tx.title))}</h4>
-      <p>${escHtml(tx.translator || tx.author || libLangLabel(tx.language))}</p>
-    </button>`;
-  }).join('');
+  // ── Browse All Texts ─────────────────────────────────────────
+  const booksHtml = texts.map((tx,i)=>_gridCard(tx,i)).join('');
 
   root.innerHTML = `
     ${continueHtml}
+    ${recentHtml}
+    ${recommendedHtml}
     <div class="lib-section">
       <div class="lib-section-header">
         <span class="lib-section-title">Collections</span>
@@ -6517,14 +6561,9 @@ function _renderLibHome(root, cols, texts) {
       </div>
       <div class="lib-coll-grid">${collHtml}</div>
     </div>
-    ${featuredHtml ? `
-    <div class="lib-section">
-      <div class="lib-section-header"><span class="lib-section-title">Featured</span></div>
-      ${featuredHtml}
-    </div>` : ''}
     <div class="lib-section">
       <div class="lib-section-header">
-        <span class="lib-section-title">All Texts</span>
+        <span class="lib-section-title">Browse All Texts</span>
         <span style="font-size:12px;color:var(--text-tertiary)">${texts.length} texts</span>
       </div>
       <div class="lib-kindle-grid">${booksHtml}</div>
@@ -6540,28 +6579,38 @@ function _renderLibHome(root, cols, texts) {
   if (state.token) _loadLibBookmarks();
 }
 
+function _libTextRow(tx, progress) {
+  const coverUrl = libGetCoverUrl(tx);
+  const tc = libTradClass(tx.collection?.tradition);
+  const sym = libTradSym(tx.collection?.tradition);
+  const pct = progress ? (progress[tx.id]?.percent||0) : 0;
+  const author = tx.translator || tx.author || '';
+  const fbHtml = `<div class="lib-cover-sym-wrap" style="font-size:1.2rem">${sym}</div><div class="lib-cover-title-line" style="font-size:6px">${escHtml(_libShortTitle(tx.title))}</div>`;
+  const coverEl = coverUrl
+    ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:52px;height:70px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.18)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${tc}" style="display:none;width:52px;height:70px;flex-direction:column;padding:6px;font-size:1rem">${fbHtml}</div>`
+    : `<div class="lib-continue-mini-cover ${tc}" style="width:52px;height:70px;flex-direction:column;padding:6px;font-size:1rem">${fbHtml}</div>`;
+  return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
+    ${coverEl}
+    <div class="lib-continue-info">
+      <div class="lib-continue-title">${escHtml(_libShortTitle(tx.title))}</div>
+      <div class="lib-continue-sub">${author ? escHtml(author)+' · ' : ''}${libLangLabel(tx.language)}</div>
+      ${pct>0?`<div class="lib-continue-progress"><div class="lib-continue-bar" style="width:${pct}%"></div></div>`:''}
+    </div>
+    <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--border-default);fill:none;stroke-width:2;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>`;
+}
+
 async function _loadLibBookmarks() {
   try {
     const bm = await api('GET','/library/my-bookmarks');
     if (!bm.length) return;
     const el = document.getElementById('lib-bookmarks-section');
     if (!el) return;
+    const prog = libProgress();
     el.innerHTML = `<div class="lib-section">
-      <div class="lib-section-header"><span class="lib-section-title">Bookmarked</span></div>
+      <div class="lib-section-header"><span class="lib-section-title">Saved Teachings</span></div>
       <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-        ${bm.map(tx=>{
-          const coverUrl = libGetCoverUrl(tx);
-          const coverEl = coverUrl
-            ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}" style="display:none">${libTradSym(tx.collection?.tradition)}</div>`
-            : `<div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>`;
-          return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
-            ${coverEl}
-            <div class="lib-continue-info">
-              <div class="lib-continue-title">${escHtml(tx.title)}</div>
-              <div class="lib-continue-sub">${escHtml(tx.author||'')} · ${libLangLabel(tx.language)}</div>
-            </div>
-          </button>`;
-        }).join('')}
+        ${bm.map(tx=>_libTextRow(tx,prog)).join('')}
       </div>
     </div>`;
   } catch {}
@@ -6592,26 +6641,15 @@ async function openLibraryBookmarks() {
           </div>`;
         return;
       }
+      const prog = libProgress();
       root.innerHTML = `
         <button type="button" class="lib-breadcrumb" onclick="showLibraryHome()">
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg> Library
         </button>
         <div class="lib-section">
-          <div class="lib-section-header"><span class="lib-section-title">Saved Teachings</span></div>
+          <div class="lib-section-header"><span class="lib-section-title">Saved Teachings</span><span style="font-size:12px;color:var(--text-tertiary)">${bm.length}</span></div>
           <div style="display:flex;flex-direction:column;gap:var(--space-2)">
-            ${bm.map(tx => {
-              const coverUrl = libGetCoverUrl(tx);
-              const coverEl = coverUrl
-                ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:44px;height:58px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.15)" onerror="this.replaceWith(this.nextElementSibling)"><div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}" style="display:none">${libTradSym(tx.collection?.tradition)}</div>`
-                : `<div class="lib-continue-mini-cover ${libTradClass(tx.collection?.tradition)}">${libTradSym(tx.collection?.tradition)}</div>`;
-              return `<button type="button" class="lib-continue-card" onclick="openTextDetail('${escHtml(tx.id)}')">
-                ${coverEl}
-                <div class="lib-continue-info">
-                  <div class="lib-continue-title">${escHtml(tx.title)}</div>
-                  <div class="lib-continue-sub">${escHtml(tx.author || '')} · ${libLangLabel(tx.language)}</div>
-                </div>
-              </button>`;
-            }).join('')}
+            ${bm.map(tx=>_libTextRow(tx,prog)).join('')}
           </div>
         </div>
         <div style="height:var(--space-8)"></div>`;
@@ -6649,16 +6687,19 @@ function _renderCollView(root, coll, texts) {
   const cards = texts.map((tx,i)=>{
     const pct=(progress[tx.id]?.percent)||0;
     const coverUrl = libGetCoverUrl(tx);
-    const _fbSym = `<div style="font-size:1.8rem;margin-bottom:4px">${sym}</div><div style="font-size:7.5px;font-weight:700;line-height:1.25;opacity:.88;padding:0 6px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">${escHtml(_libShortTitle(tx.title))}</div>`;
+    const fbInner = `<div class="lib-cover-sym-wrap">${sym}</div><div class="lib-cover-title-line">${escHtml(_libShortTitle(tx.title))}</div><div class="lib-cover-brand-line">Sangham</div>`;
     const coverEl = coverUrl
-      ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:var(--radius-md);margin-bottom:var(--space-2);display:block;box-shadow:0 2px 6px rgba(0,0,0,0.12)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-text-card-sym" style="display:none">${_fbSym}</div>`
-      : `<div class="lib-text-card-sym">${_fbSym}</div>`;
+      ? `<img src="${escHtml(coverUrl)}" alt="" loading="lazy" style="width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:var(--radius-md);margin-bottom:var(--space-2);display:block;box-shadow:0 3px 10px rgba(0,0,0,0.18)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-text-card-sym ${tradClass}" style="display:none">${fbInner}</div>`
+      : `<div class="lib-text-card-sym ${tradClass}">${fbInner}</div>`;
+    const author = tx.translator || tx.author || '';
+    const readMins = tx.segmentsTotal ? Math.ceil(tx.segmentsTotal*30/200) : 0;
     return `<button type="button" class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
       ${coverEl}
-      <div class="lib-text-card-title">${escHtml(tx.title)}</div>
+      <div class="lib-text-card-title">${escHtml(_libShortTitle(tx.title))}</div>
+      ${author ? `<div class="lib-text-card-meta" style="margin-top:2px;margin-bottom:0"><span style="font-size:10px;color:var(--text-secondary)">${escHtml(author)}</span></div>` : ''}
       <div class="lib-text-card-meta">
         <span class="lib-text-card-lang">${libLangLabel(tx.language)}</span>
-        ${tx.author?`<span>${escHtml(tx.author.split(' ').pop())}</span>`:''}
+        ${readMins>0?`<span>${readMins<60?'~'+readMins+'m':'~'+Math.floor(readMins/60)+'h'}</span>`:''}
       </div>
       ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
     </button>`;
@@ -6708,17 +6749,24 @@ async function searchLibrary(q, tradition, collId) {
       </button>
       <div class="lib-section" style="margin-top:0">
         <div class="lib-section-header"><span class="lib-section-title">Results for "${escHtml(q)}"</span></div>
-        ${texts.length ? `<div class="lib-text-grid">
+        ${texts.length ? `<div class="lib-kindle-grid">
           ${texts.map((tx,i)=>{
-            const pct=progress[tx.id]?.percent||0;
-            return `<button type="button" class="lib-text-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.04}s">
-              <div class="lib-text-card-sym">${libTradSym(tx.collection?.tradition)}</div>
-              <div class="lib-text-card-title">${escHtml(tx.title)}</div>
-              <div class="lib-text-card-meta">
-                <span class="lib-text-card-lang">${libLangLabel(tx.language)}</span>
-                ${tx.author?`<span>${escHtml(tx.author)}</span>`:''}
-              </div>
-              ${pct>0?`<div class="lib-text-card-prog"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
+            const coverUrl = libGetCoverUrl(tx);
+            const sym = libTradSym(tx.collection?.tradition);
+            const tc  = libTradClass(tx.collection?.tradition);
+            const tradKey = (tx.collection?.tradition||'other').toLowerCase();
+            const fb = `<div class="lib-cover-sym-wrap">${sym}</div><div class="lib-cover-title-line">${escHtml(_libShortTitle(tx.title))}</div><div class="lib-cover-brand-line">Sangham</div>`;
+            const coverEl = coverUrl
+              ? `<img class="lib-grid-cover-img" src="${escHtml(coverUrl)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="lib-grid-cover-fb ${tc}" style="display:none">${fb}</div>`
+              : `<div class="lib-grid-cover-fb ${tc}">${fb}</div>`;
+            const author = tx.translator || tx.author || '';
+            const pct = progress[tx.id]?.percent||0;
+            return `<button type="button" class="lib-grid-card" onclick="openTextDetail('${escHtml(tx.id)}')" style="animation-delay:${i*.02}s">
+              ${coverEl}
+              <h4>${escHtml(_libShortTitle(tx.title))}</h4>
+              ${author?`<div class="lib-card-author">${escHtml(author)}</div>`:''}
+              <span class="lib-card-badge lib-badge-${tradKey}">${_LIB_TRAD_LABELS[tx.collection?.tradition]||'Text'}</span>
+              ${pct>0?`<div class="lib-text-card-prog" style="margin-top:4px"><div class="lib-text-card-progfill" style="width:${pct}%"></div></div>`:''}
             </button>`;
           }).join('')}
         </div>` : renderEmptyState('learn')}
@@ -6853,7 +6901,9 @@ async function openTextDetail(textId) {
         <div class="reader-book-stats">
           <span class="reader-book-stat"><strong>${_lib.segTotal.toLocaleString()}</strong> passages</span>
           <span class="reader-book-stat"><strong>${libLangLabel(text.language)}</strong></span>
-          <span class="reader-book-stat"><strong>${readingMins<60?'~'+readingMins+' min':'~'+Math.floor(readingMins/60)+'h '+readingMins%60+'m'}</strong> read</span>
+          ${readingMins>0?`<span class="reader-book-stat"><strong>${readingMins<60?'~'+readingMins+' min':'~'+Math.floor(readingMins/60)+'h '+readingMins%60+'m'}</strong> est. read</span>`:''}
+          ${pct>0?`<span class="reader-book-stat"><strong>${pct}%</strong> complete</span>`:''}
+          ${(()=>{const lp=libProgress()[textId];return lp?.lastRead?`<span class="reader-book-stat">Last opened <strong>${timeAgo(new Date(lp.lastRead).toISOString())}</strong></span>`:''})()}
         </div>
         <div class="reader-book-actions">
           <button class="reader-action-btn" id="lib-bm-btn" onclick="bookmarkCurrentText()">
