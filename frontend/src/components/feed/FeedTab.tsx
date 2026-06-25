@@ -304,6 +304,7 @@ function CenterFeed() {
   const [hasMore, setHasMore] = useState(false)
   const { token } = useAuthStore()
   const { data: posts, isPending, isError, error } = useFeed(filter)
+  const { data: suggestedPeople = [] } = useSuggestedConnections()
 
   useEffect(() => {
     setExtraPosts([])
@@ -338,23 +339,27 @@ function CenterFeed() {
 
   return (
     <div className="md:col-span-6 space-y-6">
-      {/* Stories strip */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-lg font-semibold text-sangham-ink">Suggested Practitioners</h2>
-          <button className="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style={{ minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>
-            View All
-          </button>
+      {/* Stories strip — only when we have suggestions */}
+      {suggestedPeople.length > 0 && (
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-serif text-lg font-semibold text-sangham-ink">Suggested Practitioners</h2>
+            <button className="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style={{ minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>
+              View All
+            </button>
+          </div>
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ touchAction: 'pan-x' }}>
+            {suggestedPeople.map((p) => (
+              <button key={p.id} className="flex-shrink-0 flex flex-col items-center gap-1.5 bg-transparent border-0 p-0 cursor-pointer">
+                <Avatar src={p.profilePhoto ?? null} name={p.displayName} size="lg" />
+                <span className="text-[11px] text-sangham-brown-light truncate" style={{ maxWidth: 64 }}>
+                  {p.displayName.split(' ')[0]}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ touchAction: 'pan-x' }}>
-          <button className="flex-shrink-0 flex flex-col items-center gap-1.5 group bg-transparent border-0 p-0" aria-label="Create a post">
-            <div className="w-16 h-16 rounded-full bg-sangham-cream border-2 border-dashed border-sangham-gold/30 flex items-center justify-center group-hover:border-sangham-gold transition-colors">
-              <i className="fa-solid fa-plus text-sangham-gold" />
-            </div>
-            <span className="text-[11px] text-sangham-brown-light">Post</span>
-          </button>
-        </div>
-      </div>
+      )}
 
       {/* Create post box */}
       {user && (
@@ -412,14 +417,14 @@ function CenterFeed() {
         )}
         {isError && (
           <div className="empty-state">
-            <div className="empty-state-icon">⚠️</div>
+            <div className="empty-state-icon"><i className="fa-solid fa-triangle-exclamation" style={{ color: 'var(--saffron-400)' }} /></div>
             <div className="empty-state-title">Couldn't load feed</div>
             <div className="empty-state-body">{(error as Error)?.message ?? 'Something went wrong'}</div>
           </div>
         )}
         {!isPending && !isError && allPosts.length === 0 && (
           <div className="empty-state" style={{ padding: '3rem 1rem' }}>
-            <div className="empty-state-icon">💬</div>
+            <div className="empty-state-icon"><i className="fa-solid fa-comment-dots" style={{ color: 'var(--saffron-300)' }} /></div>
             <div className="empty-state-title">No discussions yet</div>
             <div className="empty-state-body">Join communities to see their active discussions here.</div>
           </div>

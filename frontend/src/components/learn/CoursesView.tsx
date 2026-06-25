@@ -455,7 +455,7 @@ export function CoursesView({ searchQuery }: { searchQuery: string }) {
 
       {!isLoading && paths.length === 0 && (
         <div style={{ textAlign: 'center', padding: 'var(--space-12) 0', color: 'var(--text-tertiary)' }}>
-          <div style={{ fontSize: 40, marginBottom: 'var(--space-3)' }}>📚</div>
+          <i className="fa-solid fa-book-open" style={{ fontSize: 36, marginBottom: 'var(--space-3)', display: 'block', color: 'var(--saffron-300)' }} />
           <p style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>No learning paths yet</p>
           <p style={{ fontSize: 'var(--text-xs)' }}>Learning paths will appear here once they are added.</p>
         </div>
@@ -463,8 +463,8 @@ export function CoursesView({ searchQuery }: { searchQuery: string }) {
 
       {!isLoading && paths.length > 0 && filtered.length === 0 && (
         <div style={{ textAlign: 'center', padding: 'var(--space-12) 0', color: 'var(--text-tertiary)' }}>
-          <div style={{ fontSize: 40, marginBottom: 'var(--space-3)' }}>🔍</div>
-          <p style={{ fontSize: 'var(--text-sm)', fontWeight: 600 }}>No paths match "{searchQuery}"</p>
+          <i className="fa-solid fa-magnifying-glass" style={{ fontSize: 36, marginBottom: 'var(--space-3)', display: 'block', color: 'var(--saffron-300)' }} />
+          <p style={{ fontSize: 'var(--text-sm)', fontWeight: 600 }}>No paths match &ldquo;{searchQuery}&rdquo;</p>
         </div>
       )}
 

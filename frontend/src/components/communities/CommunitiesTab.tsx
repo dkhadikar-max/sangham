@@ -280,12 +280,12 @@ export function CommunitiesTab() {
               </div>
             ) : error ? (
               <div style={{ textAlign: 'center', padding: 'var(--space-16) 0', color: 'var(--text-tertiary)' }}>
-                <div style={{ fontSize: '2rem', marginBottom: 'var(--space-2)' }}>😔</div>
+                <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '2rem', marginBottom: 'var(--space-2)', display: 'block', color: 'var(--saffron-400)' }} />
                 <div className="font-medium">Could not load communities</div>
               </div>
             ) : associations.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 'var(--space-16) 0' }}>
-                <div style={{ fontSize: '2.5rem', marginBottom: 'var(--space-3)' }}>🔍</div>
+                <i className="fa-solid fa-magnifying-glass" style={{ fontSize: '2rem', marginBottom: 'var(--space-3)', display: 'block', color: 'var(--saffron-300)' }} />
                 <h3 className="font-semibold text-sangham-ink mb-1">No communities found</h3>
                 <p className="text-sm text-sangham-brown-light">Try adjusting your search or filters</p>
               </div>
