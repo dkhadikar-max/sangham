@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import path from 'path';
+import fs from 'fs';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import jwt from 'jsonwebtoken';
@@ -90,15 +91,15 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc:    ["'self'"],
-      // Inline script block + onclick handlers + Socket.IO CDN
+      // Next.js bundles (self) + legacy CDN scripts still used by admin panel
       scriptSrc:     ["'self'", "'unsafe-inline'", 'https://cdn.socket.io', 'https://static.cloudflareinsights.com', 'https://checkout.razorpay.com', 'https://cdn.tailwindcss.com', 'https://cdnjs.cloudflare.com'],
       scriptSrcAttr: ["'unsafe-inline'"],
-      // Inline <style> blocks + Google Fonts CSS
+      // Next.js inline styles + Google Fonts CSS + FA CDN
       styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
       fontSrc:       ["'self'", 'data:', 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
-      // Same-origin fetches + WebSocket (Socket.IO) + socket.io source maps (devtools)
+      // REST API (self) + WebSocket for legacy Socket.IO support
       connectSrc:    ["'self'", 'wss:', 'ws:', 'https://cdn.socket.io'],
-      imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org', 'https://images.unsplash.com', 'https://archive.org', 'https://books.google.com'],
+      imgSrc:        ["'self'", 'data:', 'blob:', 'https://covers.openlibrary.org', 'https://images.unsplash.com', 'https://archive.org', 'https://books.google.com', 'https://lh3.googleusercontent.com'],
       mediaSrc:      ["'self'", 'blob:'],
       frameSrc:      ["'self'", 'https://drive.google.com'],
     },
@@ -118,9 +119,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan(env.isDevelopment ? 'dev' : 'combined'));
 app.use(apiLimiter);
 
-// ── Serve frontend (sangham.html → public/index.html) ──────────────────────
-const publicPath = path.join(__dirname, '..', 'public');
-app.use(express.static(publicPath));
+// ── Serve frontend ──────────────────────────────────────────────────────────
+// Prefer the Next.js static export produced during build; fall back to the
+// legacy public/ directory so the old frontend continues to work if the
+// Next.js build has not run yet.
+const nextOutPath  = path.join(__dirname, '..', 'frontend', 'out');
+const legacyPublic = path.join(__dirname, '..', 'public');
+const staticRoot   = fs.existsSync(nextOutPath) ? nextOutPath : legacyPublic;
+app.use(express.static(staticRoot));
 
 // ── Local file serving ──────────────────────────────────────────────────────
 const uploadsPath = path.resolve(env.UPLOADS_DIR);
@@ -158,17 +164,25 @@ app.use(`${API}/notifications`, notificationRoutes);
 app.use(`${API}/uploads`,       uploadRoutes);
 app.use(`${API}/educate`,       educateRoutes);
 
-// ── Admin panel (separate route, before SPA fallback) ──────────────────────
+// ── Admin panel (always served from legacy public/) ────────────────────────
 app.get('/admin', (_req, res) => {
-  const adminFile = path.join(__dirname, '..', 'public', 'admin.html');
+  const adminFile = path.join(legacyPublic, 'admin.html');
   res.sendFile(adminFile, (err) => {
     if (err) res.status(404).json({ error: 'Admin panel not found' });
   });
 });
 
-// ── SPA fallback — serve index.html for all non-API routes ─────────────────
-app.get('*', (_req, res) => {
-  const indexFile = path.join(__dirname, '..', 'public', 'index.html');
+// ── SPA fallback — Next.js page-aware routing ──────────────────────────────
+app.get('*', (req, res) => {
+  // For Next.js static export, map top-level route segment to its page HTML.
+  // e.g. /feed → staticRoot/feed.html, /login → staticRoot/login.html
+  const segment  = req.path.replace(/^\//, '').split('/')[0] || 'index';
+  const pageFile = path.join(staticRoot, `${segment}.html`);
+  if (segment !== 'index' && fs.existsSync(pageFile)) {
+    return res.sendFile(pageFile);
+  }
+  // Root / and any unknown route fall back to index.html (Next.js router handles it)
+  const indexFile = path.join(staticRoot, 'index.html');
   res.sendFile(indexFile, (err) => {
     if (err) res.status(404).json({ error: 'Route not found' });
   });
