@@ -216,12 +216,16 @@ export function TextReader() {
       example: 'Modern Example',
       context: 'Historical Context',
     }
+    if (!token) {
+      setAiResult({ label: labels[action] ?? action, text: 'Sign in to use the AI companion.' })
+      return
+    }
     setAiResult({ label: labels[action] ?? action, text: '' })
     try {
       const res = await aiMut.mutateAsync({ textId, action })
       setAiResult({ label: labels[action] ?? action, text: res.result ?? '' })
     } catch {
-      setAiResult({ label: labels[action] ?? action, text: 'Could not generate response. Please try again.' })
+      setAiResult({ label: labels[action] ?? action, text: 'Could not generate a response. Please try again.' })
     }
   }
 
@@ -508,7 +512,13 @@ export function TextReader() {
           <div className="reader-rp-body">
             {rightTab === 'ai' && (
               <div>
-                <div className="reader-ai-grid">
+                {!token && (
+                  <div style={{ fontSize: 12, color: 'var(--rt-muted)', textAlign: 'center', padding: '8px 0 12px', background: 'color-mix(in srgb, var(--rt-accent) 6%, transparent)', borderRadius: 8, marginBottom: 10 }}>
+                    <div style={{ fontSize: '1.2rem', marginBottom: 4 }}>🔒</div>
+                    Sign in to use AI companion
+                  </div>
+                )}
+                <div className="reader-ai-grid" style={{ opacity: !token ? 0.45 : 1 }}>
                   <AICard icon="💡" label="Explain" desc="Clarify this passage" onClick={() => handleAI('explain')} loading={aiMut.isPending} />
                   <AICard icon="📝" label="Summarize" desc="Key points" onClick={() => handleAI('summarize')} loading={aiMut.isPending} />
                   <AICard icon="🌍" label="Example" desc="Modern application" onClick={() => handleAI('example')} loading={aiMut.isPending} />
@@ -523,11 +533,6 @@ export function TextReader() {
                   <div className="reader-ai-result">
                     <div className="reader-ai-result-label">{aiResult.label}</div>
                     <div>{aiResult.text || <span style={{ color: 'var(--rt-muted)' }}>Generating…</span>}</div>
-                  </div>
-                )}
-                {!token && (
-                  <div style={{ fontSize: 12, color: 'var(--rt-muted)', textAlign: 'center', marginTop: 8 }}>
-                    Sign in to use AI companion
                   </div>
                 )}
               </div>
