@@ -71,7 +71,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="absolute bottom-0 w-full flex justify-between items-center px-2 z-20 flex-shrink-0"
+      className="md:hidden absolute bottom-0 w-full flex justify-between items-center px-2 z-20 flex-shrink-0"
       style={{
         height: 'var(--nav-height)',
         background: 'rgba(253,248,240,0.9)',

@@ -166,6 +166,7 @@ export default function OnboardingPage() {
   const router = useRouter()
   const { token, updateUser } = useAuthStore()
   const [step, setStep] = useState(0)
+  const [hydrated, setHydrated] = useState(false)
   const [saving, setSaving] = useState(false)
   const [profOpen, setProfOpen] = useState(false)
   const profComboRef = useRef<HTMLDivElement>(null)
@@ -182,9 +183,11 @@ export default function OnboardingPage() {
     appLang: 'en',
   })
 
+  useEffect(() => { setHydrated(true) }, [])
+
   useEffect(() => {
-    if (!token) router.replace('/login')
-  }, [token, router])
+    if (hydrated && !token) router.replace('/login')
+  }, [hydrated, token, router])
 
   // Close profession dropdown on outside click
   useEffect(() => {

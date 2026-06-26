@@ -410,7 +410,14 @@ function CenterFeed() {
 
       {/* Posts */}
       <div className="space-y-5">
-        {isPending && (
+        {isPending && !user && (
+          <div className="empty-state" style={{ padding: '4rem 1rem' }}>
+            <div className="empty-state-icon"><i className="fa-solid fa-seedling" style={{ color: 'var(--saffron-300)' }} /></div>
+            <div className="empty-state-title">Join the conversation</div>
+            <div className="empty-state-body">Sign in to see discussions from your communities.</div>
+          </div>
+        )}
+        {isPending && user && (
           <div style={{ textAlign: 'center', padding: '3rem 0' }}>
             <Spinner size="lg" />
           </div>
