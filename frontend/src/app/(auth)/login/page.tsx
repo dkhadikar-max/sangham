@@ -32,6 +32,20 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+
+    if (!isLoginMode && !displayName.trim()) {
+      setError('Please enter your name')
+      return
+    }
+    if (!identifier.trim()) {
+      setError('Please enter your email or phone number')
+      return
+    }
+    if (!password) {
+      setError('Please enter your password')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -131,7 +145,7 @@ export default function LoginPage() {
                 placeholder="e.g. Ananda"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                required
+                autoComplete="name"
               />
             </div>
           )}
@@ -139,11 +153,12 @@ export default function LoginPage() {
             <label>Email or Phone</label>
             <input
               type="text"
+              inputMode="email"
               className="input"
               placeholder="Enter email or phone number"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              required
+              autoComplete="username"
             />
           </div>
           <div className="input-group">
@@ -155,7 +170,6 @@ export default function LoginPage() {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
           <button
