@@ -77,12 +77,12 @@ export default function LoginPage() {
 
   return (
     <div
+      className="auth-page"
       style={{
         background: 'linear-gradient(180deg,var(--surface-bg) 0%,var(--saffron-50) 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        minHeight: '100vh',
         padding: 'var(--space-4)',
       }}
     >

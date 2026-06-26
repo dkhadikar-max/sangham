@@ -407,6 +407,7 @@ function CenterFeed() {
       )}
 
       {/* Filter pills */}
+      <div className="relative">
       <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide" style={{ touchAction: 'pan-x' }}>
         {FILTERS.map(({ id, label }) => (
           <button
@@ -417,6 +418,8 @@ function CenterFeed() {
             {label}
           </button>
         ))}
+      </div>
+      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 40, background: 'linear-gradient(to left, var(--surface-bg), transparent)', pointerEvents: 'none' }} />
       </div>
 
       {/* Posts */}

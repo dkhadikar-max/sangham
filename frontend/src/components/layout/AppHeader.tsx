@@ -13,7 +13,7 @@ export function AppHeader() {
     { id: 'home',        icon: 'fa-house',          label: 'Home' },
     { id: 'communities', icon: 'fa-users',           label: 'Communities' },
     { id: 'learn',       icon: 'fa-book-open',       label: 'Learn' },
-    { id: 'discover',    icon: 'fa-calendar-days',   label: 'Events' },
+    { id: 'discover',    icon: 'fa-compass',          label: 'Discover' },
     { id: 'messages',    icon: 'fa-comment-dots',    label: 'Messages' },
   ]
 
