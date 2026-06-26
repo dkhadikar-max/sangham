@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 import { PersonCard } from './PersonCard'
 import { EventCard } from './EventCard'
 import { EventDetailPanel } from './EventDetailPanel'
@@ -95,6 +96,7 @@ function ErrorState({ message }: { message: string }) {
 
 // ── People sub-tab ────────────────────────────────────────────
 function PeoplePanel({ onOpenProfile }: { onOpenProfile: (id: string) => void }) {
+  const { token } = useAuthStore()
   const [filter, setFilter] = useState<PeopleFilter>({})
   const [q, setQ] = useState('')
   const [showFilters, setShowFilters] = useState(false)
@@ -238,7 +240,7 @@ function PeoplePanel({ onOpenProfile }: { onOpenProfile: (id: string) => void })
 
       {/* Results */}
       {isLoading && <div className="spinner-center"><div className="spinner" /></div>}
-      {error && <ErrorState message="Failed to load people" />}
+      {error && <ErrorState message={!token ? 'Sign in to discover practitioners' : 'Failed to load people'} />}
       {!isLoading && !error && people.length === 0 && (
         <EmptyState icon="fa-users" message="No people found. Try adjusting your filters." />
       )}
@@ -251,6 +253,7 @@ function PeoplePanel({ onOpenProfile }: { onOpenProfile: (id: string) => void })
 
 // ── Events sub-tab ────────────────────────────────────────────
 function EventsPanel({ onOpenEvent }: { onOpenEvent: (event: EventItem) => void }) {
+  const { token } = useAuthStore()
   const [q, setQ] = useState('')
   const [type, setType] = useState('ALL')
   const [mode, setMode] = useState('ANY')
@@ -331,7 +334,7 @@ function EventsPanel({ onOpenEvent }: { onOpenEvent: (event: EventItem) => void 
       {/* Results */}
       <div style={{ padding:'0 var(--space-4)' }}>
         {isLoading && <div className="spinner-center"><div className="spinner" /></div>}
-        {error && <ErrorState message="Failed to load events" />}
+        {error && <ErrorState message={!token ? 'Sign in to browse events' : 'Failed to load events'} />}
         {!isLoading && !error && events.length === 0 && (
           <EmptyState icon="fa-calendar-days" message="No events found. Try adjusting your filters." />
         )}
@@ -371,6 +374,7 @@ function ProjectItem({ project, onOpen }: { project: DiscoverProject; onOpen: ()
 }
 
 function ProjectsPanel() {
+  const { token } = useAuthStore()
   const { showToast } = useUiStore()
   const [q, setQ] = useState('')
   const [category, setCategory] = useState('ALL')
@@ -420,7 +424,7 @@ function ProjectsPanel() {
       {/* Results */}
       <div>
         {isLoading && <div className="spinner-center"><div className="spinner" /></div>}
-        {error && <ErrorState message="Failed to load projects" />}
+        {error && <ErrorState message={!token ? 'Sign in to explore projects' : 'Failed to load projects'} />}
         {!isLoading && !error && projects.length === 0 && (
           <EmptyState icon="fa-diagram-project" message="No open projects found. Try adjusting your filters." />
         )}

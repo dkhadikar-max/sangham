@@ -281,7 +281,7 @@ export function CommunitiesTab() {
             ) : error ? (
               <div style={{ textAlign: 'center', padding: 'var(--space-16) 0', color: 'var(--text-tertiary)' }}>
                 <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '2rem', marginBottom: 'var(--space-2)', display: 'block', color: 'var(--saffron-400)' }} />
-                <div className="font-medium">Could not load communities</div>
+                <div className="font-medium">{!token ? 'Sign in to see communities' : 'Could not load communities'}</div>
               </div>
             ) : associations.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 'var(--space-16) 0' }}>

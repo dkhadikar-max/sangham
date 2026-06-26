@@ -25,7 +25,7 @@ function PlaceholderTab({ label }: { label: string }) {
 }
 
 export function LearnTab() {
-  const [activeTab, setActiveTab] = useState<LearnSubTab>('library')
+  const [activeTab, setActiveTab] = useState<LearnSubTab>('courses')
   const [searchQuery, setSearchQuery] = useState('')
 
   return (

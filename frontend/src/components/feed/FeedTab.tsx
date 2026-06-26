@@ -97,21 +97,32 @@ function LeftSidebar() {
     <div className="sticky top-24 space-y-6">
       {/* Profile card */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
-        <div className="flex items-center gap-3 mb-4">
-          <Avatar src={user?.profilePhoto ?? null} name={user?.displayName} size="md" />
-          <div className="min-w-0">
-            <h3 className="font-semibold text-sangham-ink text-sm truncate">{user?.displayName ?? '—'}</h3>
-            <p className="text-xs text-sangham-brown-light truncate">{handle}</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-2 text-center">
-          {[[String(commCount), 'Communities'], [connCount !== null ? String(connCount) : '—', 'Connections']].map(([val, lbl]) => (
-            <div key={lbl} className="bg-sangham-cream rounded-lg p-2">
-              <div className="font-bold text-sangham-ink text-sm">{val}</div>
-              <div className="text-[10px] text-sangham-brown-light">{lbl}</div>
+        {user ? (
+          <>
+            <div className="flex items-center gap-3 mb-4">
+              <Avatar src={user.profilePhoto ?? null} name={user.displayName} size="md" />
+              <div className="min-w-0">
+                <h3 className="font-semibold text-sangham-ink text-sm truncate">{user.displayName}</h3>
+                <p className="text-xs text-sangham-brown-light truncate">{handle}</p>
+              </div>
             </div>
-          ))}
-        </div>
+            <div className="grid grid-cols-2 gap-2 text-center">
+              {[[String(commCount), 'Communities'], [connCount !== null ? String(connCount) : '—', 'Connections']].map(([val, lbl]) => (
+                <div key={lbl} className="bg-sangham-cream rounded-lg p-2">
+                  <div className="font-bold text-sangham-ink text-sm">{val}</div>
+                  <div className="text-[10px] text-sangham-brown-light">{lbl}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-1">
+            <i className="fa-solid fa-seedling text-2xl mb-3 block" style={{ color: '#C79A3B' }} />
+            <p className="text-sm font-semibold text-sangham-ink mb-1">Welcome to Sangham</p>
+            <p className="text-xs text-sangham-brown-light mb-3">Sign in to track your practice and connect with practitioners</p>
+            <a href="/login" className="btn btn-primary btn-sm" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>Sign In</a>
+          </div>
+        )}
       </div>
 
       {/* Menu */}
