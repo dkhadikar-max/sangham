@@ -120,12 +120,8 @@ app.use(morgan(env.isDevelopment ? 'dev' : 'combined'));
 app.use(apiLimiter);
 
 // ── Serve frontend ──────────────────────────────────────────────────────────
-// Prefer the Next.js static export produced during build; fall back to the
-// legacy public/ directory so the old frontend continues to work if the
-// Next.js build has not run yet.
-const nextOutPath  = path.join(__dirname, '..', 'frontend', 'out');
 const legacyPublic = path.join(__dirname, '..', 'public');
-const staticRoot   = fs.existsSync(nextOutPath) ? nextOutPath : legacyPublic;
+const staticRoot   = legacyPublic;
 app.use(express.static(staticRoot));
 
 // ── Local file serving ──────────────────────────────────────────────────────
