@@ -1002,4 +1002,12 @@ textarea.input { resize:vertical; min-height:80px; }
 .auth-switch a { color:var(--saffron-600); cursor:pointer; font-weight:var(--weight-medium); text-decoration:none; }
 .auth-switch a:hover { text-decoration:underline; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-.auth-page { min-height: 100vh; min-height: 100dvh; }
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--space-4);
+}
