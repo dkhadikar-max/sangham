@@ -154,6 +154,16 @@ router.get('/moderation/queue', authenticate, requireRole(...adminRoles), async 
   res.json(reports);
 });
 
+// GET /admin/clergy/queue — pending clergy applications awaiting review
+router.get('/clergy/queue', authenticate, requireRole(...adminRoles), async (_req: AuthRequest, res: Response): Promise<void> => {
+  const applications = await prisma.clergyApplication.findMany({
+    where: { status: 'PENDING' },
+    orderBy: { createdAt: 'asc' },
+    include: { user: { select: { id: true, displayName: true, email: true, profilePhoto: true, country: true } } },
+  });
+  res.json(applications);
+});
+
 // PUT /admin/content/:id/action
 router.put('/content/:id/action', authenticate, requireRole(...adminRoles), async (req: AuthRequest, res: Response): Promise<void> => {
   const { action, reason } = req.body;
