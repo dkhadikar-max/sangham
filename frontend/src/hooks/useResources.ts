@@ -30,6 +30,7 @@ export interface CreateResourceInput {
   creator?: string
   durationSecs?: number
   language?: string
+  thumbnailUrl?: string
 }
 
 export function useResources(filter: { type?: string; q?: string; limit?: number; page?: number }) {

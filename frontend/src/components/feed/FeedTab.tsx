@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 import { PostCard } from './PostCard'
@@ -16,6 +16,7 @@ import {
 } from '@/hooks/useFeed'
 import { useMyAssociations } from '@/hooks/useCommunities'
 import { useUserProfile } from '@/hooks/useProfile'
+import { useUploadMedia } from '@/hooks/useMessages'
 import { api } from '@/lib/api/client'
 import type { FeedPost } from '@/types'
 
@@ -320,13 +321,34 @@ function CenterFeed() {
   const { data: suggestedPeople = [] } = useSuggestedConnections()
   const [postText, setPostText] = useState('')
   const createPost = useCreatePost()
+  const uploadMedia = useUploadMedia()
+  const [pendingPhoto, setPendingPhoto] = useState<{ file: File; previewUrl: string } | null>(null)
+  const photoInputRef = useRef<HTMLInputElement>(null)
+
+  function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPendingPhoto({ file, previewUrl: URL.createObjectURL(file) })
+    e.target.value = ''
+  }
+
+  function removePendingPhoto() {
+    if (pendingPhoto) URL.revokeObjectURL(pendingPhoto.previewUrl)
+    setPendingPhoto(null)
+  }
 
   async function handlePost() {
     const content = postText.trim()
-    if (!content || createPost.isPending) return
+    if ((!content && !pendingPhoto) || createPost.isPending || uploadMedia.isPending) return
     try {
-      await createPost.mutateAsync(content)
+      let mediaUrls: string[] | undefined
+      if (pendingPhoto) {
+        const url = await uploadMedia.mutateAsync(pendingPhoto.file)
+        mediaUrls = [url]
+      }
+      await createPost.mutateAsync({ content, mediaUrls, postType: mediaUrls ? 'IMAGE' : 'TEXT' })
       setPostText('')
+      removePendingPhoto()
       showToast('Posted', 'success')
     } catch (err) {
       showToast((err as Error).message || 'Failed to post', 'error')
@@ -404,9 +426,30 @@ function CenterFeed() {
                 className="feed-composer-textarea w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-left transition-all hover:bg-sangham-cream-dark"
                 style={{ border: 'none', cursor: 'text', fontFamily: 'inherit', minHeight: 48, color: 'var(--text-primary)', resize: 'none', boxSizing: 'border-box' }}
               />
+              {pendingPhoto && (
+                <div style={{ position: 'relative', display: 'inline-block', marginTop: 'var(--space-3)' }}>
+                  <img src={pendingPhoto.previewUrl} alt="" style={{ maxHeight: 160, borderRadius: 12, display: 'block' }} />
+                  <button
+                    onClick={removePendingPhoto}
+                    aria-label="Remove photo"
+                    style={{ position: 'absolute', top: 6, right: 6, width: 24, height: 24, borderRadius: '50%', background: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <i className="fa-solid fa-xmark" style={{ fontSize: 11 }} />
+                  </button>
+                </div>
+              )}
               <div className="flex items-center justify-between mt-3" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div className="flex gap-2" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
-                  {[{ icon: 'fa-image', label: 'Photo' }, { icon: 'fa-link', label: 'Link' }, { icon: 'fa-quote-right', label: 'Quote' }].map(({ icon, label }) => (
+                  <button
+                    onClick={() => photoInputRef.current?.click()}
+                    className="flex items-center gap-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
+                    style={{ minHeight: 44, padding: '0.5rem 0.75rem', flexShrink: 0, whiteSpace: 'nowrap' }}
+                  >
+                    <i className="fa-solid fa-image text-sangham-gold" />
+                    <span>Photo</span>
+                  </button>
+                  <input ref={photoInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePhotoSelect} />
+                  {[{ icon: 'fa-link', label: 'Link' }, { icon: 'fa-quote-right', label: 'Quote' }].map(({ icon, label }) => (
                     <button
                       key={label}
                       onClick={() => showToast(`${label} — coming soon`, 'info')}
@@ -420,11 +463,11 @@ function CenterFeed() {
                 </div>
                 <button
                   onClick={handlePost}
-                  disabled={!postText.trim() || createPost.isPending}
+                  disabled={(!postText.trim() && !pendingPhoto) || createPost.isPending || uploadMedia.isPending}
                   className="hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ minHeight: 44, padding: '0.625rem 1.25rem', background: '#8B6621', flexShrink: 0, whiteSpace: 'nowrap' }}
                 >
-                  {createPost.isPending ? <Spinner size="sm" /> : 'Post'}
+                  {(createPost.isPending || uploadMedia.isPending) ? <Spinner size="sm" /> : 'Post'}
                 </button>
               </div>
             </div>

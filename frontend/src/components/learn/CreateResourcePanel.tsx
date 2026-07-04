@@ -32,6 +32,12 @@ const LANGUAGES = [
 ]
 
 const DURATION_TYPES = new Set<ResourceType>(['YOUTUBE_VIDEO', 'WORKSHOP_RECORDING'])
+const YOUTUBE_TYPES = new Set<ResourceType>(['YOUTUBE_VIDEO', 'YOUTUBE_PLAYLIST'])
+
+function youtubeVideoId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+  return m ? m[1] : null
+}
 
 interface Props {
   onClose: () => void
@@ -69,6 +75,9 @@ export function CreateResourcePanel({ onClose }: Props) {
         creator: form.creator.trim() || undefined,
         durationSecs: form.durationMinutes ? Number(form.durationMinutes) * 60 : undefined,
         language: form.language,
+        thumbnailUrl: YOUTUBE_TYPES.has(form.type) && youtubeVideoId(form.url)
+          ? `https://img.youtube.com/vi/${youtubeVideoId(form.url)}/mqdefault.jpg`
+          : undefined,
       })
       showToast('Resource shared with the community', 'success')
       onClose()
@@ -137,6 +146,13 @@ export function CreateResourcePanel({ onClose }: Props) {
                 onChange={e => set('url', e.target.value)}
                 required
               />
+              {YOUTUBE_TYPES.has(form.type) && youtubeVideoId(form.url) && (
+                <img
+                  src={`https://img.youtube.com/vi/${youtubeVideoId(form.url)}/mqdefault.jpg`}
+                  alt=""
+                  style={{ marginTop: 8, width: '100%', maxWidth: 320, borderRadius: 8, border: '1px solid var(--border-default)' }}
+                />
+              )}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>

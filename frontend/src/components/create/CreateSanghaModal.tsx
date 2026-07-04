@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api/client'
+import { tradStyle } from '@/components/communities/CommunityCard'
 import type { Tradition } from '@/types'
 
 // Must match the backend's Tradition / AssociationCategory enums exactly —
@@ -93,6 +94,26 @@ export function CreateSanghaModal({ onClose, onCreated }: Props) {
         <div style={{ width:40, height:4, background:'var(--border-default)', borderRadius:2, margin:'0 auto var(--space-5)' }} />
 
         <h2 style={{ fontSize:'var(--text-xl)', fontWeight:700, color:'var(--text-primary)', marginBottom:'var(--space-5)' }}>Create a Sangha</h2>
+
+        {/* Live preview */}
+        {(() => {
+          const style = tradStyle(form.tradition)
+          return (
+            <div style={{ display:'flex', alignItems:'center', gap:'var(--space-3)', padding:'var(--space-3) var(--space-4)', borderRadius:'var(--radius-xl)', background:'var(--surface-bg)', border:'1px solid var(--border-default)', marginBottom:'var(--space-5)' }}>
+              <div style={{ width:44, height:44, borderRadius:'var(--radius-lg)', flexShrink:0, background:style.ibg, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <i className={`fa-solid ${style.icon}`} style={{ color:style.iclr, fontSize:18 }} />
+              </div>
+              <div style={{ minWidth:0 }}>
+                <div style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--text-primary)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                  {form.name.trim() || 'Your Sangha name'}
+                </div>
+                <div style={{ fontSize:'var(--text-xs)', color:'var(--text-tertiary)' }}>
+                  {form.tradition ? form.tradition.charAt(0) + form.tradition.slice(1).toLowerCase().replace(/_/g,' ') : 'Preview'}
+                </div>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Fields */}
         <div style={{ display:'flex', flexDirection:'column', gap:'var(--space-4)' }}>

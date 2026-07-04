@@ -13,7 +13,7 @@ interface Props {
   onClose: () => void
 }
 
-const TRADITIONS: Tradition[] = ['THERAVADA', 'MAHAYANA', 'VAJRAYANA', 'NAVAYANA', 'ZEN', 'PURE_LAND', 'TIBETAN', 'MULTIPLE', 'OTHER']
+const TRADITIONS: Tradition[] = ['THERAVADA', 'MAHAYANA', 'VAJRAYANA', 'NAVAYANA', 'MULTIPLE', 'OTHER']
 const LANGUAGES = ['en', 'hi', 'mr', 'sa', 'te', 'ta', 'pa', 'gu']
 const LANG_LABELS: Record<string, string> = { en:'English', hi:'Hindi', mr:'Marathi', sa:'Sanskrit', te:'Telugu', ta:'Tamil', pa:'Punjabi', gu:'Gujarati' }
 const INTENTS = ['LEARN','TEACH','CONNECT','COLLABORATE','VOLUNTEER']

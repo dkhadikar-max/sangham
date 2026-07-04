@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useState } from 'react'
 
-function tradStyle(tradition?: string | null) {
+export function tradStyle(tradition?: string | null) {
   switch (tradition) {
     case 'THERAVADA':
       return { grad: 'linear-gradient(135deg,#4ade80,#059669)', ibg: 'linear-gradient(135deg,#f0fdf4,#dcfce7)', iclr: '#16a34a', icon: 'fa-seedling' }

@@ -52,12 +52,20 @@ export function useLikePost() {
   })
 }
 
+export interface CreatePostInput {
+  content: string
+  mediaUrls?: string[]
+  postType?: 'TEXT' | 'IMAGE'
+}
+
 export function useCreatePost() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: (content: string) =>
-      api.post<FeedPost>('/posts', { content }, token ?? undefined),
+    mutationFn: (input: string | CreatePostInput) => {
+      const body = typeof input === 'string' ? { content: input } : input
+      return api.post<FeedPost>('/posts', body, token ?? undefined)
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['feed'] })
     },
