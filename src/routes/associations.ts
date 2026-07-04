@@ -123,7 +123,7 @@ router.delete('/:id/leave', authenticate, async (req: AuthRequest, res: Response
 // POST /associations/:id/members  (admin only)
 router.post('/:id/members', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const membership = await prisma.associationMember.findFirst({
-    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] } },
+    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] }, isActive: true },
   });
   if (!membership && req.user!.role !== UserRole.SUPER_ADMIN) throw new AppError('Association admin required', 403);
 
@@ -139,7 +139,7 @@ router.post('/:id/members', authenticate, async (req: AuthRequest, res: Response
 // DELETE /associations/:id/members/:userId  (admin only)
 router.delete('/:id/members/:userId', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const membership = await prisma.associationMember.findFirst({
-    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] } },
+    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] }, isActive: true },
   });
   if (!membership && req.user!.role !== UserRole.SUPER_ADMIN) throw new AppError('Association admin required', 403);
 
@@ -165,7 +165,7 @@ router.get('/:id/modules', async (req: AuthRequest, res: Response): Promise<void
 // PUT /associations/:id/modules — update module settings (admin only)
 router.put('/:id/modules', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
   const isAdmin = await prisma.associationMember.findFirst({
-    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] } },
+    where: { associationId: req.params.id, userId: req.user!.id, memberRole: { in: ['PRESIDENT', 'SECRETARY'] }, isActive: true },
   });
   const isSuperAdmin = req.user!.role === UserRole.SUPER_ADMIN;
   if (!isAdmin && !isSuperAdmin) throw new AppError('Community admin required', 403);
