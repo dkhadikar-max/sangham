@@ -52,6 +52,18 @@ export function useLikePost() {
   })
 }
 
+export function useCreatePost() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (content: string) =>
+      api.post<FeedPost>('/posts', { content }, token ?? undefined),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['feed'] })
+    },
+  })
+}
+
 interface SidebarVerse {
   content?: string
   source?: string

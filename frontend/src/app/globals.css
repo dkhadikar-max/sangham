@@ -442,6 +442,9 @@ body {
 .feed-filter-pill:not(.active):hover { background: #F5EDD9; border-color: rgba(199,154,59,.3); }
 @media (max-width: 640px) { .feed-filter-pill { min-height: 44px; display: inline-flex; align-items: center; } }
 
+/* ── Feed composer ──────────────────────────────────────────── */
+.feed-composer-textarea::placeholder { color: rgba(139,115,85,0.6); }
+
 /* ── Story rings ─────────────────────────────────────────────── */
 .story-ring { background: linear-gradient(135deg,#C79A3B 0%,#E7D2A1 50%,#B2872F 100%); padding: 2.5px; border-radius: 50%; }
 .story-ring-viewed { background: #E5DDD0; }

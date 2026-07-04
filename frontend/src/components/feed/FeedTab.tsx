@@ -12,6 +12,7 @@ import {
   useTrendingCommunities,
   useSuggestedConnections,
   useSidebarEvents,
+  useCreatePost,
 } from '@/hooks/useFeed'
 import { useMyAssociations } from '@/hooks/useCommunities'
 import { useUserProfile } from '@/hooks/useProfile'
@@ -316,6 +317,20 @@ function CenterFeed() {
   const { token } = useAuthStore()
   const { data: posts, isPending, isError, error } = useFeed(filter)
   const { data: suggestedPeople = [] } = useSuggestedConnections()
+  const [postText, setPostText] = useState('')
+  const createPost = useCreatePost()
+
+  async function handlePost() {
+    const content = postText.trim()
+    if (!content || createPost.isPending) return
+    try {
+      await createPost.mutateAsync(content)
+      setPostText('')
+      showToast('Posted', 'success')
+    } catch (err) {
+      showToast((err as Error).message || 'Failed to post', 'error')
+    }
+  }
 
   useEffect(() => {
     setExtraPosts([])
@@ -378,27 +393,37 @@ function CenterFeed() {
           <div className="flex gap-3">
             <Avatar src={user.profilePhoto ?? null} name={user.displayName} size="sm" />
             <div className="flex-1">
-              <button
-                type="button"
-                className="w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-left transition-all hover:bg-sangham-cream-dark"
-                style={{ border: 'none', cursor: 'text', fontFamily: 'inherit', minHeight: 48, color: 'rgba(139,115,85,0.6)' }}
-              >
-                Share your thoughts, questions, or insights…
-              </button>
+              <textarea
+                value={postText}
+                onChange={(e) => setPostText(e.target.value)}
+                placeholder="Share your thoughts, questions, or insights…"
+                maxLength={1000}
+                rows={postText ? 3 : 1}
+                disabled={createPost.isPending}
+                className="feed-composer-textarea w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-left transition-all hover:bg-sangham-cream-dark"
+                style={{ border: 'none', cursor: 'text', fontFamily: 'inherit', minHeight: 48, color: 'var(--text-primary)', resize: 'none', boxSizing: 'border-box' }}
+              />
               <div className="flex items-center justify-between mt-3">
                 <div className="flex gap-2">
                   {[{ icon: 'fa-image', label: 'Photo' }, { icon: 'fa-link', label: 'Link' }, { icon: 'fa-quote-right', label: 'Quote' }].map(({ icon, label }) => (
-                    <button key={label} className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors" style={{ minHeight: 44 }}>
+                    <button
+                      key={label}
+                      onClick={() => showToast(`${label} — coming soon`, 'info')}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
+                      style={{ minHeight: 44 }}
+                    >
                       <i className={`fa-solid ${icon} text-sangham-gold`} />
                       <span>{label}</span>
                     </button>
                   ))}
                 </div>
                 <button
-                  className="px-5 py-2.5 bg-sangham-gold hover:bg-sangham-gold-dark text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20"
-                  style={{ minHeight: 44 }}
+                  onClick={handlePost}
+                  disabled={!postText.trim() || createPost.isPending}
+                  className="px-5 py-2.5 hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                  style={{ minHeight: 44, background: '#8B6621' }}
                 >
-                  Post
+                  {createPost.isPending ? <Spinner size="sm" /> : 'Post'}
                 </button>
               </div>
             </div>
