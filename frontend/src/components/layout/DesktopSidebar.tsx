@@ -7,7 +7,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import type { Tab } from '@/types'
 
 export function DesktopSidebar() {
-  const { activeTab, setTab } = useUiStore()
+  const { activeTab, setTab, viewProfile } = useUiStore()
   const { user } = useAuthStore()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -77,10 +77,10 @@ export function DesktopSidebar() {
       {/* Footer */}
       <div className="ds-footer">
         {user && (
-          <div className="ds-user">
+          <button className="ds-user" onClick={() => viewProfile(user.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', font: 'inherit' }}>
             <Avatar src={user.profilePhoto} name={user.displayName} size="sm" />
             <span className="ds-user-name">{user.displayName}</span>
-          </div>
+          </button>
         )}
         <button className="ds-create-btn">
           <i className="fa-solid fa-plus" style={{ fontSize: 12, flexShrink: 0 }} />

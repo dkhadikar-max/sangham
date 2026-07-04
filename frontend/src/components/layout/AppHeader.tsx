@@ -6,7 +6,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import type { Tab } from '@/types'
 
 export function AppHeader() {
-  const { activeTab, setTab, showToast } = useUiStore()
+  const { activeTab, setTab, showToast, viewProfile } = useUiStore()
   const { user } = useAuthStore()
 
   const navItems: { id: Tab; icon: string; label: string }[] = [
@@ -67,7 +67,13 @@ export function AppHeader() {
           <i className="fa-solid fa-plus text-sm" />
         </button>
         {user && (
-          <Avatar src={user.profilePhoto} name={user.displayName} size="sm" />
+          <button
+            onClick={() => viewProfile(user.id)}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', borderRadius: '50%' }}
+            aria-label="My profile"
+          >
+            <Avatar src={user.profilePhoto} name={user.displayName} size="sm" />
+          </button>
         )}
       </div>
     </header>

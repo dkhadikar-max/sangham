@@ -6,12 +6,15 @@ interface UiStore {
   activeLearnTab: LearnTab
   toasts: ToastItem[]
   theme: 'light' | 'dark'
+  viewProfileId: string | null
 
   setTab: (tab: Tab) => void
   setLearnTab: (tab: LearnTab) => void
   showToast: (message: string, type?: ToastType) => void
   dismissToast: (id: string) => void
   setTheme: (theme: 'light' | 'dark') => void
+  viewProfile: (userId: string) => void
+  closeProfile: () => void
 }
 
 let toastSeq = 0
@@ -21,6 +24,7 @@ export const useUiStore = create<UiStore>((set) => ({
   activeLearnTab: 'library',
   toasts: [],
   theme: 'light',
+  viewProfileId: null,
 
   setTab(tab) {
     set({ activeTab: tab })
@@ -45,5 +49,13 @@ export const useUiStore = create<UiStore>((set) => ({
   setTheme(theme) {
     set({ theme })
     document.documentElement.dataset.theme = theme
+  },
+
+  viewProfile(userId) {
+    set({ viewProfileId: userId })
+  },
+
+  closeProfile() {
+    set({ viewProfileId: null })
   },
 }))

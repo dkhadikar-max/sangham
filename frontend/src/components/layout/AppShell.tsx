@@ -7,6 +7,7 @@ import { AppHeader } from './AppHeader'
 import { ToastStack } from '@/components/ui/Toast'
 import { TextReader } from '@/components/library/TextReader'
 import { usePublishPublicKey } from '@/hooks/useMessages'
+import { ProfilePanel } from '@/components/discover/ProfilePanel'
 import type { ReactNode } from 'react'
 
 interface TabPanelProps {
@@ -38,7 +39,7 @@ interface AppShellProps {
 }
 
 export function AppShell({ home, learn, communities, discover, messages }: AppShellProps) {
-  const { activeTab } = useUiStore()
+  const { activeTab, viewProfileId, closeProfile } = useUiStore()
   usePublishPublicKey()
 
   return (
@@ -70,6 +71,9 @@ export function AppShell({ home, learn, communities, discover, messages }: AppSh
         <ToastStack />
       </div>
       <TextReader />
+      {viewProfileId && (
+        <ProfilePanel userId={viewProfileId} onClose={closeProfile} />
+      )}
     </div>
   )
 }
