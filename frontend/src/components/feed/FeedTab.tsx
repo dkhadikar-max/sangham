@@ -166,7 +166,7 @@ function RightSidebar() {
   const MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
 
   return (
-    <div className="sticky top-24 space-y-6">
+    <div className="sticky top-24" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Daily Wisdom */}
       <div
         className="rounded-2xl p-5 text-white relative overflow-hidden"

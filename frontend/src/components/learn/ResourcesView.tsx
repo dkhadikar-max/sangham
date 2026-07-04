@@ -92,7 +92,7 @@ export function ResourcesView({ searchQuery }: { searchQuery: string }) {
   const resources = data?.data ?? []
   const total = data?.total ?? 0
 
-  const isMod = user?.role === 'MODERATOR' || user?.role === 'SUPER_ADMIN'
+  const isMod = user?.role === 'MODERATOR' || (user?.role as string) === 'SUPER_ADMIN'
 
   async function handleDelete(id: string) {
     if (!confirm('Remove this resource from the shared library?')) return

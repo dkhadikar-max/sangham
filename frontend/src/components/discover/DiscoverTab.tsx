@@ -239,12 +239,13 @@ function PeoplePanel({ onOpenProfile }: { onOpenProfile: (id: string) => void })
       )}
 
       {/* Results */}
-      {isLoading && <div className="spinner-center"><div className="spinner" /></div>}
-      {error && <ErrorState message={!token ? 'Sign in to discover practitioners' : 'Failed to load people'} />}
-      {!isLoading && !error && people.length === 0 && (
+      {!token && <ErrorState message="Sign in to discover practitioners" />}
+      {token && isLoading && <div className="spinner-center"><div className="spinner" /></div>}
+      {token && error && <ErrorState message="Failed to load people" />}
+      {token && !isLoading && !error && people.length === 0 && (
         <EmptyState icon="fa-users" message="No people found. Try adjusting your filters." />
       )}
-      {!isLoading && people.map((p) => (
+      {token && !isLoading && people.map((p) => (
         <PersonCard key={p.id} person={p} onOpen={onOpenProfile} />
       ))}
     </div>

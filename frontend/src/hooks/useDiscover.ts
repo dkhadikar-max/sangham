@@ -41,6 +41,7 @@ export function useDiscoverPeople(filter: PeopleFilter) {
   return useQuery<DiscoverPerson[]>({
     queryKey: ['discover-people', filter],
     queryFn: () => fetchPeople(filter, token),
+    enabled: !!token,
     staleTime: 60_000,
     retry: 1,
   })
