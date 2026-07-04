@@ -1,5 +1,20 @@
 @import 'tailwindcss';
 
+/* Tailwind v4 reads theme tokens from @theme, not tailwind.config.ts's
+   theme.extend (that file has no @config directive pulling it in) --
+   these color aliases are used as bg-/text-/border-/shadow-/from-/to-
+   utilities across several components and were compiling to nothing. */
+@theme {
+  --color-sangham-gold: #C79A3B;
+  --color-sangham-gold-dark: #B2872F;
+  --color-sangham-cream: #F8F5EF;
+  --color-sangham-cream-dark: #EEE9DF;
+  --color-sangham-ink: #2F2A24;
+  --color-sangham-ink-light: #7A7268;
+  --color-sangham-brown: #7A7268;
+  --color-sangham-brown-light: #A59D92;
+}
+
 :root {
   --saffron-50: #F8F5EF;
   --saffron-100: #E7D2A1;
@@ -114,6 +129,12 @@
   --shadow-4: 0 10px 15px rgba(0,0,0,0.5), 0 4px 6px rgba(0,0,0,0.3);
   --shadow-5: 0 20px 25px rgba(0,0,0,0.6), 0 10px 10px rgba(0,0,0,0.4);
 }
+
+/* ================================================================
+   BRAND
+   ================================================================ */
+.logo-mark { width:36px; height:36px; border-radius:var(--radius-full); background:linear-gradient(135deg,var(--saffron-500),var(--saffron-600)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:var(--text-sm); box-shadow:var(--shadow-3); flex-shrink:0; }
+.logo-mark-sm { width:32px; height:32px; font-size:var(--text-xs); }
 
 @layer base {
   *, *::before, *::after {
