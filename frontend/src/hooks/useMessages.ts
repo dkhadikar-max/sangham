@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tansta
 import { useEffect, useRef, useCallback } from 'react'
 import { useAuthStore } from '@/stores/auth'
 import { api, API_BASE, refreshAccessToken } from '@/lib/api/client'
+import { getOrCreateKeypair } from '@/lib/crypto'
 import type { Conversation, Message } from '@/types'
 import { io, Socket } from 'socket.io-client'
 
@@ -119,6 +120,21 @@ export function useUploadMedia() {
   return useMutation({
     mutationFn: (file: File) => uploadMedia(file, token ?? null),
   })
+}
+
+// Ensures this device's E2E public key is on the server so others can message us.
+// Idempotent — getOrCreateKeypair caches the keypair locally, so this is a cheap no-op after the first run.
+export function usePublishPublicKey() {
+  const { token } = useAuthStore()
+  useEffect(() => {
+    if (!token) return
+    let cancelled = false
+    getOrCreateKeypair().then(({ publicKeyB64 }) => {
+      if (cancelled) return
+      api.put('/users/me/public-key', { publicKey: publicKeyB64 }, token).catch(() => {})
+    })
+    return () => { cancelled = true }
+  }, [token])
 }
 
 // Real-time subscription — adds new messages to query cache

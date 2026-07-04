@@ -6,6 +6,7 @@ import { DesktopSidebar } from './DesktopSidebar'
 import { AppHeader } from './AppHeader'
 import { ToastStack } from '@/components/ui/Toast'
 import { TextReader } from '@/components/library/TextReader'
+import { usePublishPublicKey } from '@/hooks/useMessages'
 import type { ReactNode } from 'react'
 
 interface TabPanelProps {
@@ -38,6 +39,7 @@ interface AppShellProps {
 
 export function AppShell({ home, learn, communities, discover, messages }: AppShellProps) {
   const { activeTab } = useUiStore()
+  usePublishPublicKey()
 
   return (
     <div className="app-shell">

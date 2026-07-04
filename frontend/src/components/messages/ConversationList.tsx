@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import type { Conversation } from '@/types'
 import { useAuthStore } from '@/stores/auth'
 
@@ -32,11 +33,20 @@ function ConvAvatar({ conv, myId }: { conv: Conversation; myId: string }) {
   if (photo) {
     return <img src={photo} alt={name} style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:'50%' }} />
   }
-  return <span style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--saffron-600)' }}>{initials(name)}</span>
+  return <span style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--saffron-800)' }}>{initials(name)}</span>
 }
 
 export function ConversationList({ conversations, activeId, onSelect, onNewChat, isLoading }: Props) {
   const { user } = useAuthStore()
+  const [search, setSearch] = useState('')
+
+  const filtered = search.trim()
+    ? conversations.filter((conv) => {
+        const other = conv.participants.find(p => p.id !== user?.id)
+        const name = (conv.name ?? other?.displayName ?? '').toLowerCase()
+        return name.includes(search.trim().toLowerCase())
+      })
+    : conversations
 
   return (
     <div style={{ display:'flex', flexDirection:'column', height:'100%', background:'var(--surface-elevated)', borderRight:'1px solid var(--border-subtle)' }}>
@@ -45,7 +55,7 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat,
         <span style={{ fontSize:'var(--text-base)', fontWeight:700, color:'var(--text-primary)' }}>Messages</span>
         <button
           onClick={onNewChat}
-          style={{ width:36, height:36, borderRadius:'50%', background:'var(--saffron-500)', border:'none', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'white' }}
+          style={{ width:36, height:36, borderRadius:'50%', background:'var(--saffron-700)', border:'none', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'white' }}
           aria-label="New message"
         >
           <i className="fa-solid fa-pen-to-square" style={{ fontSize:14 }} />
@@ -56,7 +66,13 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat,
       <div style={{ padding:'var(--space-3) var(--space-4)', flexShrink:0 }}>
         <div className="search-bar" style={{ padding:'var(--space-2) var(--space-3)' }}>
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" /></svg>
-          <input type="search" placeholder="Search conversations…" style={{ fontSize:'var(--text-sm)' }} />
+          <input
+            type="search"
+            placeholder="Search conversations…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ fontSize:'var(--text-sm)' }}
+          />
         </div>
       </div>
 
@@ -70,7 +86,12 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat,
             <button className="btn btn-primary btn-sm" style={{ marginTop:'var(--space-3)' }} onClick={onNewChat}>Start a chat</button>
           </div>
         )}
-        {conversations.map(conv => {
+        {!isLoading && conversations.length > 0 && filtered.length === 0 && (
+          <div style={{ padding:'var(--space-8) var(--space-4)', textAlign:'center', color:'var(--text-tertiary)' }}>
+            <p style={{ fontSize:'var(--text-sm)' }}>No conversations match &ldquo;{search}&rdquo;</p>
+          </div>
+        )}
+        {filtered.map(conv => {
           const other = conv.participants.find(p => p.id !== user?.id)
           const name = conv.name ?? other?.displayName ?? 'Unknown'
           const preview = conv.lastMessage?.encrypted ? '🔒 Encrypted message' : (conv.lastMessage?.content ?? '')
@@ -103,7 +124,7 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat,
                     {conv.lastMessage?.type === 'photo' ? '📷 Photo' : conv.lastMessage?.type === 'link' ? '🔗 Link' : preview}
                   </span>
                   {conv.unreadCount > 0 && (
-                    <span style={{ background:'var(--saffron-500)', color:'white', borderRadius:'var(--radius-full)', fontSize:10, fontWeight:700, padding:'1px 6px', flexShrink:0 }}>
+                    <span style={{ background:'var(--saffron-700)', color:'white', borderRadius:'var(--radius-full)', fontSize:10, fontWeight:700, padding:'1px 6px', flexShrink:0 }}>
                       {conv.unreadCount > 99 ? '99+' : conv.unreadCount}
                     </span>
                   )}

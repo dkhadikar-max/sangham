@@ -20,7 +20,7 @@ export function MessageBubble({ msg, isMine }: Props) {
     maxWidth: '72%',
     padding: 'var(--space-3) var(--space-4)',
     borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-    background: isMine ? 'linear-gradient(135deg,var(--saffron-500),var(--saffron-600))' : 'var(--surface-elevated)',
+    background: isMine ? 'linear-gradient(135deg,var(--saffron-700),var(--saffron-800))' : 'var(--surface-elevated)',
     color: isMine ? 'white' : 'var(--text-primary)',
     border: isMine ? 'none' : '1px solid var(--border-subtle)',
     boxShadow: 'var(--shadow-1)',
@@ -33,7 +33,7 @@ export function MessageBubble({ msg, isMine }: Props) {
     <div style={{ display:'flex', flexDirection:'column', alignItems: isMine ? 'flex-end' : 'flex-start', marginBottom:'var(--space-1)' }}>
       {/* Sender name (group chats, not mine) */}
       {!isMine && (
-        <span style={{ fontSize:'var(--text-2xs)', color:'var(--saffron-600)', fontWeight:600, marginLeft:'var(--space-2)', marginBottom:2 }}>
+        <span style={{ fontSize:'var(--text-2xs)', color:'var(--saffron-800)', fontWeight:600, marginLeft:'var(--space-2)', marginBottom:2 }}>
           {msg.senderName}
         </span>
       )}

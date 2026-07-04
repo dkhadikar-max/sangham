@@ -121,7 +121,7 @@ export function MessageInput({ onSend, disabled, encrypted }: Props) {
           style={{
             width:40, height:40, borderRadius:'50%', border:'none', display:'flex', alignItems:'center', justifyContent:'center',
             cursor: text.trim() ? 'pointer' : 'default', flexShrink:0, transition:'all var(--duration-fast)',
-            background: text.trim() ? 'linear-gradient(135deg,var(--saffron-500),var(--saffron-600))' : 'var(--surface-sunken)',
+            background: text.trim() ? 'linear-gradient(135deg,var(--saffron-700),var(--saffron-800))' : 'var(--surface-sunken)',
             color: text.trim() ? 'white' : 'var(--text-tertiary)',
           }}
           aria-label="Send"

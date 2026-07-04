@@ -7,7 +7,8 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { MessageBubble } from './MessageBubble'
 import { MessageInput } from './MessageInput'
-import { encryptMessage, decryptMessage, deriveKey } from '@/lib/crypto'
+import { encryptMessage, decryptMessage, getOrCreateKeypair, deriveSharedKey } from '@/lib/crypto'
+import { api } from '@/lib/api/client'
 
 interface Props {
   conversation: Conversation
@@ -21,26 +22,69 @@ function initials(name: string) {
 const ENCRYPTION_ENABLED = true
 
 export function ChatView({ conversation, onBack }: Props) {
-  const { user } = useAuthStore()
+  const { user, token } = useAuthStore()
   const { showToast } = useUiStore()
   const send = useSendMessage()
   const bottomRef = useRef<HTMLDivElement>(null)
   const [localMessages, setLocalMessages] = useState<Message[]>([])
+  const [decrypted, setDecrypted] = useState<Record<string, string>>({})
+  const [canEncrypt, setCanEncrypt] = useState(false)
   const cryptoKeyRef = useRef<CryptoKey | null>(null)
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useMessages(conversation.id)
 
-  // Flatten pages and merge with local optimistic messages
-  const serverMessages = data?.pages.flat() ?? []
+  // Flatten pages, decrypt any that came back encrypted, merge with local optimistic/realtime messages
+  const serverMessages = (data?.pages.flat() ?? []).map((m) =>
+    m.encrypted && decrypted[m.id] !== undefined ? { ...m, content: decrypted[m.id] } : m,
+  )
   const allMessages = [...serverMessages, ...localMessages.filter(lm => !serverMessages.find(sm => sm.id === lm.id))]
     .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
-  // Derive encryption key once per conversation
+  // Establish the shared E2E key for this conversation via ECDH (both sides derive the same key)
   useEffect(() => {
     if (!ENCRYPTION_ENABLED || !user) return
-    const secret = `${conversation.id}:${user.id}`
-    deriveKey(secret).then(k => { cryptoKeyRef.current = k })
-  }, [conversation.id, user])
+    let cancelled = false
+    const other = conversation.participants.find(p => p.id !== user.id)
+    if (!other) return
+    cryptoKeyRef.current = null
+    setCanEncrypt(false)
+    ;(async () => {
+      try {
+        const { privateKey } = await getOrCreateKeypair()
+        const { publicKey: theirPublicKey } = await api.get<{ publicKey: string | null }>(
+          `/users/${other.id}/public-key`,
+          token ?? undefined,
+        )
+        if (!theirPublicKey || cancelled) return
+        const shared = await deriveSharedKey(privateKey, theirPublicKey)
+        if (cancelled) return
+        cryptoKeyRef.current = shared
+        setCanEncrypt(true)
+      } catch {
+        if (!cancelled) setCanEncrypt(false)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [conversation.id, user, token])
+
+  // Decrypt any encrypted messages loaded from the server (not already decrypted)
+  useEffect(() => {
+    if (!canEncrypt || !cryptoKeyRef.current) return
+    const key = cryptoKeyRef.current
+    const raw = data?.pages.flat() ?? []
+    const toDecrypt = raw.filter(m => m.encrypted && decrypted[m.id] === undefined)
+    if (toDecrypt.length === 0) return
+    let cancelled = false
+    ;(async () => {
+      const updates: Record<string, string> = {}
+      for (const m of toDecrypt) {
+        updates[m.id] = await decryptMessage(key, m.content)
+      }
+      if (!cancelled) setDecrypted(prev => ({ ...prev, ...updates }))
+    })()
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, canEncrypt])
 
   // Scroll to bottom only when the newest message changes (not when loading older ones)
   const lastMsgId = allMessages[allMessages.length - 1]?.id
@@ -112,13 +156,13 @@ export function ChatView({ conversation, onBack }: Props) {
         <div className="avatar avatar-md" style={{ flexShrink:0 }}>
           {chatPhoto
             ? <img src={chatPhoto} alt={chatName} />
-            : <span style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--saffron-600)' }}>{initials(chatName)}</span>}
+            : <span style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--saffron-800)' }}>{initials(chatName)}</span>}
         </div>
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--text-primary)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{chatName}</div>
           {ENCRYPTION_ENABLED && (
-            <div style={{ fontSize:10, color:'var(--saffron-600)', display:'flex', alignItems:'center', gap:3 }}>
-              <i className="fa-solid fa-lock" style={{ fontSize:8 }} /> End-to-end encrypted
+            <div style={{ fontSize:10, color:'var(--saffron-800)', display:'flex', alignItems:'center', gap:3 }}>
+              <i className="fa-solid fa-lock" style={{ fontSize:8 }} /> {canEncrypt ? 'End-to-end encrypted' : 'Encryption unavailable'}
             </div>
           )}
         </div>
@@ -168,7 +212,7 @@ export function ChatView({ conversation, onBack }: Props) {
       </div>
 
       {/* Input */}
-      <MessageInput onSend={handleSend} disabled={send.isPending} encrypted={ENCRYPTION_ENABLED} />
+      <MessageInput onSend={handleSend} disabled={send.isPending} encrypted={ENCRYPTION_ENABLED && canEncrypt} />
     </div>
   )
 }
