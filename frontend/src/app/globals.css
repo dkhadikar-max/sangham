@@ -580,13 +580,15 @@ body {
 /* Collapsible header */
 .reader-header { position:relative; z-index:30; display:flex; align-items:center; gap:12px; padding:0 12px; height:52px; background:var(--rt-bg); border-bottom:1px solid var(--rt-border); flex-shrink:0; transition:transform .3s ease,opacity .3s ease; }
 .reader-header.hidden { transform:translateY(-100%); opacity:0; pointer-events:none; }
-.reader-back-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; border:none; background:transparent; cursor:pointer; color:var(--rt-text); flex-shrink:0; }
+.reader-back-btn { position:relative; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; border:none; background:transparent; cursor:pointer; color:var(--rt-text); flex-shrink:0; }
+.reader-back-btn::before { content:''; position:absolute; top:50%; left:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
 .reader-back-btn svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; }
 .reader-header-title { flex:1; min-width:0; }
 .reader-header-main { font-size:15px; font-weight:600; color:var(--rt-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:1.2; }
 .reader-header-section { font-size:11px; color:var(--rt-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px; }
 .reader-header-actions { display:flex; gap:4px; flex-shrink:0; }
-.reader-icon-btn { display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:none; background:transparent; cursor:pointer; color:var(--rt-text); transition:background .15s; }
+.reader-icon-btn { position:relative; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; border:none; background:transparent; cursor:pointer; color:var(--rt-text); transition:background .15s; }
+.reader-icon-btn::before { content:''; position:absolute; top:50%; left:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
 .reader-icon-btn:hover { background:var(--rt-surface); }
 .reader-icon-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.75; }
 .reader-icon-btn.active { color:var(--rt-accent); }
@@ -682,7 +684,8 @@ body {
 /* Mobile controls bar */
 .reader-controls-bar { display:flex; align-items:center; justify-content:space-around; padding:6px 8px; background:var(--rt-bg); border-top:1px solid var(--rt-border); flex-shrink:0; }
 @media(min-width:1024px) { .reader-controls-bar { display:none; } }
-.rctrl-btn { display:flex; align-items:center; justify-content:center; min-width:40px; height:40px; border:none; background:transparent; color:var(--rt-text); cursor:pointer; font-size:13px; font-weight:600; border-radius:8px; font-family:inherit; padding:0 8px; }
+.rctrl-btn { position:relative; display:flex; align-items:center; justify-content:center; min-width:40px; height:40px; border:none; background:transparent; color:var(--rt-text); cursor:pointer; font-size:13px; font-weight:600; border-radius:8px; font-family:inherit; padding:0 8px; }
+.rctrl-btn::before { content:''; position:absolute; top:50%; left:50%; width:44px; height:44px; transform:translate(-50%,-50%); }
 .rctrl-btn:hover { background:var(--rt-surface); }
 .rctrl-btn svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; }
 
