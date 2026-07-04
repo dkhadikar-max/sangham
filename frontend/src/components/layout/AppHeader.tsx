@@ -34,7 +34,7 @@ export function AppHeader() {
         {navItems.map(({ id, icon, label }) => (
           <button
             key={id}
-            className={`header-nav-link flex items-center gap-2 font-medium text-sm transition-colors ${activeTab === id ? 'text-sangham-gold' : 'text-sangham-brown-light hover:text-sangham-ink'}`}
+            className={`header-nav-link flex items-center gap-2 font-medium text-sm transition-colors${activeTab === id ? ' active text-sangham-gold' : ' text-sangham-brown-light hover:text-sangham-ink'}`}
             onClick={() => setTab(id)}
           >
             <i className={`fa-solid ${icon}`} />

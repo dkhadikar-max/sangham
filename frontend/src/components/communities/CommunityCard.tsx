@@ -96,7 +96,7 @@ export function CommunityCard({ a, onOpen, isMember = false }: Props) {
         <div className="flex items-center gap-2">
           <button
             className={`join-btn flex-1 py-2.5 rounded-xl text-xs font-semibold${joined ? ' joined' : ' text-white'}`}
-            style={joined ? {} : { background: 'linear-gradient(135deg,#C79A3B,#B2872F)', boxShadow: '0 4px 12px rgba(199,154,59,0.2)' }}
+            style={joined ? {} : { background: 'linear-gradient(135deg,#8B6621,#6B4E17)', boxShadow: '0 4px 12px rgba(199,154,59,0.2)' }}
             onClick={handleJoin}
             disabled={join.isPending}
           >

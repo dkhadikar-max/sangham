@@ -196,7 +196,7 @@ function CourseCard({ c }: { c: CommunityCourse }) {
         </div>
         {c.description && <p className="text-xs text-sangham-brown-light mt-2 line-clamp-1 leading-relaxed">{c.description.slice(0, 100)}</p>}
         <div className="flex items-center gap-3 mt-3">
-          <div className="px-4 text-white text-xs font-semibold rounded-xl" style={{ background: '#C79A3B', minHeight: 40, display: 'inline-flex', alignItems: 'center' }}>
+          <div className="px-4 text-white text-xs font-semibold rounded-xl" style={{ background: '#8B6621', minHeight: 40, display: 'inline-flex', alignItems: 'center' }}>
             Start Course
           </div>
           <span style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>{(c.language ?? 'en').toUpperCase()}</span>
@@ -265,7 +265,7 @@ function CircleCard({ c }: { c: CommunityCircle }) {
       )}
       <div className="flex items-center justify-between">
         <span className="text-xs text-sangham-brown-light">By {c.facilitator?.displayName || 'Unknown'}</span>
-        <div className="px-4 text-white text-xs font-semibold rounded-lg" style={{ background: '#C79A3B', minHeight: 40, display: 'inline-flex', alignItems: 'center' }}>
+        <div className="px-4 text-white text-xs font-semibold rounded-lg" style={{ background: '#8B6621', minHeight: 40, display: 'inline-flex', alignItems: 'center' }}>
           Join
         </div>
       </div>

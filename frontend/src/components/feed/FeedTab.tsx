@@ -52,7 +52,7 @@ function WeeklyActivity() {
   return (
     <div
       className="rounded-2xl p-5 text-white"
-      style={{ background: 'linear-gradient(135deg,#C79A3B 0%,#B2872F 100%)', boxShadow: '0 8px 24px -4px rgba(199,154,59,0.35)' }}
+      style={{ background: 'linear-gradient(135deg,#8B6621 0%,#6B4E17 100%)', boxShadow: '0 8px 24px -4px rgba(199,154,59,0.35)' }}
     >
       <div className="flex items-center justify-between mb-3">
         <h4 className="font-semibold text-sm">Weekly Activity</h4>
@@ -170,7 +170,7 @@ function RightSidebar() {
       {/* Daily Wisdom */}
       <div
         className="rounded-2xl p-5 text-white relative overflow-hidden"
-        style={{ background: 'linear-gradient(135deg,#C79A3B 0%,#B2872F 100%)', boxShadow: '0 8px 24px -4px rgba(199,154,59,0.35)' }}
+        style={{ background: 'linear-gradient(135deg,#8B6621 0%,#6B4E17 100%)', boxShadow: '0 8px 24px -4px rgba(199,154,59,0.35)' }}
       >
         <div className="absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-1/2 translate-x-1/2" style={{ background: 'rgba(255,255,255,0.06)' }} />
         <div className="relative z-10">

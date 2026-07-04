@@ -171,7 +171,7 @@ export function CommunitiesTab() {
               </div>
               <button
                 className="flex items-center gap-2 px-3 py-2.5 sm:px-5 text-white text-sm font-semibold rounded-xl shadow-md transition-all"
-                style={{ background: 'linear-gradient(135deg,#C79A3B 0%,#B2872F 100%)', boxShadow: '0 4px 12px rgba(199,154,59,0.2)', minHeight: 44 }}
+                style={{ background: 'linear-gradient(135deg,#8B6621 0%,#6B4E17 100%)', boxShadow: '0 4px 12px rgba(199,154,59,0.2)', minHeight: 44 }}
                 onClick={() => token ? setShowCreateSangha(true) : showToast('Sign in to create a Sangha', 'info')}
               >
                 <i className="fa-solid fa-plus" /><span className="hidden sm:inline">New Sangha</span>
@@ -248,14 +248,14 @@ export function CommunitiesTab() {
               <div className="flex items-center gap-1 bg-white rounded-xl p-1 shadow-sm" style={{ border: '1px solid rgba(199,154,59,0.1)' }}>
                 <button
                   className="px-4 py-2.5 text-xs font-medium rounded-lg transition-colors"
-                  style={{ minHeight: 44, background: commView === 'grid' ? '#C79A3B' : 'transparent', color: commView === 'grid' ? 'white' : 'var(--text-secondary)' }}
+                  style={{ minHeight: 44, background: commView === 'grid' ? '#8B6621' : 'transparent', color: commView === 'grid' ? 'white' : 'var(--text-secondary)' }}
                   onClick={() => setCommView('grid')}
                 >
                   Grid
                 </button>
                 <button
                   className="px-4 py-2.5 text-xs font-medium rounded-lg transition-colors"
-                  style={{ minHeight: 44, background: commView === 'list' ? '#C79A3B' : 'transparent', color: commView === 'list' ? 'white' : 'var(--text-secondary)' }}
+                  style={{ minHeight: 44, background: commView === 'list' ? '#8B6621' : 'transparent', color: commView === 'list' ? 'white' : 'var(--text-secondary)' }}
                   onClick={() => setCommView('list')}
                 >
                   List
