@@ -74,7 +74,7 @@ export function PersonCard({ person, onOpen }: Props) {
       >
         {person.profilePhoto
           ? <img src={person.profilePhoto} alt={person.displayName} />
-          : <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--saffron-600)' }}>{initials(person.displayName)}</span>}
+          : <span style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--saffron-800)' }}>{initials(person.displayName)}</span>}
       </div>
 
       {/* Info */}
@@ -90,7 +90,7 @@ export function PersonCard({ person, onOpen }: Props) {
         <div className="person-meta">
           {person.tradition && <span>{person.tradition.charAt(0) + person.tradition.slice(1).toLowerCase()}</span>}
           {loc && <span><i className="fa-solid fa-location-dot" style={{ fontSize:10 }} /> {loc}</span>}
-          {intentText && <span style={{ color: 'var(--saffron-600)', fontWeight: 500 }}>{intentText}</span>}
+          {intentText && <span style={{ color: 'var(--saffron-800)', fontWeight: 500 }}>{intentText}</span>}
         </div>
         {langs && <div className="person-langs">{langs}</div>}
         {partParts && <div style={{ fontSize:'var(--text-2xs)', color:'var(--text-tertiary)', marginTop:2 }}>{partParts}</div>}

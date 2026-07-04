@@ -89,7 +89,7 @@ export function EventDetailPanel({ event, onClose, onOpenProfile }: Props) {
               <span>
                 {loc}
                 {event.mode === 'ONLINE' && event.onlineUrl && (
-                  <> · <span style={{ color:'var(--saffron-600)' }}>Join link available after RSVP</span></>
+                  <> · <span style={{ color:'var(--saffron-800)' }}>Join link available after RSVP</span></>
                 )}
               </span>
             </div>

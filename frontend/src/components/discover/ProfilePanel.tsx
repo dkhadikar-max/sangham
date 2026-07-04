@@ -354,7 +354,7 @@ export function ProfilePanel({ userId, onClose }: Props) {
                     background:'none',
                     border:'none',
                     borderBottom: activeTab === tab ? '2px solid var(--saffron-500)' : '2px solid transparent',
-                    color: activeTab === tab ? 'var(--saffron-600)' : 'var(--text-secondary)',
+                    color: activeTab === tab ? 'var(--saffron-800)' : 'var(--text-secondary)',
                     fontWeight: activeTab === tab ? 600 : 400,
                     fontSize:'var(--text-sm)',
                     cursor:'pointer',
@@ -405,7 +405,7 @@ export function ProfilePanel({ userId, onClose }: Props) {
                 {profile.seekingIntent && (
                   <div style={{ marginBottom:'var(--space-4)' }}>
                     <div className="section-title" style={{ padding:0, marginBottom:'var(--space-2)' }}>Seeking</div>
-                    <span style={{ fontSize:'var(--text-sm)', color:'var(--saffron-600)', fontWeight:500 }}>
+                    <span style={{ fontSize:'var(--text-sm)', color:'var(--saffron-800)', fontWeight:500 }}>
                       {INTENT_LABELS[profile.seekingIntent] ?? profile.seekingIntent}
                     </span>
                   </div>

@@ -46,7 +46,7 @@ export function EventCard({ event, onOpen }: Props) {
     })
   }
 
-  const typeColor = typeColors[event.type] ?? 'var(--saffron-600)'
+  const typeColor = typeColors[event.type] ?? 'var(--saffron-800)'
   const modeLabel = event.mode === 'ONLINE' ? 'Online' : event.mode === 'IN_PERSON' ? 'In Person' : 'Hybrid'
   const loc = event.mode === 'ONLINE' ? 'Online' : (event.location ?? 'Location TBD')
 

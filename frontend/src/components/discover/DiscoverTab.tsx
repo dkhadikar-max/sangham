@@ -160,7 +160,7 @@ function PeoplePanel({ onOpenProfile }: { onOpenProfile: (id: string) => void })
           />
           <button
             onClick={() => setShowFilters((v) => !v)}
-            style={{ background:'none', border:'none', color: showFilters ? 'var(--saffron-600)' : 'var(--text-tertiary)', cursor:'pointer', fontSize:'var(--text-sm)', fontFamily:'inherit', display:'flex', alignItems:'center', gap:4 }}
+            style={{ background:'none', border:'none', color: showFilters ? 'var(--saffron-800)' : 'var(--text-tertiary)', cursor:'pointer', fontSize:'var(--text-sm)', fontFamily:'inherit', display:'flex', alignItems:'center', gap:4 }}
           >
             <i className="fa-solid fa-sliders" />
             Filters
@@ -467,7 +467,7 @@ export function DiscoverTab() {
               background:'none',
               border:'none',
               borderBottom: subTab === tab.key ? '2px solid var(--saffron-500)' : '2px solid transparent',
-              color: subTab === tab.key ? 'var(--saffron-600)' : 'var(--text-secondary)',
+              color: subTab === tab.key ? 'var(--saffron-800)' : 'var(--text-secondary)',
               fontWeight: subTab === tab.key ? 600 : 400,
               fontSize:'var(--text-sm)',
               cursor:'pointer',
