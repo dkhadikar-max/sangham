@@ -1,3 +1,5 @@
+import { useAuthStore } from '@/stores/auth'
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1'
 
 export class ApiError extends Error {
@@ -10,11 +12,39 @@ export class ApiError extends Error {
   }
 }
 
+let refreshPromise: Promise<string | null> | null = null
+
+async function refreshAccessToken(): Promise<string | null> {
+  if (refreshPromise) return refreshPromise
+  refreshPromise = (async () => {
+    const { user, refreshToken, setAuth, clearAuth } = useAuthStore.getState()
+    if (!refreshToken || !user) return null
+    try {
+      const res = await fetch(`${API_BASE}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      })
+      if (!res.ok) throw new Error('refresh failed')
+      const { token: newToken } = await res.json() as { token: string }
+      setAuth(user, newToken, refreshToken)
+      return newToken
+    } catch {
+      clearAuth()
+      return null
+    } finally {
+      refreshPromise = null
+    }
+  })()
+  return refreshPromise
+}
+
 async function request<T>(
   method: string,
   path: string,
   body?: unknown,
   token?: string,
+  isRetry = false,
 ): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -26,6 +56,11 @@ async function request<T>(
     headers,
     body: body != null ? JSON.stringify(body) : undefined,
   })
+
+  if (res.status === 401 && token && !isRetry) {
+    const newToken = await refreshAccessToken()
+    if (newToken) return request<T>(method, path, body, newToken, true)
+  }
 
   if (!res.ok) {
     let message = `HTTP ${res.status}`
