@@ -1,6 +1,7 @@
 'use client'
 
 import { useReaderStore } from '@/stores/reader'
+import { useUiStore } from '@/stores/ui'
 import { useLibraryCollections, useLibrarySearch } from '@/hooks/useLibrary'
 import {
   libTradSym,
@@ -77,6 +78,7 @@ function GridCover({ tx }: { tx: LibraryText }) {
 
 export function LibraryHome({ onOpenCollection, onOpenBookmarks }: Props) {
   const { setCurrentText, progress } = useReaderStore()
+  const { showToast } = useUiStore()
   const { data: collections = [], isLoading: colLoading } = useLibraryCollections()
   const { data: allTexts = [], isLoading: textsLoading } = useLibrarySearch({ limit: 24 })
   const { data: recentTexts = [] } = useLibrarySearch({ limit: 8, sort: 'recent' })
@@ -270,7 +272,7 @@ export function LibraryHome({ onOpenCollection, onOpenBookmarks }: Props) {
 
           {/* Write & Publish */}
           <div className="lib-section">
-            <button type="button" className="lib-write-btn">
+            <button type="button" className="lib-write-btn" onClick={() => showToast('Write & Publish — coming soon', 'info')}>
               <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, stroke: 'currentColor', fill: 'none', strokeWidth: 2, flexShrink: 0 }}>
                 <path d="M12 20h9" />
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />

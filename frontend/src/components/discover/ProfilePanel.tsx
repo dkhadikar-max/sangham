@@ -384,6 +384,7 @@ export function ProfilePanel({ userId, onClose }: Props) {
                   {items.map(item => (
                     <button
                       key={item.type + item.id}
+                      onClick={() => showToast(`${item.type} details — coming soon`, 'info')}
                       style={{ display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%', background:'none', border:'none', borderBottom:'1px solid var(--border-subtle)', padding:'var(--space-3) var(--space-4)', cursor:'pointer', fontFamily:'inherit', textAlign:'left' }}
                     >
                       <span style={{ fontSize:'var(--text-sm)', fontWeight:600, color:'var(--text-primary)', flex:1, minWidth:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', marginRight:'var(--space-3)' }}>

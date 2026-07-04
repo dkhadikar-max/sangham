@@ -309,7 +309,7 @@ const FILTERS = [
 
 function CenterFeed() {
   const { user } = useAuthStore()
-  const { showToast, setTab } = useUiStore()
+  const { showToast, setTab, viewProfile } = useUiStore()
   const [filter, setFilter] = useState('all')
   const [extraPosts, setExtraPosts] = useState<FeedPost[]>([])
   const [loadingMore, setLoadingMore] = useState(false)
@@ -376,7 +376,7 @@ function CenterFeed() {
           </div>
           <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ touchAction: 'pan-x' }}>
             {suggestedPeople.map((p) => (
-              <button key={p.id} className="flex-shrink-0 flex flex-col items-center gap-1.5 bg-transparent border-0 p-0 cursor-pointer">
+              <button key={p.id} onClick={() => viewProfile(p.id)} className="flex-shrink-0 flex flex-col items-center gap-1.5 bg-transparent border-0 p-0 cursor-pointer">
                 <Avatar src={p.profilePhoto ?? null} name={p.displayName} size="lg" />
                 <span className="text-[11px] text-sangham-brown-light truncate" style={{ maxWidth: 64 }}>
                   {p.displayName.split(' ')[0]}

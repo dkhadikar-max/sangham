@@ -45,7 +45,7 @@ function tradGrad(tradition?: string | null) {
 // ── Sub-tab panels ─────────────────────────────────────────────
 
 function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: AssociationMembership | null | undefined }) {
-  const { showToast } = useUiStore()
+  const { showToast, viewProfile } = useUiStore()
   const canAddEvent = membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY'
   return (
     <div className="comm-tab-panel active" id="comm-tab-overview" style={{ padding: 'var(--space-4)' }}>
@@ -72,7 +72,7 @@ function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: As
           {a.members.map((m) => {
             const u = m.user
             return (
-              <button key={u.id} type="button" className="comm-member-item">
+              <button key={u.id} type="button" className="comm-member-item" onClick={() => viewProfile(u.id)}>
                 <div className="avatar-sm">
                   {u.profilePhoto
                     ? <img src={u.profilePhoto} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
@@ -171,6 +171,7 @@ function ContributionsPanel() {
 // ── Sub-cards ─────────────────────────────────────────────────
 
 function CourseCard({ c }: { c: CommunityCourse }) {
+  const { showToast } = useUiStore()
   const lessonCount = c._count?.lessons ?? 0
   const instructor = c.instructor?.displayName || 'Community'
   const tradColors: Record<string, { grad: string; icon: string }> = {
@@ -181,7 +182,7 @@ function CourseCard({ c }: { c: CommunityCourse }) {
   const tc = tradColors[c.tradition ?? ''] ?? { grad: 'linear-gradient(135deg,#2563EB,#1d4ed8)', icon: 'fa-book-open' }
 
   return (
-    <button type="button" className="course-card">
+    <button type="button" className="course-card" onClick={() => showToast('Course details — coming soon', 'info')}>
       <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: tc.grad, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
         <i className={`fa-solid ${tc.icon} text-xl`} />
       </div>
@@ -233,9 +234,10 @@ function ResourceCard({ r }: { r: CommunityResource }) {
 }
 
 function ProjectCard({ p }: { p: CommunityProject }) {
+  const { showToast } = useUiStore()
   const memberCount = p._count?.members ?? 0
   return (
-    <button type="button" className="comm-card">
+    <button type="button" className="comm-card" onClick={() => showToast('Project details — coming soon', 'info')}>
       <div className="comm-card-name">{p.icon || '🤝'} {p.title}</div>
       <div className="comm-card-meta"><span>{memberCount} collaborators</span><span>{p.status || 'OPEN'}</span></div>
       {p.purpose && <div className="comm-card-desc">{p.purpose}</div>}
@@ -244,12 +246,13 @@ function ProjectCard({ p }: { p: CommunityProject }) {
 }
 
 function CircleCard({ c }: { c: CommunityCircle }) {
+  const { showToast } = useUiStore()
   const memberCount = c._count?.members ?? 0
   const statusColors: Record<string, { bg: string; clr: string }> = { OPEN: { bg: '#f0fdf4', clr: '#16a34a' }, FULL: { bg: '#fef2f2', clr: '#ef4444' }, CLOSED: { bg: '#f9fafb', clr: '#9ca3af' } }
   const sc = statusColors[c.status] || statusColors.OPEN
 
   return (
-    <button type="button" className="circle-card">
+    <button type="button" className="circle-card" onClick={() => showToast('Study Circle details — coming soon', 'info')}>
       <div className="flex items-start gap-3 mb-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2563EB,#1d4ed8)' }}>
           <i className="fa-solid fa-users text-sm" />

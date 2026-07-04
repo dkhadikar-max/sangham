@@ -7,7 +7,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import type { Tab } from '@/types'
 
 export function DesktopSidebar() {
-  const { activeTab, setTab, viewProfile } = useUiStore()
+  const { activeTab, setTab, viewProfile, showToast } = useUiStore()
   const { user } = useAuthStore()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -64,11 +64,11 @@ export function DesktopSidebar() {
         <div className="ds-nav-divider" />
         <div className="ds-nav-section-label">Quick Actions</div>
 
-        <button className="ds-nav-item" data-tooltip="Contribute">
+        <button className="ds-nav-item" data-tooltip="Contribute" onClick={() => showToast('Contribute — coming soon', 'info')}>
           <i className="fa-solid fa-hand-holding-heart ds-nav-icon" />
           <span className="ds-label">Contribute</span>
         </button>
-        <button className="ds-nav-item" data-tooltip="Settings">
+        <button className="ds-nav-item" data-tooltip="Settings" onClick={() => showToast('Settings — coming soon', 'info')}>
           <i className="fa-solid fa-gear ds-nav-icon" />
           <span className="ds-label">Settings</span>
         </button>
@@ -82,7 +82,7 @@ export function DesktopSidebar() {
             <span className="ds-user-name">{user.displayName}</span>
           </button>
         )}
-        <button className="ds-create-btn">
+        <button className="ds-create-btn" onClick={() => showToast('Share Reflection — coming soon', 'info')}>
           <i className="fa-solid fa-plus" style={{ fontSize: 12, flexShrink: 0 }} />
           <span className="ds-label">Share Reflection</span>
         </button>
