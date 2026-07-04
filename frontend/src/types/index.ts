@@ -436,7 +436,7 @@ export interface UserProfile {
   displayName: string
   username: string | null
   profilePhoto: string | null
-  coverPhoto: string | null
+  coverImage: string | null
   bio: string | null
   city: string | null
   country: string | null

@@ -59,6 +59,21 @@ router.post('/avatar', authenticate, uploadImage.single('file'), async (req: Aut
   res.json({ url });
 });
 
+// POST /uploads/cover — uploads photo and updates the user's coverImage
+router.post('/cover', authenticate, uploadImage.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
+  if (!req.file) throw new AppError('No file provided', 400);
+  const url = env.STORAGE_MODE === 'local'
+    ? fileUrl(path.basename(req.file.path), 'covers')
+    : await uploadToCloud(req.file, 'covers');
+
+  await prisma.user.update({
+    where: { id: req.user!.id },
+    data: { coverImage: url },
+  });
+
+  res.json({ url });
+});
+
 // POST /uploads/document
 router.post('/document', authenticate, uploadDocument.single('file'), async (req: AuthRequest, res: Response): Promise<void> => {
   if (!req.file) throw new AppError('No file provided', 400);

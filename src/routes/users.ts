@@ -21,8 +21,8 @@ const updateProfileSchema = z.object({
   languages: z.array(z.string()).optional(),
   preferredLanguage: z.enum(['en', 'hi', 'mr', 'ne', 'si', 'th', 'ta', 'te', 'kn', 'bn', 'gu', 'pa', 'ja', 'ko', 'zh']).optional(),
   templeAffiliation: z.string().optional(),
-  profilePhoto: z.string().url().optional(),
-  coverImage: z.string().url().optional(),
+  profilePhoto: z.string().url().optional().nullable(),
+  coverImage: z.string().url().optional().nullable(),
   // Self-assignable roles only — MODERATOR/SUPER_ADMIN granted by admins
   role: z.enum(['PRACTITIONER', 'BHIKKHU', 'BHIKKHUNI', 'SCHOLAR']).optional(),
   professionType:   z.nativeEnum(ProfessionType).optional().nullable(),

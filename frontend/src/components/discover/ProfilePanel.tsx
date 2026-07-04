@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import type { UserProfile, FeedPost, Tradition } from '@/types'
-import { useUserProfile, useUserPosts, useSaveProfile, useUploadAvatar } from '@/hooks/useProfile'
+import { useUserProfile, useUserPosts, useSaveProfile, useUploadAvatar, useUploadCover } from '@/hooks/useProfile'
 import { useFollowUser, useUnfollowUser } from '@/hooks/useDiscover'
 import { useUserParticipations } from '@/hooks/useParticipations'
 import { useAuthStore } from '@/stores/auth'
@@ -185,10 +185,14 @@ export function ProfilePanel({ userId, onClose }: Props) {
   const unfollow = useUnfollowUser()
   const saveProfile = useSaveProfile()
   const uploadAvatar = useUploadAvatar()
+  const uploadCover = useUploadCover()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const coverInputRef = useRef<HTMLInputElement>(null)
   const [activeTab, setActiveTab] = useState<PanelTab>('posts')
   const [following, setFollowing] = useState(false)
   const [editing, setEditing] = useState(false)
+  const [pendingAvatar, setPendingAvatar] = useState<{ file: File; previewUrl: string } | null>(null)
+  const [pendingCover, setPendingCover] = useState<{ file: File; previewUrl: string } | null>(null)
 
   const isOwnProfile = user?.id === userId
 
@@ -215,11 +219,52 @@ export function ProfilePanel({ userId, onClose }: Props) {
   function handleAvatarFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    uploadAvatar.mutate(file, {
+    setPendingAvatar({ file, previewUrl: URL.createObjectURL(file) })
+    e.target.value = ''
+  }
+
+  function confirmAvatar() {
+    if (!pendingAvatar) return
+    uploadAvatar.mutate(pendingAvatar.file, {
       onSuccess: () => showToast('Photo updated', 'success'),
       onError: () => showToast('Upload failed', 'error'),
     })
+    URL.revokeObjectURL(pendingAvatar.previewUrl)
+    setPendingAvatar(null)
+  }
+
+  function cancelAvatar() {
+    if (pendingAvatar) URL.revokeObjectURL(pendingAvatar.previewUrl)
+    setPendingAvatar(null)
+  }
+
+  function removeAvatar() {
+    saveProfile.mutate({ profilePhoto: null }, {
+      onSuccess: () => showToast('Photo removed', 'success'),
+      onError: (e) => showToast((e as Error).message || 'Failed to remove photo', 'error'),
+    })
+  }
+
+  function handleCoverFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setPendingCover({ file, previewUrl: URL.createObjectURL(file) })
     e.target.value = ''
+  }
+
+  function confirmCover() {
+    if (!pendingCover) return
+    uploadCover.mutate(pendingCover.file, {
+      onSuccess: () => showToast('Cover updated', 'success'),
+      onError: () => showToast('Upload failed', 'error'),
+    })
+    URL.revokeObjectURL(pendingCover.previewUrl)
+    setPendingCover(null)
+  }
+
+  function cancelCover() {
+    if (pendingCover) URL.revokeObjectURL(pendingCover.previewUrl)
+    setPendingCover(null)
   }
 
   return (
@@ -246,12 +291,58 @@ export function ProfilePanel({ userId, onClose }: Props) {
           <>
             {/* Cover */}
             <div className={`profile-cover ${tradClass(profile.traditions)}`}>
-              {profile.coverPhoto && <img src={profile.coverPhoto} alt="" />}
+              {(pendingCover?.previewUrl ?? profile.coverImage) && (
+                <img src={pendingCover?.previewUrl ?? profile.coverImage ?? ''} alt="" />
+              )}
+
+              {isOwnProfile && !pendingCover && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => coverInputRef.current?.click()}
+                    disabled={uploadCover.isPending}
+                    aria-label="Change cover photo"
+                    style={{
+                      position: 'absolute', top: 8, right: 8,
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      background: 'rgba(0,0,0,0.45)', color: 'white', border: 'none',
+                      borderRadius: 'var(--radius-full)', padding: '6px 12px',
+                      fontSize: 'var(--text-xs)', cursor: 'pointer',
+                    }}
+                  >
+                    {uploadCover.isPending
+                      ? <i className="fa-solid fa-spinner fa-spin" />
+                      : <i className="fa-solid fa-camera" />}
+                    Change cover
+                  </button>
+                  <input
+                    ref={coverInputRef}
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleCoverFileChange}
+                  />
+                </>
+              )}
+
+              {pendingCover && (
+                <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', gap: 6 }}>
+                  <button type="button" className="btn btn-primary btn-sm" onClick={confirmCover} disabled={uploadCover.isPending}>
+                    {uploadCover.isPending ? <span className="spinner spinner-sm" /> : 'Use photo'}
+                  </button>
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={cancelCover} disabled={uploadCover.isPending}>
+                    Cancel
+                  </button>
+                </div>
+              )}
+
               <div className="profile-avatar-wrap" style={{ position: 'relative', display: 'inline-block' }}>
-                {profile.profilePhoto
-                  ? <img src={profile.profilePhoto} alt={profile.displayName} />
-                  : <span>{initials(profile.displayName)}</span>}
-                {isOwnProfile && (
+                {pendingAvatar
+                  ? <img src={pendingAvatar.previewUrl} alt="" />
+                  : profile.profilePhoto
+                    ? <img src={profile.profilePhoto} alt={profile.displayName} />
+                    : <span>{initials(profile.displayName)}</span>}
+                {isOwnProfile && !pendingAvatar && (
                   <>
                     <button
                       type="button"
@@ -277,9 +368,37 @@ export function ProfilePanel({ userId, onClose }: Props) {
                       style={{ display: 'none' }}
                       onChange={handleAvatarFileChange}
                     />
+                    {profile.profilePhoto && (
+                      <button
+                        type="button"
+                        onClick={removeAvatar}
+                        disabled={saveProfile.isPending}
+                        aria-label="Remove profile photo"
+                        style={{
+                          position: 'absolute', bottom: 0, left: 0,
+                          width: 24, height: 24, borderRadius: '50%',
+                          background: 'var(--error-500)', border: '2px solid white',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          cursor: 'pointer', color: 'white',
+                        }}
+                      >
+                        <i className="fa-solid fa-trash" style={{ fontSize: 9 }} />
+                      </button>
+                    )}
                   </>
                 )}
               </div>
+
+              {pendingAvatar && (
+                <div style={{ position: 'absolute', bottom: -4, left: 100, display: 'flex', gap: 6 }}>
+                  <button type="button" className="btn btn-primary btn-sm" onClick={confirmAvatar} disabled={uploadAvatar.isPending}>
+                    {uploadAvatar.isPending ? <span className="spinner spinner-sm" /> : 'Use photo'}
+                  </button>
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={cancelAvatar} disabled={uploadAvatar.isPending}>
+                    Cancel
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Info */}

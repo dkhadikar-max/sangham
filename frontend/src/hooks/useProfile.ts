@@ -33,6 +33,33 @@ export function useUploadAvatar() {
   })
 }
 
+async function uploadCover(file: File, token: string | null, isRetry = false): Promise<{ url: string }> {
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`${API_BASE}/uploads/cover`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  })
+  if (res.status === 401 && token && !isRetry) {
+    const newToken = await refreshAccessToken()
+    if (newToken) return uploadCover(file, newToken, true)
+  }
+  if (!res.ok) throw new Error('Upload failed')
+  return res.json() as Promise<{ url: string }>
+}
+
+export function useUploadCover() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (file: File) => uploadCover(file, token ?? null),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['user-profile'] })
+    },
+  })
+}
+
 async function fetchProfile(userId: string, token: string | null): Promise<UserProfile> {
   return api.get<UserProfile>(`/users/${userId}`, token ?? undefined)
 }
