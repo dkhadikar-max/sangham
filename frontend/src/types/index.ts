@@ -8,7 +8,7 @@ export interface User {
   bio: string | null
   location: string | null
   tradition: Tradition | null
-  role: 'USER' | 'MODERATOR' | 'ADMIN'
+  role: 'GUEST' | 'PRACTITIONER' | 'TRUSTED' | 'BHIKKHU' | 'BHIKKHUNI' | 'SCHOLAR' | 'ASSOCIATION_ADMIN' | 'MODERATOR' | 'SUPER_ADMIN'
   preferredLanguage: string
   createdAt: string
 }
