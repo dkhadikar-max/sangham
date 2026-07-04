@@ -5,6 +5,7 @@ import type { UserProfile, FeedPost, Tradition } from '@/types'
 import { useUserProfile, useUserPosts, useSaveProfile, useUploadAvatar, useUploadCover } from '@/hooks/useProfile'
 import { useFollowUser, useUnfollowUser } from '@/hooks/useDiscover'
 import { useUserParticipations } from '@/hooks/useParticipations'
+import { useCreateConversation } from '@/hooks/useMessages'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 
@@ -177,7 +178,8 @@ function EditForm({ profile, onSave, onCancel }: { profile: UserProfile; onSave:
 
 export function ProfilePanel({ userId, onClose }: Props) {
   const { user, token } = useAuthStore()
-  const { showToast } = useUiStore()
+  const { showToast, openConversation } = useUiStore()
+  const createConversation = useCreateConversation()
   const { data: profile, isLoading } = useUserProfile(userId)
   const { data: posts = [] } = useUserPosts(userId)
   const { data: participations } = useUserParticipations(userId)
@@ -207,6 +209,14 @@ export function ProfilePanel({ userId, onClose }: Props) {
     } else {
       follow.mutate(userId, { onSuccess: () => setFollowing(true), onError: (e) => showToast((e as Error).message, 'error') })
     }
+  }
+
+  function handleMessage() {
+    if (!token) { showToast('Sign in to send messages', 'info'); return }
+    createConversation.mutate(userId, {
+      onSuccess: (conv) => openConversation(conv.id),
+      onError: (e) => showToast((e as Error).message || 'Could not start conversation', 'error'),
+    })
   }
 
   function handleSave(data: Partial<UserProfile>) {
@@ -458,7 +468,9 @@ export function ProfilePanel({ userId, onClose }: Props) {
                 >
                   {following ? 'Connected' : 'Connect'}
                 </button>
-                <button className="btn btn-ghost" onClick={() => showToast('Messaging — coming soon', 'info')}>Message</button>
+                <button className="btn btn-ghost" onClick={handleMessage} disabled={createConversation.isPending}>
+                  {createConversation.isPending ? <span className="spinner spinner-sm" /> : 'Message'}
+                </button>
               </div>
             )}
 

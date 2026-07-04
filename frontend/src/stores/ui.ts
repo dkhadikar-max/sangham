@@ -8,6 +8,9 @@ interface UiStore {
   theme: 'light' | 'dark'
   viewProfileId: string | null
   settingsOpen: boolean
+  notificationsOpen: boolean
+  contributeOpen: boolean
+  pendingConversationId: string | null
 
   setTab: (tab: Tab) => void
   setLearnTab: (tab: LearnTab) => void
@@ -18,6 +21,12 @@ interface UiStore {
   closeProfile: () => void
   openSettings: () => void
   closeSettings: () => void
+  openNotifications: () => void
+  closeNotifications: () => void
+  openConversation: (conversationId: string) => void
+  clearPendingConversation: () => void
+  openContribute: () => void
+  closeContribute: () => void
 }
 
 let toastSeq = 0
@@ -29,6 +38,9 @@ export const useUiStore = create<UiStore>((set) => ({
   theme: 'light',
   viewProfileId: null,
   settingsOpen: false,
+  notificationsOpen: false,
+  contributeOpen: false,
+  pendingConversationId: null,
 
   setTab(tab) {
     set({ activeTab: tab })
@@ -69,5 +81,29 @@ export const useUiStore = create<UiStore>((set) => ({
 
   closeSettings() {
     set({ settingsOpen: false })
+  },
+
+  openNotifications() {
+    set({ notificationsOpen: true })
+  },
+
+  closeNotifications() {
+    set({ notificationsOpen: false })
+  },
+
+  openConversation(conversationId) {
+    set({ pendingConversationId: conversationId, activeTab: 'messages', viewProfileId: null })
+  },
+
+  clearPendingConversation() {
+    set({ pendingConversationId: null })
+  },
+
+  openContribute() {
+    set({ contributeOpen: true })
+  },
+
+  closeContribute() {
+    set({ contributeOpen: false })
   },
 }))

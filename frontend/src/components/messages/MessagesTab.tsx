@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ConversationList } from './ConversationList'
 import { ChatView } from './ChatView'
 import { useConversations } from '@/hooks/useMessages'
@@ -10,10 +10,17 @@ import type { Conversation } from '@/types'
 
 export function MessagesTab() {
   const { token } = useAuthStore()
-  const { showToast } = useUiStore()
+  const { showToast, pendingConversationId, clearPendingConversation } = useUiStore()
   const { data: conversations = [], isLoading } = useConversations()
   const [activeConvId, setActiveConvId] = useState<string | null>(null)
   const activeConv = conversations.find(c => c.id === activeConvId) ?? null
+
+  useEffect(() => {
+    if (pendingConversationId) {
+      setActiveConvId(pendingConversationId)
+      clearPendingConversation()
+    }
+  }, [pendingConversationId, clearPendingConversation])
 
   function handleNewChat() {
     showToast('Search for a person in Discover and tap Message', 'info')

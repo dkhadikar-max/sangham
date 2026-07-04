@@ -9,6 +9,8 @@ import { TextReader } from '@/components/library/TextReader'
 import { usePublishPublicKey } from '@/hooks/useMessages'
 import { ProfilePanel } from '@/components/discover/ProfilePanel'
 import { SettingsPanel } from '@/components/settings/SettingsPanel'
+import { NotificationsPanel } from '@/components/notifications/NotificationsPanel'
+import { ContributeView } from '@/components/contribute/ContributeView'
 import type { ReactNode } from 'react'
 
 interface TabPanelProps {
@@ -40,7 +42,7 @@ interface AppShellProps {
 }
 
 export function AppShell({ home, learn, communities, discover, messages }: AppShellProps) {
-  const { activeTab, viewProfileId, closeProfile, settingsOpen, closeSettings } = useUiStore()
+  const { activeTab, viewProfileId, closeProfile, settingsOpen, closeSettings, notificationsOpen, closeNotifications, contributeOpen, closeContribute } = useUiStore()
   usePublishPublicKey()
 
   return (
@@ -77,6 +79,12 @@ export function AppShell({ home, learn, communities, discover, messages }: AppSh
       )}
       {settingsOpen && (
         <SettingsPanel onClose={closeSettings} />
+      )}
+      {notificationsOpen && (
+        <NotificationsPanel onClose={closeNotifications} />
+      )}
+      {contributeOpen && (
+        <ContributeView onClose={closeContribute} />
       )}
     </div>
   )

@@ -3,10 +3,12 @@
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 import { Avatar } from '@/components/ui/Avatar'
+import { useNotifications } from '@/hooks/useNotifications'
 
 export function AppHeader() {
-  const { showToast, viewProfile } = useUiStore()
+  const { showToast, viewProfile, openNotifications } = useUiStore()
   const { user } = useAuthStore()
+  const { data: notifData } = useNotifications()
 
   return (
     <header className="app-header">
@@ -32,9 +34,12 @@ export function AppHeader() {
         <button
           className="w-10 h-10 rounded-full bg-sangham-cream-dark hover:bg-sangham-gold/10 flex items-center justify-center transition-colors text-sangham-brown relative"
           aria-label="Notifications"
-          onClick={() => showToast('Notifications — coming soon', 'info')}
+          onClick={openNotifications}
         >
           <i className="fa-regular fa-bell text-sm" />
+          {!!notifData?.unreadCount && (
+            <span className="header-notif-badge">{notifData.unreadCount > 9 ? '9+' : notifData.unreadCount}</span>
+          )}
         </button>
         <button
           className="w-10 h-10 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark text-white flex items-center justify-center shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-shadow"
