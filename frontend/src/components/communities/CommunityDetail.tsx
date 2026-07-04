@@ -14,6 +14,9 @@ import {
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { MemberManagementPanel } from './MemberManagementPanel'
+import { CreateEventModal } from '@/components/create/CreateEventModal'
+import { EventDetailPanel } from '@/components/discover/EventDetailPanel'
+import { useEvent } from '@/hooks/useEvents'
 import type {
   AssociationDetail,
   AssociationMembership,
@@ -45,26 +48,50 @@ function tradGrad(tradition?: string | null) {
 
 // ── Sub-tab panels ─────────────────────────────────────────────
 
+function EventDetailById({ eventId, onClose, onOpenProfile }: { eventId: string; onClose: () => void; onOpenProfile: (id: string) => void }) {
+  const { data: event, isLoading } = useEvent(eventId)
+  if (isLoading || !event) {
+    return (
+      <div className="panel-comm" style={{ zIndex: 55 }}>
+        <div className="panel-header">
+          <button className="panel-back" onClick={onClose} aria-label="Close"><i className="fa-solid fa-arrow-left" /></button>
+          <span className="panel-title">Event Details</span>
+        </div>
+        <div className="spinner-center" style={{ paddingTop: 'var(--space-16)' }}><div className="spinner spinner-lg" /></div>
+      </div>
+    )
+  }
+  return <EventDetailPanel event={event} onClose={onClose} onOpenProfile={onOpenProfile} />
+}
+
 function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: AssociationMembership | null | undefined }) {
   const { showToast, viewProfile } = useUiStore()
   const canAddEvent = membership?.memberRole === 'PRESIDENT' || membership?.memberRole === 'SECRETARY'
+  const [showCreateEvent, setShowCreateEvent] = useState(false)
+  const [viewingEventId, setViewingEventId] = useState<string | null>(null)
   return (
     <div className="comm-tab-panel active" id="comm-tab-overview" style={{ padding: 'var(--space-4)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
         <h2 className="section-title" style={{ margin: 0 }}>Upcoming Events</h2>
         {canAddEvent && (
-          <button className="btn btn-ghost btn-sm" onClick={() => showToast('Event creation — coming soon', 'info')}>Add Event</button>
+          <button className="btn btn-ghost btn-sm" onClick={() => setShowCreateEvent(true)}>Add Event</button>
         )}
       </div>
       {a.events?.length ? (
         a.events.map((ev) => (
-          <button key={ev.id} type="button" className="comm-card" style={{ margin: '0 0 var(--space-2)', display: 'block' }} onClick={() => showToast('Event details — coming soon', 'info')}>
+          <button key={ev.id} type="button" className="comm-card" style={{ margin: '0 0 var(--space-2)', display: 'block' }} onClick={() => setViewingEventId(ev.id)}>
             <div className="comm-card-name">{ev.title}</div>
             <div className="comm-card-meta"><span>📅 {fmtDate(ev.startsAt)}</span></div>
           </button>
         ))
       ) : (
         <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No upcoming events.</p>
+      )}
+      {showCreateEvent && (
+        <CreateEventModal associationId={a.id} onClose={() => setShowCreateEvent(false)} />
+      )}
+      {viewingEventId && (
+        <EventDetailById eventId={viewingEventId} onClose={() => setViewingEventId(null)} onOpenProfile={(id) => { setViewingEventId(null); viewProfile(id) }} />
       )}
 
       <h2 className="section-title" style={{ margin: 'var(--space-4) 0 var(--space-3)' }}>Members</h2>
