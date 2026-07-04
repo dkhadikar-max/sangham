@@ -144,6 +144,8 @@ model User {
   annotations       Annotation[]
   followers         Follow[]        @relation("Followed")
   following         Follow[]        @relation("Follower")
+  blocksMade        Block[]         @relation("Blocker")
+  blocksReceived    Block[]         @relation("Blocked")
   clergyApplication ClergyApplication?
   moderationActions ModerationAction[]
   location          UserLocation?
@@ -191,6 +193,19 @@ model Follow {
 
   @@unique([followerId, followedId])
   @@map("follows")
+}
+
+model Block {
+  blockerId   String   @map("blocker_id")
+  blockedId   String   @map("blocked_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  blocker     User     @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked     User     @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@id([blockerId, blockedId])
+  @@index([blockedId])
+  @@map("blocks")
 }
 
 // ── Clergy Verification ───────────────────────────────────────────────────────
@@ -535,6 +550,8 @@ model Message {
   recipientId  String   @map("recipient_id")
   ciphertext   String   @db.Text // E2E: AES-GCM ciphertext, base64
   iv           String?  @db.VarChar(24) @map("iv")          // E2E: AES-GCM IV, base64 (null = legacy plaintext)
+  type         String   @default("text") @db.VarChar(20)
+  mediaUrl     String?  @map("media_url") @db.Text
   isRead       Boolean  @default(false) @map("is_read")
   createdAt    DateTime @default(now()) @map("created_at")
 

@@ -16,6 +16,7 @@ import { connectRedis } from './config/redis';
 import { apiLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
 import { ensureUploadDirs } from './services/storage';
+import { setIo } from './config/socketio';
 
 // v1 routes
 import authRoutes         from './routes/auth';
@@ -26,6 +27,7 @@ import sessionRoutes      from './routes/sessions';
 import eventRoutes        from './routes/events';
 import assocRoutes        from './routes/associations';
 import messageRoutes      from './routes/messages';
+import conversationRoutes from './routes/conversations';
 import adminRoutes        from './routes/admin';
 import uploadRoutes        from './routes/uploads';
 // v2 extension routes
@@ -58,6 +60,7 @@ const httpServer = createServer(app);
 export const io = new SocketServer(httpServer, {
   cors: { origin: allowedOrigins, credentials: true },
 });
+setIo(io);
 
 // Require a valid JWT on every WebSocket connection
 io.use((socket, next) => {
@@ -76,6 +79,8 @@ io.on('connection', (socket) => {
   const userId = socket.data.userId as string; // server-verified, never trust client claim
   socket.on('join_room',    (roomId: string) => socket.join(roomId));
   socket.on('leave_room',   (roomId: string) => socket.leave(roomId));
+  socket.on('join_conversation',  (conversationId: string) => socket.join(conversationId));
+  socket.on('leave_conversation', (conversationId: string) => socket.leave(conversationId));
   // Inject server-verified userId — client-supplied userId is ignored; iv forwarded for E2E decryption
   socket.on('chat_message', (data: { roomId: string; message: string; iv?: string }) => {
     socket.to(data.roomId).emit('chat_message', { ...data, userId });
@@ -143,6 +148,7 @@ app.use(`${API}/sessions`,      sessionRoutes);
 app.use(`${API}/events`,        eventRoutes);
 app.use(`${API}/associations`,  assocRoutes);
 app.use(`${API}/messages`,      messageRoutes);
+app.use(`${API}/conversations`, conversationRoutes);
 app.use(`${API}/admin`,         adminRoutes);
 // Extensions
 app.use(`${API}/discover`,      discoverRoutes);
