@@ -98,7 +98,7 @@ const PURPOSE_CATEGORIES = [
     items: [
       { value: 'pur_meditation',       label: 'Meditation' },
       { value: 'pur_mindfulness',      label: 'Mindfulness' },
-      { value: 'pur_buddhist_study',   label: 'Buddhist study' },
+      { value: 'pur_personal_growth',  label: 'Personal growth' },
       { value: 'pur_teacher_guidance', label: 'Teacher guidance' },
     ],
   },
@@ -332,18 +332,15 @@ export default function OnboardingPage() {
         {/* ── Step 1: Tradition ────────────────────────────────── */}
         {step === 1 && (
           <div className="onboard-step active">
-            <div className="onboard-emoji">☸️</div>
+            <div className="onboard-emoji">🌱</div>
             <h2 className="onboard-title">Your Background</h2>
-            <p className="onboard-sub">All traditions and backgrounds are welcome. Select what applies to you.</p>
-            <div className="onboard-label">Tradition (optional)</div>
+            <p className="onboard-sub">Whether you follow a tradition, many, or none — you belong here.</p>
+            <div className="onboard-label">Background (optional)</div>
             <div className="onboard-chips">
               {[
-                { value: 'THERAVADA', label: 'Theravada' },
-                { value: 'MAHAYANA',  label: 'Mahayana / Zen' },
-                { value: 'VAJRAYANA', label: 'Vajrayana / Tibetan' },
-                { value: 'NAVAYANA',  label: 'Navayana / Ambedkarite' },
-                { value: 'MULTIPLE',  label: 'Multiple Traditions' },
-                { value: 'OTHER',     label: 'Other / Secular' },
+                { value: 'NAVAYANA', label: 'Navayana / Ambedkarite' },
+                { value: 'MULTIPLE', label: 'Multiple Traditions' },
+                { value: 'OTHER',    label: 'Secular / Non-religious' },
               ].map(({ value, label }) => (
                 <button
                   key={value}
