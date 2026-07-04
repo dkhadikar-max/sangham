@@ -135,6 +135,7 @@ function LeftSidebar() {
             { icon: 'fa-user-group',     label: 'My Communities',   action: () => setTab('communities') },
             { icon: 'fa-book-bookmark',  label: 'Saved Teachings',  action: () => setTab('learn') },
             { icon: 'fa-compass',        label: 'Discover People',  action: () => setTab('discover') },
+            { icon: 'fa-message',        label: 'Messages',         action: () => setTab('messages') },
             { icon: 'fa-hand-holding-heart', label: 'Contribute',   action: () => showToast('Contribute — coming soon', 'info') },
             { icon: 'fa-gear',           label: 'Settings',         action: () => showToast('Settings — coming soon', 'info') },
           ].map(({ icon, label, action }) => (

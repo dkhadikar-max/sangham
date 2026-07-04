@@ -4,8 +4,7 @@ import { useState, useRef } from 'react'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useQueryClient } from '@tanstack/react-query'
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
+import { api, API_BASE, refreshAccessToken } from '@/lib/api/client'
 
 interface Props {
   onClose: () => void
@@ -65,7 +64,11 @@ export function CreateSessionModal({ onClose, onCreated, circleId }: Props) {
       if (form.photo) {
         const fd = new FormData()
         fd.append('file', form.photo)
-        const upRes = await fetch(`${API}/upload/media`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+        let upRes = await fetch(`${API_BASE}/uploads/image`, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+        if (upRes.status === 401) {
+          const newToken = await refreshAccessToken()
+          if (newToken) upRes = await fetch(`${API_BASE}/uploads/image`, { method: 'POST', headers: { Authorization: `Bearer ${newToken}` }, body: fd })
+        }
         if (upRes.ok) { const d = await upRes.json(); photoUrl = d.url }
       }
       const startsAt = new Date(`${form.date}T${form.time}`).toISOString()
@@ -83,13 +86,7 @@ export function CreateSessionModal({ onClose, onCreated, circleId }: Props) {
         photoUrl,
         circleId: circleId ?? null,
       }
-      const res = await fetch(`${API}/sessions`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) throw new Error(await res.text())
-      const created = await res.json()
+      const created = await api.post<{ id: string }>('/sessions', body, token)
       qc.invalidateQueries({ queryKey: ['sessions'] })
       showToast('Session created!', 'success')
       onCreated?.(created.id)

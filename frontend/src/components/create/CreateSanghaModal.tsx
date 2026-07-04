@@ -4,20 +4,20 @@ import { useState } from 'react'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useQueryClient } from '@tanstack/react-query'
+import { api } from '@/lib/api/client'
 import type { Tradition } from '@/types'
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
-
-const TRADITIONS: Tradition[] = ['THERAVADA', 'MAHAYANA', 'VAJRAYANA', 'NAVAYANA', 'ZEN', 'PURE_LAND', 'TIBETAN', 'MULTIPLE', 'OTHER']
+// Must match the backend's Tradition / AssociationCategory enums exactly —
+// selecting a value outside these fails validation on submit.
+const TRADITIONS: Tradition[] = ['THERAVADA', 'MAHAYANA', 'VAJRAYANA', 'NAVAYANA', 'MULTIPLE', 'OTHER']
 const CATEGORIES = [
   { value: 'TEMPLE', label: 'Temple' },
-  { value: 'AMBEDKARITE_SANGHA', label: 'Ambedkarite Sangha' },
+  { value: 'NGO', label: 'NGO' },
   { value: 'STUDY_GROUP', label: 'Study Group' },
-  { value: 'MEDITATION_CENTER', label: 'Meditation Center' },
-  { value: 'DHARMA_CENTER', label: 'Dharma Center' },
-  { value: 'ONLINE_COMMUNITY', label: 'Online Community' },
-  { value: 'YOUTH_GROUP', label: 'Youth Group' },
-  { value: 'OTHER', label: 'Other' },
+  { value: 'AMBEDKARITE_SANGHA', label: 'Ambedkarite Sangha' },
+  { value: 'UNIVERSITY_CLUB', label: 'University Club' },
+  { value: 'NATIONAL_FEDERATION', label: 'National Federation' },
+  { value: 'INTERNATIONAL_BODY', label: 'International Body' },
 ]
 
 interface Props {
@@ -70,16 +70,7 @@ export function CreateSanghaModal({ onClose, onCreated }: Props) {
         country: form.country.trim(),
         website,
       }
-      const res = await fetch(`${API}/associations`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) {
-        const err = await res.json().catch(() => null)
-        throw new Error(err?.error || 'Failed to create Sangha')
-      }
-      const created = await res.json()
+      const created = await api.post<{ id: string }>('/associations', body, token)
       qc.invalidateQueries({ queryKey: ['associations'] })
       qc.invalidateQueries({ queryKey: ['associations-mine'] })
       showToast(`${form.name} created!`, 'success')

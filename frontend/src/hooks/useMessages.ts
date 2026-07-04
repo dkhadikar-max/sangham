@@ -101,7 +101,7 @@ export function useCreateConversation() {
 async function uploadMedia(file: File, token: string | null, isRetry = false): Promise<string> {
   const form = new FormData()
   form.append('file', file)
-  const res = await fetch(`${API_BASE}/upload/media`, {
+  const res = await fetch(`${API_BASE}/uploads/image`, {
     method: 'POST',
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: form,
