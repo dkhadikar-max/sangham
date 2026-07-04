@@ -11,6 +11,7 @@ import type { EventItem, DiscoverProject } from '@/types'
 import { useDiscoverPeople, useDiscoverCategories, type PeopleFilter } from '@/hooks/useDiscover'
 import { useEvents, type EventFilter } from '@/hooks/useEvents'
 import { useProjects, type ProjectFilter } from '@/hooks/useProjects'
+import { ProjectDetailPanel } from '@/components/communities/ProjectDetailPanel'
 
 // ── Sub-tab types ─────────────────────────────────────────────
 type DiscoverSubTab = 'people' | 'events' | 'projects'
@@ -380,6 +381,7 @@ function ProjectsPanel() {
   const [q, setQ] = useState('')
   const [category, setCategory] = useState('ALL')
   const [filter, setFilter] = useState<ProjectFilter>({ status: 'OPEN' })
+  const [viewingProjectId, setViewingProjectId] = useState<string | null>(null)
 
   const debouncedQ = useDebounce((v: string) => setFilter((f) => ({ ...f, q: v || undefined })), 400)
 
@@ -430,9 +432,12 @@ function ProjectsPanel() {
           <EmptyState icon="fa-diagram-project" message="No open projects found. Try adjusting your filters." />
         )}
         {!isLoading && projects.map((p) => (
-          <ProjectItem key={p.id} project={p} onOpen={() => showToast('Project details — coming soon', 'info')} />
+          <ProjectItem key={p.id} project={p} onOpen={() => setViewingProjectId(p.id)} />
         ))}
       </div>
+      {viewingProjectId && (
+        <ProjectDetailPanel projectId={viewingProjectId} onClose={() => setViewingProjectId(null)} />
+      )}
     </div>
   )
 }

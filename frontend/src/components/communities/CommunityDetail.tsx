@@ -17,6 +17,9 @@ import { MemberManagementPanel } from './MemberManagementPanel'
 import { CreateEventModal } from '@/components/create/CreateEventModal'
 import { EventDetailPanel } from '@/components/discover/EventDetailPanel'
 import { useEvent } from '@/hooks/useEvents'
+import { CourseDetailPanel } from '@/components/learn/CourseDetailPanel'
+import { ProjectDetailPanel } from './ProjectDetailPanel'
+import { CircleDetailPanel } from './CircleDetailPanel'
 import type {
   AssociationDetail,
   AssociationMembership,
@@ -134,6 +137,7 @@ function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
   if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load learning content.</p>
 
   const { courses = [], resources = [] } = data ?? {}
+  const [viewingCourseId, setViewingCourseId] = useState<string | null>(null)
 
   return (
     <div style={{ padding: 'var(--space-4)' }}>
@@ -143,7 +147,7 @@ function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
       {courses.length > 0 && (
         <>
           <h2 className="section-title" style={{ marginBottom: 'var(--space-3)' }}>Courses</h2>
-          {courses.map((c) => <CourseCard key={c.id} c={c} />)}
+          {courses.map((c) => <CourseCard key={c.id} c={c} onOpen={() => setViewingCourseId(c.id)} />)}
         </>
       )}
       {resources.length > 0 && (
@@ -152,6 +156,9 @@ function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
           {resources.map((r) => <ResourceCard key={r.id} r={r} />)}
         </>
       )}
+      {viewingCourseId && (
+        <CourseDetailPanel courseId={viewingCourseId} onClose={() => setViewingCourseId(null)} />
+      )}
     </div>
   )
 }
@@ -159,6 +166,7 @@ function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
 function ProjectsPanel({ assocId, loaded }: { assocId: string; loaded: boolean }) {
   const { data, isLoading, error, refetch } = useCommunityProjects(assocId)
   useEffect(() => { if (loaded) refetch() }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [viewingProjectId, setViewingProjectId] = useState<string | null>(null)
   if (!loaded || isLoading) return <div style={{ padding: 'var(--space-4)' }}><div className="spinner-center"><div className="spinner" /></div></div>
   if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load projects.</p>
   const projects = data ?? []
@@ -166,8 +174,11 @@ function ProjectsPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
     <div style={{ padding: 'var(--space-4)' }}>
       {!projects.length
         ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No projects yet.</p>
-        : projects.map((p) => <ProjectCard key={p.id} p={p} />)
+        : projects.map((p) => <ProjectCard key={p.id} p={p} onOpen={() => setViewingProjectId(p.id)} />)
       }
+      {viewingProjectId && (
+        <ProjectDetailPanel projectId={viewingProjectId} onClose={() => setViewingProjectId(null)} />
+      )}
     </div>
   )
 }
@@ -175,6 +186,7 @@ function ProjectsPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
 function CirclesPanel({ assocId, loaded }: { assocId: string; loaded: boolean }) {
   const { data, isLoading, error, refetch } = useCommunityCircles(assocId)
   useEffect(() => { if (loaded) refetch() }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [viewingCircleId, setViewingCircleId] = useState<string | null>(null)
   if (!loaded || isLoading) return <div style={{ padding: 'var(--space-4)' }}><div className="spinner-center"><div className="spinner" /></div></div>
   if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load circles.</p>
   const circles = data ?? []
@@ -182,8 +194,11 @@ function CirclesPanel({ assocId, loaded }: { assocId: string; loaded: boolean })
     <div style={{ padding: 'var(--space-4)' }}>
       {!circles.length
         ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No study circles yet.</p>
-        : circles.map((c) => <CircleCard key={c.id} c={c} />)
+        : circles.map((c) => <CircleCard key={c.id} c={c} onOpen={() => setViewingCircleId(c.id)} />)
       }
+      {viewingCircleId && (
+        <CircleDetailPanel circleId={viewingCircleId} onClose={() => setViewingCircleId(null)} />
+      )}
     </div>
   )
 }
@@ -198,8 +213,7 @@ function ContributionsPanel() {
 
 // ── Sub-cards ─────────────────────────────────────────────────
 
-function CourseCard({ c }: { c: CommunityCourse }) {
-  const { showToast } = useUiStore()
+function CourseCard({ c, onOpen }: { c: CommunityCourse; onOpen: () => void }) {
   const lessonCount = c._count?.lessons ?? 0
   const instructor = c.instructor?.displayName || 'Community'
   const tradColors: Record<string, { grad: string; icon: string }> = {
@@ -210,7 +224,7 @@ function CourseCard({ c }: { c: CommunityCourse }) {
   const tc = tradColors[c.tradition ?? ''] ?? { grad: 'linear-gradient(135deg,#2563EB,#1d4ed8)', icon: 'fa-book-open' }
 
   return (
-    <button type="button" className="course-card" onClick={() => showToast('Course details — coming soon', 'info')}>
+    <button type="button" className="course-card" onClick={onOpen}>
       <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: tc.grad, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
         <i className={`fa-solid ${tc.icon} text-xl`} />
       </div>
@@ -261,11 +275,10 @@ function ResourceCard({ r }: { r: CommunityResource }) {
   )
 }
 
-function ProjectCard({ p }: { p: CommunityProject }) {
-  const { showToast } = useUiStore()
+function ProjectCard({ p, onOpen }: { p: CommunityProject; onOpen: () => void }) {
   const memberCount = p._count?.members ?? 0
   return (
-    <button type="button" className="comm-card" onClick={() => showToast('Project details — coming soon', 'info')}>
+    <button type="button" className="comm-card" onClick={onOpen}>
       <div className="comm-card-name">{p.icon || '🤝'} {p.title}</div>
       <div className="comm-card-meta"><span>{memberCount} collaborators</span><span>{p.status || 'OPEN'}</span></div>
       {p.purpose && <div className="comm-card-desc">{p.purpose}</div>}
@@ -273,14 +286,13 @@ function ProjectCard({ p }: { p: CommunityProject }) {
   )
 }
 
-function CircleCard({ c }: { c: CommunityCircle }) {
-  const { showToast } = useUiStore()
+function CircleCard({ c, onOpen }: { c: CommunityCircle; onOpen: () => void }) {
   const memberCount = c._count?.members ?? 0
   const statusColors: Record<string, { bg: string; clr: string }> = { OPEN: { bg: '#f0fdf4', clr: '#16a34a' }, FULL: { bg: '#fef2f2', clr: '#ef4444' }, CLOSED: { bg: '#f9fafb', clr: '#9ca3af' } }
   const sc = statusColors[c.status] || statusColors.OPEN
 
   return (
-    <button type="button" className="circle-card" onClick={() => showToast('Study Circle details — coming soon', 'info')}>
+    <button type="button" className="circle-card" onClick={onOpen}>
       <div className="flex items-start gap-3 mb-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2563EB,#1d4ed8)' }}>
           <i className="fa-solid fa-users text-sm" />
