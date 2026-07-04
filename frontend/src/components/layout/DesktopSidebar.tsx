@@ -82,7 +82,7 @@ export function DesktopSidebar() {
             <span className="ds-user-name">{user.displayName}</span>
           </button>
         )}
-        <button className="ds-create-btn" onClick={() => showToast('Share Reflection — coming soon', 'info')}>
+        <button className="ds-create-btn" onClick={() => { setTab('home'); showToast('Share your reflection below', 'info') }}>
           <i className="fa-solid fa-plus" style={{ fontSize: 12, flexShrink: 0 }} />
           <span className="ds-label">Share Reflection</span>
         </button>

@@ -44,13 +44,19 @@ export function CommunitiesTab() {
   const [commView, setCommView] = useState<CommView>('grid')
   const [activeFilter, setActiveFilter] = useState<AssociationFilter | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<'recommended' | 'newest' | 'largest'>('recommended')
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const filter: AssociationFilter = {
     ...activeFilter,
     ...(searchQuery.trim() ? { name: searchQuery.trim() } : {}),
   }
-  const { data: associations = [], isLoading, error } = useAssociations(Object.keys(filter).length ? filter : undefined)
+  const { data: rawAssociations = [], isLoading, error } = useAssociations(Object.keys(filter).length ? filter : undefined)
+  const associations = [...rawAssociations].sort((a, b) => {
+    if (sortBy === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    if (sortBy === 'largest') return b._count.members - a._count.members
+    return 0
+  })
   const { data: myAssociations = [] } = useMyAssociations()
 
   const handleSearch = useCallback((val: string) => {
@@ -277,13 +283,18 @@ export function CommunitiesTab() {
                 <select
                   className="bg-white rounded-lg px-3 py-2 text-xs text-sangham-ink focus:outline-none cursor-pointer"
                   style={{ border: '1px solid rgba(199,154,59,0.1)', minHeight: 44 }}
-                  onChange={() => showToast('Sorting coming soon', 'info')}
+                  value={sortBy}
+                  onChange={(e) => {
+                    const v = e.target.value
+                    if (v === 'nearest' || v === 'active') { showToast(`${e.target.selectedOptions[0].text} — coming soon`, 'info'); return }
+                    setSortBy(v as 'recommended' | 'newest' | 'largest')
+                  }}
                 >
-                  <option>Recommended</option>
-                  <option>Nearest</option>
-                  <option>Most Active</option>
-                  <option>Newest</option>
-                  <option>Largest</option>
+                  <option value="recommended">Recommended</option>
+                  <option value="nearest">Nearest</option>
+                  <option value="active">Most Active</option>
+                  <option value="newest">Newest</option>
+                  <option value="largest">Largest</option>
                 </select>
               </div>
             </div>

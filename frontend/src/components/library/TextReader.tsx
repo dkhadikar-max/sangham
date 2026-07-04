@@ -371,6 +371,25 @@ export function TextReader() {
 
   if (!currentText) return null
 
+  async function handleShare() {
+    const shareText = `${currentText!.title} — reading on Sangham`
+    const url = typeof window !== 'undefined' ? window.location.origin : 'https://sangham.online'
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: currentText!.title, text: shareText, url })
+      } catch {
+        // user cancelled the share sheet — not an error
+      }
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(`${shareText}\n${url}`)
+      showToast('Link copied to clipboard', 'success')
+    } catch {
+      showToast('Could not copy link', 'error')
+    }
+  }
+
   const panelStyle: React.CSSProperties = {
     '--reader-fs': `${fontSize}px`,
     '--reader-lh': lineHeight,
@@ -534,7 +553,7 @@ export function TextReader() {
                     <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
                     {isBookmarked ? 'Saved' : 'Bookmark'}
                   </button>
-                  <button className="reader-action-btn" onClick={() => showToast('Share — coming soon', 'info')}>
+                  <button className="reader-action-btn" onClick={handleShare}>
                     <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
                     Share
                   </button>

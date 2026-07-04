@@ -55,7 +55,8 @@ export function useLikePost() {
 export interface CreatePostInput {
   content: string
   mediaUrls?: string[]
-  postType?: 'TEXT' | 'IMAGE'
+  postType?: 'TEXT' | 'IMAGE' | 'LINK'
+  linkUrl?: string
 }
 
 export function useCreatePost() {

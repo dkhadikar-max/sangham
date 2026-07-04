@@ -186,6 +186,7 @@ export interface AssociationSummary {
   country: string | null
   website: string | null
   isVerified: boolean
+  createdAt: string
   _count: { members: number }
   memberRole?: string // present on /associations/mine results only
 }

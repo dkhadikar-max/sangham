@@ -6,7 +6,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { useNotifications } from '@/hooks/useNotifications'
 
 export function AppHeader() {
-  const { showToast, viewProfile, openNotifications } = useUiStore()
+  const { showToast, viewProfile, openNotifications, setTab } = useUiStore()
   const { user } = useAuthStore()
   const { data: notifData } = useNotifications()
 
@@ -44,7 +44,7 @@ export function AppHeader() {
         <button
           className="w-10 h-10 rounded-full bg-gradient-to-br from-sangham-gold to-sangham-gold-dark text-white flex items-center justify-center shadow-md shadow-sangham-gold/20 hover:shadow-lg transition-shadow"
           aria-label="Share reflection"
-          onClick={() => showToast('Share Reflection — coming soon', 'info')}
+          onClick={() => { setTab('home'); showToast('Share your reflection below', 'info') }}
         >
           <i className="fa-solid fa-plus text-sm" />
         </button>

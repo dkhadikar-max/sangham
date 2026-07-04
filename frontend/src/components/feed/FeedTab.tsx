@@ -324,6 +324,8 @@ function CenterFeed() {
   const uploadMedia = useUploadMedia()
   const [pendingPhoto, setPendingPhoto] = useState<{ file: File; previewUrl: string } | null>(null)
   const photoInputRef = useRef<HTMLInputElement>(null)
+  const [showLinkInput, setShowLinkInput] = useState(false)
+  const [linkUrl, setLinkUrl] = useState('')
 
   function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -337,18 +339,26 @@ function CenterFeed() {
     setPendingPhoto(null)
   }
 
+  function removeLink() {
+    setShowLinkInput(false)
+    setLinkUrl('')
+  }
+
   async function handlePost() {
     const content = postText.trim()
-    if ((!content && !pendingPhoto) || createPost.isPending || uploadMedia.isPending) return
+    const link = linkUrl.trim()
+    if ((!content && !pendingPhoto && !link) || createPost.isPending || uploadMedia.isPending) return
     try {
       let mediaUrls: string[] | undefined
       if (pendingPhoto) {
         const url = await uploadMedia.mutateAsync(pendingPhoto.file)
         mediaUrls = [url]
       }
-      await createPost.mutateAsync({ content, mediaUrls, postType: mediaUrls ? 'IMAGE' : 'TEXT' })
+      const postType = mediaUrls ? 'IMAGE' : link ? 'LINK' : 'TEXT'
+      await createPost.mutateAsync({ content, mediaUrls, postType, ...(link ? { linkUrl: link } : {}) })
       setPostText('')
       removePendingPhoto()
+      removeLink()
       showToast('Posted', 'success')
     } catch (err) {
       showToast((err as Error).message || 'Failed to post', 'error')
@@ -438,6 +448,22 @@ function CenterFeed() {
                   </button>
                 </div>
               )}
+              {showLinkInput && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginTop: 'var(--space-3)' }}>
+                  <input
+                    className="input"
+                    type="url"
+                    placeholder="https://…"
+                    value={linkUrl}
+                    onChange={(e) => setLinkUrl(e.target.value)}
+                    style={{ flex: 1 }}
+                    autoFocus
+                  />
+                  <button onClick={removeLink} aria-label="Remove link" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}>
+                    <i className="fa-solid fa-xmark" />
+                  </button>
+                </div>
+              )}
               <div className="flex items-center justify-between mt-3" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div className="flex gap-2" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
                   <button
@@ -449,21 +475,26 @@ function CenterFeed() {
                     <span>Photo</span>
                   </button>
                   <input ref={photoInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePhotoSelect} />
-                  {[{ icon: 'fa-link', label: 'Link' }, { icon: 'fa-quote-right', label: 'Quote' }].map(({ icon, label }) => (
-                    <button
-                      key={label}
-                      onClick={() => showToast(`${label} — coming soon`, 'info')}
-                      className="flex items-center gap-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
-                      style={{ minHeight: 44, padding: '0.5rem 0.75rem', flexShrink: 0, whiteSpace: 'nowrap' }}
-                    >
-                      <i className={`fa-solid ${icon} text-sangham-gold`} />
-                      <span>{label}</span>
-                    </button>
-                  ))}
+                  <button
+                    onClick={() => setShowLinkInput((v) => !v)}
+                    className="flex items-center gap-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
+                    style={{ minHeight: 44, padding: '0.5rem 0.75rem', flexShrink: 0, whiteSpace: 'nowrap' }}
+                  >
+                    <i className="fa-solid fa-link text-sangham-gold" />
+                    <span>Link</span>
+                  </button>
+                  <button
+                    onClick={() => showToast('Quote — coming soon', 'info')}
+                    className="flex items-center gap-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
+                    style={{ minHeight: 44, padding: '0.5rem 0.75rem', flexShrink: 0, whiteSpace: 'nowrap' }}
+                  >
+                    <i className="fa-solid fa-quote-right text-sangham-gold" />
+                    <span>Quote</span>
+                  </button>
                 </div>
                 <button
                   onClick={handlePost}
-                  disabled={(!postText.trim() && !pendingPhoto) || createPost.isPending || uploadMedia.isPending}
+                  disabled={(!postText.trim() && !pendingPhoto && !linkUrl.trim()) || createPost.isPending || uploadMedia.isPending}
                   className="hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ minHeight: 44, padding: '0.625rem 1.25rem', background: '#8B6621', flexShrink: 0, whiteSpace: 'nowrap' }}
                 >
