@@ -403,14 +403,14 @@ function CenterFeed() {
                 className="feed-composer-textarea w-full bg-sangham-cream rounded-xl px-4 py-3 text-base text-left transition-all hover:bg-sangham-cream-dark"
                 style={{ border: 'none', cursor: 'text', fontFamily: 'inherit', minHeight: 48, color: 'var(--text-primary)', resize: 'none', boxSizing: 'border-box' }}
               />
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex gap-2">
+              <div className="flex items-center justify-between mt-3" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>
+                <div className="flex gap-2" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
                   {[{ icon: 'fa-image', label: 'Photo' }, { icon: 'fa-link', label: 'Link' }, { icon: 'fa-quote-right', label: 'Quote' }].map(({ icon, label }) => (
                     <button
                       key={label}
                       onClick={() => showToast(`${label} — coming soon`, 'info')}
                       className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
-                      style={{ minHeight: 44 }}
+                      style={{ minHeight: 44, flexShrink: 0, whiteSpace: 'nowrap' }}
                     >
                       <i className={`fa-solid ${icon} text-sangham-gold`} />
                       <span>{label}</span>
@@ -421,7 +421,7 @@ function CenterFeed() {
                   onClick={handlePost}
                   disabled={!postText.trim() || createPost.isPending}
                   className="px-5 py-2.5 hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
-                  style={{ minHeight: 44, background: '#8B6621' }}
+                  style={{ minHeight: 44, background: '#8B6621', flexShrink: 0, whiteSpace: 'nowrap' }}
                 >
                   {createPost.isPending ? <Spinner size="sm" /> : 'Post'}
                 </button>
