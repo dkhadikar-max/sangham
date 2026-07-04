@@ -7,7 +7,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import type { Tab } from '@/types'
 
 export function DesktopSidebar() {
-  const { activeTab, setTab, viewProfile, showToast } = useUiStore()
+  const { activeTab, setTab, viewProfile, showToast, openSettings } = useUiStore()
   const { user } = useAuthStore()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -68,7 +68,7 @@ export function DesktopSidebar() {
           <i className="fa-solid fa-hand-holding-heart ds-nav-icon" />
           <span className="ds-label">Contribute</span>
         </button>
-        <button className="ds-nav-item" data-tooltip="Settings" onClick={() => showToast('Settings — coming soon', 'info')}>
+        <button className="ds-nav-item" data-tooltip="Settings" onClick={openSettings}>
           <i className="fa-solid fa-gear ds-nav-icon" />
           <span className="ds-label">Settings</span>
         </button>

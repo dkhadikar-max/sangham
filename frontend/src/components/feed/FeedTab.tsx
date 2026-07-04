@@ -87,7 +87,7 @@ function WeeklyActivity() {
 
 function LeftSidebar() {
   const { user } = useAuthStore()
-  const { setTab, showToast } = useUiStore()
+  const { setTab, showToast, openSettings } = useUiStore()
   const { data: myAssociations = [] } = useMyAssociations()
   const { data: myProfile } = useUserProfile(user?.id ?? null)
   const handle = user?.username ? `@${user.username}` : '@practitioner'
@@ -137,7 +137,7 @@ function LeftSidebar() {
             { icon: 'fa-compass',        label: 'Discover People',  action: () => setTab('discover') },
             { icon: 'fa-message',        label: 'Messages',         action: () => setTab('messages') },
             { icon: 'fa-hand-holding-heart', label: 'Contribute',   action: () => showToast('Contribute — coming soon', 'info') },
-            { icon: 'fa-gear',           label: 'Settings',         action: () => showToast('Settings — coming soon', 'info') },
+            { icon: 'fa-gear',           label: 'Settings',         action: openSettings },
           ].map(({ icon, label, action }) => (
             <button
               key={label}
