@@ -409,8 +409,8 @@ function CenterFeed() {
                     <button
                       key={label}
                       onClick={() => showToast(`${label} — coming soon`, 'info')}
-                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
-                      style={{ minHeight: 44, flexShrink: 0, whiteSpace: 'nowrap' }}
+                      className="flex items-center gap-1.5 rounded-lg hover:bg-sangham-cream text-sangham-brown-light text-xs transition-colors"
+                      style={{ minHeight: 44, padding: '0.5rem 0.75rem', flexShrink: 0, whiteSpace: 'nowrap' }}
                     >
                       <i className={`fa-solid ${icon} text-sangham-gold`} />
                       <span>{label}</span>
@@ -420,8 +420,8 @@ function CenterFeed() {
                 <button
                   onClick={handlePost}
                   disabled={!postText.trim() || createPost.isPending}
-                  className="px-5 py-2.5 hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
-                  style={{ minHeight: 44, background: '#8B6621', flexShrink: 0, whiteSpace: 'nowrap' }}
+                  className="hover:opacity-90 text-white text-xs font-semibold rounded-xl transition-colors shadow-md shadow-sangham-gold/20 disabled:opacity-40 disabled:cursor-not-allowed"
+                  style={{ minHeight: 44, padding: '0.625rem 1.25rem', background: '#8B6621', flexShrink: 0, whiteSpace: 'nowrap' }}
                 >
                   {createPost.isPending ? <Spinner size="sm" /> : 'Post'}
                 </button>
