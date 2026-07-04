@@ -46,8 +46,8 @@ export function DesktopSidebar() {
         {([
           { id: 'home',        icon: 'fa-house',           label: 'Home' },
           { id: 'discover',    icon: 'fa-magnifying-glass', label: 'Discover' },
-          { id: 'communities', icon: 'fa-users',            label: 'Sanghas' },
-          { id: 'learn',       icon: 'fa-book-open',        label: 'Library' },
+          { id: 'communities', icon: 'fa-users',            label: 'Communities' },
+          { id: 'learn',       icon: 'fa-book-open',        label: 'Learn' },
           { id: 'messages',    icon: 'fa-message',          label: 'Messages' },
         ] as { id: Tab; icon: string; label: string }[]).map(({ id, icon, label }) => (
           <button
