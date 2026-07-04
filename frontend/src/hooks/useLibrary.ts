@@ -121,8 +121,32 @@ export function useCreateHighlight() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: ({ textId, segmentId, selectedText, color }: { textId: string; segmentId: string; selectedText: string; color: string }) =>
-      api.post<{ id: string }>('/library/highlights', { textId, segmentId, selectedText, color }, token ?? undefined),
+    mutationFn: ({ textId, segmentId, selectedText, color, note }: { textId: string; segmentId: string; selectedText: string; color: string; note?: string }) =>
+      api.post<{ id: string }>('/library/highlights', { textId, segmentId, selectedText, color, note }, token ?? undefined),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['library-highlights', vars.textId] })
+    },
+  })
+}
+
+export function useUpdateHighlight() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, note }: { id: string; textId: string; note: string | null }) =>
+      api.patch<{ id: string }>(`/library/highlights/${id}`, { note }, token ?? undefined),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['library-highlights', vars.textId] })
+    },
+  })
+}
+
+export function useDeleteHighlight() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id }: { id: string; textId: string }) =>
+      api.delete<{ deleted: boolean }>(`/library/highlights/${id}`, token ?? undefined),
     onSuccess: (_data, vars) => {
       qc.invalidateQueries({ queryKey: ['library-highlights', vars.textId] })
     },

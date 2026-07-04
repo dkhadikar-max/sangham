@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, type ReactNode } from 'react'
 import { useReaderStore } from '@/stores/reader'
 import { useAuthStore } from '@/stores/auth'
 import {
@@ -11,7 +11,10 @@ import {
   useBookmarkText,
   useAICompanion,
   useCreateHighlight,
+  useUpdateHighlight,
+  useDeleteHighlight,
 } from '@/hooks/useLibrary'
+import type { Highlight } from '@/types'
 import { libTradSym, libTradClass, libLangLabel, libGetCoverUrl, libShortTitle, libReadingMins, timeAgo } from '@/lib/library-utils'
 import type { TextSegment } from '@/types'
 import type { ReaderTheme, ReaderFont, ReadingWidth, LineSpacing } from '@/stores/reader'
@@ -38,8 +41,41 @@ function buildTOC(segs: TextSegment[]): TOCEntry[] {
   return toc
 }
 
-function SegmentList({ segs, highlights }: { segs: TextSegment[]; highlights: { segmentId: string; selectedText: string; color: string; note: string | null; id: string }[] }) {
-  const hlBySegId: Record<string, typeof highlights> = {}
+function renderHighlightedContent(content: string, hls: Highlight[], onNoteClick: (h: Highlight) => void) {
+  if (hls.length === 0) return content
+  // Find the earliest-occurring highlight match first so nested/overlapping selections don't break the split
+  const matches = hls
+    .map((h) => ({ h, idx: content.indexOf(h.selectedText) }))
+    .filter((m) => m.idx !== -1)
+    .sort((a, b) => a.idx - b.idx)
+  if (matches.length === 0) return content
+
+  const nodes: ReactNode[] = []
+  let cursor = 0
+  matches.forEach(({ h, idx }, i) => {
+    if (idx < cursor) return // overlapping match, skip
+    if (idx > cursor) nodes.push(content.slice(cursor, idx))
+    const end = idx + h.selectedText.length
+    nodes.push(
+      <mark
+        key={h.id}
+        className="reader-highlight"
+        style={{ backgroundColor: h.color, cursor: h.note ? 'pointer' : 'default' }}
+        title={h.note ?? undefined}
+        onClick={h.note ? () => onNoteClick(h) : undefined}
+      >
+        {content.slice(idx, end)}
+        {h.note && <sup className="reader-note-dot">📝</sup>}
+      </mark>,
+    )
+    cursor = end
+  })
+  if (cursor < content.length) nodes.push(content.slice(cursor))
+  return nodes
+}
+
+function SegmentList({ segs, highlights, onNoteClick }: { segs: TextSegment[]; highlights: Highlight[]; onNoteClick: (h: Highlight) => void }) {
+  const hlBySegId: Record<string, Highlight[]> = {}
   highlights.forEach((h) => {
     if (!hlBySegId[h.segmentId]) hlBySegId[h.segmentId] = []
     hlBySegId[h.segmentId].push(h)
@@ -61,9 +97,7 @@ function SegmentList({ segs, highlights }: { segs: TextSegment[]; highlights: { 
               <div className="reader-seg-key">{s.segmentKey}</div>
             )}
             <p className="reader-seg-p">
-              {hls.length === 0
-                ? s.content
-                : s.content}
+              {renderHighlightedContent(s.content, hls, onNoteClick)}
             </p>
           </div>
         )
@@ -127,6 +161,8 @@ export function TextReader() {
   const aiMut = useAICompanion()
 
   const createHighlight = useCreateHighlight()
+  const updateHighlight = useUpdateHighlight()
+  const deleteHighlight = useDeleteHighlight()
 
   const [extraSegs, setExtraSegs] = useState<TextSegment[]>([])
   const [leftOpen, setLeftOpen] = useState(false)
@@ -140,6 +176,10 @@ export function TextReader() {
   const [aiResult, setAiResult] = useState<{ label: string; text: string } | null>(null)
   const [tocFilter, setTocFilter] = useState('')
   const [selMenu, setSelMenu] = useState<{ x: number; y: number; text: string; segmentId: string | null } | null>(null)
+  const [noteDraftOpen, setNoteDraftOpen] = useState(false)
+  const [noteDraftText, setNoteDraftText] = useState('')
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null)
+  const [editingNoteText, setEditingNoteText] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const allSegs = [...(textDetail?.segments ?? []), ...extraSegs]
@@ -155,6 +195,7 @@ export function TextReader() {
     setFocusModeLocal(false)
     setAiResult(null)
     setTocFilter('')
+    setEditingNoteId(null)
   }, [textId])
 
   // Apply server progress percentage on load
@@ -248,13 +289,57 @@ export function TextReader() {
     setSelMenu({ x: rect.left + rect.width / 2, y: rect.top, text, segmentId })
   }, [])
 
+  const closeSelMenu = () => {
+    setSelMenu(null)
+    setNoteDraftOpen(false)
+    setNoteDraftText('')
+    window.getSelection()?.removeAllRanges()
+  }
+
   const handleHighlight = async (color: string) => {
     if (!selMenu || !textId || !selMenu.segmentId) return
     try {
       await createHighlight.mutateAsync({ textId, segmentId: selMenu.segmentId, selectedText: selMenu.text, color })
     } catch { /* best-effort */ }
-    setSelMenu(null)
-    window.getSelection()?.removeAllRanges()
+    closeSelMenu()
+  }
+
+  const handleSaveNote = async () => {
+    if (!selMenu || !textId || !selMenu.segmentId || !noteDraftText.trim()) return
+    try {
+      await createHighlight.mutateAsync({
+        textId, segmentId: selMenu.segmentId, selectedText: selMenu.text,
+        color: '#FEF08A', note: noteDraftText.trim(),
+      })
+    } catch { /* best-effort */ }
+    closeSelMenu()
+  }
+
+  const openNoteFromHighlight = (h: Highlight) => {
+    setRightTab('notes')
+    setRightOpen(true)
+    setEditingNoteId(null)
+  }
+
+  const startEditNote = (h: Highlight) => {
+    setEditingNoteId(h.id)
+    setEditingNoteText(h.note ?? '')
+  }
+
+  const saveEditNote = async (h: Highlight) => {
+    if (!textId) return
+    try {
+      await updateHighlight.mutateAsync({ id: h.id, textId, note: editingNoteText.trim() || null })
+    } catch { /* best-effort */ }
+    setEditingNoteId(null)
+  }
+
+  const handleDeleteNote = async (h: Highlight) => {
+    if (!textId) return
+    if (!confirm('Delete this note and highlight?')) return
+    try {
+      await deleteHighlight.mutateAsync({ id: h.id, textId })
+    } catch { /* best-effort */ }
   }
 
   const jumpToTOC = (entry: TOCEntry) => {
@@ -471,7 +556,7 @@ export function TextReader() {
           {/* Content */}
           {textDetail && (
             <div className="reader-content-area" id="reader-content-area" onMouseUp={handleMouseUp}>
-              <SegmentList segs={allSegs} highlights={highlights} />
+              <SegmentList segs={allSegs} highlights={highlights} onNoteClick={openNoteFromHighlight} />
             </div>
           )}
 
@@ -539,10 +624,59 @@ export function TextReader() {
             )}
             {rightTab === 'notes' && (
               <div>
-                <div style={{ fontSize: 12, color: 'var(--rt-muted)', textAlign: 'center', padding: 16 }}>
-                  <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>📝</div>
-                  <div>Select text while reading to add notes and highlights.</div>
-                </div>
+                {!token && (
+                  <div style={{ fontSize: 12, color: 'var(--rt-muted)', textAlign: 'center', padding: '8px 0 12px', background: 'color-mix(in srgb, var(--rt-accent) 6%, transparent)', borderRadius: 8, marginBottom: 10 }}>
+                    <div style={{ fontSize: '1.2rem', marginBottom: 4 }}>🔒</div>
+                    Sign in to take notes
+                  </div>
+                )}
+                {token && highlights.filter((h) => h.note).length === 0 && (
+                  <div style={{ fontSize: 12, color: 'var(--rt-muted)', textAlign: 'center', padding: 16 }}>
+                    <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>📝</div>
+                    <div>Select text while reading, then tap the note icon to save a reflection here.</div>
+                  </div>
+                )}
+                {token && highlights.filter((h) => h.note).map((h) => (
+                  <div key={h.id} className="reader-ai-result" style={{ marginBottom: 10 }}>
+                    <button
+                      type="button"
+                      style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: 'pointer', width: '100%' }}
+                      onClick={() => {
+                        const el = document.getElementById(`seg-${h.segmentId}`)
+                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                        setRightOpen(false)
+                      }}
+                    >
+                      <div className="reader-ai-result-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span style={{ width: 10, height: 10, borderRadius: '50%', background: h.color, display: 'inline-block', flexShrink: 0 }} />
+                        &ldquo;{h.selectedText.length > 60 ? h.selectedText.slice(0, 60) + '…' : h.selectedText}&rdquo;
+                      </div>
+                    </button>
+                    {editingNoteId === h.id ? (
+                      <div style={{ marginTop: 6 }}>
+                        <textarea
+                          value={editingNoteText}
+                          onChange={(e) => setEditingNoteText(e.target.value)}
+                          maxLength={1000}
+                          rows={3}
+                          style={{ width: '100%', fontSize: 12, padding: 8, borderRadius: 6, border: '1px solid var(--rt-border)', background: 'var(--rt-bg)', color: 'var(--rt-text)', resize: 'vertical', boxSizing: 'border-box' }}
+                        />
+                        <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+                          <button type="button" className="reader-action-btn" onClick={() => saveEditNote(h)} disabled={updateHighlight.isPending}>Save</button>
+                          <button type="button" className="reader-action-btn" onClick={() => setEditingNoteId(null)}>Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div style={{ marginTop: 4 }}>{h.note}</div>
+                        <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                          <button type="button" className="reader-action-btn" onClick={() => startEditNote(h)}>Edit</button>
+                          <button type="button" className="reader-action-btn" onClick={() => handleDeleteNote(h)}>Delete</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
             {rightTab === 'community' && (
@@ -604,32 +738,66 @@ export function TextReader() {
           style={{
             position: 'fixed',
             left: selMenu.x,
-            top: selMenu.y - 44,
+            top: selMenu.y - (noteDraftOpen ? 132 : 44),
             transform: 'translateX(-50%)',
             background: '#1a1a1a',
             borderRadius: 8,
-            padding: '6px 10px',
+            padding: noteDraftOpen ? 10 : '6px 10px',
             display: 'flex',
-            alignItems: 'center',
-            gap: 6,
+            flexDirection: 'column',
+            gap: 8,
             zIndex: 300,
+            width: noteDraftOpen ? 220 : undefined,
             boxShadow: '0 4px 16px rgba(0,0,0,0.35)',
             pointerEvents: 'auto',
           }}
           onMouseDown={(e) => e.preventDefault()}
         >
-          <span style={{ fontSize: 11, color: '#aaa', marginRight: 2 }}>Highlight</span>
-          {(['#FEF08A', '#BBF7D0', '#BAE6FD', '#FCA5A5'] as const).map((color) => (
-            <button
-              key={color}
-              onClick={() => handleHighlight(color)}
-              style={{ width: 18, height: 18, borderRadius: '50%', background: color, border: '2px solid rgba(255,255,255,0.3)', cursor: 'pointer', padding: 0 }}
-            />
-          ))}
-          <button
-            onClick={() => { setSelMenu(null); window.getSelection()?.removeAllRanges() }}
-            style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 14, padding: '0 2px', lineHeight: 1 }}
-          >✕</button>
+          {!noteDraftOpen ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 11, color: '#aaa', marginRight: 2 }}>Highlight</span>
+              {(['#FEF08A', '#BBF7D0', '#BAE6FD', '#FCA5A5'] as const).map((color) => (
+                <button
+                  key={color}
+                  onClick={() => handleHighlight(color)}
+                  style={{ width: 18, height: 18, borderRadius: '50%', background: color, border: '2px solid rgba(255,255,255,0.3)', cursor: 'pointer', padding: 0 }}
+                />
+              ))}
+              <button
+                onClick={() => setNoteDraftOpen(true)}
+                title="Add note"
+                style={{ background: 'none', border: 'none', color: '#ddd', cursor: 'pointer', fontSize: 13, padding: '0 2px', lineHeight: 1 }}
+              >📝</button>
+              <button
+                onClick={closeSelMenu}
+                style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 14, padding: '0 2px', lineHeight: 1 }}
+              >✕</button>
+            </div>
+          ) : (
+            <>
+              <textarea
+                autoFocus
+                value={noteDraftText}
+                onChange={(e) => setNoteDraftText(e.target.value)}
+                placeholder="Write your note…"
+                maxLength={1000}
+                rows={3}
+                style={{ width: '100%', fontSize: 12, padding: 8, borderRadius: 6, border: '1px solid #444', background: '#2a2a2a', color: '#eee', resize: 'none', boxSizing: 'border-box' }}
+                onMouseDown={(e) => e.stopPropagation()}
+              />
+              <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                <button
+                  onClick={closeSelMenu}
+                  style={{ background: 'none', border: '1px solid #444', color: '#ccc', cursor: 'pointer', fontSize: 11, padding: '4px 8px', borderRadius: 5 }}
+                >Cancel</button>
+                <button
+                  onClick={handleSaveNote}
+                  disabled={!noteDraftText.trim() || createHighlight.isPending}
+                  style={{ background: '#FEF08A', border: 'none', color: '#1a1a1a', cursor: 'pointer', fontSize: 11, fontWeight: 600, padding: '4px 8px', borderRadius: 5 }}
+                >Save Note</button>
+              </div>
+            </>
+          )}
         </div>
       )}
 
