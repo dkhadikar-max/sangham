@@ -428,7 +428,7 @@ model LiveSession {
   status         SessionStatus @default(SCHEDULED)
   createdAt      DateTime      @default(now()) @map("created_at")
 
-  host           User          @relation("SessionHost", fields: [hostId], references: [id])
+  host           User          @relation("SessionHost", fields: [hostId], references: [id], onDelete: Cascade)
   attendees      SessionAttendee[]
 
   @@index([scheduledAt])
@@ -473,7 +473,7 @@ model Event {
   isPublished     Boolean   @default(true) @map("is_published")
   createdAt       DateTime  @default(now()) @map("created_at")
 
-  organiser       User      @relation("EventOrganiser", fields: [organiserId], references: [id])
+  organiser       User      @relation("EventOrganiser", fields: [organiserId], references: [id], onDelete: Cascade)
   association     Association? @relation(fields: [associationId], references: [id])
   rsvps           EventRsvp[]
   studyCircles    StudyCircle[]
@@ -935,7 +935,7 @@ model Project {
   createdAt          DateTime        @default(now()) @map("created_at")
   updatedAt          DateTime        @updatedAt @map("updated_at")
 
-  owner              User             @relation("ProjectOwner", fields: [ownerId], references: [id])
+  owner              User             @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   association        Association?     @relation(fields: [associationId], references: [id])
   members            ProjectMember[]
   resources          Resource[]
