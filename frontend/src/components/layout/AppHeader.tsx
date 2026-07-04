@@ -3,19 +3,10 @@
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 import { Avatar } from '@/components/ui/Avatar'
-import type { Tab } from '@/types'
 
 export function AppHeader() {
-  const { activeTab, setTab, showToast, viewProfile } = useUiStore()
+  const { showToast, viewProfile } = useUiStore()
   const { user } = useAuthStore()
-
-  const navItems: { id: Tab; icon: string; label: string }[] = [
-    { id: 'home',        icon: 'fa-house',          label: 'Home' },
-    { id: 'communities', icon: 'fa-users',           label: 'Communities' },
-    { id: 'learn',       icon: 'fa-book-open',       label: 'Learn' },
-    { id: 'discover',    icon: 'fa-compass',          label: 'Discover' },
-    { id: 'messages',    icon: 'fa-comment-dots',    label: 'Messages' },
-  ]
 
   return (
     <header className="app-header">
@@ -27,20 +18,6 @@ export function AppHeader() {
         <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
           Sangham
         </span>
-      </div>
-
-      {/* Center nav (lg+) */}
-      <div className="hidden lg:flex items-center gap-8">
-        {navItems.map(({ id, icon, label }) => (
-          <button
-            key={id}
-            className={`header-nav-link flex items-center gap-2 font-medium text-sm transition-colors${activeTab === id ? ' active text-sangham-gold' : ' text-sangham-brown-light hover:text-sangham-ink'}`}
-            onClick={() => setTab(id)}
-          >
-            <i className={`fa-solid ${icon}`} />
-            <span>{label}</span>
-          </button>
-        ))}
       </div>
 
       {/* Right actions */}
