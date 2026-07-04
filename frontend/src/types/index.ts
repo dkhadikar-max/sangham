@@ -187,6 +187,7 @@ export interface AssociationSummary {
   website: string | null
   isVerified: boolean
   _count: { members: number }
+  memberRole?: string // present on /associations/mine results only
 }
 
 export interface AssociationMember {

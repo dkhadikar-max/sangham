@@ -97,6 +97,30 @@ export function useLeaveAssociation() {
   })
 }
 
+export function useSetMemberRole() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ assocId, userId, memberRole }: { assocId: string; userId: string; memberRole: string }) =>
+      api.post(`/associations/${assocId}/members`, { userId, memberRole }, token ?? undefined),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ['association', vars.assocId] })
+    },
+  })
+}
+
+export function useRemoveMember() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ assocId, userId }: { assocId: string; userId: string }) =>
+      api.delete(`/associations/${assocId}/members/${userId}`, token ?? undefined),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ['association', vars.assocId] })
+    },
+  })
+}
+
 export function useJoinAssociationDirect() {
   const { token } = useAuthStore()
   const qc = useQueryClient()

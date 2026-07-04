@@ -185,7 +185,11 @@ export function CommunitiesTab() {
                 <button
                   className="text-xs font-medium px-2 rounded-lg"
                   style={{ minHeight: 44, display: 'inline-flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#C79A3B' }}
-                  onClick={() => showToast('Community management — coming soon', 'info')}
+                  onClick={() => {
+                    const presided = myAssociations.find((a) => a.memberRole === 'PRESIDENT')
+                    if (presided) setDetailId(presided.id)
+                    else showToast("You're not an admin of any community yet", 'info')
+                  }}
                 >
                   Manage
                 </button>

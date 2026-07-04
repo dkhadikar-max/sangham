@@ -13,6 +13,7 @@ import {
 } from '@/hooks/useCommunities'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
+import { MemberManagementPanel } from './MemberManagementPanel'
 import type {
   AssociationDetail,
   AssociationMembership,
@@ -289,6 +290,8 @@ export function CommunityDetail({ assocId, onClose }: Props) {
   const [activeTab, setActiveTab] = useState<DetailTab>('overview')
   const [loadedTabs, setLoadedTabs] = useState<Set<DetailTab>>(new Set(['overview']))
   const [joining, setJoining] = useState(false)
+  const [confirmingLeave, setConfirmingLeave] = useState(false)
+  const [managingMembers, setManagingMembers] = useState(false)
 
   const { data: assoc, isLoading: assocLoading } = useAssociation(assocId)
   const { data: membership } = useAssociationMembership(assocId)
@@ -306,7 +309,15 @@ export function CommunityDetail({ assocId, onClose }: Props) {
   const handleToggleMembership = async () => {
     if (!token) { showToast('Sign in to join communities', 'info'); return }
     if (isPresident) return
+
+    if (isMember && !confirmingLeave) {
+      setConfirmingLeave(true)
+      setTimeout(() => setConfirmingLeave(false), 4000)
+      return
+    }
+
     setJoining(true)
+    setConfirmingLeave(false)
     try {
       if (isMember) {
         await leaveMut.mutateAsync(assocId)
@@ -339,13 +350,18 @@ export function CommunityDetail({ assocId, onClose }: Props) {
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" /></svg>
         </button>
         <div className="panel-title">{assoc?.name ?? 'Community'}</div>
+        {token && isPresident && !assocLoading && (
+          <button className="btn btn-ghost btn-sm" onClick={() => setManagingMembers(true)}>
+            <i className="fa-solid fa-users-gear" style={{ marginRight: 4 }} /> Manage
+          </button>
+        )}
         {token && !isPresident && !assocLoading && (
           <button
             className={`btn btn-sm ${isMember ? 'btn-ghost' : 'btn-primary'}`}
             onClick={handleToggleMembership}
             disabled={joining}
           >
-            {isMember ? 'Leave' : 'Join'}
+            {isMember ? (confirmingLeave ? 'Confirm Leave?' : 'Leave') : 'Join'}
           </button>
         )}
       </div>
@@ -416,6 +432,9 @@ export function CommunityDetail({ assocId, onClose }: Props) {
           </p>
         )}
       </div>
+      {managingMembers && (
+        <MemberManagementPanel assocId={assocId} onClose={() => setManagingMembers(false)} />
+      )}
     </div>
   )
 }
