@@ -74,7 +74,7 @@ export function CommunitiesTab() {
 
           {/* LEFT SIDEBAR */}
           <aside className="hidden lg:block lg:col-span-3">
-            <div style={{ position: 'sticky', top: '1.5rem' }} className="space-y-6">
+            <div style={{ position: 'sticky', top: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {/* Profile card */}
               <div className="bg-white rounded-2xl p-5 shadow-sm" style={{ border: '1px solid rgba(199,154,59,0.1)' }}>
                 {user ? (
@@ -110,14 +110,14 @@ export function CommunitiesTab() {
               {/* Nav */}
               <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid rgba(199,154,59,0.1)' }}>
                 <h4 className="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
-                <nav className="space-y-1">
+                <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                   <button
                     className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sangham-cream text-sangham-ink-light text-sm transition-colors w-full text-left"
                     onClick={() => setTab('home')}
                   >
                     <i className="fa-solid fa-house w-5 text-center text-sangham-brown-light" />Home Feed
                   </button>
-                  <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left" style={{ background: 'rgba(199,154,59,0.05)', color: '#C79A3B' }}>
+                  <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left" style={{ background: 'rgba(199,154,59,0.05)', color: '#8B6621' }}>
                     <i className="fa-solid fa-user-group w-5 text-center" />My Communities
                   </button>
                   <button
@@ -139,7 +139,7 @@ export function CommunitiesTab() {
               {myAssociations.length > 0 && (
                 <div className="bg-white rounded-2xl p-4 shadow-sm" style={{ border: '1px solid rgba(199,154,59,0.1)' }}>
                   <h4 className="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">My Sanghas</h4>
-                  <div className="space-y-1">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                     {myAssociations.slice(0, 5).map((a) => {
                       const ts = tradStyle(a.tradition)
                       return (
@@ -162,7 +162,7 @@ export function CommunitiesTab() {
           </aside>
 
           {/* CENTER CONTENT */}
-          <main className="lg:col-span-9 space-y-6">
+          <main className="lg:col-span-9" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Page header */}
             <div className="flex items-center justify-between">
               <div>

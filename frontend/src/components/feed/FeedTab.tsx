@@ -94,7 +94,7 @@ function LeftSidebar() {
   const connCount = myProfile?.followersCount ?? null
 
   return (
-    <div className="sticky top-24 space-y-6">
+    <div className="sticky top-24" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Profile card */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
         {user ? (
@@ -128,7 +128,7 @@ function LeftSidebar() {
       {/* Menu */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-sangham-gold/10">
         <h4 className="text-xs font-semibold text-sangham-brown-light uppercase tracking-wider mb-3 px-2">Menu</h4>
-        <nav className="space-y-1">
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
           {[
             { icon: 'fa-house',          label: 'Home Feed',        action: () => setTab('home') },
             { icon: 'fa-user-group',     label: 'My Communities',   action: () => setTab('communities') },
@@ -213,7 +213,7 @@ function RightSidebar() {
             <h3 className="font-serif font-semibold text-sangham-ink text-sm">Trending Communities</h3>
             <button onClick={() => setTab('communities')} className="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Explore</button>
           </div>
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {trending.data.map((c) => {
               const members = c._count?.members ?? c.memberCount ?? 0
               return (
@@ -239,7 +239,7 @@ function RightSidebar() {
             <h3 className="font-serif font-semibold text-sangham-ink text-sm">Suggested Connections</h3>
             <button onClick={() => setTab('discover')} className="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">See All</button>
           </div>
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {suggested.data.map((p) => (
               <div key={p.id} className="flex items-center gap-3">
                 <Avatar src={p.profilePhoto ?? null} name={p.displayName} size="sm" />
@@ -260,7 +260,7 @@ function RightSidebar() {
             <h3 className="font-serif font-semibold text-sangham-ink text-sm">Upcoming Events</h3>
             <button onClick={() => setTab('discover')} className="text-[10px] text-sangham-gold hover:text-sangham-gold-dark font-medium">Calendar</button>
           </div>
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {events.data.map((ev) => {
               const d = new Date(ev.startsAt)
               return (
@@ -281,7 +281,7 @@ function RightSidebar() {
       )}
 
       {/* Footer */}
-      <div className="text-center space-y-2">
+      <div className="text-center" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
         <div className="flex items-center justify-center gap-3 text-[10px] text-sangham-brown-light">
           {['About', 'Privacy', 'Terms', 'Help'].map((label, i) => (
             <span key={label} className="flex items-center gap-3">
@@ -308,7 +308,7 @@ const FILTERS = [
 
 function CenterFeed() {
   const { user } = useAuthStore()
-  const { showToast } = useUiStore()
+  const { showToast, setTab } = useUiStore()
   const [filter, setFilter] = useState('all')
   const [extraPosts, setExtraPosts] = useState<FeedPost[]>([])
   const [loadingMore, setLoadingMore] = useState(false)
@@ -349,13 +349,13 @@ function CenterFeed() {
   const allPosts = [...(posts ?? []), ...extraPosts]
 
   return (
-    <div className="md:col-span-6 space-y-6">
+    <div className="md:col-span-6" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Stories strip — only when we have suggestions */}
       {suggestedPeople.length > 0 && (
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-sangham-gold/10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-serif text-lg font-semibold text-sangham-ink">Suggested Practitioners</h2>
-            <button className="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style={{ minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>
+            <button onClick={() => setTab('discover')} className="text-xs text-sangham-gold hover:text-sangham-gold-dark font-medium px-3 rounded-lg" style={{ minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>
               View All
             </button>
           </div>
@@ -423,7 +423,7 @@ function CenterFeed() {
       </div>
 
       {/* Posts */}
-      <div className="space-y-5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {isPending && !user && (
           <div className="empty-state" style={{ padding: '4rem 1rem' }}>
             <div className="empty-state-icon"><i className="fa-solid fa-seedling" style={{ color: 'var(--saffron-300)' }} /></div>
