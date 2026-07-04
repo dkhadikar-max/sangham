@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { LibraryView } from '@/components/library/LibraryView'
 import { SessionsView } from '@/components/learn/SessionsView'
 import { CoursesView } from '@/components/learn/CoursesView'
-import { ResourcesView } from '@/components/learn/ResourcesView'
 import type { LearnSubTab } from '@/types'
 
 const TABS: { id: LearnSubTab; label: string }[] = [
@@ -65,7 +64,7 @@ export function LearnTab() {
 
       {/* Tab content — rendered naturally; page scrolls */}
       {activeTab === 'courses'   && <CoursesView searchQuery={searchQuery} />}
-      {activeTab === 'resources' && <ResourcesView searchQuery={searchQuery} />}
+      {activeTab === 'resources' && <PlaceholderTab label="Resources" />}
       {activeTab === 'circles'   && <PlaceholderTab label="Circles" />}
       {activeTab === 'sessions'  && <SessionsView />}
       {activeTab === 'library'   && <LibraryView searchQuery={searchQuery} />}

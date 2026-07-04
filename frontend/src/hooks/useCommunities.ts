@@ -170,17 +170,3 @@ export function useCommunityCircles(assocId: string | null) {
     retry: 1,
   })
 }
-
-export function useJoinCircle() {
-  const { token } = useAuthStore()
-  return useMutation({
-    mutationFn: (circleId: string) => api.post(`/study-circles/${circleId}/join`, {}, token ?? undefined),
-  })
-}
-
-export function useLeaveCircle() {
-  const { token } = useAuthStore()
-  return useMutation({
-    mutationFn: (circleId: string) => api.delete(`/study-circles/${circleId}/leave`, token ?? undefined),
-  })
-}

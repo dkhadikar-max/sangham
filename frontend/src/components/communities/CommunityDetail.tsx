@@ -10,8 +10,6 @@ import {
   useCommunityLearning,
   useCommunityProjects,
   useCommunityCircles,
-  useJoinCircle,
-  useLeaveCircle,
 } from '@/hooks/useCommunities'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
@@ -246,36 +244,12 @@ function ProjectCard({ p }: { p: CommunityProject }) {
 }
 
 function CircleCard({ c }: { c: CommunityCircle }) {
-  const { token } = useAuthStore()
-  const { showToast } = useUiStore()
-  const joinCircle = useJoinCircle()
-  const leaveCircle = useLeaveCircle()
-  const [joined, setJoined] = useState(false)
-
   const memberCount = c._count?.members ?? 0
   const statusColors: Record<string, { bg: string; clr: string }> = { OPEN: { bg: '#f0fdf4', clr: '#16a34a' }, FULL: { bg: '#fef2f2', clr: '#ef4444' }, CLOSED: { bg: '#f9fafb', clr: '#9ca3af' } }
   const sc = statusColors[c.status] || statusColors.OPEN
-  const pending = joinCircle.isPending || leaveCircle.isPending
-
-  async function handleToggle() {
-    if (!token) { showToast('Sign in to join a study circle', 'info'); return }
-    try {
-      if (joined) {
-        await leaveCircle.mutateAsync(c.id)
-        setJoined(false)
-        showToast('Left the circle', 'success')
-      } else {
-        await joinCircle.mutateAsync(c.id)
-        setJoined(true)
-        showToast('Joined the circle', 'success')
-      }
-    } catch (err) {
-      showToast((err as Error).message || 'Something went wrong', 'error')
-    }
-  }
 
   return (
-    <div className="circle-card">
+    <button type="button" className="circle-card">
       <div className="flex items-start gap-3 mb-3">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg,#2563EB,#1d4ed8)' }}>
           <i className="fa-solid fa-users text-sm" />
@@ -291,22 +265,11 @@ function CircleCard({ c }: { c: CommunityCircle }) {
       )}
       <div className="flex items-center justify-between">
         <span className="text-xs text-sangham-brown-light">By {c.facilitator?.displayName || 'Unknown'}</span>
-        <button
-          type="button"
-          onClick={handleToggle}
-          disabled={pending}
-          className="text-xs font-semibold rounded-lg"
-          style={{
-            padding: '0 16px', minHeight: 40, display: 'inline-flex', alignItems: 'center',
-            border: 'none', cursor: pending ? 'default' : 'pointer', opacity: pending ? 0.6 : 1,
-            background: joined ? 'var(--surface-sunken, #f3f4f6)' : '#C79A3B',
-            color: joined ? 'var(--text-primary, #1C1917)' : 'white',
-          }}
-        >
-          {pending ? '…' : joined ? 'Joined' : 'Join'}
-        </button>
+        <div className="px-4 text-white text-xs font-semibold rounded-lg" style={{ background: '#C79A3B', minHeight: 40, display: 'inline-flex', alignItems: 'center' }}>
+          Join
+        </div>
       </div>
-    </div>
+    </button>
   )
 }
 

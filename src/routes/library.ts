@@ -181,7 +181,7 @@ router.get('/daily-verse', async (req: AuthRequest, res: Response): Promise<void
   });
   if (!verse) { res.json({ message: 'No verse found' }); return; }
 
-  const result = { ...verse, source: verse.text.attribution, resolvedLang: effectiveLang, requestedLang: requested };
+  const result = { ...verse, resolvedLang: effectiveLang, requestedLang: requested };
   await redis.setex(cacheKey, CACHE_TTL.DAILY_VERSE, JSON.stringify(result)).catch(() => {});
   res.json(result);
 });
