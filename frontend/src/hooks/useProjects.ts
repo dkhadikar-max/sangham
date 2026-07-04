@@ -2,9 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
+import { api } from '@/lib/api/client'
 import type { DiscoverProject } from '@/types'
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 export interface ProjectFilter {
   q?: string
@@ -16,11 +15,7 @@ async function fetchProjects(filter: ProjectFilter, token: string | null): Promi
   const params = new URLSearchParams({ status: filter.status ?? 'OPEN', limit: '30' })
   if (filter.q) params.set('q', filter.q)
   if (filter.category && filter.category !== 'ALL') params.set('category', filter.category)
-  const res = await fetch(`${API}/projects?${params}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load projects')
-  const data = await res.json()
+  const data = await api.get<DiscoverProject[] | { data: DiscoverProject[] }>(`/projects?${params}`, token ?? undefined)
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 

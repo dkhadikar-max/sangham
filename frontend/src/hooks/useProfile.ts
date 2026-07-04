@@ -2,25 +2,30 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
+import { api, API_BASE, refreshAccessToken } from '@/lib/api/client'
 import type { UserProfile, FeedPost, EventItem, DiscoverProject } from '@/types'
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
+async function uploadAvatar(file: File, token: string | null, isRetry = false): Promise<{ url: string }> {
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`${API_BASE}/uploads/avatar`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  })
+  if (res.status === 401 && token && !isRetry) {
+    const newToken = await refreshAccessToken()
+    if (newToken) return uploadAvatar(file, newToken, true)
+  }
+  if (!res.ok) throw new Error('Upload failed')
+  return res.json() as Promise<{ url: string }>
+}
 
 export function useUploadAvatar() {
   const { token, updateUser } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (file: File) => {
-      const form = new FormData()
-      form.append('file', file)
-      const res = await fetch(`${API}/uploads/avatar`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: form,
-      })
-      if (!res.ok) throw new Error('Upload failed')
-      return res.json() as Promise<{ url: string }>
-    },
+    mutationFn: (file: File) => uploadAvatar(file, token ?? null),
     onSuccess: (data) => {
       updateUser({ profilePhoto: data.url })
       qc.invalidateQueries({ queryKey: ['user-profile'] })
@@ -29,19 +34,11 @@ export function useUploadAvatar() {
 }
 
 async function fetchProfile(userId: string, token: string | null): Promise<UserProfile> {
-  const res = await fetch(`${API}/users/${userId}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load profile')
-  return res.json()
+  return api.get<UserProfile>(`/users/${userId}`, token ?? undefined)
 }
 
 async function fetchUserPosts(userId: string, token: string | null): Promise<FeedPost[]> {
-  const res = await fetch(`${API}/users/${userId}/posts?limit=10`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load posts')
-  const data = await res.json()
+  const data = await api.get<FeedPost[] | { data: FeedPost[] }>(`/users/${userId}/posts?limit=10`, token ?? undefined)
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 
@@ -71,18 +68,7 @@ export function useSaveProfile() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (data: Partial<UserProfile>) => {
-      const res = await fetch(`${API}/users/me`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) throw new Error('Failed to save profile')
-      return res.json()
-    },
+    mutationFn: (data: Partial<UserProfile>) => api.put('/users/me', data, token ?? undefined),
     onSuccess: (_data, vars) => {
       qc.invalidateQueries({ queryKey: ['user-profile'] })
     },

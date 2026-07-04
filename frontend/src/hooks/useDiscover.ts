@@ -2,9 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
+import { api } from '@/lib/api/client'
 import type { DiscoverPerson, DiscoverCategory } from '@/types'
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
+type ListResponse<T> = T[] | { data?: T[] }
 
 export interface PeopleFilter {
   q?: string
@@ -21,18 +22,12 @@ async function fetchPeople(filter: PeopleFilter, token: string | null): Promise<
   if (filter.isVerifiedTeacher) params.set('isVerifiedTeacher', 'true')
   if (filter.language) params.set('language', filter.language)
   if (filter.categoryId) params.set('categoryId', filter.categoryId)
-  const res = await fetch(`${API}/discover/people?${params}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load people')
-  const data = await res.json()
+  const data = await api.get<ListResponse<DiscoverPerson>>(`/discover/people?${params}`, token ?? undefined)
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 
 async function fetchCategories(): Promise<DiscoverCategory[]> {
-  const res = await fetch(`${API}/discover/categories`)
-  if (!res.ok) throw new Error('Failed to load categories')
-  const data = await res.json()
+  const data = await api.get<ListResponse<DiscoverCategory>>('/discover/categories')
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 
@@ -60,13 +55,7 @@ export function useFollowUser() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (userId: string) => {
-      const res = await fetch(`${API}/users/${userId}/follow`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      if (!res.ok) throw new Error('Failed to follow')
-    },
+    mutationFn: (userId: string) => api.post(`/users/${userId}/follow`, {}, token ?? undefined),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['discover-people'] }),
   })
 }
@@ -75,13 +64,7 @@ export function useUnfollowUser() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (userId: string) => {
-      const res = await fetch(`${API}/users/${userId}/follow`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      if (!res.ok) throw new Error('Failed to unfollow')
-    },
+    mutationFn: (userId: string) => api.delete(`/users/${userId}/follow`, token ?? undefined),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['discover-people'] }),
   })
 }

@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/auth'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1'
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1'
 
 export class ApiError extends Error {
   constructor(
@@ -14,7 +14,7 @@ export class ApiError extends Error {
 
 let refreshPromise: Promise<string | null> | null = null
 
-async function refreshAccessToken(): Promise<string | null> {
+export async function refreshAccessToken(): Promise<string | null> {
   if (refreshPromise) return refreshPromise
   refreshPromise = (async () => {
     const { user, refreshToken, setAuth, clearAuth } = useAuthStore.getState()

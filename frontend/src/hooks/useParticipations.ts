@@ -2,19 +2,17 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
+import { api } from '@/lib/api/client'
 import type { UserParticipations } from '@/types'
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
 
 const EMPTY: UserParticipations = { circles: [], events: [], courses: [], sessions: [] }
 
 async function fetchParticipations(userId: string, token: string | null): Promise<UserParticipations> {
   try {
-    const res = await fetch(`${API}/users/${userId}/participations`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    })
-    if (!res.ok) return EMPTY
-    const data = await res.json()
+    const data = await api.get<{ data?: Partial<UserParticipations> } & Partial<UserParticipations>>(
+      `/users/${userId}/participations`,
+      token ?? undefined,
+    )
     const p = data?.data ?? data
     return {
       circles: Array.isArray(p?.circles) ? p.circles : [],

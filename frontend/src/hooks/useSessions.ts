@@ -2,8 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
+import { api } from '@/lib/api/client'
 
 // Matches backend liveSession model
 export interface SessionItem {
@@ -29,11 +28,7 @@ export interface SessionFilter {
 async function fetchSessions(filter: SessionFilter, token: string | null): Promise<SessionItem[]> {
   const params = new URLSearchParams()
   if (filter.type) params.set('type', filter.type)
-  const res = await fetch(`${API}/sessions?${params}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load sessions')
-  const data = await res.json()
+  const data = await api.get<SessionItem[] | { data: SessionItem[] }>(`/sessions?${params}`, token ?? undefined)
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 
@@ -51,14 +46,7 @@ export function useJoinSession() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (sessionId: string) => {
-      const res = await fetch(`${API}/sessions/${sessionId}/join`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      if (!res.ok) throw new Error('Failed to register for session')
-      return res.json()
-    },
+    mutationFn: (sessionId: string) => api.post(`/sessions/${sessionId}/join`, {}, token ?? undefined),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['sessions'] }),
   })
 }

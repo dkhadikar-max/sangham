@@ -3,11 +3,11 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useCallback } from 'react'
 import { useAuthStore } from '@/stores/auth'
+import { api, API_BASE, refreshAccessToken } from '@/lib/api/client'
 import type { Conversation, Message } from '@/types'
 import { io, Socket } from 'socket.io-client'
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
-const SOCKET_URL = (() => { try { return new URL(API).origin } catch { return '' } })()
+const SOCKET_URL = (() => { try { return new URL(API_BASE).origin } catch { return '' } })()
 
 // ── Singleton socket ──────────────────────────────────────────
 let _socket: Socket | null = null
@@ -28,27 +28,13 @@ export function disconnectSocket() {
   _socket = null
 }
 
-// ── API helpers ───────────────────────────────────────────────
-async function apiFetch<T>(path: string, token: string | null, opts?: RequestInit): Promise<T> {
-  const res = await fetch(`${API}${path}`, {
-    ...opts,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(opts?.headers ?? {}),
-    },
-  })
-  if (!res.ok) throw new Error(`API error ${res.status}`)
-  return res.json()
-}
-
 // ── Hooks ─────────────────────────────────────────────────────
 export function useConversations() {
   const { token } = useAuthStore()
   return useQuery<Conversation[]>({
     queryKey: ['conversations'],
     queryFn: async () => {
-      const data = await apiFetch<Conversation[] | { data: Conversation[] }>('/conversations', token)
+      const data = await api.get<Conversation[] | { data: Conversation[] }>('/conversations', token ?? undefined)
       return Array.isArray(data) ? data : (data.data ?? [])
     },
     enabled: !!token,
@@ -64,9 +50,9 @@ export function useMessages(conversationId: string | null) {
     queryFn: async ({ pageParam }) => {
       const params = new URLSearchParams({ limit: '30' })
       if (pageParam) params.set('before', pageParam as string)
-      const data = await apiFetch<Message[] | { data: Message[] }>(
+      const data = await api.get<Message[] | { data: Message[] }>(
         `/conversations/${conversationId}/messages?${params}`,
-        token,
+        token ?? undefined,
       )
       return Array.isArray(data) ? data : (data.data ?? [])
     },
@@ -82,18 +68,18 @@ export function useSendMessage() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async ({ conversationId, content, type, mediaUrl, encrypted }: {
+    mutationFn: ({ conversationId, content, type, mediaUrl, encrypted }: {
       conversationId: string
       content: string
       type: string
       mediaUrl?: string
       encrypted?: boolean
-    }) => {
-      return apiFetch<Message>(`/conversations/${conversationId}/messages`, token, {
-        method: 'POST',
-        body: JSON.stringify({ content, type, mediaUrl, encrypted: encrypted ?? false }),
-      })
-    },
+    }) =>
+      api.post<Message>(
+        `/conversations/${conversationId}/messages`,
+        { content, type, mediaUrl, encrypted: encrypted ?? false },
+        token ?? undefined,
+      ),
     onSuccess: (_msg, vars) => {
       qc.invalidateQueries({ queryKey: ['messages', vars.conversationId] })
       qc.invalidateQueries({ queryKey: ['conversations'] })
@@ -105,31 +91,33 @@ export function useCreateConversation() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (participantId: string) => {
-      return apiFetch<Conversation>('/conversations', token, {
-        method: 'POST',
-        body: JSON.stringify({ participantId }),
-      })
-    },
+    mutationFn: (participantId: string) =>
+      api.post<Conversation>('/conversations', { participantId }, token ?? undefined),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['conversations'] }),
   })
+}
+
+async function uploadMedia(file: File, token: string | null, isRetry = false): Promise<string> {
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`${API_BASE}/upload/media`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  })
+  if (res.status === 401 && token && !isRetry) {
+    const newToken = await refreshAccessToken()
+    if (newToken) return uploadMedia(file, newToken, true)
+  }
+  if (!res.ok) throw new Error('Upload failed')
+  const data = await res.json()
+  return data.url as string
 }
 
 export function useUploadMedia() {
   const { token } = useAuthStore()
   return useMutation({
-    mutationFn: async (file: File): Promise<string> => {
-      const form = new FormData()
-      form.append('file', file)
-      const res = await fetch(`${API}/upload/media`, {
-        method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: form,
-      })
-      if (!res.ok) throw new Error('Upload failed')
-      const data = await res.json()
-      return data.url as string
-    },
+    mutationFn: (file: File) => uploadMedia(file, token ?? null),
   })
 }
 

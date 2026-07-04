@@ -2,9 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth'
+import { api } from '@/lib/api/client'
 import type { EventItem } from '@/types'
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? ''
+type ListResponse<T> = T[] | { data?: T[] }
 
 export interface EventFilter {
   q?: string
@@ -18,12 +19,8 @@ async function fetchEvents(filter: EventFilter, token: string | null): Promise<E
   if (filter.q) params.set('q', filter.q)
   if (filter.type && filter.type !== 'ALL') params.set('type', filter.type)
   if (filter.mode && filter.mode !== 'ANY') params.set('mode', filter.mode)
-  const endpoint = filter.mine ? `${API}/events/mine` : `${API}/events`
-  const res = await fetch(`${endpoint}?${params}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  })
-  if (!res.ok) throw new Error('Failed to load events')
-  const data = await res.json()
+  const path = filter.mine ? '/events/mine' : '/events'
+  const data = await api.get<ListResponse<EventItem>>(`${path}?${params}`, token ?? undefined)
   return Array.isArray(data) ? data : (data.data ?? [])
 }
 
@@ -41,18 +38,8 @@ export function useRsvpEvent() {
   const { token } = useAuthStore()
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async ({ eventId, status }: { eventId: string; status: string }) => {
-      const res = await fetch(`${API}/events/${eventId}/rsvp`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      })
-      if (!res.ok) throw new Error('Failed to RSVP')
-      return res.json()
-    },
+    mutationFn: ({ eventId, status }: { eventId: string; status: string }) =>
+      api.post(`/events/${eventId}/rsvp`, { status }, token ?? undefined),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['events'] }),
   })
 }
