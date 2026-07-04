@@ -23,10 +23,13 @@ function formatTime(iso: string) {
 
 const typeColors: Record<string, string> = {
   RETREAT: '#7c3aed',
+  CEREMONY: '#c026d3',
   TALK: '#0369a1',
   SEMINAR: '#0f766e',
-  GATHERING: '#b45309',
-  DIKSHA: '#9333ea',
+  PROTEST_MARCH: '#b91c1c',
+  COMMUNITY_GATHERING: '#b45309',
+  DHAMMA_DIKSHA: '#9333ea',
+  CONVERSION_CEREMONY: '#9333ea',
   AMBEDKAR_JAYANTI: '#1d4ed8',
 }
 

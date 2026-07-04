@@ -124,6 +124,16 @@ router.get('/mine', authenticate, async (req: AuthRequest, res: Response): Promi
 
 // GET /events — general listing
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
+  // Optional auth — used only to attach the caller's own RSVP status per event
+  const token = req.headers.authorization?.split(' ')[1];
+  let userId: string | null = null;
+  if (token) {
+    try {
+      const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+      userId = payload.userId;
+    } catch { /* anonymous browsing */ }
+  }
+
   const { tradition, type, q, mode, organiserId } = req.query;
   const { limit, skip } = parsePagination(req.query as Record<string, unknown>);
   const where: Record<string, unknown> = { isPublished: true, startsAt: { gte: new Date() } };
@@ -145,8 +155,19 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
     }),
     prisma.event.count({ where }),
   ]);
+
+  let myRsvps: Record<string, string> = {};
+  if (userId && events.length) {
+    const rsvps = await prisma.eventRsvp.findMany({
+      where: { userId, eventId: { in: events.map(e => e.id) } },
+      select: { eventId: true, status: true },
+    });
+    myRsvps = Object.fromEntries(rsvps.map(r => [r.eventId, r.status]));
+  }
+  const withRsvp = events.map(e => ({ ...e, myRsvp: myRsvps[e.id] ?? null }));
+
   const params = parsePagination(req.query as Record<string, unknown>);
-  res.json(paginatedResponse(events, total, params));
+  res.json(paginatedResponse(withRsvp, total, params));
 });
 
 // GET /events/:id — full detail
@@ -180,12 +201,21 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   });
   if (!event) throw new AppError('Event not found', 404);
 
+  let myRsvp: string | null = null;
+  if (req.user) {
+    const rsvp = await prisma.eventRsvp.findUnique({
+      where: { eventId_userId: { eventId: event.id, userId: req.user.id } },
+      select: { status: true },
+    });
+    myRsvp = rsvp?.status ?? null;
+  }
+
   if (!req.user) {
     const { lat: _lat, lng: _lng, ...publicEvent } = event;
-    res.json(publicEvent);
+    res.json({ ...publicEvent, myRsvp });
     return;
   }
-  res.json(event);
+  res.json({ ...event, myRsvp });
 });
 
 // POST /events/:id/rsvp
