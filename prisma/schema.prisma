@@ -555,8 +555,8 @@ model Message {
   isRead       Boolean  @default(false) @map("is_read")
   createdAt    DateTime @default(now()) @map("created_at")
 
-  sender       User     @relation("MessageSender", fields: [senderId], references: [id])
-  recipient    User     @relation("MessageReceiver", fields: [recipientId], references: [id])
+  sender       User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient    User     @relation("MessageReceiver", fields: [recipientId], references: [id], onDelete: Cascade)
 
   @@index([senderId, recipientId])
   @@index([createdAt])
