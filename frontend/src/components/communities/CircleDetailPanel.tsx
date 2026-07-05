@@ -3,6 +3,7 @@
 import { useCircleDetail, useJoinCircle, useLeaveCircle } from '@/hooks/useCircleDetail'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
+import { DiscussionThread } from '@/components/discussion/DiscussionThread'
 
 interface Props {
   circleId: string
@@ -112,6 +113,10 @@ export function CircleDetailPanel({ circleId, onClose }: Props) {
                 ))}
               </>
             )}
+
+            <div style={{ marginTop: 'var(--space-5)', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--border-subtle)' }}>
+              <DiscussionThread entityType="study-circle" entityId={circleId} />
+            </div>
           </div>
         )}
       </div>

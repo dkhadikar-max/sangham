@@ -3,6 +3,7 @@
 import { useCourseDetail, useEnrollCourse, useUnenrollCourse } from '@/hooks/useCourseDetail'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
+import { DiscussionThread } from '@/components/discussion/DiscussionThread'
 
 interface Props {
   courseId: string
@@ -100,6 +101,10 @@ export function CourseDetailPanel({ courseId, onClose }: Props) {
                 )}
               </a>
             ))}
+
+            <div style={{ marginTop: 'var(--space-5)', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--border-subtle)' }}>
+              <DiscussionThread entityType="course" entityId={courseId} />
+            </div>
           </div>
         )}
       </div>
