@@ -12,6 +12,7 @@ import { useDiscoverPeople, useDiscoverCategories, type PeopleFilter } from '@/h
 import { useEvents, type EventFilter } from '@/hooks/useEvents'
 import { useProjects, type ProjectFilter } from '@/hooks/useProjects'
 import { ProjectDetailPanel } from '@/components/communities/ProjectDetailPanel'
+import { CreateProjectModal } from '@/components/communities/CreateProjectModal'
 
 // ── Sub-tab types ─────────────────────────────────────────────
 type DiscoverSubTab = 'people' | 'events' | 'projects'
@@ -382,6 +383,7 @@ function ProjectsPanel() {
   const [category, setCategory] = useState('ALL')
   const [filter, setFilter] = useState<ProjectFilter>({ status: 'OPEN' })
   const [viewingProjectId, setViewingProjectId] = useState<string | null>(null)
+  const [showCreateProject, setShowCreateProject] = useState(false)
 
   const debouncedQ = useDebounce((v: string) => setFilter((f) => ({ ...f, q: v || undefined })), 400)
 
@@ -399,8 +401,8 @@ function ProjectsPanel() {
 
   return (
     <div>
-      <div style={{ padding:'var(--space-3) var(--space-4) 0' }}>
-        <div className="search-bar">
+      <div style={{ padding:'var(--space-3) var(--space-4) 0', display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+        <div className="search-bar" style={{ flex: 1 }}>
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" /></svg>
           <input
             type="search"
@@ -409,6 +411,11 @@ function ProjectsPanel() {
             onChange={(e) => handleQ(e.target.value)}
           />
         </div>
+        {token && (
+          <button className="btn btn-primary btn-sm" onClick={() => setShowCreateProject(true)} style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
+            <i className="fa-solid fa-plus" style={{ marginRight: 4 }} />New
+          </button>
+        )}
       </div>
 
       {/* Category filters */}
@@ -437,6 +444,9 @@ function ProjectsPanel() {
       </div>
       {viewingProjectId && (
         <ProjectDetailPanel projectId={viewingProjectId} onClose={() => setViewingProjectId(null)} />
+      )}
+      {showCreateProject && (
+        <CreateProjectModal onClose={() => setShowCreateProject(false)} />
       )}
     </div>
   )

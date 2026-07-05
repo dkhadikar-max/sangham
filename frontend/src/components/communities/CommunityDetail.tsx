@@ -19,6 +19,7 @@ import { EventDetailPanel } from '@/components/discover/EventDetailPanel'
 import { useEvent } from '@/hooks/useEvents'
 import { CourseDetailPanel } from '@/components/learn/CourseDetailPanel'
 import { ProjectDetailPanel } from './ProjectDetailPanel'
+import { CreateProjectModal } from './CreateProjectModal'
 import { CircleDetailPanel } from './CircleDetailPanel'
 import { CreateCircleModal } from './CreateCircleModal'
 import type {
@@ -165,20 +166,35 @@ function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
 }
 
 function ProjectsPanel({ assocId, loaded }: { assocId: string; loaded: boolean }) {
+  const { token } = useAuthStore()
   const { data, isLoading, error, refetch } = useCommunityProjects(assocId)
   useEffect(() => { if (loaded) refetch() }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
   const [viewingProjectId, setViewingProjectId] = useState<string | null>(null)
-  if (!loaded || isLoading) return <div style={{ padding: 'var(--space-4)' }}><div className="spinner-center"><div className="spinner" /></div></div>
-  if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load projects.</p>
-  const projects = data ?? []
+  const [showCreateProject, setShowCreateProject] = useState(false)
+
   return (
     <div style={{ padding: 'var(--space-4)' }}>
-      {!projects.length
-        ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No projects yet.</p>
-        : projects.map((p) => <ProjectCard key={p.id} p={p} onOpen={() => setViewingProjectId(p.id)} />)
-      }
+      {token && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--space-3)' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => setShowCreateProject(true)}>
+            <i className="fa-solid fa-plus" style={{ marginRight: 4 }} />New Project
+          </button>
+        </div>
+      )}
+
+      {(!loaded || isLoading) && <div className="spinner-center"><div className="spinner" /></div>}
+      {loaded && !isLoading && error && <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load projects.</p>}
+      {loaded && !isLoading && !error && (
+        (data ?? []).length === 0
+          ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No projects yet.</p>
+          : (data ?? []).map((p) => <ProjectCard key={p.id} p={p} onOpen={() => setViewingProjectId(p.id)} />)
+      )}
+
       {viewingProjectId && (
         <ProjectDetailPanel projectId={viewingProjectId} onClose={() => setViewingProjectId(null)} />
+      )}
+      {showCreateProject && (
+        <CreateProjectModal associationId={assocId} onClose={() => setShowCreateProject(false)} onCreated={() => refetch()} />
       )}
     </div>
   )

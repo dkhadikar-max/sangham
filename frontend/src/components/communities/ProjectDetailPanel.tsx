@@ -1,6 +1,6 @@
 'use client'
 
-import { useProjectDetail, useJoinProject, useLeaveProject } from '@/hooks/useProjectDetail'
+import { useProjectDetail, useJoinProject, useLeaveProject, useSetProjectStatus } from '@/hooks/useProjectDetail'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 import { DiscussionThread } from '@/components/discussion/DiscussionThread'
@@ -20,6 +20,14 @@ export function ProjectDetailPanel({ projectId, onClose }: Props) {
   const { data: project, isLoading } = useProjectDetail(projectId)
   const join = useJoinProject()
   const leave = useLeaveProject()
+  const setStatus = useSetProjectStatus()
+
+  function handleStatusChange(status: 'OPEN' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED') {
+    setStatus.mutate({ id: projectId, status }, {
+      onSuccess: () => showToast('Project status updated', 'success'),
+      onError: (e) => showToast((e as Error).message || 'Failed to update status', 'error'),
+    })
+  }
 
   function handleToggleJoin() {
     if (!token) { showToast('Sign in to join projects', 'info'); return }
@@ -67,7 +75,25 @@ export function ProjectDetailPanel({ projectId, onClose }: Props) {
               {project._count.members} collaborators · {project.status}
             </div>
 
-            {!project.isOwner && (
+            {project.isOwner ? (
+              <div style={{ marginBottom: 'var(--space-4)' }}>
+                <label style={{ display: 'block', fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 'var(--space-1)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Status
+                </label>
+                <select
+                  className="input"
+                  value={project.status}
+                  onChange={(e) => handleStatusChange(e.target.value as 'OPEN' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED')}
+                  disabled={setStatus.isPending}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <option value="OPEN">Open</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
+              </div>
+            ) : (
               <button
                 className={`btn ${project.isMember ? 'btn-ghost' : 'btn-primary'}`}
                 style={{ width: '100%', marginBottom: 'var(--space-4)' }}

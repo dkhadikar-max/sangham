@@ -53,3 +53,36 @@ export function useLeaveProject() {
     onSuccess: (_d, id) => qc.invalidateQueries({ queryKey: ['project', id] }),
   })
 }
+
+export interface CreateProjectInput {
+  title: string
+  purpose: string
+  category: string
+  description?: string
+  skillsNeeded?: string[]
+  participantsNeeded?: number
+  deadline?: string
+  associationId?: string
+}
+
+export function useCreateProject() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: CreateProjectInput) => api.post<{ id: string }>('/projects', input, token ?? undefined),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['projects'] })
+      qc.invalidateQueries({ queryKey: ['community-projects'] })
+    },
+  })
+}
+
+export function useSetProjectStatus() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: 'OPEN' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED' }) =>
+      api.put(`/projects/${id}`, { status }, token ?? undefined),
+    onSuccess: (_d, vars) => qc.invalidateQueries({ queryKey: ['project', vars.id] }),
+  })
+}
