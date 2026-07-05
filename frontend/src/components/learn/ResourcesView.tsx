@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { useResources, useDeleteResource, type Resource, type ResourceType } from '@/hooks/useResources'
 import { CreateResourcePanel } from './CreateResourcePanel'
+import { ResourceDetailPanel } from './ResourceDetailPanel'
 
 const TYPE_LABELS: Record<ResourceType, string> = {
   YOUTUBE_VIDEO: 'YouTube Video',
@@ -39,9 +40,20 @@ const TYPE_COLORS: Record<string, { bg: string; clr: string }> = {
   BOOK_SUMMARY: { bg: '#F8F5EF', clr: '#C79A3B' },
 }
 
-function ResourceRow({ r, canDelete, onDelete }: { r: Resource; canDelete: boolean; onDelete: (id: string) => void }) {
+function ResourceRow({ r, canDelete, onDelete, onOpenDetail }: { r: Resource; canDelete: boolean; onDelete: (id: string) => void; onOpenDetail: (id: string) => void }) {
   const clrs = TYPE_COLORS[r.type] || { bg: '#F8F5EF', clr: '#C79A3B' }
   const dur = r.durationSecs ? `${Math.round(r.durationSecs / 60)}m · ` : ''
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
+
+  function handleDeleteClick() {
+    if (!confirmingDelete) {
+      setConfirmingDelete(true)
+      setTimeout(() => setConfirmingDelete(false), 4000)
+      return
+    }
+    setConfirmingDelete(false)
+    onDelete(r.id)
+  }
 
   return (
     <div className="resource-card" style={{ cursor: 'default' }}>
@@ -66,14 +78,22 @@ function ResourceRow({ r, canDelete, onDelete }: { r: Resource; canDelete: boole
           )}
         </div>
       </button>
+      <button
+        type="button"
+        onClick={() => onOpenDetail(r.id)}
+        aria-label="View details and discussion"
+        style={{ background: 'none', border: 'none', color: 'var(--text-tertiary)', cursor: 'pointer', padding: 8, flexShrink: 0 }}
+      >
+        <i className="fa-regular fa-comment-dots" />
+      </button>
       {canDelete && (
         <button
           type="button"
-          onClick={() => onDelete(r.id)}
+          onClick={handleDeleteClick}
           aria-label="Remove resource"
-          style={{ background: 'none', border: 'none', color: 'var(--text-tertiary)', cursor: 'pointer', padding: 8, flexShrink: 0 }}
+          style={{ background: 'none', border: 'none', color: confirmingDelete ? 'var(--error-500)' : 'var(--text-tertiary)', cursor: 'pointer', padding: 8, flexShrink: 0, fontSize: confirmingDelete ? 'var(--text-xs)' : undefined, fontWeight: confirmingDelete ? 600 : undefined, whiteSpace: 'nowrap' }}
         >
-          <i className="fa-solid fa-trash-can" />
+          {confirmingDelete ? 'Confirm?' : <i className="fa-solid fa-trash-can" />}
         </button>
       )}
     </div>
@@ -86,6 +106,7 @@ export function ResourcesView({ searchQuery }: { searchQuery: string }) {
   const [typeFilter, setTypeFilter] = useState('')
   const [page, setPage] = useState(1)
   const [showCreate, setShowCreate] = useState(false)
+  const [viewingResourceId, setViewingResourceId] = useState<string | null>(null)
   const deleteResource = useDeleteResource()
 
   const { data, isLoading, error } = useResources({ type: typeFilter || undefined, q: searchQuery || undefined, page, limit: 20 })
@@ -95,7 +116,6 @@ export function ResourcesView({ searchQuery }: { searchQuery: string }) {
   const isMod = user?.role === 'MODERATOR' || user?.role === 'SUPER_ADMIN'
 
   async function handleDelete(id: string) {
-    if (!confirm('Remove this resource from the shared library?')) return
     try {
       await deleteResource.mutateAsync(id)
       showToast('Resource removed', 'success')
@@ -107,6 +127,9 @@ export function ResourcesView({ searchQuery }: { searchQuery: string }) {
   return (
     <div style={{ padding: '0 var(--space-4) var(--space-8)' }}>
       {showCreate && <CreateResourcePanel onClose={() => setShowCreate(false)} />}
+      {viewingResourceId && (
+        <ResourceDetailPanel resourceId={viewingResourceId} onClose={() => setViewingResourceId(null)} />
+      )}
 
       {/* Header */}
       <div style={{ padding: 'var(--space-4) 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -163,6 +186,7 @@ export function ResourcesView({ searchQuery }: { searchQuery: string }) {
               r={r}
               canDelete={!!token && (isMod || r.contributor.id === user?.id)}
               onDelete={handleDelete}
+              onOpenDetail={setViewingResourceId}
             />
           ))}
         </div>
