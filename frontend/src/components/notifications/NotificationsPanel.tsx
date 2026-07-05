@@ -1,6 +1,8 @@
 'use client'
 
 import { useNotifications, useMarkNotificationRead, useMarkAllNotificationsRead, type AppNotification } from '@/hooks/useNotifications'
+import { useUiStore } from '@/stores/ui'
+import { useAuthStore } from '@/stores/auth'
 
 interface Props {
   onClose: () => void
@@ -23,17 +25,23 @@ const TYPE_ICONS: Record<string, string> = {
   comment: 'fa-comment',
   session_reminder: 'fa-video',
   event_reminder: 'fa-calendar-days',
+  event_rsvp: 'fa-calendar-check',
+  project_join: 'fa-diagram-project',
+  new_message: 'fa-message',
 }
 
-function NotificationRow({ n, onRead }: { n: AppNotification; onRead: (id: string) => void }) {
+function NotificationRow({ n, onRead, onNavigate }: { n: AppNotification; onRead: (id: string) => void; onNavigate: (n: AppNotification) => void }) {
   return (
     <button
-      onClick={() => !n.isRead && onRead(n.id)}
+      onClick={() => {
+        if (!n.isRead) onRead(n.id)
+        onNavigate(n)
+      }}
       style={{
         display: 'flex', alignItems: 'flex-start', gap: 'var(--space-3)', width: '100%',
         background: n.isRead ? 'none' : 'var(--saffron-50)', border: 'none',
         borderBottom: '1px solid var(--border-subtle)', padding: 'var(--space-3) var(--space-4)',
-        cursor: n.isRead ? 'default' : 'pointer', textAlign: 'left', fontFamily: 'inherit',
+        cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit',
       }}
     >
       <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--saffron-100)', color: 'var(--saffron-700)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -55,6 +63,30 @@ export function NotificationsPanel({ onClose }: Props) {
   const { data, isLoading } = useNotifications()
   const markRead = useMarkNotificationRead()
   const markAllRead = useMarkAllNotificationsRead()
+  const { user } = useAuthStore()
+  const { viewProfile, viewEvent, viewProject, openConversation } = useUiStore()
+
+  function handleNavigate(n: AppNotification) {
+    const target = n.data as Record<string, string> | null
+    if (!target) return
+    switch (n.type) {
+      case 'follow':
+        if (target.userId) { viewProfile(target.userId); onClose() }
+        break
+      case 'event_rsvp':
+        if (target.eventId) { viewEvent(target.eventId); onClose() }
+        break
+      case 'project_join':
+        if (target.projectId) { viewProject(target.projectId); onClose() }
+        break
+      case 'new_message':
+        if (target.userId && user) {
+          openConversation([user.id, target.userId].sort().join('+'))
+          onClose()
+        }
+        break
+    }
+  }
 
   return (
     <div className="panel-comm" style={{ zIndex: 50 }}>
@@ -82,7 +114,7 @@ export function NotificationsPanel({ onClose }: Props) {
         )}
 
         {data && data.data.map((n) => (
-          <NotificationRow key={n.id} n={n} onRead={(id) => markRead.mutate(id)} />
+          <NotificationRow key={n.id} n={n} onRead={(id) => markRead.mutate(id)} onNavigate={handleNavigate} />
         ))}
       </div>
     </div>

@@ -11,6 +11,8 @@ import { ProfilePanel } from '@/components/discover/ProfilePanel'
 import { SettingsPanel } from '@/components/settings/SettingsPanel'
 import { NotificationsPanel } from '@/components/notifications/NotificationsPanel'
 import { ContributeView } from '@/components/contribute/ContributeView'
+import { EventDetailById } from '@/components/discover/EventDetailById'
+import { ProjectDetailPanel } from '@/components/communities/ProjectDetailPanel'
 import type { ReactNode } from 'react'
 
 interface TabPanelProps {
@@ -42,7 +44,11 @@ interface AppShellProps {
 }
 
 export function AppShell({ home, learn, communities, discover, messages }: AppShellProps) {
-  const { activeTab, viewProfileId, closeProfile, settingsOpen, closeSettings, notificationsOpen, closeNotifications, contributeOpen, closeContribute } = useUiStore()
+  const {
+    activeTab, viewProfileId, closeProfile, viewProfile, settingsOpen, closeSettings,
+    notificationsOpen, closeNotifications, contributeOpen, closeContribute,
+    viewEventId, closeEvent, viewProjectId, closeProject,
+  } = useUiStore()
   usePublishPublicKey()
 
   return (
@@ -85,6 +91,12 @@ export function AppShell({ home, learn, communities, discover, messages }: AppSh
       )}
       {contributeOpen && (
         <ContributeView onClose={closeContribute} />
+      )}
+      {viewEventId && (
+        <EventDetailById eventId={viewEventId} onClose={closeEvent} onOpenProfile={viewProfile} />
+      )}
+      {viewProjectId && (
+        <ProjectDetailPanel projectId={viewProjectId} onClose={closeProject} />
       )}
     </div>
   )

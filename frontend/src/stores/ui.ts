@@ -11,6 +11,8 @@ interface UiStore {
   notificationsOpen: boolean
   contributeOpen: boolean
   pendingConversationId: string | null
+  viewEventId: string | null
+  viewProjectId: string | null
 
   setTab: (tab: Tab) => void
   setLearnTab: (tab: LearnTab) => void
@@ -27,6 +29,10 @@ interface UiStore {
   clearPendingConversation: () => void
   openContribute: () => void
   closeContribute: () => void
+  viewEvent: (eventId: string) => void
+  closeEvent: () => void
+  viewProject: (projectId: string) => void
+  closeProject: () => void
 }
 
 let toastSeq = 0
@@ -41,6 +47,8 @@ export const useUiStore = create<UiStore>((set) => ({
   notificationsOpen: false,
   contributeOpen: false,
   pendingConversationId: null,
+  viewEventId: null,
+  viewProjectId: null,
 
   setTab(tab) {
     set({ activeTab: tab })
@@ -105,5 +113,21 @@ export const useUiStore = create<UiStore>((set) => ({
 
   closeContribute() {
     set({ contributeOpen: false })
+  },
+
+  viewEvent(eventId) {
+    set({ viewEventId: eventId })
+  },
+
+  closeEvent() {
+    set({ viewEventId: null })
+  },
+
+  viewProject(projectId) {
+    set({ viewProjectId: projectId })
+  },
+
+  closeProject() {
+    set({ viewProjectId: null })
   },
 }))

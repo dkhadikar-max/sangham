@@ -14,8 +14,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 import { MemberManagementPanel } from './MemberManagementPanel'
 import { CreateEventModal } from '@/components/create/CreateEventModal'
-import { EventDetailPanel } from '@/components/discover/EventDetailPanel'
-import { useEvent } from '@/hooks/useEvents'
+import { EventDetailById } from '@/components/discover/EventDetailById'
 import { CourseDetailPanel } from '@/components/learn/CourseDetailPanel'
 import { CreateCourseModal } from './CreateCourseModal'
 import { ProjectDetailPanel } from './ProjectDetailPanel'
@@ -52,22 +51,6 @@ function tradGrad(tradition?: string | null) {
 }
 
 // ── Sub-tab panels ─────────────────────────────────────────────
-
-function EventDetailById({ eventId, onClose, onOpenProfile }: { eventId: string; onClose: () => void; onOpenProfile: (id: string) => void }) {
-  const { data: event, isLoading } = useEvent(eventId)
-  if (isLoading || !event) {
-    return (
-      <div className="panel-comm" style={{ zIndex: 55 }}>
-        <div className="panel-header">
-          <button className="panel-back" onClick={onClose} aria-label="Close"><i className="fa-solid fa-arrow-left" /></button>
-          <span className="panel-title">Event Details</span>
-        </div>
-        <div className="spinner-center" style={{ paddingTop: 'var(--space-16)' }}><div className="spinner spinner-lg" /></div>
-      </div>
-    )
-  }
-  return <EventDetailPanel event={event} onClose={onClose} onOpenProfile={onOpenProfile} />
-}
 
 function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: AssociationMembership | null | undefined }) {
   const { showToast, viewProfile } = useUiStore()
