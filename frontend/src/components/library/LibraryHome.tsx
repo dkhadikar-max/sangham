@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useRef, useCallback } from 'react'
 import { useReaderStore } from '@/stores/reader'
 import { useUiStore } from '@/stores/ui'
 import { useLibraryCollections, useLibrarySearch } from '@/hooks/useLibrary'
@@ -60,6 +61,14 @@ function BookCover({ tx }: { tx: LibraryText }) {
   return <div className={`lib-book-cover-fb ${tc}`}>{fb}</div>
 }
 
+function useDebounce(fn: (v: string) => void, delay: number) {
+  const t = useRef<ReturnType<typeof setTimeout> | null>(null)
+  return useCallback((v: string) => {
+    if (t.current) clearTimeout(t.current)
+    t.current = setTimeout(() => fn(v), delay)
+  }, [fn, delay])
+}
+
 function GridCover({ tx }: { tx: LibraryText }) {
   const url = libGetCoverUrl(tx)
   const tc = libTradClass(tx.collection?.tradition)
@@ -83,6 +92,16 @@ export function LibraryHome({ onOpenCollection, onOpenBookmarks }: Props) {
   const { data: allTexts = [], isLoading: textsLoading } = useLibrarySearch({ limit: 24 })
   const { data: recentTexts = [] } = useLibrarySearch({ limit: 8, sort: 'recent' })
 
+  const [q, setQ] = useState('')
+  const [debouncedQ, setDebouncedQ] = useState('')
+  const debounce = useDebounce(setDebouncedQ, 400)
+  function handleSearchChange(v: string) {
+    setQ(v)
+    debounce(v)
+  }
+  const { data: searchResults = [], isLoading: searchLoading } = useLibrarySearch({ q: debouncedQ || undefined, limit: 30 })
+  const isSearching = debouncedQ.trim().length > 0
+
   const inProgress = Object.entries(progress)
     .filter(([, p]) => p.percent > 0 && p.percent < 100)
     .sort(([, a], [, b]) => b.lastRead - a.lastRead)
@@ -92,6 +111,57 @@ export function LibraryHome({ onOpenCollection, onOpenBookmarks }: Props) {
 
   return (
     <div style={{ paddingBottom: 'var(--space-8)' }}>
+      {/* Search */}
+      <div style={{ padding: 'var(--space-3) var(--space-4) 0' }}>
+        <div className="search-bar">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" strokeLinecap="round" /></svg>
+          <input
+            type="search"
+            placeholder="Search texts by title, author, or translator..."
+            value={q}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {isSearching ? (
+        <div className="lib-section">
+          <div className="lib-section-header">
+            <span className="lib-section-title">Search Results</span>
+            <span style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>{searchResults.length} found</span>
+          </div>
+          {searchLoading && (
+            <div style={{ padding: 'var(--space-6)', textAlign: 'center' }}><div className="spinner spinner-lg" /></div>
+          )}
+          {!searchLoading && searchResults.length === 0 && (
+            <p style={{ padding: '0 var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>
+              No texts match &ldquo;{debouncedQ}&rdquo;.
+            </p>
+          )}
+          {!searchLoading && searchResults.length > 0 && (
+            <div className="lib-kindle-grid">
+              {searchResults.map((tx) => (
+                <button
+                  key={tx.id}
+                  type="button"
+                  className="lib-grid-card"
+                  onClick={() => setCurrentText(tx)}
+                >
+                  <GridCover tx={tx} />
+                  <h4>{libShortTitle(tx.title, 35)}</h4>
+                  {(tx.translator ?? tx.author) && (
+                    <div className="lib-card-author">{tx.translator ?? tx.author}</div>
+                  )}
+                  <span className={`lib-card-badge ${libTradBadgeClass(tx.collection?.tradition)}`}>
+                    {libTradLabel(tx.collection?.tradition)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
       {/* Continue Reading */}
       {inProgress.length > 0 && (
         <div className="lib-section">
@@ -280,6 +350,8 @@ export function LibraryHome({ onOpenCollection, onOpenBookmarks }: Props) {
               Write &amp; Publish Your Article or Book
             </button>
           </div>
+        </>
+      )}
         </>
       )}
     </div>
