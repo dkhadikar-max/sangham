@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { EventItem } from '@/types'
-import { useRsvpEvent } from '@/hooks/useEvents'
+import { useRsvpEvent, useSetEventPublished } from '@/hooks/useEvents'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
 
@@ -30,17 +30,28 @@ const typeColors: Record<string, string> = {
 }
 
 export function EventDetailPanel({ event, onClose, onOpenProfile }: Props) {
-  const { token } = useAuthStore()
+  const { token, user } = useAuthStore()
   const { showToast } = useUiStore()
   const rsvp = useRsvpEvent()
+  const setPublished = useSetEventPublished()
   const [going, setGoing] = useState(event.myRsvp === 'GOING')
+
+  const isOrganizer = !!user && event.organizer.id === user.id
+  const isCancelled = event.isPublished === false
 
   function handleRsvp() {
     if (!token) { showToast('Sign in to RSVP', 'info'); return }
-    const newStatus = going ? 'CANCELLED' : 'GOING'
+    const newStatus = going ? 'NOT_GOING' : 'GOING'
     rsvp.mutate({ eventId: event.id, status: newStatus }, {
       onSuccess: () => { setGoing(!going); showToast(going ? 'RSVP cancelled' : 'You\'re going!', 'success') },
       onError: (e) => showToast((e as Error).message, 'error'),
+    })
+  }
+
+  function handleToggleCancelled() {
+    setPublished.mutate({ eventId: event.id, isPublished: isCancelled }, {
+      onSuccess: () => showToast(isCancelled ? 'Event reinstated' : 'Event cancelled', 'success'),
+      onError: (e) => showToast((e as Error).message || 'Failed to update event', 'error'),
     })
   }
 
@@ -70,6 +81,7 @@ export function EventDetailPanel({ event, onClose, onOpenProfile }: Props) {
         <div style={{ padding:'var(--space-4)' }}>
           <div className="event-card-type" style={{ color: typeColor, marginBottom:'var(--space-1)' }}>
             {event.type.replace(/_/g,' ')} · {modeLabel}
+            {isCancelled && <span style={{ color: 'var(--error-500)' }}> · Cancelled</span>}
           </div>
           <h2 style={{ fontSize:'var(--text-xl)', fontWeight:700, color:'var(--text-primary)', lineHeight:1.3, marginBottom:'var(--space-3)' }}>
             {event.title}
@@ -105,12 +117,23 @@ export function EventDetailPanel({ event, onClose, onOpenProfile }: Props) {
           {/* RSVP button */}
           <button
             className={`btn ${going ? 'btn-ghost' : 'btn-primary'}`}
-            style={{ width:'100%', marginBottom:'var(--space-4)' }}
+            style={{ width:'100%', marginBottom: isOrganizer ? 'var(--space-2)' : 'var(--space-4)' }}
             onClick={handleRsvp}
             disabled={rsvp.isPending}
           >
             {going ? 'Cancel RSVP' : 'RSVP — I\'m Going'}
           </button>
+
+          {isOrganizer && (
+            <button
+              className="btn btn-ghost"
+              style={{ width: '100%', marginBottom: 'var(--space-4)', color: isCancelled ? undefined : 'var(--error-500)' }}
+              onClick={handleToggleCancelled}
+              disabled={setPublished.isPending}
+            >
+              {isCancelled ? 'Reinstate Event' : 'Cancel Event'}
+            </button>
+          )}
 
           {/* Description */}
           {event.description && (

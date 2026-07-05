@@ -411,6 +411,7 @@ export interface EventItem {
   _count: { rsvps?: number; attendees?: number }
   myRsvp: string | null
   coverUrl: string | null
+  isPublished?: boolean
 }
 
 export interface DiscoverProject {

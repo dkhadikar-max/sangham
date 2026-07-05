@@ -48,6 +48,42 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response): Promise<
   res.status(201).json(event);
 });
 
+const updateEventSchema = z.object({
+  title: z.string().min(3).max(200).optional(),
+  description: z.string().max(3000).optional(),
+  startsAt: z.string().datetime().optional(),
+  endsAt: z.string().datetime().optional(),
+  locationName: z.string().optional(),
+  onlineUrl: z.string().url().optional(),
+  capacity: z.number().int().min(0).optional(),
+  isPublished: z.boolean().optional(),
+});
+
+// PUT /events/:id — organiser or mod only
+router.put('/:id', authenticate, async (req: AuthRequest, res: Response): Promise<void> => {
+  const event = await prisma.event.findUnique({ where: { id: req.params.id } });
+  if (!event) throw new AppError('Event not found', 404);
+  const isMod = ['MODERATOR', 'SUPER_ADMIN'].includes(req.user!.role);
+  if (event.organiserId !== req.user!.id && !isMod) {
+    throw new AppError('Only the organiser can edit this event', 403);
+  }
+
+  const parsed = updateEventSchema.safeParse(req.body);
+  if (!parsed.success) { res.status(400).json({ error: zodMessage(parsed.error) }); return; }
+  const { startsAt, endsAt, ...rest } = parsed.data;
+
+  const updated = await prisma.event.update({
+    where: { id: req.params.id },
+    data: {
+      ...rest,
+      ...(startsAt && { startsAt: new Date(startsAt) }),
+      ...(endsAt && { endsAt: new Date(endsAt) }),
+    },
+    include: { organiser: { select: { id: true, displayName: true } } },
+  });
+  res.json(updated);
+});
+
 // GET /events/nearby?lat=&lng=&radius_km=&tradition=&type=
 router.get('/nearby', async (req: AuthRequest, res: Response): Promise<void> => {
   const { lat, lng, radius_km = '50', tradition, type } = req.query;

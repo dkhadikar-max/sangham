@@ -30,6 +30,7 @@ interface RawEvent {
   association: EventItem['association']
   _count?: { rsvps?: number }
   myRsvp?: string | null
+  isPublished?: boolean
 }
 
 function toEventItem(raw: RawEvent): EventItem {
@@ -51,6 +52,7 @@ function toEventItem(raw: RawEvent): EventItem {
     _count: raw._count ?? {},
     myRsvp: raw.myRsvp ?? null,
     coverUrl: null,
+    isPublished: raw.isPublished ?? true,
   }
 }
 
@@ -97,6 +99,22 @@ export function useRsvpEvent() {
   return useMutation({
     mutationFn: ({ eventId, status }: { eventId: string; status: string }) =>
       api.post(`/events/${eventId}/rsvp`, { status }, token ?? undefined),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['events'] }),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ['events'] })
+      qc.invalidateQueries({ queryKey: ['event', vars.eventId] })
+    },
+  })
+}
+
+export function useSetEventPublished() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ eventId, isPublished }: { eventId: string; isPublished: boolean }) =>
+      api.put(`/events/${eventId}`, { isPublished }, token ?? undefined),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ['events'] })
+      qc.invalidateQueries({ queryKey: ['event', vars.eventId] })
+    },
   })
 }
