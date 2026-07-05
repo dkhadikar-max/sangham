@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   useAssociation,
   useAssociationMembership,
@@ -18,6 +17,7 @@ import { CreateEventModal } from '@/components/create/CreateEventModal'
 import { EventDetailPanel } from '@/components/discover/EventDetailPanel'
 import { useEvent } from '@/hooks/useEvents'
 import { CourseDetailPanel } from '@/components/learn/CourseDetailPanel'
+import { CreateCourseModal } from './CreateCourseModal'
 import { ProjectDetailPanel } from './ProjectDetailPanel'
 import { CreateProjectModal } from './CreateProjectModal'
 import { CircleDetailPanel } from './CircleDetailPanel'
@@ -127,39 +127,53 @@ function OverviewPanel({ a, membership }: { a: AssociationDetail; membership: As
 
 function LearningPanel({ assocId, loaded }: { assocId: string; loaded: boolean }) {
   const { token } = useAuthStore()
-  const isMember = false // already checked in parent
-  const qc = useQueryClient()
   const { data, isLoading, error, refetch } = useCommunityLearning(assocId)
+  const [viewingCourseId, setViewingCourseId] = useState<string | null>(null)
+  const [showCreateCourse, setShowCreateCourse] = useState(false)
 
   useEffect(() => {
     if (loaded) refetch()
   }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (!loaded || isLoading) return <div style={{ padding: 'var(--space-4)' }}><div className="spinner-center"><div className="spinner" /></div></div>
-  if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load learning content.</p>
-
   const { courses = [], resources = [] } = data ?? {}
-  const [viewingCourseId, setViewingCourseId] = useState<string | null>(null)
 
   return (
     <div style={{ padding: 'var(--space-4)' }}>
-      {!courses.length && !resources.length && (
-        <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No content yet.</p>
+      {token && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--space-3)' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => setShowCreateCourse(true)}>
+            <i className="fa-solid fa-plus" style={{ marginRight: 4 }} />New Course
+          </button>
+        </div>
       )}
-      {courses.length > 0 && (
+
+      {(!loaded || isLoading) && <div className="spinner-center"><div className="spinner" /></div>}
+      {loaded && !isLoading && error && <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load learning content.</p>}
+      {loaded && !isLoading && !error && (
         <>
-          <h2 className="section-title" style={{ marginBottom: 'var(--space-3)' }}>Courses</h2>
-          {courses.map((c) => <CourseCard key={c.id} c={c} onOpen={() => setViewingCourseId(c.id)} />)}
+          {!courses.length && !resources.length && (
+            <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No content yet.</p>
+          )}
+          {courses.length > 0 && (
+            <>
+              <h2 className="section-title" style={{ marginBottom: 'var(--space-3)' }}>Courses</h2>
+              {courses.map((c) => <CourseCard key={c.id} c={c} onOpen={() => setViewingCourseId(c.id)} />)}
+            </>
+          )}
+          {resources.length > 0 && (
+            <>
+              <h2 className="section-title" style={{ margin: 'var(--space-4) 0 var(--space-3)' }}>Resources</h2>
+              {resources.map((r) => <ResourceCard key={r.id} r={r} />)}
+            </>
+          )}
         </>
       )}
-      {resources.length > 0 && (
-        <>
-          <h2 className="section-title" style={{ margin: 'var(--space-4) 0 var(--space-3)' }}>Resources</h2>
-          {resources.map((r) => <ResourceCard key={r.id} r={r} />)}
-        </>
-      )}
+
       {viewingCourseId && (
         <CourseDetailPanel courseId={viewingCourseId} onClose={() => setViewingCourseId(null)} />
+      )}
+      {showCreateCourse && (
+        <CreateCourseModal associationId={assocId} onClose={() => setShowCreateCourse(false)} onCreated={(id) => setViewingCourseId(id)} />
       )}
     </div>
   )

@@ -2,6 +2,8 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { CourseStatus, CourseOwnerType } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+import { env } from '../config/env';
 
 const router = Router();
 
@@ -49,6 +51,16 @@ router.get('/enrolled', authenticate, async (req: AuthRequest, res: Response): P
 
 // GET /courses/:id — with lessons, thread, and enrollment state
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
+  // Optional auth — only used to compute the caller's own isEnrolled/isInstructor flags
+  let userId: string | null = null;
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
+    try {
+      const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+      userId = payload.userId;
+    } catch { /* anonymous browsing */ }
+  }
+
   const [course, isEnrolled] = await Promise.all([
     prisma.course.findUnique({
       where: { id: req.params.id },
@@ -72,14 +84,17 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
         _count: { select: { lessons: true, enrollments: true } },
       },
     }),
-    req.user
+    userId
       ? prisma.courseEnrollment.findUnique({
-          where: { courseId_userId: { courseId: req.params.id, userId: req.user.id } },
+          where: { courseId_userId: { courseId: req.params.id, userId } },
         }).then(e => !!e)
       : Promise.resolve(false),
   ]);
   if (!course) { res.status(404).json({ error: 'Course not found' }); return; }
-  res.json({ ...course, isEnrolled });
+  const isInstructor = userId
+    ? (course.ownerType === CourseOwnerType.INDIVIDUAL ? course.ownerId === userId : course.instructorId === userId)
+    : false;
+  res.json({ ...course, isEnrolled, isInstructor });
 });
 
 // POST /courses/:id/enroll
