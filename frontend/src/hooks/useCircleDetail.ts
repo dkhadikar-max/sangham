@@ -48,3 +48,23 @@ export function useLeaveCircle() {
     onSuccess: (_d, id) => qc.invalidateQueries({ queryKey: ['circle', id] }),
   })
 }
+
+export function useCreateCircle() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (input: { associationId: string; topic: string; description?: string; scheduleDescription?: string }) =>
+      api.post<{ id: string }>('/study-circles', input, token ?? undefined),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['community-circles'] }),
+  })
+}
+
+export function useSetCircleStatus() {
+  const { token } = useAuthStore()
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string; status: 'OPEN' | 'ACTIVE' | 'CLOSED' }) =>
+      api.put(`/study-circles/${id}/status`, { status }, token ?? undefined),
+    onSuccess: (_d, vars) => qc.invalidateQueries({ queryKey: ['circle', vars.id] }),
+  })
+}

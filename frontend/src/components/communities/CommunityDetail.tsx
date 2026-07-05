@@ -20,6 +20,7 @@ import { useEvent } from '@/hooks/useEvents'
 import { CourseDetailPanel } from '@/components/learn/CourseDetailPanel'
 import { ProjectDetailPanel } from './ProjectDetailPanel'
 import { CircleDetailPanel } from './CircleDetailPanel'
+import { CreateCircleModal } from './CreateCircleModal'
 import type {
   AssociationDetail,
   AssociationMembership,
@@ -184,20 +185,35 @@ function ProjectsPanel({ assocId, loaded }: { assocId: string; loaded: boolean }
 }
 
 function CirclesPanel({ assocId, loaded }: { assocId: string; loaded: boolean }) {
+  const { token } = useAuthStore()
   const { data, isLoading, error, refetch } = useCommunityCircles(assocId)
   useEffect(() => { if (loaded) refetch() }, [loaded]) // eslint-disable-line react-hooks/exhaustive-deps
   const [viewingCircleId, setViewingCircleId] = useState<string | null>(null)
-  if (!loaded || isLoading) return <div style={{ padding: 'var(--space-4)' }}><div className="spinner-center"><div className="spinner" /></div></div>
-  if (error) return <p style={{ padding: 'var(--space-4)', color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load circles.</p>
-  const circles = data ?? []
+  const [showCreateCircle, setShowCreateCircle] = useState(false)
+
   return (
     <div style={{ padding: 'var(--space-4)' }}>
-      {!circles.length
-        ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No study circles yet.</p>
-        : circles.map((c) => <CircleCard key={c.id} c={c} onOpen={() => setViewingCircleId(c.id)} />)
-      }
+      {token && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--space-3)' }}>
+          <button className="btn btn-ghost btn-sm" onClick={() => setShowCreateCircle(true)}>
+            <i className="fa-solid fa-plus" style={{ marginRight: 4 }} />New Circle
+          </button>
+        </div>
+      )}
+
+      {(!loaded || isLoading) && <div className="spinner-center"><div className="spinner" /></div>}
+      {loaded && !isLoading && error && <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>Could not load circles.</p>}
+      {loaded && !isLoading && !error && (
+        (data ?? []).length === 0
+          ? <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-sm)' }}>No study circles yet.</p>
+          : (data ?? []).map((c) => <CircleCard key={c.id} c={c} onOpen={() => setViewingCircleId(c.id)} />)
+      )}
+
       {viewingCircleId && (
         <CircleDetailPanel circleId={viewingCircleId} onClose={() => setViewingCircleId(null)} />
+      )}
+      {showCreateCircle && (
+        <CreateCircleModal associationId={assocId} onClose={() => setShowCreateCircle(false)} onCreated={() => refetch()} />
       )}
     </div>
   )
@@ -288,7 +304,7 @@ function ProjectCard({ p, onOpen }: { p: CommunityProject; onOpen: () => void })
 
 function CircleCard({ c, onOpen }: { c: CommunityCircle; onOpen: () => void }) {
   const memberCount = c._count?.members ?? 0
-  const statusColors: Record<string, { bg: string; clr: string }> = { OPEN: { bg: '#f0fdf4', clr: '#16a34a' }, FULL: { bg: '#fef2f2', clr: '#ef4444' }, CLOSED: { bg: '#f9fafb', clr: '#9ca3af' } }
+  const statusColors: Record<string, { bg: string; clr: string }> = { OPEN: { bg: '#f0fdf4', clr: '#16a34a' }, ACTIVE: { bg: '#eff6ff', clr: '#2563eb' }, CLOSED: { bg: '#f9fafb', clr: '#9ca3af' } }
   const sc = statusColors[c.status] || statusColors.OPEN
 
   return (

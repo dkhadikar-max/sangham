@@ -1,6 +1,6 @@
 'use client'
 
-import { useCircleDetail, useJoinCircle, useLeaveCircle } from '@/hooks/useCircleDetail'
+import { useCircleDetail, useJoinCircle, useLeaveCircle, useSetCircleStatus } from '@/hooks/useCircleDetail'
 import { useUiStore } from '@/stores/ui'
 import { useAuthStore } from '@/stores/auth'
 import { DiscussionThread } from '@/components/discussion/DiscussionThread'
@@ -15,11 +15,14 @@ function initials(name: string) {
 }
 
 export function CircleDetailPanel({ circleId, onClose }: Props) {
-  const { token } = useAuthStore()
+  const { token, user } = useAuthStore()
   const { showToast, viewProfile } = useUiStore()
   const { data: circle, isLoading } = useCircleDetail(circleId)
   const join = useJoinCircle()
   const leave = useLeaveCircle()
+  const setStatus = useSetCircleStatus()
+
+  const isFacilitator = !!circle && !!user && circle.facilitator?.id === user.id
 
   function handleToggleJoin() {
     if (!token) { showToast('Sign in to join study circles', 'info'); return }
@@ -29,6 +32,15 @@ export function CircleDetailPanel({ circleId, onClose }: Props) {
     } else {
       join.mutate(circleId, { onSuccess: () => showToast('Joined study circle!', 'success'), onError: (e) => showToast((e as Error).message, 'error') })
     }
+  }
+
+  function handleToggleStatus() {
+    if (!circle) return
+    const nextStatus = circle.status === 'CLOSED' ? 'OPEN' : 'CLOSED'
+    setStatus.mutate({ id: circleId, status: nextStatus }, {
+      onSuccess: () => showToast(nextStatus === 'CLOSED' ? 'Circle closed' : 'Circle reopened', 'success'),
+      onError: (e) => showToast((e as Error).message || 'Failed to update status', 'error'),
+    })
   }
 
   return (
@@ -54,14 +66,25 @@ export function CircleDetailPanel({ circleId, onClose }: Props) {
               {circle.scheduleDescription ? ` · ${circle.scheduleDescription}` : ''}
             </div>
 
-            <button
-              className={`btn ${circle.isMember ? 'btn-ghost' : 'btn-primary'}`}
-              style={{ width: '100%', marginBottom: 'var(--space-4)' }}
-              onClick={handleToggleJoin}
-              disabled={join.isPending || leave.isPending}
-            >
-              {circle.isMember ? 'Leave Circle' : 'Join Circle'}
-            </button>
+            {isFacilitator ? (
+              <button
+                className={`btn ${circle.status === 'CLOSED' ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ width: '100%', marginBottom: 'var(--space-4)' }}
+                onClick={handleToggleStatus}
+                disabled={setStatus.isPending}
+              >
+                {circle.status === 'CLOSED' ? 'Reopen Circle' : 'Close Circle'}
+              </button>
+            ) : (
+              <button
+                className={`btn ${circle.isMember ? 'btn-ghost' : 'btn-primary'}`}
+                style={{ width: '100%', marginBottom: 'var(--space-4)' }}
+                onClick={handleToggleJoin}
+                disabled={join.isPending || leave.isPending}
+              >
+                {circle.isMember ? 'Leave Circle' : 'Join Circle'}
+              </button>
+            )}
 
             {circle.description && (
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 'var(--space-4)' }}>{circle.description}</p>

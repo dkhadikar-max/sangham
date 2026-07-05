@@ -2,6 +2,8 @@ import { Router, Response } from 'express';
 import { prisma } from '../config/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 import { StudyCircleStatus } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+import { env } from '../config/env';
 
 const router = Router();
 
@@ -30,6 +32,16 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
 
 // GET /study-circles/:id
 router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
+  // Optional auth — only used to compute the caller's own isMember flag
+  let userId: string | null = null;
+  const token = req.headers.authorization?.split(' ')[1];
+  if (token) {
+    try {
+      const payload = jwt.verify(token, env.JWT_SECRET) as { userId: string };
+      userId = payload.userId;
+    } catch { /* anonymous browsing */ }
+  }
+
   const circle = await prisma.studyCircle.findUnique({
     where: { id: req.params.id },
     include: {
@@ -55,8 +67,8 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   });
   if (!circle) { res.status(404).json({ error: 'Study circle not found' }); return; }
 
-  const isMember = req.user
-    ? !!(await prisma.studyCircleMember.findUnique({ where: { studyCircleId_userId: { studyCircleId: req.params.id, userId: req.user.id } } }))
+  const isMember = userId
+    ? !!(await prisma.studyCircleMember.findUnique({ where: { studyCircleId_userId: { studyCircleId: req.params.id, userId } } }))
     : false;
 
   res.json({ ...circle, isMember });
