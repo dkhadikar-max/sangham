@@ -22,7 +22,7 @@ type MsgRow = {
   isRead: boolean; createdAt: Date;
 };
 
-function formatMessage(msg: MsgRow, cid: string, senderName = '', senderPhoto: string | null = null) {
+function formatMessage(msg: MsgRow, cid: string, senderName = '', senderPhoto: string | null = null, isReadOverride?: boolean) {
   return {
     id: msg.id,
     content: msg.ciphertext,
@@ -34,7 +34,7 @@ function formatMessage(msg: MsgRow, cid: string, senderName = '', senderPhoto: s
     senderPhoto,
     conversationId: cid,
     createdAt: msg.createdAt.toISOString(),
-    isRead: msg.isRead,
+    isRead: isReadOverride ?? msg.isRead,
     encrypted: msg.iv !== null,
   };
 }
@@ -208,13 +208,22 @@ router.get('/:id/messages', authenticate, async (req: AuthRequest, res: Response
   });
 
   // Mark received messages as read
-  await prisma.message.updateMany({
+  const { count: markedReadCount } = await prisma.message.updateMany({
     where: { senderId: partnerId, recipientId: myId, isRead: false },
     data: { isRead: true },
   });
 
   const cid = convId(myId, partnerId);
-  res.json(msgs.map(m => formatMessage(m, cid, m.sender.displayName, m.sender.profilePhoto)));
+
+  // Let the sender know their messages were just read, so an open ChatView updates live
+  if (markedReadCount > 0) {
+    getIo()?.to(cid).emit(`read:${cid}`, { readerId: myId });
+  }
+
+  res.json(msgs.map(m => formatMessage(
+    m, cid, m.sender.displayName, m.sender.profilePhoto,
+    m.senderId === partnerId ? true : m.isRead, // reflect the read-marking that just happened above
+  )));
 });
 
 // POST /conversations/:id/messages — send a message

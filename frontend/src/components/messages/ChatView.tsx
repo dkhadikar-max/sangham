@@ -29,14 +29,17 @@ export function ChatView({ conversation, onBack }: Props) {
   const [localMessages, setLocalMessages] = useState<Message[]>([])
   const [decrypted, setDecrypted] = useState<Record<string, string>>({})
   const [canEncrypt, setCanEncrypt] = useState(false)
+  const [partnerHasRead, setPartnerHasRead] = useState(false)
   const cryptoKeyRef = useRef<CryptoKey | null>(null)
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useMessages(conversation.id)
 
   // Flatten pages, decrypt any that came back encrypted, merge with local optimistic/realtime messages
-  const serverMessages = (data?.pages.flat() ?? []).map((m) =>
-    m.encrypted && decrypted[m.id] !== undefined ? { ...m, content: decrypted[m.id] } : m,
-  )
+  const serverMessages = (data?.pages.flat() ?? []).map((m) => {
+    const withContent = m.encrypted && decrypted[m.id] !== undefined ? { ...m, content: decrypted[m.id] } : m
+    // The partner just read the conversation — live-update the tick on our own messages
+    return partnerHasRead && withContent.senderId === user?.id ? { ...withContent, isRead: true } : withContent
+  })
   const allMessages = [...serverMessages, ...localMessages.filter(lm => !serverMessages.find(sm => sm.id === lm.id))]
     .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
@@ -98,10 +101,17 @@ export function ChatView({ conversation, onBack }: Props) {
     if (msg.encrypted && cryptoKeyRef.current) {
       content = await decryptMessage(cryptoKeyRef.current, msg.content)
     }
+    setPartnerHasRead(false) // a fresh incoming message resets the read tick until they see it
     setLocalMessages(prev => [...prev, { ...msg, content }])
   }, [])
 
-  useMessageRealtime(conversation.id, handleRealtime)
+  const handleRead = useCallback((readerId: string) => {
+    if (readerId !== user?.id) setPartnerHasRead(true)
+  }, [user?.id])
+
+  useEffect(() => { setPartnerHasRead(false) }, [conversation.id])
+
+  useMessageRealtime(conversation.id, handleRealtime, handleRead)
 
   async function handleSend(content: string, type: 'text' | 'link' | 'photo', mediaUrl?: string) {
     if (!user) return
@@ -129,6 +139,7 @@ export function ChatView({ conversation, onBack }: Props) {
       isRead: false,
       encrypted,
     }
+    setPartnerHasRead(false)
     setLocalMessages(prev => [...prev, optimistic])
 
     send.mutate({ conversationId: conversation.id, content: finalContent, type, mediaUrl, encrypted }, {

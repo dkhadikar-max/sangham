@@ -137,20 +137,30 @@ export function usePublishPublicKey() {
   }, [token])
 }
 
-// Real-time subscription — adds new messages to query cache
-export function useMessageRealtime(conversationId: string | null, onNewMessage: (msg: Message) => void) {
+// Real-time subscription — adds new messages to query cache, and reports when
+// the other participant has read our messages (for live read-receipt ticks).
+export function useMessageRealtime(
+  conversationId: string | null,
+  onNewMessage: (msg: Message) => void,
+  onRead?: (readerId: string) => void,
+) {
   const { token } = useAuthStore()
   const cbRef = useRef(onNewMessage)
   cbRef.current = onNewMessage
+  const readCbRef = useRef(onRead)
+  readCbRef.current = onRead
 
   useEffect(() => {
     if (!conversationId || !token) return
     const socket = getSocket(token)
     socket.emit('join_conversation', conversationId)
     const handler = (msg: Message) => cbRef.current(msg)
+    const readHandler = ({ readerId }: { readerId: string }) => readCbRef.current?.(readerId)
     socket.on(`message:${conversationId}`, handler)
+    socket.on(`read:${conversationId}`, readHandler)
     return () => {
       socket.off(`message:${conversationId}`, handler)
+      socket.off(`read:${conversationId}`, readHandler)
       socket.emit('leave_conversation', conversationId)
     }
   }, [conversationId, token])
