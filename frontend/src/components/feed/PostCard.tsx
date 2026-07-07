@@ -17,10 +17,10 @@ function timeAgo(iso: string): string {
 
 function fmtRole(role: string): string {
   const map: Record<string, string> = {
-    MODERATOR: 'Moderator', ADMIN: 'Admin', TEACHER: 'Teacher',
-    BHIKKHU: 'Bhikkhu', BHIKKHUNI: 'Bhikkhuni',
+    MODERATOR: 'Moderator', SUPER_ADMIN: 'Admin', SCHOLAR: 'Scholar',
+    ASSOCIATION_ADMIN: 'Community Admin',
   }
-  return map[role] ?? 'Practitioner'
+  return map[role] ?? ''
 }
 
 interface PostCardProps {
@@ -72,9 +72,8 @@ export function PostCard({ post, onReply, onMessage }: PostCardProps) {
             {author.isVerifiedClergy && <span className="badge-verified" />}
           </div>
           <div className="post-meta">
-            <span>{role}</span>
-            {author.city && <><span className="post-meta-dot" /><span>{author.city}</span></>}
-            <span className="post-meta-dot" />
+            {role && <><span>{role}</span><span className="post-meta-dot" /></>}
+            {author.city && <><span>{author.city}</span><span className="post-meta-dot" /></>}
             <span>{timeAgo(post.createdAt)}</span>
           </div>
         </div>

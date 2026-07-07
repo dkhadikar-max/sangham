@@ -10,8 +10,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Sangham — Buddhist Community Network',
-  description: 'A community platform for Buddhist practitioners worldwide.',
+  title: 'Sangham — Community Network',
+  description: 'A community platform for people, communities, and projects worldwide.',
   appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Sangham' },
 }
 
