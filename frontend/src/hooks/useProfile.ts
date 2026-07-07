@@ -101,3 +101,41 @@ export function useSaveProfile() {
     },
   })
 }
+
+export interface ConnectionListItem {
+  id: string
+  displayName: string
+  profilePhoto: string | null
+  bio: string | null
+  role: string
+  isVerifiedClergy: boolean
+  isVerifiedTeacher: boolean
+  isFollowingBack?: boolean
+  followsBack?: boolean
+}
+
+async function fetchConnections(kind: 'followers' | 'following', token: string | null): Promise<ConnectionListItem[]> {
+  const raw = await api.get<{ data?: ConnectionListItem[] } | ConnectionListItem[]>(
+    `/users/me/${kind}?limit=100`,
+    token ?? undefined,
+  )
+  return Array.isArray(raw) ? raw : (raw.data ?? [])
+}
+
+export function useFollowers() {
+  const { token } = useAuthStore()
+  return useQuery<ConnectionListItem[]>({
+    queryKey: ['my-followers'],
+    queryFn: () => fetchConnections('followers', token),
+    staleTime: 30_000,
+  })
+}
+
+export function useFollowingList() {
+  const { token } = useAuthStore()
+  return useQuery<ConnectionListItem[]>({
+    queryKey: ['my-following'],
+    queryFn: () => fetchConnections('following', token),
+    staleTime: 30_000,
+  })
+}

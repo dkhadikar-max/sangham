@@ -8,6 +8,7 @@ import { useUserParticipations } from '@/hooks/useParticipations'
 import { useCreateConversation } from '@/hooks/useMessages'
 import { useAuthStore } from '@/stores/auth'
 import { useUiStore } from '@/stores/ui'
+import { ConnectionsListPanel } from './ConnectionsListPanel'
 
 interface Props {
   userId: string
@@ -195,6 +196,7 @@ export function ProfilePanel({ userId, onClose }: Props) {
   const [editing, setEditing] = useState(false)
   const [pendingAvatar, setPendingAvatar] = useState<{ file: File; previewUrl: string } | null>(null)
   const [pendingCover, setPendingCover] = useState<{ file: File; previewUrl: string } | null>(null)
+  const [viewingConnections, setViewingConnections] = useState<'followers' | 'following' | null>(null)
 
   const isOwnProfile = user?.id === userId
 
@@ -435,14 +437,29 @@ export function ProfilePanel({ userId, onClose }: Props) {
                   <div className="profile-stat-value">{profile.postsCount}</div>
                   <div className="profile-stat-label">Posts</div>
                 </div>
-                <div className="profile-stat">
-                  <div className="profile-stat-value">{profile.followersCount}</div>
-                  <div className="profile-stat-label">Followers</div>
-                </div>
-                <div className="profile-stat">
-                  <div className="profile-stat-value">{profile.followingCount}</div>
-                  <div className="profile-stat-label">Following</div>
-                </div>
+                {isOwnProfile ? (
+                  <>
+                    <button type="button" className="profile-stat" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }} onClick={() => setViewingConnections('followers')}>
+                      <div className="profile-stat-value">{profile.followersCount}</div>
+                      <div className="profile-stat-label">Followers</div>
+                    </button>
+                    <button type="button" className="profile-stat" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }} onClick={() => setViewingConnections('following')}>
+                      <div className="profile-stat-value">{profile.followingCount}</div>
+                      <div className="profile-stat-label">Following</div>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="profile-stat">
+                      <div className="profile-stat-value">{profile.followersCount}</div>
+                      <div className="profile-stat-label">Followers</div>
+                    </div>
+                    <div className="profile-stat">
+                      <div className="profile-stat-value">{profile.followingCount}</div>
+                      <div className="profile-stat-label">Following</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -571,6 +588,9 @@ export function ProfilePanel({ userId, onClose }: Props) {
           <EditForm profile={profile} onSave={handleSave} onCancel={() => setEditing(false)} />
         )}
       </div>
+      {viewingConnections && (
+        <ConnectionsListPanel kind={viewingConnections} onClose={() => setViewingConnections(null)} />
+      )}
     </div>
   )
 }
