@@ -251,14 +251,30 @@
           <button class="btn btn-ghost btn-sm" onclick="loadUsers()" style="margin-left:auto">↻ Refresh</button>
           <span id="user-total" style="font-size:0.8rem;color:var(--muted);"></span>
         </div>
+        <div class="toolbar" id="bulk-toolbar" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;">
+          <span id="bulk-count" style="font-weight:600;font-size:0.85rem;"></span>
+          <select id="bulk-role-select" class="role-select">
+            <option value="PRACTITIONER">Practitioner</option>
+            <option value="BHIKKHU">Bhikkhu</option>
+            <option value="BHIKKHUNI">Bhikkhuni</option>
+            <option value="SCHOLAR">Scholar</option>
+            <option value="ASSOCIATION_ADMIN">Association Admin</option>
+            <option value="MODERATOR">Moderator</option>
+            <option value="SUPER_ADMIN">Super Admin</option>
+          </select>
+          <button class="btn btn-sm btn-info" onclick="applyBulkRole()">Change Role</button>
+          <button class="btn btn-sm btn-danger" id="bulk-delete-btn" onclick="confirmBulkDelete()">Delete Selected</button>
+          <button class="btn btn-sm btn-ghost" onclick="clearSelection()" style="margin-left:auto">Clear Selection</button>
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr>
+              <th style="width:2.2rem;"><input type="checkbox" id="select-all-users" onchange="toggleSelectAll(this.checked)"></th>
               <th>Name</th><th>Email / Phone</th><th>Role</th><th>Country</th>
               <th>Posts</th><th>Joined</th><th>Actions</th>
             </tr></thead>
             <tbody id="users-tbody">
-              <tr><td colspan="7"><div class="spinner"></div></td></tr>
+              <tr><td colspan="8"><div class="spinner"></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -327,6 +343,7 @@
   let usersPageNum = 1;
   let usersTimer = null;
   let _confirmAction = null;
+  let selectedUserIds = new Set();
 
   // ── HELPERS ──────────────────────────────────────────────────────────────
   function esc(s) {
@@ -515,7 +532,7 @@
   async function loadUsers() {
     const tbody = document.getElementById('users-tbody');
     const errBanner = document.getElementById('users-error');
-    tbody.innerHTML = '<tr><td colspan="7"><div class="spinner" style="margin:1rem auto;"></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8"><div class="spinner" style="margin:1rem auto;"></div></td></tr>';
     errBanner.style.display = 'none';
 
     const q    = document.getElementById('user-search').value.trim();
@@ -533,8 +550,13 @@
       document.getElementById('users-prev').disabled = usersPageNum <= 1;
       document.getElementById('users-next').disabled = usersPageNum >= Math.ceil(total/limit);
 
+      // Drop selections for users no longer in the current page/filter result
+      const idsOnPage = new Set(users.map(u => u.id));
+      for (const id of [...selectedUserIds]) { if (!idsOnPage.has(id)) selectedUserIds.delete(id); }
+
       if (!users.length) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No users found</td></tr>';
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No users found</td></tr>';
+        updateBulkToolbar();
         return;
       }
       tbody.innerHTML = users.map(u => {
@@ -542,6 +564,7 @@
         const joined = new Date(u.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' });
         const canDelete = adminRole === 'SUPER_ADMIN' && u.role !== 'SUPER_ADMIN';
         return `<tr id="urow-${u.id}">
+          <td><input type="checkbox" class="user-checkbox" data-id="${u.id}" onchange="toggleUserSelect('${u.id}',this.checked)" ${selectedUserIds.has(u.id) ? 'checked' : ''}></td>
           <td>
             <div style="font-weight:600;">${esc(u.displayName)}</div>
             ${u.isVerifiedClergy ? '<span class="pill pill-verified" style="font-size:0.65rem;">Clergy</span>' : ''}
@@ -568,12 +591,83 @@
           </td>
         </tr>`;
       }).join('');
+      document.getElementById('select-all-users').checked = users.length > 0 && users.every(u => selectedUserIds.has(u.id));
+      updateBulkToolbar();
     } catch(e) {
       tbody.innerHTML = '';
       errBanner.innerHTML = `<span>${esc(e.message)}</span><button onclick="loadUsers()">Retry</button>`;
       errBanner.className = 'error-banner';
       errBanner.style.display = 'flex';
     }
+  }
+
+  // ── BULK SELECTION ───────────────────────────────────────────────────────
+  function toggleUserSelect(userId, checked) {
+    if (checked) selectedUserIds.add(userId); else selectedUserIds.delete(userId);
+    const all = document.querySelectorAll('.user-checkbox');
+    document.getElementById('select-all-users').checked = all.length > 0 && [...all].every(cb => cb.checked);
+    updateBulkToolbar();
+  }
+
+  function toggleSelectAll(checked) {
+    document.querySelectorAll('.user-checkbox').forEach(cb => {
+      cb.checked = checked;
+      if (checked) selectedUserIds.add(cb.dataset.id); else selectedUserIds.delete(cb.dataset.id);
+    });
+    updateBulkToolbar();
+  }
+
+  function clearSelection() {
+    selectedUserIds.clear();
+    document.querySelectorAll('.user-checkbox').forEach(cb => cb.checked = false);
+    const selectAll = document.getElementById('select-all-users');
+    if (selectAll) selectAll.checked = false;
+    updateBulkToolbar();
+  }
+
+  function updateBulkToolbar() {
+    const bar = document.getElementById('bulk-toolbar');
+    const count = selectedUserIds.size;
+    bar.style.display = count > 0 ? 'flex' : 'none';
+    document.getElementById('bulk-count').textContent = count + ' selected';
+    document.getElementById('bulk-delete-btn').style.display = adminRole === 'SUPER_ADMIN' ? '' : 'none';
+  }
+
+  async function applyBulkRole() {
+    const role = document.getElementById('bulk-role-select').value;
+    const ids = [...selectedUserIds];
+    if (!ids.length) return;
+    openConfirm(
+      'Change Role for Multiple Users',
+      `Change role to "${role}" for ${ids.length} selected user(s)?`,
+      'Change Role',
+      async () => {
+        const res = await api('PUT', '/admin/users/bulk-role', { userIds: ids, role });
+        toast(res.message || `Updated ${res.count} user(s)`, 'success');
+        clearSelection();
+        loadUsers();
+      }
+    );
+  }
+
+  function confirmBulkDelete() {
+    const ids = [...selectedUserIds];
+    if (!ids.length) return;
+    openConfirm(
+      'Permanently Delete Multiple Users',
+      `Are you sure you want to permanently delete ${ids.length} selected user(s)? This will remove all their posts, messages, and data. This cannot be undone. Your own account and other Super Admins are automatically skipped.`,
+      'Delete Permanently',
+      async () => {
+        const res = await api('POST', '/admin/users/bulk-delete', { userIds: ids });
+        if (res.skipped && res.skipped.length) {
+          toast(`Deleted ${res.deleted.length}, skipped ${res.skipped.length} (${res.skipped.map(s => s.reason).join('; ')})`, res.deleted.length ? 'success' : 'error');
+        } else {
+          toast(res.message || `Deleted ${res.deleted.length} user(s)`, 'success');
+        }
+        clearSelection();
+        loadUsers();
+      }
+    );
   }
 
   async function changeRole(userId, role) {
@@ -606,6 +700,8 @@
         toast(`User "${displayName}" deleted`, 'success');
         const row = document.getElementById('urow-' + userId);
         if (row) row.remove();
+        selectedUserIds.delete(userId);
+        updateBulkToolbar();
         // Update total count
         const totalEl = document.getElementById('user-total');
         const current = parseInt(totalEl.textContent) || 0;

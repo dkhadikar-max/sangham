@@ -129,6 +129,39 @@ router.put('/users/:id/ban', authenticate, requireRole(...adminRoles), async (re
   res.json({ message: ban ? 'User banned' : 'User unbanned' });
 });
 
+// PUT /admin/users/bulk-role
+router.put('/users/bulk-role', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
+  const { userIds, role } = req.body;
+  if (!Array.isArray(userIds) || userIds.length === 0) { res.status(400).json({ error: 'userIds must be a non-empty array' }); return; }
+  if (!Object.values(UserRole).includes(role)) { res.status(400).json({ error: 'Invalid role' }); return; }
+  const result = await prisma.user.updateMany({ where: { id: { in: userIds } }, data: { role } });
+  res.json({ message: `Updated ${result.count} user(s) to ${role}`, count: result.count });
+});
+
+// POST /admin/users/bulk-delete — POST (not DELETE) since some proxies/clients
+// mishandle a body on a DELETE request. Applies the same per-user safety checks
+// as the single-delete route below (no self-delete, no deleting another Super
+// Admin) and skips those instead of failing the whole batch.
+router.post('/users/bulk-delete', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
+  const { userIds } = req.body;
+  if (!Array.isArray(userIds) || userIds.length === 0) { res.status(400).json({ error: 'userIds must be a non-empty array' }); return; }
+
+  const deleted: string[] = [];
+  const skipped: { id: string; reason: string }[] = [];
+
+  for (const id of userIds) {
+    if (typeof id !== 'string') continue;
+    if (id === req.user!.id) { skipped.push({ id, reason: 'Cannot delete your own account' }); continue; }
+    const target = await prisma.user.findUnique({ where: { id }, select: { id: true, email: true, displayName: true, role: true } });
+    if (!target) { skipped.push({ id, reason: 'User not found' }); continue; }
+    if (target.role === UserRole.SUPER_ADMIN) { skipped.push({ id, reason: 'Cannot delete another Super Admin' }); continue; }
+    await prisma.user.delete({ where: { id } });
+    deleted.push(id);
+  }
+
+  res.json({ message: `Deleted ${deleted.length} of ${userIds.length} user(s)`, deleted, skipped });
+});
+
 // DELETE /admin/users/:id — permanently remove a user (SUPER_ADMIN only, cannot self-delete)
 router.delete('/users/:id', authenticate, requireRole(UserRole.SUPER_ADMIN), async (req: AuthRequest, res: Response): Promise<void> => {
   if (req.params.id === req.user!.id) {
